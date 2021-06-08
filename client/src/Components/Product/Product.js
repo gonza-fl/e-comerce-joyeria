@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Product.css';
 
 const Product = (props) => {
 
@@ -15,11 +16,11 @@ const Product = (props) => {
     }, [props.match.params.id])
 
     return (
-        <div>
-            <h1>{productDetail.title}</h1>
-            <h4>{productDetail.price}</h4>
-            <p>{productDetail.description}</p>
-            <h5>{productDetail.stock}</h5>
+        <div className="product-container">
+            <h1>{productDetail.title || 'Titulo'}</h1>
+            <h4>{productDetail.price || '$100'}</h4>
+            <p className="product-container-description">{productDetail.description || 'Esto es un producto'}</p>
+            <h5>Stock: {productDetail.stock || '3'}</h5>
         </div>
     )
 }
