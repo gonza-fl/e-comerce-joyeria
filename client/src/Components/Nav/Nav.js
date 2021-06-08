@@ -8,19 +8,23 @@ import './Nav.css';
 export default function Nav() {
 
     return (
-        <div className='ctnav'>
-            <a href='#'>
-                <img src={logo} alt='' />
-            </a>
+        <div className='ctnNav'>
+            <div className='nav'>
+                <a id='logo' href='#'>
+                    <img src={logo} alt='' />
+                </a>
 
-            <SearchBar />
+                <SearchBar />
+                <div className='contact'>
+                    <a href='#'>
+                        <img src={fbIcon} alt='' />
+                    </a>
+                    <a href='#'>
+                        <img src={igIcon} alt='' />
+                    </a>
+                </div>
 
-            <a href='#'>
-                <img src={fbIcon} alt='' />
-            </a>
-            <a href='#'>
-                <img src={igIcon} alt='' />
-            </a>
+            </div>
         </div>
     )
 }
