@@ -13,7 +13,7 @@ export function Catalogo() {
     }, [products])
    
   return (
-    <div>
+    <div className="catalogo">
       {products.map(product => {
           return <ProductCard name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
       })}
