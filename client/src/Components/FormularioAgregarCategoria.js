@@ -2,7 +2,8 @@ import React from "react"
 import Nav from "./Nav/Nav"
 import swal from 'sweetalert';
 const axios = require('axios');
-const {ruta} = process.env
+//import dotenv from 'dotenv';
+const REACT_APP_API = process.env.REACT_APP_API
 
 function FormularioAgregarCategoria(){
 
@@ -22,16 +23,8 @@ function FormularioAgregarCategoria(){
             swal("Error","El campo descripcion no puede ser vacio","warning")
             return;
         }
-        
-/*
-        fetch(`http://localhost:3001/api/`)
-            .then(res=>res.json())
-            .then(res=>{
-                alert(JSON.stringify(res))
-            }).catch(err=>{
-                alert("entro en fetch error")
-            })*/
 
+/*
         fetch(`http://localhost:3001/api/products/category?name=${valor}&description=${description}`,{
             method:"POST",
             body:{"name":valor,"description":description}
@@ -41,14 +34,13 @@ function FormularioAgregarCategoria(){
         }).catch(err=>{
             alert("entro en fetch error")
         })
-        //swal("test","test","success")
+        //swal("test","test","success")*/
 
-        /*
-        axios.post(`${ruta}api/categories`,{
-            name:valor.value,
-            description:descripcion.value
+        
+        axios.post(`${process.env.REACT_APP_API}api/products/category?name=${valor}&description=${description}`,{
+            name:valor,
+            description:description
         }).then((res)=>{
-            alert(JSON.stringify(res))
             if(res.data.hasOwnProperty("err")){
                 swal("Error",res.data.err,"warning")
             }
@@ -56,8 +48,8 @@ function FormularioAgregarCategoria(){
                 swal("Success",res.data.success,"success")
             }
         }).catch(err=>{
-            alert("ocurrio un error")
-        })*/
+            swal("Error","Ocurrio un error inesperado","warning")
+        })
     }
 
     return(

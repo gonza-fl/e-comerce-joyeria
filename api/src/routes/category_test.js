@@ -5,11 +5,11 @@ const {Category} = require("../models/index")
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
-server.post('/', function(req,res){
+server.post('/', function(req,res){/*
     const name = req.query.name
-    const description = req.query.description
+    const description = req.query.description*/
 
-    //const {name,description} = req.body
+    const {name,description} = req.body
 
     if(name==undefined || name.trim().length==0){
         return res.json({err:"El nombre de la categoria no puede ser vacia"})
