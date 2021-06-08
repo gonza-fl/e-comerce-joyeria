@@ -12,6 +12,7 @@ export default function SearchBar() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        alert(`searching ${input} ...`);
         document.getElementById('searchBar').reset()
 
     };
