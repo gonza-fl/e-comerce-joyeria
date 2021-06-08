@@ -9,9 +9,19 @@ function FormularioAgregarCategoria(){
     function enviar(e){
         e.preventDefault()
         let valor=document.getElementById("categoria").value
-        let descripcion=document.getElementById("descripcion").value
+        let description=document.getElementById("descripcion").value
 
-        alert("El valor es: "+valor+" y su descripcion es: "+descripcion)
+        let valor2=valor.trim().length
+        let description2=description.trim().length
+
+        if(valor2==0){
+            swal("Error","El campo nombre no puede ser vacio","warning")
+            return;
+        }
+        if(description2==0){
+            swal("Error","El campo descripcion no puede ser vacio","warning")
+            return;
+        }
         
 /*
         fetch(`http://localhost:3001/api/`)
@@ -22,9 +32,9 @@ function FormularioAgregarCategoria(){
                 alert("entro en fetch error")
             })*/
 
-        fetch(`http://localhost:3001/api/categories?name=${valor}&description=${descripcion}`,{
+        fetch(`http://localhost:3001/api/products/category?name=${valor}&description=${description}`,{
             method:"POST",
-            body:{"name":valor,"description":descripcion}
+            body:{"name":valor,"description":description}
         }).then(res=>res.json())
         .then(res=>{
             swal("Success!",res.success,"success")
@@ -55,7 +65,7 @@ function FormularioAgregarCategoria(){
         <div style={{width:"50%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
             <form method="POST" onSubmit={enviar}>
                 <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>Agregar Categoría</span><input type="text" id="categoria" style={{marginLeft:"10px"}}></input>
+                    <span style={{color:"#F589DF"}}>Nombre</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
                 </div>
                 
                 <p style={{color:"#F589DF"}}>Descripción</p>
