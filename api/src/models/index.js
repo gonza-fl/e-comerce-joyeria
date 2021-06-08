@@ -1,9 +1,9 @@
-const {Sequelize} = require('sequelize');
-const {dbUser, dbName, dbHost, dbPassword} = require('../utils/config/index');
+const { Sequelize } = require('sequelize');
+const { dbUser, dbName, dbHost, dbPassword } = require('../utils/config/index');
 
-const CategoriesFactory = require('./Categories') 
+const CategoriesFactory = require('./Categories')
 
-const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${dbName}`,{
+const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${dbName}`, {
     logging: false
 });
 
