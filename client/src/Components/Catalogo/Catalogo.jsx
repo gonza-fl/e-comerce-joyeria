@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductos} from '../../actions/actions.js';
-
 import "./catalogo.css"
-import {ProductCard} from "../ProductCard/ProductCard"
+import ProductCard from "../ProductCard/ProductCard"
 
 export function Catalogo() {
     const products = useSelector((state) => state.products)
