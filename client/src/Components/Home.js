@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTest } from '../actions/actions.js';
-import ProductCard from './ProductCard/ProductCard.js';
+import ProductCard from './ProductCard/ProductCard';
 
 export function Home() {
     const text = useSelector((state) => state.test)

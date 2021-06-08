@@ -9,9 +9,8 @@ import styled from 'styled-components';
 export default function ProductCard({id, name, price, image, review}) {
   
   return (
-    <Link to = {`${id}`} style={{textDecoration: 'inherit', color: 'inherit'}}>
       <DivCard>
-          <Carousel image = {image}/>
+          <Carousel image = {image} id = { id }/>
           <h3>{name}</h3>
           <span>$ {price}</span><br/>
           <ReactStars
@@ -23,12 +22,13 @@ export default function ProductCard({id, name, price, image, review}) {
             />
           <StyledButton text = 'Agregar al carrito'/>
       </DivCard>
-    </Link>
   );
 };
 
-function Carousel({image}){
-  const img = [...image];
+function Carousel({id, image}){
+  
+  const img = typeof image === 'object' ? [...image] : [image];
+  
   const [imgIndex, setImgIndex] = React.useState(0);
   
   function beforeCarousel() {
@@ -48,7 +48,11 @@ function Carousel({image}){
       <MdNavigateBefore onClick = { beforeCarousel }/>
       <div>
         {img.filter((img, i) => i===imgIndex)
-        .map(img => <img src={`${img}`} alt='Image not found' width='250px' height='250px'/>)}
+        .map(img => 
+        <Link to = {`${id}`} style={{textDecoration: 'inherit', color: 'inherit'}}>
+          <img src={`${img}`} alt='Image not found' width='250px' height='250px'/>
+        </Link>
+        )}
       </div>
       <MdNavigateNext onClick = { nextCarousel }/>
     </DivCarousel>
@@ -65,5 +69,5 @@ const DivCard = styled.div`
 const DivCarousel = styled.div`
           display: flex;
           align-items: center;
-          font-size: 120%;
+          font-size: 130%;
 `
