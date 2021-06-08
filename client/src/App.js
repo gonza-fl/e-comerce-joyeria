@@ -11,7 +11,8 @@ function App() {
     <div className="App">
       <Nav />
       <Switch>
-        <Route exact path='/' component={Catalogo}/>
+        <Route exact path='/' component={Home}/>
+        <Route path='/products' component={Catalogo}/>
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
       </Switch>
     </div>
