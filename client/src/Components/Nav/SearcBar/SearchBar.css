@@ -23,11 +23,10 @@
 
 .searchBtn {
     background: transparent;
-    padding-top: 10px;
     border: none;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .searchBtn:hover {
-    color: white;
+    cursor: pointer;
 }
