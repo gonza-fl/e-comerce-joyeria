@@ -11,13 +11,14 @@ const addCategory = async (req, res) => {
   }
   
   try {
-    const category = await Category.findOne({ where: { name: name.trim() } });        
-    if (category === null) {
-      await Category.create({ name, description });
+    const [category, created] = await Category.findOrCreate({ 
+      where: { name: name.trim() }, 
+      defaults: { name: name.trim(), description: description.trim() }
+    });        
+    if (created) {
       return res.json({success: 'La categoria ha sido creada!'});
-    } else {
-      return res.json({success: 'La categoria ya existe'});
-    }
+    } 
+    return res.json({err: 'La categoria ya existe'});
   }
   catch {
     return res.json({err:'Error en la conexión con la base de datos. No se pudo crear la categoría'});
