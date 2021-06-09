@@ -1,14 +1,15 @@
 import React from 'react';
-import { useSelector, useDispatch, useEffect } from 'react-redux';
-import { getCategories, setTest } from '../actions/actions.js';
+import { useEffect } from 'react';
+import { useSelector, useDispatch,} from "react-redux";
+import { getCategories } from "../actions/actions";
 import ProductCard from './ProductCard/ProductCard';
 
 export function Home() {
+
     const dispatch = useDispatch();
-    
     useEffect(() =>{
        dispatch(getCategories())
-    }, [])
+    },)
 
   return (
     <div>
