@@ -1,3 +1,4 @@
+import {filtrado} from "../Components/fakeDB-Categories";
 import {array, categories} from "../Components/fakeDb"
 
 export const TESTING = 'TESTING';
@@ -14,6 +15,11 @@ export function getProductos() {
     // aca va el axios.get al back end y el payload seria la ruta de get a los productos, mientrastanto traigo el array de constantes
     return {type: GET_PRODUCTOS, payload: array}
 };
+
+export function getProdutsByCategory(id){
+    // Aca va el axios para traer categoria segun id
+    return {type: GET_PRODUCTOS, payload:filtrado[id]}
+}
 export function getCategories(){
     // aca va el axios.get al back pidiendo las categorias.
     return {type: GET_CATEGORIES, payload: categories}
