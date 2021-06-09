@@ -1,7 +1,12 @@
 import React from "react"
 import swal from 'sweetalert';
-import {useSelector} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
+import {useEffect} from "react"
+import {getCategories} from "../../actions/actions"
+
+
 const axios = require('axios');
+
 
 //import dotenv from 'dotenv';
 const REACT_APP_API = process.env.REACT_APP_API
@@ -9,7 +14,10 @@ const REACT_APP_API = process.env.REACT_APP_API
 function CreateProduct(){
     const categories = useSelector((state) => state.categories)
 
-
+    // const dispatch = useDispatch();
+    // useEffect(() =>{
+    //    dispatch(getCategories())
+    // },)
     function enviar(e){
         e.preventDefault()
         let name=document.getElementById("nombre").value
