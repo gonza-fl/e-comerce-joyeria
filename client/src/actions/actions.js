@@ -1,4 +1,5 @@
 import {array} from "../Components/fakeDb"
+import {filtrado} from "../Components/fakeDB-Categories";
 
 export const TESTING = 'TESTING';
 export const GET_PRODUCTOS = "GET_PRODUCTOS"
@@ -14,3 +15,7 @@ export function getProductos() {
     return {type: GET_PRODUCTOS, payload: array}
 };
 
+export function getProdutsByCategory(id){
+    // Aca va el axios para traer categoria segun id
+    return {type: GET_PRODUCTOS, payload:filtrado[id]}
+}
