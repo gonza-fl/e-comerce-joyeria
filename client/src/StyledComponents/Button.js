@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Button({text}) {
+function Button({text, handleClick}) {
+ 
     return (
-        <StyledButton>{text}</StyledButton>
+        <StyledButton onClick={handleClick}>{text}</StyledButton>
     );
 }
 
