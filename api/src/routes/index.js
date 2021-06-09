@@ -1,8 +1,10 @@
 const {Router} = require('express');
-const categories = require("./category_test")
+
+const categoryRoutes = require('./category');
+
 const router = Router();
 
-router.use("/products/category",categories)
+router.use('/category', categoryRoutes);
 
 router.get('/', (req,res) => {
     res.send('Soy la Ruta principal');
