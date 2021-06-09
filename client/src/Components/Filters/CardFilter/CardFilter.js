@@ -19,11 +19,9 @@ export default function CardFilter({ id, name, img }) {
             <div className='headerCard'>
                 <img src={img} alt={name} />
             </div>
-            <div className='btnCard'>
-                <Link to={'/products'}>
-                    <StyledButton text={name} handleClick={handleClick} />
-                </Link>
-            </div>
+            <Link to={'/products'}>
+                <StyledButton text={name} handleClick={handleClick} />
+            </Link>
         </div>
     )
 }

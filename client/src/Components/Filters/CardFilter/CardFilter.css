@@ -28,19 +28,20 @@
     border-radius: 10px 10px 0 0;
 }
 
-.btnCard {
-    height: 10%;
+.ctnCardC a {
     display: flex;
     justify-content: center;
     background-color: rgb(233, 185, 185);
     border-radius: 0 0 10px 10px;
+    height: 10%;
+    text-decoration: none;
 }
 
-.btnCard:hover {
+.ctnCardC a:hover {
     background-color: white;
 }
 
-.btnCard:hover button {
+.ctnCardC a:hover button {
     background-color: white;
     color: rgb(233, 185, 185);
 }
