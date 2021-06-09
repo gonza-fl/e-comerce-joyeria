@@ -1,11 +1,12 @@
 import React from "react"
 import swal from 'sweetalert';
-const axios = require('axios');
 import {useSelector} from "react-redux"
+const axios = require('axios');
+
 //import dotenv from 'dotenv';
 const REACT_APP_API = process.env.REACT_APP_API
 
-function CrearProducto(){
+function CreateProduct(){
     const categories = useSelector((state) => state.categories)
 
 
@@ -47,7 +48,7 @@ function CrearProducto(){
         }
 
         axios.post(`${process.env.REACT_APP_API}api/products`,{
-            name:valor,
+            name:name,
             description:description,
             price: price,
             stockAmount: stockAmount,
@@ -81,7 +82,7 @@ function CrearProducto(){
                 <div style={{marginTop:"15px"}}>
                     <span style={{color:"#F589DF"}}>ingresar imagen:</span><input type="file" id="image" style={{marginLeft:"10px",width:"220px"}}></input>
                 </div>
-                {categorias.map((g) => {
+                {categories.map((g) => {
                 return  <div > 
                   <label className="gname">{g.name}</label>
                   <input type="checkbox" id={g.id} name={g.name} value={g.id} className="checkbox" onClick={(e) =>{categories.push(e.target.value)}}></input> 
@@ -99,4 +100,4 @@ function CrearProducto(){
     )
 }
 
-export default CrearProducto
+export default CreateProduct

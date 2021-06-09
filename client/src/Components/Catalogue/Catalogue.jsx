@@ -4,7 +4,7 @@ import { getProductos} from '../../actions/actions.js';
 import "./catalogo.css"
 import ProductCard from "../ProductCard/ProductCard"
 
-export default function Catalogo() {
+export default function Catalogue() {
     const products = useSelector((state) => state.products)
     const dispatch = useDispatch();
     
