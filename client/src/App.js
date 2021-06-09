@@ -6,6 +6,7 @@ import Nav from './Components/Nav/Nav';
 import FormularioAgregarCategoria from "./Components/FormularioAgregarCategoria"
 import Catalogo from "./Components/Catalogo/Catalogo"
 import Product from './Components/Product/Product';
+import crearProducto from "./Components/CrearProducto/CrearProducto"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route exact path="/agregarcategoria/" component={FormularioAgregarCategoria}/>
+        <Route exact path="/crearProducto/" component={crearProducto}/>
         <Route path='/products' component={Catalogo}/>
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
       </Switch>

@@ -1,7 +1,7 @@
 import React from "react"
 import swal from 'sweetalert';
 const axios = require('axios');
-import {useSelector} from ""
+import {useSelector} from "react-redux"
 //import dotenv from 'dotenv';
 const REACT_APP_API = process.env.REACT_APP_API
 
