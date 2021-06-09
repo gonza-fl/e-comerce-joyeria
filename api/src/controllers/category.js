@@ -44,6 +44,10 @@ const updateCategory = async (req, res) => {
   const { newName, newDescription, newImg } = req.body;
   const id = parseInt(req.body.id, 10);
   try {
+    const categoryFound = await Category.findByPk(id);
+    if (categoryFound === null) {
+      return res.status(404).json({ err: `No existe categoría con el id: ${id} en la base de datos` });
+    }
     await Category.update({
       name: newName,
       description: newDescription,
@@ -51,7 +55,7 @@ const updateCategory = async (req, res) => {
     }, {
       where: { id },
     });
-    return res.json({ err: 'La categoria ha sido modificada exitosamente!' });
+    return res.json({ success: 'La categoria ha sido modificada exitosamente!' });
   } catch {
     return res.status(500).json({ err: 'Error en la conexión con la base de datos. No se pudo actualizar la categoría' });
   }
