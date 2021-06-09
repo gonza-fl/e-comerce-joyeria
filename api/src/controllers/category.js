@@ -21,11 +21,11 @@ const addCategory = async (req, res) => {
       },
     });
     if (created) {
-      return res.json({ success: 'La categoria ha sido creada!' });
+      return res.json({ success: `La categoria ha sido creada! con el nombre: ${category.dataValues.name}` });
     }
-    return res.status(403).json({ err: `La categoria ${category.dataValues.name} ya existe` });
-  } catch {
-    return res.status(500).json({ err: 'Error en la conexión con la base de datos. No se pudo crear la categoría' });
+    return res.json({ err: 'La categoria ya existe' });
+  } catch (err) {
+    return res.json({ err: 'Error en la conexión con la base de datos. No se pudo crear la categoría' });
   }
 };
 
