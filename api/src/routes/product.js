@@ -1,5 +1,9 @@
 const { Router } = require('express');
-const {Product,Category,Image} = require('../models/index')
+const {
+    Product,
+    Category,
+    Image
+} = require('../models/index')
 const router = Router();
 
 router.post('/',async(req,res)=>{
@@ -23,7 +27,6 @@ const CreateProduct = async(body,res) =>{
             price,
             stock
         })
-       
         for (let c = 0; c < categories.length; c++) {
             const categorie = await Category.findOne({
                 where:{
@@ -32,21 +35,30 @@ const CreateProduct = async(body,res) =>{
             })
             await productCreated.addCategory(categorie) 
         }
-        /*for (let i = 0; i < images.length; i++) {
-            const imageCreated = await Product.create({
-                url:images.url
+        for (let i = 0; i < images.length; i++) {
+            const imageCreated = await Image.create({
+                //url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
+                url:"http:img."
             })
-            await productCreated.addImage(Image)
-        }*/
+            await productCreated.addImage(imageCreated)
+        }
         const resultado = await Product.findOne({
             where:{
                 id:productCreated.id
             },
-            include:Category
+            include:[
+                {
+                    model:Category
+                },
+                {
+                    model:Image
+                }
+            ]
         })
         return res.status(201).json(resultado)
     }
     catch(err){
+        console.log(err)
         return res.status(400).json(err);
     }
 }
