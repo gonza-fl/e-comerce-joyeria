@@ -5,7 +5,7 @@ const {
   Image,
 } = require('../models/index');
 
-const CreateProduct = async (body, res) => {
+const CreateProduct = async (req, res) => {
   try {
     const {
       name,
@@ -14,7 +14,7 @@ const CreateProduct = async (body, res) => {
       stock,
       images,
       categories,
-    } = body;
+    } = req.body;
     if (!name || !description || !price || !stock || !images) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
