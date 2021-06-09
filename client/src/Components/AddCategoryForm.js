@@ -52,7 +52,7 @@ function AddCategoryForm(){
 
     return(
         <div style={{height:"100%",justifyContent:"center",alignItems:"center",display:"flex",marginTop:"50px"}}>
-        <div style={{width:"50%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
+        <div style={{width:"100%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
             <form method="POST" onSubmit={enviar}>
                 <div style={{marginTop:"15px"}}>
                     <span style={{color:"#F589DF"}}>Name</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
@@ -60,7 +60,7 @@ function AddCategoryForm(){
                 
                 <p style={{color:"#F589DF"}}>Description</p>
                 
-                <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px"}}></textarea>
+                <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px",margin:"0px 20px"}}></textarea>
                 <div style={{display:"flex",justifyContent:"center",margin:"15px 0px"}}>
                     <input type="submit" value="Aceptar" style={{backgroundColor:"transparent",color:"#F589DF",fontSize:"16px",fontWeight:"600",padding:"5px 10px",border:"1px solid #F589DF",borderRadius:"10px"}}></input>
                 </div>
