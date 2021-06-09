@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize');
+
 const { dbUser, dbName, dbHost, dbPassword } = require('../utils/config/index');
 
 const CategoriesFactory = require('./Categories');

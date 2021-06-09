@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import "./catalogo.css"
 import ProductCard from "../ProductCard/ProductCard"
 
-export function Catalogo() {
+export default function Catalogue() {
     const products = useSelector((state) => state.products)
    
   return (
