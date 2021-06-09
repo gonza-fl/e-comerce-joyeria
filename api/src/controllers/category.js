@@ -40,7 +40,25 @@ const getCategory = async (_req, res) => {
   }
 };
 
+const updateCategory = async (req, res) => {
+  const { newName, newDescription, newImg } = req.body;
+  const id = parseInt(req.body.id, 10);
+  try {
+    await Category.update({
+      name: newName,
+      description: newDescription,
+      img: newImg,
+    }, {
+      where: { id },
+    });
+    return res.json({ err: 'La categoria ha sido modificada exitosamente!' });
+  } catch {
+    return res.status(500).json({ err: 'Error en la conexión con la base de datos. No se pudo actualizar la categoría' });
+  }
+};
+
 module.exports = {
   addCategory,
   getCategory,
+  updateCategory,
 };
