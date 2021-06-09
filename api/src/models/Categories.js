@@ -14,5 +14,8 @@ module.exports = function (sequelize) {
     description: {
       type: DataTypes.TEXT,
     },
+    img: {
+      type: DataTypes.STRING,
+    }
   }, { timestamps: false });
 };
