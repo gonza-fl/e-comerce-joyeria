@@ -9,15 +9,15 @@ function Button({text}) {
 
 const StyledButton = styled.button`
     border-style: none;
-    background-color: rgb(233, 185, 185);
-    color: white;
+    background-color: #f4dcd8;
+    color: black;
     padding: 10px;
     font-size: 105%;
 
     &:hover {
         cursor: pointer;
-        background-color: white;
-        color: rgb(233, 185, 185);
+        background-color: #f4dcd8;
+        color: white;
     }
 `
 
