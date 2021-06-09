@@ -38,7 +38,7 @@ const CreateProduct = async(body,res) =>{
         for (let i = 0; i < images.length; i++) {
             const imageCreated = await Image.create({
                 //url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
-                url:"http:img."
+                url:"https://i.ibb.co/yd9Nxnm/imgnone.jpg"
             })
             await productCreated.addImage(imageCreated)
         }
