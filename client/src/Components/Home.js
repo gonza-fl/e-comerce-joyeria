@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTest } from '../actions/actions.js';
+import Filters from './Filters/Filters.js';
 import ProductCard from './ProductCard/ProductCard';
 
 export function Home() {
@@ -21,6 +22,7 @@ export function Home() {
         review = {3}
         image = {['https://i.ibb.co/TP0L9w9/aretes-kmora.png', "https://i.ibb.co/ChNDJ8J/5843436fa7d2ac55891ea07768d2f1fee88278fd.jpg"]}
       />
+      <Filters />
     </div>
   );
 };

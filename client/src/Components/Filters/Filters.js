@@ -13,6 +13,7 @@ export default function Filters() {
 
     return (
         <div>
+            <h1>Categorias !!</h1>
             {categories.map(cat =>
                 <CardFilter id={cat.id} name={cat.name} img={cat.img} />)}
         </div>
