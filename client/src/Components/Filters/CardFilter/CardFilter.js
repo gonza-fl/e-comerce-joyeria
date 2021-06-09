@@ -15,8 +15,8 @@ export default function CardFilter({ id, name, img }) {
     };
 
     return (
-        <div>
-            <div>
+        <div className='ctnCardC'>
+            <div className='headerCard'>
                 <img src={img} alt={name} />
             </div>
             <Link to={'/products'}>

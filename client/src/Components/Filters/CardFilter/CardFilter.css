@@ -1,0 +1,34 @@
+.ctnCardC {
+    display: flex;
+    flex-direction: column;
+    height: 25rem;
+    width: 30%;
+    border-radius: 10px;
+    margin-block: 1rem;
+}
+
+.ctnCardC:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+    box-shadow: rgb(234, 173, 180) 10px 10px 10px 0;
+}
+
+.headerCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+}
+
+.headerCard img {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.ctnCardC button {
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+}

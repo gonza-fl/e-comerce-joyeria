@@ -21,10 +21,10 @@ const addCategory = async (req, res) => {
       },
     });
     if (created) {
-      return res.json({ success: `La categoria ha sido creada! con el nombre: ${category.date.name}` });
+      return res.json({ success: `La categoria ha sido creada! con el nombre: ${category.dataValues.name}` });
     }
     return res.json({ err: 'La categoria ya existe' });
-  } catch {
+  } catch (err) {
     return res.json({ err: 'Error en la conexión con la base de datos. No se pudo crear la categoría' });
   }
 };
@@ -40,7 +40,25 @@ const getCategory = async (_req, res) => {
   }
 };
 
+const updateCategory = async (req, res) => {
+  const { newName, newDescription, newImg } = req.body;
+  const id = parseInt(req.body.id, 10);
+  try {
+    await Category.update({
+      name: newName,
+      description: newDescription,
+      img: newImg,
+    }, {
+      where: { id },
+    });
+    return res.json({ err: 'La categoria ha sido modificada exitosamente!' });
+  } catch {
+    return res.status(500).json({ err: 'Error en la conexión con la base de datos. No se pudo actualizar la categoría' });
+  }
+};
+
 module.exports = {
   addCategory,
   getCategory,
+  updateCategory,
 };
