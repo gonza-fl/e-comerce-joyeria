@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { getCategories } from "../actions/actions";
 import ProductCard from './ProductCard/ProductCard';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import './Home.css';
 
 export function Home() {
 
@@ -15,7 +16,7 @@ export function Home() {
   })
 
   return (
-    <div>
+    <div className='home'>
       <ProductCard
         id={1}
         name={'Aretes A105'}

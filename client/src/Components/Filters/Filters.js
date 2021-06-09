@@ -21,14 +21,15 @@ export default function Filters() {
     }, []);
 
     return (
-        <div>
-            <Link to='/products'>
-                <StyledButton text='Ver Catalogo' handleClick={handleClick} />
+        <div className='ctnFilters'>
+            <Link className='link' to='/products'>
+                <StyledButton text='Ver catalogo completo' handleClick={handleClick} />
             </Link>
-
-            <h1>Categorias !!</h1>
-            {categories.map(cat =>
-                <CardFilter id={cat.id} name={cat.name} img={cat.img} />)}
+            <div className='ctnCards'>
+                <h1>Nuestras categorias</h1>
+                {categories.map(cat =>
+                    <CardFilter id={cat.id} name={cat.name} img={cat.img} />)}
+            </div>
         </div>
     )
 }
