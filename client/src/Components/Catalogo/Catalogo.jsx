@@ -4,7 +4,7 @@ import { getProductos} from '../../actions/actions.js';
 import "./catalogo.css"
 import ProductCard from "../ProductCard/ProductCard"
 
-export function Catalogo() {
+export default function Catalogo() {
     const products = useSelector((state) => state.products)
     const dispatch = useDispatch();
     
@@ -13,7 +13,7 @@ export function Catalogo() {
     }, [products])
    
   return (
-    <div>
+    <div className="catalogo">
       {products.map(product => {
           return <ProductCard name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
       })}
