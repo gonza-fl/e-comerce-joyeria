@@ -1,8 +1,7 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = function (sequelize) {
-
-  return sequelize.define('category', {
+module.exports = (sequelize) => {
+  const model = sequelize.define('category', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -14,5 +13,9 @@ module.exports = function (sequelize) {
     description: {
       type: DataTypes.TEXT,
     },
+    img: {
+      type: DataTypes.STRING,
+    },
   }, { timestamps: false });
+  return model;
 };

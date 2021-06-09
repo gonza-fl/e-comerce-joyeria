@@ -1,26 +1,37 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { setTest } from '../actions/actions.js';
+import Filters from './Filters/Filters.js';
+import { useEffect } from 'react';
+import { useDispatch } from "react-redux";
+import { getCategories } from "../actions/actions";
 import ProductCard from './ProductCard/ProductCard';
+import { Link } from "react-router-dom";
+import './Home.css';
 
 export function Home() {
-    const text = useSelector((state) => state.test)
-    const dispatch = useDispatch();
-    const [newText, setNewText] = React.useState('');
 
-    function onChangeText(e) {
-        setNewText(e.target.value)
-    };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCategories())
+  })
 
   return (
-    <div>
+    <div className='home'>
       <ProductCard
-        id = {1}
-        name = {'Aretes A105'}
-        price = {20000}
-        review = {3}
-        image = {['https://i.ibb.co/TP0L9w9/aretes-kmora.png', "https://i.ibb.co/ChNDJ8J/5843436fa7d2ac55891ea07768d2f1fee88278fd.jpg"]}
+        id={1}
+        name={'Aretes A105'}
+        price={20000}
+        review={3}
+        image={['https://i.ibb.co/TP0L9w9/aretes-kmora.png', "https://i.ibb.co/ChNDJ8J/5843436fa7d2ac55891ea07768d2f1fee88278fd.jpg"]}
       />
+      <Filters />
+
+      <Link to="/createProduct"> <div style={{
+        "background-color": "red",
+      }}>
+        <p>PROBANDO LINK</p>
+
+      </div></Link>
     </div>
   );
 };
