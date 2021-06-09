@@ -37,4 +37,43 @@ export const categories = [
 ]
 
 
-export const anillos = [{id:null, name:'Un anillo', price:1000, image:'', review:0},{id:null, name:'Un anillo', price:1000, image:'', review:0},{id:null, name:'Un anillo', price:1000, image:'', review:0},{id:null, name:'Un anillo', price:1000, image:'', review:0}]
+export const anillos = [{id:null, name:'Un anillo', price:1000, image:'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg', review:0},
+    {id:null, name:'Un anillo', price:1000, image:'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg', review:0},
+    {id:null, name:'Un anillo', price:1000, image:'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg', review:0},
+    {id:null, name:'Un anillo', price:1000, image:'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg', review:0},
+    {id:null, name:'Un anillo', price:1000, image:'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg', review:0}
+]
+export const collares = [{id:null, name:'Un collar', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/37755/collares-verano-2012-dorado-con-colgantes.jpg', review:0},
+    {id:null, name:'Un collar', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/37755/collares-verano-2012-dorado-con-colgantes.jpg', review:0},
+    {id:null, name:'Un collar', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/37755/collares-verano-2012-dorado-con-colgantes.jpg', review:0},
+    {id:null, name:'Un collar', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/37755/collares-verano-2012-dorado-con-colgantes.jpg', review:0}
+]
+export const aretes = [{id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0},
+    {id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0},
+    {id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0},
+    {id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0},
+    {id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0},
+    {id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0},
+    {id:null, name:'Un arete', price:1000, image:'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg', review:0}
+]
+export const earcuffs = [{id:null, name:'Un earcuffs', price:1000, image:'https://i.pinimg.com/736x/9a/d7/06/9ad7065d354a328708fccc8a6b930d30.jpg', review:0},
+    {id:null, name:'Un earcuffs', price:1000, image:'https://i.pinimg.com/736x/9a/d7/06/9ad7065d354a328708fccc8a6b930d30.jpg', review:0},
+    {id:null, name:'Un earcuffs', price:1000, image:'https://i.pinimg.com/736x/9a/d7/06/9ad7065d354a328708fccc8a6b930d30.jpg', review:0}
+]
+export const sets = [{id:null, name:'Un set', price:1000, image:'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg', review:0},
+    {id:null, name:'Un set', price:1000, image:'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg', review:0},
+    {id:null, name:'Un set', price:1000, image:'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg', review:0},
+    {id:null, name:'Un set', price:1000, image:'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg', review:0},
+    {id:null, name:'Un set', price:1000, image:'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg', review:0},
+    {id:null, name:'Un set', price:1000, image:'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg', review:0}
+]
+export const cuelgaGafas = [{id:null, name:'Un Cuelga Gafas', price:1000, image:'https://http2.mlstatic.com/D_NQ_NP_721564-MCO43970127309_112020-O.jpg', review:0},
+    {id:null, name:'Un Cuelga Gafas', price:1000, image:'https://http2.mlstatic.com/D_NQ_NP_721564-MCO43970127309_112020-O.jpg', review:0},
+   
+]
+
+export const alfs = [{id:null, name:'Un Alf', price:1000, image:'https://www.tierragamer.com/wp-content/uploads/2018/08/ALF_Fichas.jpg', review:0},
+    {id:null, name:'Un Alf', price:1000, image:'https://www.tierragamer.com/wp-content/uploads/2018/08/ALF_Fichas.jpg', review:0},
+    {id:null, name:'Un Alf', price:1000, image:'https://www.tierragamer.com/wp-content/uploads/2018/08/ALF_Fichas.jpg', review:0},
+   
+]
