@@ -25,6 +25,20 @@ const addCategory = async (req, res) => {
   }
 }
 
+const getCategory = async (req,res) =>{
+  try {
+    await Category.findAll({
+      attributes:['id','name','img']
+    }).then((result)=>{
+      return res.status(201).json(result);
+    })
+  }
+  catch(err){
+    return res.status(404).json({err:'Se ha producido un error'})
+  }
+}
+
 module.exports = {
-  addCategory
+  addCategory,
+  getCategory
 }
