@@ -5,7 +5,7 @@ import {useSelector} from "react-redux"
 //import dotenv from 'dotenv';
 const REACT_APP_API = process.env.REACT_APP_API
 
-function CrearProducto(){
+function CreateProduct(){
     const categories = useSelector((state) => state.categories)
 
 
@@ -99,4 +99,4 @@ function CrearProducto(){
     )
 }
 
-export default CrearProducto
+export default CreateProduct
