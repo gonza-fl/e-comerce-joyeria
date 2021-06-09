@@ -1,0 +1,22 @@
+.ctnFilters {
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    background-color: whitesmoke;
+}
+
+.ctnCards {
+    display: flex;
+    flex-wrap: wrap;
+    width: 85%;
+    justify-content: space-around;
+}
+
+.ctnCards h1 {
+    margin-top: 3rem;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
