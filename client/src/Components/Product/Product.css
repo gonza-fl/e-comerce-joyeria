@@ -1,0 +1,14 @@
+.product-container{
+    border: 1px solid silver;
+    width: 40%;
+    margin: 10% auto;
+    color: gray;
+}
+
+.product-container-description{
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+    width: 80%;
+    margin: auto;
+    padding: 2%;
+}
