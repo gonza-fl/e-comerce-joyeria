@@ -14,11 +14,11 @@ function AddCategoryForm(){
         let description2=description.trim().length
 
         if(valor2==0){
-            swal("Error","The name can not be empty","warning")
+            swal("Error","El campo nombre no puede ser vacio","warning")
             return;
         }
         if(description2==0){
-            swal("Error","The description can not be empty","warning")
+            swal("Error","El campo descripcion no puede ser vacio","warning")
             return;
         }
 
@@ -46,7 +46,7 @@ function AddCategoryForm(){
                 swal("Success",res.data.success,"success")
             }
         }).catch(err=>{
-            swal("Error","Something happened :(","warning")
+            swal("Error","Ocurrio un error inesperado","warning")
         })
     }
 

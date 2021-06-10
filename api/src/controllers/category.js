@@ -3,13 +3,13 @@ const { Category } = require('../models/index');
 const addCategory = async (req, res) => {
   const { name, description, img } = req.body; // Img por ahora es estatico.
   if (!name || name.trim().length === 0) {
-    return res.json({ err: 'El nombre de la categoria no puede ser vacio' });
+    return res.json({ err: 'El nombre de la categoria no puede ser vacia' });
   }
   if (!description || description.trim().length === 0) {
-    return res.json({ err: 'El descripcion de la categoria no puede ser vacia' });
+    return res.json({ err: 'La descripción de la categoria no puede ser vacia' });
   }
   if (!img) {
-    return res.json({ err: 'La categoria de la imagen no puede ser vacia' });
+    return res.json({ err: 'La imagen de la categoria no puede ser vacia' });
   }
   try {
     const [category, created] = await Category.findOrCreate({
@@ -25,7 +25,7 @@ const addCategory = async (req, res) => {
     }
     return res.json({ err: 'La categoria ya existe' });
   } catch (err) {
-    return res.json({ err: 'Algo ocurrio :( la categoria no ha sido creada' });
+    return res.json({ err: 'Error en la conexión con la base de datos. No se pudo crear la categoría' });
   }
 };
 
@@ -36,7 +36,7 @@ const getCategory = async (_req, res) => {
     });
     return res.status(201).json(categories);
   } catch (err) {
-    return res.status(404).json({ err: 'Algo ocurrio :(' });
+    return res.status(404).json({ err: 'Se ha producido un error' });
   }
 };
 
@@ -46,7 +46,7 @@ const updateCategory = async (req, res) => {
   try {
     const categoryFound = await Category.findByPk(id);
     if (categoryFound === null) {
-      return res.status(404).json({ err: `No existe categoria con el id: ${id} en la base de datos` });
+      return res.status(404).json({ err: `No existe categoría con el id: ${id} en la base de datos` });
     }
     await Category.update({
       name: newName,
@@ -55,9 +55,9 @@ const updateCategory = async (req, res) => {
     }, {
       where: { id },
     });
-    return res.json({ success: 'La categoria ha sido modificada existosamente!' });
+    return res.json({ success: 'La categoria ha sido modificada exitosamente!' });
   } catch {
-    return res.status(500).json({ err: 'La categoria no pudo ser modificada' });
+    return res.status(500).json({ err: 'Error en la conexión con la base de datos. No se pudo actualizar la categoría' });
   }
 };
 
