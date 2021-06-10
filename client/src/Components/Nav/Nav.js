@@ -1,29 +1,15 @@
 import React from 'react';
 import SearchBar from './SearcBar/SearchBar';
-import logo from './img/logo.png';
-import fbIcon from './img/fb-icon.png';
-import igIcon from './img/instagram-icon.png';
 import './Nav.css';
+import Logo from '../../StyledComponents/Logo.js';
 
 export default function Nav() {
 
     return (
-        <div className='ctnNav'>
-            <div className='nav'>
-                <a id='logo' href='#'>
-                    <img src={logo} alt='' />
-                </a>
-
+        <div className='ctnNav bg-color-three'>
+            <div className='nav bg-color-three'>
+                <Logo width='150px' height='120px'/>
                 <SearchBar />
-                <div className='contact'>
-                    <a href='#'>
-                        <img src={fbIcon} alt='' />
-                    </a>
-                    <a href='#'>
-                        <img src={igIcon} alt='' />
-                    </a>
-                </div>
-
             </div>
         </div>
     )
