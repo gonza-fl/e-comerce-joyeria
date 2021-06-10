@@ -3,13 +3,13 @@ const { Category } = require('../models/index');
 const addCategory = async (req, res) => {
   const { name, description, img } = req.body; // Img por ahora es estatico.
   if (!name || name.trim().length === 0) {
-    return res.json({err:"El nombre de la categoria no puede ser vacio"});
+    return res.json({ err: 'El nombre de la categoria no puede ser vacio' });
   }
   if (!description || description.trim().length === 0) {
-    return res.json({err:"El descripcion de la categoria no puede ser vacia"});
+    return res.json({ err: 'El descripcion de la categoria no puede ser vacia' });
   }
   if (!img) {
-    return res.json({ err: "La categoria de la imagen no puede ser vacia" });
+    return res.json({ err: 'La categoria de la imagen no puede ser vacia' });
   }
   try {
     const [category, created] = await Category.findOrCreate({
@@ -57,41 +57,34 @@ const updateCategory = async (req, res) => {
     });
     return res.json({ success: 'La categoria ha sido modificada existosamente!' });
   } catch {
-    return res.status(500).json({ err: "La categoria no pudo ser modificada" });
+    return res.status(500).json({ err: 'La categoria no pudo ser modificada' });
   }
 };
 
-const delCategory = async (req, res) => { 
-
+const delCategory = async (req, res) => {
   const { categoryId } = req.params;
 
-  if (categoryId==undefined || categoryId==null) {
-    return res.json({err:"El id de la categoria no puede ser vacia"});
+  if (categoryId === undefined || categoryId == null) {
+    return res.json({ err: 'El id de la categoria no puede ser vacia' });
   }
-  
   try {
-
     const cat = await Category.findByPk(Number(categoryId));
 
     if (cat === null) {
-      return res.json({err:"La categoria no existe"});
-    } else {
-
-      await cat.destroy()
-
-      return res.json({success: 'La categoria ha sido eliminada!'})
+      return res.json({ err: 'La categoria no existe' });
     }
-    
-  }
-  catch {
-    return res.json({err:'Algo ocurrio :( la categoria no ha sido creada'});
-  }
-}
 
+    await cat.destroy();
+
+    return res.json({ success: 'La categoria ha sido eliminada!' });
+  } catch {
+    return res.json({ err: 'Algo ocurrio :( la categoria no ha sido creada' });
+  }
+};
 
 module.exports = {
   addCategory,
   getCategory,
   updateCategory,
-  delCategory
+  delCategory,
 };
