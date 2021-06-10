@@ -61,7 +61,7 @@ const getSinlgeProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(idProduct);
     if (product === null) {
-      return res.send('Product not Found');
+      return res.status(400).json('Product not Found');
     }
     return res.send(product);
   } catch (err) {
