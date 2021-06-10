@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+/* eslint radix: ["error", "as-needed"] */
 const {
   Product,
   Category,
@@ -11,32 +12,31 @@ const createProduct = async (req, res) => {
       name,
       description,
       price,
-      stock,
-      images,
+      stockAmount,
+      // images,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stock || !images) return res.status(400).send('Error falta algún campo');
+    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
-      price,
-      stock,
+      price: parseInt(price),
+      stockAmount: parseInt(stockAmount),
     });
     for (let c = 0; c < categories.length; c += 1) {
       const categorie = await Category.findOne({
         where: {
-          id: categories[c],
+          id: parseInt(categories[c]),
         },
       });
       await productCreated.addCategory(categorie);
     }
-    for (let i = 0; i < images.length; i += 1) {
-      const imageCreated = await Image.create({
-        // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
-        url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
-      });
-      await productCreated.addImage(imageCreated);
-    }
+
+    const imageCreated = await Image.create({
+    // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
+      url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
+    });
+    await productCreated.addImage(imageCreated);
     const resultado = await Product.findOne({
       where: {
         id: productCreated.id,
