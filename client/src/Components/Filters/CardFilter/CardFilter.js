@@ -15,12 +15,12 @@ export default function CardFilter({ id, name, img }) {
     };
 
     return (
-        <div className='ctnCardC'>
-            <div className='headerCard'>
-                <img src={img} alt={name} />
-            </div>
+        <div className='ctnCardC' onClick={handleClick}>
             <Link to={'/products'}>
-                <StyledButton text={name}  handleClick={handleClick} />
+                <div className='headerCard'>
+                    <img src={img} alt={name} />
+                </div>
+                <StyledButton text={name} />
             </Link>
         </div>
     )

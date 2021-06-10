@@ -53,7 +53,7 @@ function Carousel({id, image}){
       <div>
         {img.filter((img, i) => i===imgIndex)
         .map(img => 
-        <Link to = {`${id}`} style={{textDecoration: 'inherit', color: 'inherit'}}>
+        <Link to = {`/products/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}}>
           <img src={`${img}`} alt='Image not found' width='250px' height='250px'/>
         </Link>
         )}
