@@ -7,7 +7,7 @@ const router = Router();
 router.use('/products', product);
 router.use('/category', categoryRoutes);
 
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   res.send('Soy la Ruta principal');
 });
 

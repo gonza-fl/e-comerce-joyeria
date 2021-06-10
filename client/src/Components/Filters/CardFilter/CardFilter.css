@@ -1,16 +1,22 @@
 .ctnCardC {
     display: flex;
+    border: #738351 double 0.3rem;
     flex-direction: column;
-    height: 25rem;
+    height: 23rem;
     width: 30%;
     border-radius: 10px;
     margin-block: 1rem;
+    
+   
+
 }
 
 .ctnCardC:hover {
     transform: scale(1.05);
     transition: 0.5s;
-    box-shadow: rgb(234, 173, 180) 10px 10px 10px 0;
+    box-shadow: rgb(212, 195, 138) 10px 10px 10px 0;
+    z-index: 0;
+    background-color: khaki;
 }
 
 .ctnCardC a {
@@ -30,7 +36,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    border-radius: 10px 10px 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 .ctnCardC button {
