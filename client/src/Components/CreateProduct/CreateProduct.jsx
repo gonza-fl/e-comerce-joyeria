@@ -32,8 +32,8 @@ const handleChangeImage = event =>  {
 
 const handleChange = event => {
     const {name, value} = event.target;
-    if(name === "categories"){setNewProduct({...newProduct, categories: newProduct.categories.concat(value)})}
-    setNewProduct({...newProduct, [name]: value});
+    if(name === "categories"){setNewProduct({...newProduct,   categories: newProduct.categories.find(e => e === value)? newProduct.categories.filter(item => item !== value) :  newProduct.categories.concat(value)})}
+    else setNewProduct({...newProduct, [name]: value});
 }
    
     function enviar(e){
@@ -87,12 +87,12 @@ const handleChange = event => {
                     <span style={{color:"#F589DF"}}>Cantidad de unidades:</span><input type="text" id="stockAmount" name="stockAmount" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
                 </div>
                 <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>ingresar imagen:</span><input type="file" id="image" name="image" accept="image/png, image/jpeg" style={{marginLeft:"10px",width:"220px"}} onChange={handleChangeImage}></input>
+                    <span style={{color:"#F589DF"}}>ingresar imagen:</span><input type="file" id="image" name="image" accept="image/*" style={{marginLeft:"10px",width:"220px"}} onChange={handleChangeImage}></input>
                 </div>
                 {categories.map((g) => {
                 return  <div > 
                   <label className="gname">{g.name}</label>
-                  <input type="checkbox" id={g.id} name="categories" value={g.id} className="checkbox" onClick={handleChange}></input> 
+                  <input type="checkbox" id={g.id} name="categories" value={g.name} className="checkbox" onChange={handleChange}></input> 
                   </div>;
               })}              
                 <p style={{color:"#F589DF"}}>Descripción</p>
@@ -102,7 +102,7 @@ const handleChange = event => {
                     <input type="submit" value="Aceptar" style={{backgroundColor:"transparent",color:"#F589DF",fontSize:"16px",fontWeight:"600",padding:"5px 10px",border:"1px solid #F589DF",borderRadius:"10px"}}></input>
                 </div>
                 <div>
-                    <img src={newProduct.image}></img>
+                    <img id="preview"></img>
                 </div>
             </form>
         </div>
