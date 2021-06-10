@@ -4,8 +4,8 @@ import {useSelector, useDispatch} from "react-redux"
 import {useEffect, useState} from "react"
 import {getCategories} from "../../actions/actions"
 import "./createProduct.css"
+import axios from "axios"
 
-const axios = require('axios');
 
 
 //import dotenv from 'dotenv';
@@ -14,10 +14,10 @@ const REACT_APP_API = process.env.REACT_APP_API
 function CreateProduct(){
     const categories = useSelector((state) => state.categories)
     const [newProduct, setNewProduct] = useState({name:"",
-    price:"",
-    stockAmount:"",
+    price:0,
+    stockAmount:0,
     description:"",
-    image:null,
+    image:[],
     categories: [],
 })
 
@@ -37,7 +37,7 @@ const handleChangeImage = event =>  {
     const imagen = event.target.files[0]
     const fd = new FormData();
     fd.append("image", imagen, imagen.name)
-    setNewProduct({...newProduct, image: fd})
+    setNewProduct({...newProduct, image: newProduct.image.concat(fd)})
 }
 
 const handleChange = event => {
@@ -48,7 +48,7 @@ const handleChange = event => {
    
     function enviar(e){
         e.preventDefault()
-
+        console.log(newProduct)
         if(newProduct.stockAmount.length === 0){
             swal("Error","El campo del stock debe ser completado","warning")
             return;
@@ -70,22 +70,21 @@ const handleChange = event => {
             return;
         }
 
-        axios.post(`${process.env.REACT_APP_API}api/products`, newProduct)
-        .then(res=> {console.log(res)})
+        axios.post(`http://localhost:3001/api/products`, newProduct)
+        
         .then((res)=>{
+            console.log(res)
             if(res.data.hasOwnProperty("err")){
                 swal("Error",res.data.err,"warning")
             }
-            if(res.data.hasOwnProperty("success")){
-                swal("Success",res.data.success,"success")
+            else {
+                swal("Success","Se creo el producto!")
             }
-        }).catch(err=>{
-            swal("Error","Ocurrio un error inesperado","warning")
         })
     }
     return(
         <div className="container" >
-        <div className="divForm" >
+        <div className="divForm bg-color-six">
             <form method="POST" onSubmit={(e)=> enviar(e)}>
                 <div className="divsInputs">
                     <span className="spans">Nombre del Producto</span><input type="text" id="nombre" name="name" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
@@ -99,7 +98,7 @@ const handleChange = event => {
 
 
                 <div  className="divsInputs">
-                    <span className="spans">ingresar imagen:   </span> <input type="file" id="image" name="image" accept="image/*" onChange={handleChangeImage}></input>
+                    <span className="spans">ingresar imagen:   </span> <input type="file" id="image" name="image" accept="image/*" className="insertImg" visbility="hidden" onChange={handleChangeImage}></input>
                     <div  className="cont">
                         <div className="divImg">    
                             <img id="preview" src="" alt="vista previa de la imagen" className="imagen" class="image-preview__image" width="200px"></img>
@@ -112,7 +111,7 @@ const handleChange = event => {
                 {categories.map((g) => {
                 return  <div > 
                   <label className="gname">{g.name}</label>
-                  <input type="checkbox" id={g.id} name="categories" value={g.name} className="checkbox" onChange={handleChange}></input> 
+                  <input type="checkbox" id={g.id} name="categories" value={g.id} className="checkbox" onChange={handleChange}></input> 
                   </div>;
               })}    
               </div>
