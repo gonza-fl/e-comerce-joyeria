@@ -4,6 +4,7 @@ import {array, categories} from "../Components/fakeDb"
 export const TESTING = 'TESTING';
 export const GET_PRODUCTS = "GET_PRODUCTS"
 export const GET_CATEGORIES = "GET_CATEGORIES"
+export const GET_PRODUCTS_BY_NAME = "GET_PRODUCTS_BY_NAME"
 
 
 export function setTest(data) {
@@ -23,4 +24,9 @@ export function getProdutsByCategory(id){
 export function getCategories(){
     // aca va el axios.get al back pidiendo las categorias.
     return {type: GET_CATEGORIES, payload: categories}
+}
+export function getProductsByName(name){
+    // aca va el axios.get que pide a la ruta que devuelve productos por query
+    // axios.get(`http://localhost:3001/api/search?name=${query}`)
+    return {type: GET_PRODUCTS_BY_NAME, payload: filtrado[name]}
 }

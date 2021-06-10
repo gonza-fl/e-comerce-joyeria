@@ -1,9 +1,10 @@
-import { TESTING, GET_PRODUCTS, GET_CATEGORIES } from '../actions/actions.js'
+import { TESTING, GET_PRODUCTS, GET_CATEGORIES, GET_PRODUCTS_BY_NAME } from '../actions/actions.js'
 
 const InitialState = {
     test: 'This is a test. Write something and click on the button to modify this text',
     products:[],
     categories:[],
+    productsByQuery: []
 }
 
 export default function rootReducer(state = InitialState, action) {
@@ -23,6 +24,13 @@ export default function rootReducer(state = InitialState, action) {
         return {
             ...state,
             categories: action.payload
+        }
+    }
+
+    if(action.type === GET_PRODUCTS_BY_NAME){
+        return {
+            ...state,
+            productsByQuery: action.payload
         }
     }
 
