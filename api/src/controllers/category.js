@@ -1,15 +1,15 @@
-const { Category , productCategory} = require('../models/index');
+const { Category } = require('../models/index');
 
 const addCategory = async (req, res) => {
   const { name, description, img } = req.body; // Img por ahora es estatico.
   if (!name || name.trim().length === 0) {
-    return res.json({err:"The name of the category can't be empty"});
+    return res.json({err:"El nombre de la categoria no puede ser vacio"});
   }
   if (!description || description.trim().length === 0) {
-    return res.json({err:"The description of the category can't be empty"});
+    return res.json({err:"El descripcion de la categoria no puede ser vacia"});
   }
   if (!img) {
-    return res.json({ err: "The category of the image can't be empty" });
+    return res.json({ err: "La categoria de la imagen no puede ser vacia" });
   }
   try {
     const [category, created] = await Category.findOrCreate({
@@ -21,11 +21,11 @@ const addCategory = async (req, res) => {
       },
     });
     if (created) {
-      return res.json({ success: `The category has been created! with the name: ${category.dataValues.name}` });
+      return res.json({ success: `La categoria ha sido creada! con el nombre: ${category.dataValues.name}` });
     }
-    return res.json({ err: 'The category already exist' });
+    return res.json({ err: 'La categoria ya existe' });
   } catch (err) {
-    return res.json({ err: 'Something happened :( the category has not been created' });
+    return res.json({ err: 'Algo ocurrio :( la categoria no ha sido creada' });
   }
 };
 
@@ -36,7 +36,7 @@ const getCategory = async (_req, res) => {
     });
     return res.status(201).json(categories);
   } catch (err) {
-    return res.status(404).json({ err: 'Something happened :(' });
+    return res.status(404).json({ err: 'Algo ocurrio :(' });
   }
 };
 
@@ -46,7 +46,7 @@ const updateCategory = async (req, res) => {
   try {
     const categoryFound = await Category.findByPk(id);
     if (categoryFound === null) {
-      return res.status(404).json({ err: `There's no category with de id: ${id} in the database` });
+      return res.status(404).json({ err: `No existe categoria con el id: ${id} en la base de datos` });
     }
     await Category.update({
       name: newName,
@@ -55,9 +55,9 @@ const updateCategory = async (req, res) => {
     }, {
       where: { id },
     });
-    return res.json({ success: 'The category has been successfully modified!' });
+    return res.json({ success: 'La categoria ha sido modificada existosamente!' });
   } catch {
-    return res.status(500).json({ err: "The category couldn't been updated" });
+    return res.status(500).json({ err: "La categoria no pudo ser modificada" });
   }
 };
 
@@ -66,7 +66,7 @@ const delCategory = async (req, res) => {
   const { categoryId } = req.params;
 
   if (categoryId==undefined || categoryId==null) {
-    return res.json({err:"The id of the category can't be empty"});
+    return res.json({err:"El id de la categoria no puede ser vacia"});
   }
   
   try {
@@ -74,19 +74,17 @@ const delCategory = async (req, res) => {
     const cat = await Category.findByPk(Number(categoryId));
 
     if (cat === null) {
-      return res.json({err:"The category doesn't exist"});
+      return res.json({err:"La categoria no existe"});
     } else {
-
-      await productCategory.destroy({where:{categoryId:categoryId}})
 
       await cat.destroy()
 
-      return res.json({success: 'The category has been deleted!'})
+      return res.json({success: 'La categoria ha sido eliminada!'})
     }
     
   }
   catch {
-    return res.json({err:'Something happened :( the category has not been created'});
+    return res.json({err:'Algo ocurrio :( la categoria no ha sido creada'});
   }
 }
 

@@ -23,12 +23,10 @@ Product.belongsToMany(Category, { through: 'product_category' });
 Category.belongsToMany(Product, { through: 'product_category' });
 Product.hasMany(Image, {});
 Image.belongsTo(Product);
-const productCategory = sequelize.model('product_category')
 
 module.exports = {
     conn: sequelize,
     Category,
     Product,
-    Image,
-    productCategory
+    Image
 };

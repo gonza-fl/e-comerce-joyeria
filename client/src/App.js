@@ -14,7 +14,7 @@ function App() {
       <Nav />
       <Switch>
         <Route exact path='/' component={Home}/>
-        <Route exact path="/addcategory/" component={AddCategoryForm}/>
+        <Route exact path="/addcategory/" component={AddCategoryForm}/> 
         <Route exact path="/createProduct/" component={ CreateProduct }/>
         <Route path='/products' component={Catalogue}/>
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>

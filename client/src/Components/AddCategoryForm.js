@@ -58,7 +58,7 @@ function AddCategoryForm(){
                     <span style={{color:"#F589DF"}}>Name</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
                 </div>
                 
-                <p style={{color:"#F589DF"}}>Description</p>
+                <p style={{color:"#F589DF"}}>Description</p> 
                 
                 <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px",margin:"0px 20px"}}></textarea>
                 <div style={{display:"flex",justifyContent:"center",margin:"15px 0px"}}>
