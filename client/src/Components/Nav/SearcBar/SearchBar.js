@@ -7,6 +7,7 @@ export default function SearchBar() {
 
 
     const [input, setInput] = useState('');
+    const [results, setResults] = useState([]);
 
     const handleInputChange = (e) => {
         setInput(e.target.value);
