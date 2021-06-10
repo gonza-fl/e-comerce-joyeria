@@ -2,8 +2,28 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaInstagram, FaWhatsapp, FaCcVisa, FaCcMastercard } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 
 export function Footer() {
+  
+  const ButtonMailto = ({ mailto, label }) => {
+    return (
+      <div>
+        <Link
+            className={'link-without-styles'}
+            to='#'
+            onClick={(e) => {
+                window.location = mailto;
+                e.preventDefault();
+            }}
+        >
+            <HiOutlineMail style={{fontSize: '150%'}}/>            
+        </Link>
+        {label}
+        </div>
+    );
+};
+
   return (
     <StyledDiv className={'bg-color-six font-color-seven'}>
       <div style={{flexGrow: '1'}}>
@@ -14,15 +34,12 @@ export function Footer() {
         </StyledAnchor>
         <span>&ensp; Instagram</span><br/>
 
-        <StyledAnchor href='https://api.whatsapp.com/send?phone=57321 6417226' target="_blank">
+        <StyledAnchor href='https://api.whatsapp.com/send?phone=573216417226' target="_blank">
           <FaWhatsapp/>
         </StyledAnchor>
         <span>&ensp; Whatsapp</span><br/>
 
-        <StyledAnchor>
-          <HiOutlineMail/>
-        </StyledAnchor>
-        <span>&ensp; E-mail</span><br/>
+        <ButtonMailto label='&ensp; E-mail' mailto="mailto:k-mora@gmail.com"/>
       </div>
 
       <div style={{flexGrow: '1'}}>
@@ -45,6 +62,7 @@ export function Footer() {
 };
 
 const StyledDiv = styled.div`
+        position: relative;
         display: flex;
         width: 100%;
         height: 200px;
