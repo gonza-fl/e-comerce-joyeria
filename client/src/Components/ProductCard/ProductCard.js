@@ -8,11 +8,15 @@ import styled from 'styled-components';
 
 export default function ProductCard({id, name, price, image, review}) {
   
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
       <DivCard>
           <Carousel image = {image} id = { id }/>
           <h3>{name}</h3>
-          <span>$ {price}</span><br/>
+          <span>$ {numberWithCommas(price)}</span><br/>
           <ReactStars
               count={5}
               size={24}
@@ -64,6 +68,11 @@ const DivCard = styled.div`
           align-items: center;
           width: 290px;
           padding: 5px;
+          
+          &:hover {
+            transform: Scale(1.05);
+            transition: transform 500ms;
+          }
 `;
 
 const DivCarousel = styled.div`

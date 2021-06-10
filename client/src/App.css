@@ -4,3 +4,16 @@
     flex-direction: column;
     align-items: center;
 }
+
+.link-without-styles {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+.app-content {
+    min-height: calc(100vh - 110px - 200px);
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}

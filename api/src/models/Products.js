@@ -13,12 +13,8 @@ module.exports = (sequelize) => {
       type: DataTypes.DECIMAL,
       allownull: false,
     },
-    stock: {
+    stockAmount: {
       type: DataTypes.INTEGER,
-      allownull: false,
-    },
-    image: {
-      type: DataTypes.STRING,
       allownull: false,
     },
   }, { timestamps: false });

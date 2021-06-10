@@ -1,42 +1,42 @@
 /* eslint-disable no-await-in-loop */
+/* eslint radix: ["error", "as-needed"] */
 const {
   Product,
   Category,
   Image,
 } = require('../models/index');
 
-const CreateProduct = async (req, res) => {
+const createProduct = async (req, res) => {
   try {
     const {
       name,
       description,
       price,
-      stock,
-      images,
+      stockAmount,
+      // images,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stock || !images) return res.status(400).send('Error falta algún campo');
+    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
-      price,
-      stock,
+      price: parseInt(price),
+      stockAmount: parseInt(stockAmount),
     });
     for (let c = 0; c < categories.length; c += 1) {
       const categorie = await Category.findOne({
         where: {
-          id: categories[c],
+          id: parseInt(categories[c]),
         },
       });
       await productCreated.addCategory(categorie);
     }
-    for (let i = 0; i < images.length; i += 1) {
-      const imageCreated = await Image.create({
-        // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
-        url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
-      });
-      await productCreated.addImage(imageCreated);
-    }
+
+    const imageCreated = await Image.create({
+    // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
+      url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
+    });
+    await productCreated.addImage(imageCreated);
     const resultado = await Product.findOne({
       where: {
         id: productCreated.id,
@@ -56,6 +56,7 @@ const CreateProduct = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 const GetProducts = async (_req, res) => {
   try {
     const response = await Product.findAll();
@@ -63,10 +64,27 @@ const GetProducts = async (_req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json('Internal server error');
+=======
+const getSinlgeProduct = async (req, res) => {
+  const { idProduct } = req.params;
+  try {
+    const product = await Product.findByPk(idProduct);
+    if (product === null) {
+      return res.status(400).json('Product not Found');
+    }
+    return res.send(product);
+  } catch (err) {
+    return res.status(400).json(err);
+>>>>>>> 41442787ace15ef2b5e9df06baf505eea7054d44
   }
 };
 
 module.exports = {
+<<<<<<< HEAD
   CreateProduct,
   GetProducts,
+=======
+  createProduct,
+  getSinlgeProduct,
+>>>>>>> 41442787ace15ef2b5e9df06baf505eea7054d44
 };
