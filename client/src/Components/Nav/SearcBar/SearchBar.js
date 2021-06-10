@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import { FaSearch } from 'react-icons/fa';
 import Button from '../../../StyledComponents/Button';
@@ -13,12 +13,24 @@ export default function SearchBar() {
     const products = useSelector(state => state.products);
     const dispatch = useDispatch();
 
+    const[open, setOpen] = useState(false);
+    const node = useRef();
+    
+    const handleClick = (e) => {
+        if (node.current.contains(e.target)) {
+            //inside click
+            setOpen(true);
+            return;
+        }
+        //outside click
+        setOpen(false);
+    }
+
     useEffect(() => {
         dispatch(getProducts())
     }, [])
 
     useEffect(() => {
-        console.log(products);
         if(input.trim().length >= 1) {
             getResults();
         } else {
@@ -26,19 +38,28 @@ export default function SearchBar() {
         }
     }, [input]);
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClick);
+        return () => {
+            document.removeEventListener('mousedown', handleClick);
+        }
+    }, [])
+
     const handleInputChange = (e) => {
         setInput(e.target.value);
+        setOpen(true);
     };
 
     const getResults = () => {
         let inputMatch = input.substring(0, input.trim().length);
         setResults(products.filter(product => product.name.toLowerCase().startsWith(inputMatch)));
-        console.log(results);
     }
 
     const handleQueryResultClick = (e) => {
         const query = e.target.innerText.toLowerCase();
         dispatch(getProductsByName(query));
+        setInput(query);
+        setOpen(false);
     }
 
     const handleSubmit = (e) => {
@@ -50,17 +71,20 @@ export default function SearchBar() {
     };
 
     return (
-        <div className='searchBar'>
+        <div className='searchBar' ref={node}>
             <form id='searchBar' onSubmit={handleSubmit}>
-                <input className='searchInput' type="text" name="products" value={input} placeholder="Search..." onChange={handleInputChange} />
+                <input className='searchInput' autoComplete='off' type="text" name="products" value={input} placeholder="Search..." onChange={handleInputChange} />
                 <Button 
                 text = {<FaSearch className = { 'font-color-seven' } style={{fontSize: '110%'}}/>}/> 
             </form>
-
-            <SearchBarDropdown 
-                results = {results}
-                handleQueryResultClick = {handleQueryResultClick}
-            />
+            <div>
+                {open && (
+                    <SearchBarDropdown 
+                        results = {results}
+                        handleQueryResultClick = {handleQueryResultClick}
+                    />
+                )}
+            </div>
         </div>
     )
 }

@@ -1,12 +1,15 @@
 import React from 'react';
+import './SearchBarDropdown.css';
 
 const SearchBarDropdown = ({results, handleQueryResultClick}) => {
+
     const queryOptions = results.map(result => (
-        <li className="searchbar-dropdown" key={result.id} onClick={(e) => handleQueryResultClick(e)}>{result.name}</li>
+        <li className="dropdown-li" key={result.id} onClick={(e) => handleQueryResultClick(e)}>{result.name}</li>
     )) 
 
     return(
-        <ul>{queryOptions}</ul>
+        queryOptions.length === 0 ? null :
+        <ul className="searchbar-dropdown">{queryOptions}</ul>
     )
 }
 
