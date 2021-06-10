@@ -56,15 +56,17 @@ const createProduct = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-const GetProducts = async (_req, res) => {
+const getProducts = async (_req, res) => {
   try {
     const response = await Product.findAll();
+    if (!response.length) return res.status(400).json('Products not founded');
     return res.status(201).json(response);
   } catch (error) {
     console.log(error);
     return res.status(500).json('Internal server error');
-=======
+  }
+};
+
 const getSinlgeProduct = async (req, res) => {
   const { idProduct } = req.params;
   try {
@@ -75,16 +77,11 @@ const getSinlgeProduct = async (req, res) => {
     return res.send(product);
   } catch (err) {
     return res.status(400).json(err);
->>>>>>> 41442787ace15ef2b5e9df06baf505eea7054d44
   }
 };
 
 module.exports = {
-<<<<<<< HEAD
-  CreateProduct,
-  GetProducts,
-=======
   createProduct,
+  getProducts,
   getSinlgeProduct,
->>>>>>> 41442787ace15ef2b5e9df06baf505eea7054d44
 };
