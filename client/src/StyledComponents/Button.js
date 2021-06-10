@@ -4,21 +4,20 @@ import styled from 'styled-components';
 function Button({text, handleClick}) {
  
     return (
-        <StyledButton onClick={handleClick}>{text}</StyledButton>
+        <StyledButton className={'bg-color-three font-color-seven'} onClick={handleClick}>{text}</StyledButton>
     );
 }
 
 const StyledButton = styled.button`
     border-style: none;
-    background-color: rgb(233, 185, 185);
-    color: white;
+    color: black;
     padding: 10px;
     font-size: 105%;
 
     &:hover {
         cursor: pointer;
-        background-color: white;
-        color: rgb(233, 185, 185);
+        background-color: #f4dcd8;
+        color: white;
     }
 `
 

@@ -4,3 +4,8 @@
     flex-direction: column;
     align-items: center;
 }
+
+.link-without-styles {
+    text-decoration: inherit;
+    color: inherit;
+}

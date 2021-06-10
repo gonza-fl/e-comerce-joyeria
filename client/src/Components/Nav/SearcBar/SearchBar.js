@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
+import { FaSearch } from 'react-icons/fa';
+import Button from '../../../StyledComponents/Button';
 
 export default function SearchBar() {
 
@@ -21,7 +23,8 @@ export default function SearchBar() {
         <div className='searchBar'>
             <form id='searchBar' onSubmit={handleSubmit}>
                 <input className='searchInput' type="text" placeholder="Search..." onChange={handleInputChange} />
-                <input className='searchBtn' type="submit" value='🔍' />
+                <Button 
+                text = {<FaSearch className = { 'font-color-seven' } style={{fontSize: '110%'}}/>}/> 
             </form>
         </div>
     )

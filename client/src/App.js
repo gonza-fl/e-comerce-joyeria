@@ -1,5 +1,6 @@
 import React from 'react'
 import './App.css';
+import './colors.css';
 import { Route, Switch } from 'react-router-dom';
 import { Home } from './Components/Home';
 import Nav from './Components/Nav/Nav';
@@ -7,6 +8,7 @@ import FormularioAgregarCategoria from "./Components/FormularioAgregarCategoria"
 import Catalogue from "./Components/Catalogue/Catalogue"
 import Product from './Components/Product/Product';
 import CreateProduct from "./Components/CreateProduct/CreateProduct"
+import { Footer } from './Components/Footer/Footer';
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         <Route path='/products' component={Catalogue}/>
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
       </Switch>
+      <Footer />
     </div>
   );
 }
