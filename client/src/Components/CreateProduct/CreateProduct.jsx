@@ -3,7 +3,7 @@ import swal from 'sweetalert';
 import {useSelector, useDispatch} from "react-redux"
 import {useEffect, useState} from "react"
 import {getCategories} from "../../actions/actions"
-
+import "./createProduct.css"
 
 const axios = require('axios');
 
@@ -22,8 +22,18 @@ function CreateProduct(){
 })
 
 
-
 const handleChangeImage = event =>  {
+    const previewImage = document.querySelector(".image-preview__image")
+    const file = event.target.files[0]
+    if(file){
+        const reader = new FileReader();
+        previewImage.style.display = "block";
+        reader.addEventListener("load", function(){
+            console.log(this)
+            previewImage.setAttribute("src", this.result);
+        });
+        reader.readAsDataURL(file)
+    }
     const imagen = event.target.files[0]
     const fd = new FormData();
     fd.append("image", imagen, imagen.name)
@@ -74,36 +84,48 @@ const handleChange = event => {
         })
     }
     return(
-        <div style={{height:"100%",justifyContent:"center",alignItems:"center",display:"flex",marginTop:"50px"}}>
-        <div style={{width:"50%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
+        <div className="container" >
+        <div className="divForm" >
             <form method="POST" onSubmit={(e)=> enviar(e)}>
-                <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>Nombre del Producto</span><input type="text" id="nombre" name="name" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
+                <div className="divsInputs">
+                    <span className="spans">Nombre del Producto</span><input type="text" id="nombre" name="name" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
                 </div>
-                <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>Precio del producto:</span><input type="text" id="precio"  name="price" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
+                <div  className="divsInputs">
+                    <span className="spans">Precio del producto:</span><input type="text" id="precio"  name="price" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
                 </div>
-                <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>Cantidad de unidades:</span><input type="text" id="stockAmount" name="stockAmount" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
+                <div  className="divsInputs">
+                    <span className="spans">Cantidad de unidades:</span><input type="text" id="stockAmount" name="stockAmount" style={{marginLeft:"10px",width:"220px"}} onChange={handleChange}></input>
                 </div>
-                <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>ingresar imagen:</span><input type="file" id="image" name="image" accept="image/*" style={{marginLeft:"10px",width:"220px"}} onChange={handleChangeImage}></input>
+
+
+                <div  className="divsInputs">
+                    <span className="spans">ingresar imagen:   </span> <input type="file" id="image" name="image" accept="image/*" onChange={handleChangeImage}></input>
+                    <div  className="cont">
+                        <div className="divImg">    
+                            <img id="preview" src="" alt="vista previa de la imagen" className="imagen" class="image-preview__image" width="200px"></img>
+                        </div>
+                    </div>
                 </div>
+
+                <div>
+                <p>Elige las Categorias:</p>
                 {categories.map((g) => {
                 return  <div > 
                   <label className="gname">{g.name}</label>
                   <input type="checkbox" id={g.id} name="categories" value={g.name} className="checkbox" onChange={handleChange}></input> 
                   </div>;
-              })}              
-                <p style={{color:"#F589DF"}}>Descripción</p>
+              })}    
+              </div>
+              
+                <p className="span">Descripción</p>
                 
-                <textarea id="descripcion" name="description" style={{width:"200px",minWidth:"200px",minHeight:"100px"}} onChange={handleChange}></textarea>
-                <div style={{display:"flex",justifyContent:"center",margin:"15px 0px"}}>
-                    <input type="submit" value="Aceptar" style={{backgroundColor:"transparent",color:"#F589DF",fontSize:"16px",fontWeight:"600",padding:"5px 10px",border:"1px solid #F589DF",borderRadius:"10px"}}></input>
+                <textarea placeholder="  Descripcion del producto" id="descripcion" name="description" className="description" onChange={handleChange}></textarea>
+                <div className="aceptar">
+                    <input type="submit" value="Aceptar" className="boton"></input>
                 </div>
-                <div>
-                    <img id="preview"></img>
-                </div>
+                
+                   
+               
             </form>
         </div>
     </div>
