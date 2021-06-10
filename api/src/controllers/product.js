@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+/* eslint radix: ["error", "as-needed"] */
 const {
   Product,
   Category,
@@ -12,31 +13,30 @@ const createProduct = async (req, res) => {
       description,
       price,
       stockAmount,
-      image,
+      // images,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stockAmount || !image) return res.status(400).send('Error falta algún campo');
+    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
-      price,
-      stockAmount,
+      price: parseInt(price),
+      stockAmount: parseInt(stockAmount),
     });
     for (let c = 0; c < categories.length; c += 1) {
       const categorie = await Category.findOne({
         where: {
-          id: categories[c],
+          id: parseInt(categories[c]),
         },
       });
       await productCreated.addCategory(categorie);
     }
-    for (let i = 0; i < image.length; i += 1) {
-      const imageCreated = await Image.create({
-        // url:image[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
-        url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
-      });
-      await productCreated.addImage(imageCreated);
-    }
+
+    const imageCreated = await Image.create({
+    // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
+      url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
+    });
+    await productCreated.addImage(imageCreated);
     const resultado = await Product.findOne({
       where: {
         id: productCreated.id,
@@ -61,7 +61,7 @@ const getSinlgeProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(idProduct);
     if (product === null) {
-      return res.send('Product not Found');
+      return res.status(400).json('Product not Found');
     }
     return res.send(product);
   } catch (err) {

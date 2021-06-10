@@ -17,10 +17,6 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allownull: false,
     },
-    image: {
-      type: DataTypes.STRING,
-      allownull: false,
-    },
   }, { timestamps: false });
   return model;
 };
