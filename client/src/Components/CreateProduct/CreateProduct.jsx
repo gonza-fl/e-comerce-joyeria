@@ -122,9 +122,6 @@ const handleChange = event => {
                 <div className="aceptar">
                     <input type="submit" value="Aceptar" className="boton"></input>
                 </div>
-                
-                   
-               
             </form>
         </div>
     </div>
