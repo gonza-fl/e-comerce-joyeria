@@ -1,0 +1,60 @@
+/* Color palette */
+
+/* Font color classes */
+.font-color-one {
+    color: #CF988C;
+}
+
+.font-color-two {
+    color: #e66767;    
+}
+
+.font-color-three {
+    color: #f0ddd8;
+}
+
+.font-color-four {
+    color: #738351;
+}
+
+.font-color-five {
+    color: #C46286;
+}
+
+.font-color-six {
+    color: #f1eee3
+}
+
+.font-color-seven {
+    color: #201414;
+}
+
+/* Background color classes */
+
+.bg-color-one {
+    background-color: #CF988C;
+}
+
+.bg-color-two {
+    background-color: #e66767;    
+}
+
+.bg-color-three {
+    background-color: #f0ddd8;
+}
+
+.bg-color-four {
+    background-color: #738351;
+}
+
+.bg-color-five {
+    background-color: #C46286;
+}
+
+.bg-color-six {
+    background-color: #f1eee3
+}
+
+.bg-color-seven {
+    background-color: #201414;
+}
