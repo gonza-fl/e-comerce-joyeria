@@ -62,6 +62,7 @@ const getProducts = async (_req, res) => {
     if (!response.length) return res.status(400).json('Products not founded');
     return res.status(201).json(response);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
     return res.status(500).json('Internal server error');
   }
@@ -80,8 +81,26 @@ const getSinlgeProduct = async (req, res) => {
   }
 };
 
+const delProduct = async (req, res) => {
+  const { idProduct } = req.params;
+  try {
+    const product = await Product.destroy({
+      where: {
+        id: idProduct,
+      },
+    });
+    if (product === null) {
+      return res.status(400).json('Product not Found');
+    }
+    return res.status(200).json('Product deleted');
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
 module.exports = {
   createProduct,
   getProducts,
   getSinlgeProduct,
+  delProduct,
 };
