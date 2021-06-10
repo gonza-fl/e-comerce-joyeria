@@ -17,7 +17,7 @@ function CreateProduct(){
     price:"",
     stockAmount:"",
     description:"",
-    image:null,
+    image:[],
     categories: [],
 })
 
@@ -37,7 +37,7 @@ const handleChangeImage = event =>  {
     const imagen = event.target.files[0]
     const fd = new FormData();
     fd.append("image", imagen, imagen.name)
-    setNewProduct({...newProduct, image: fd})
+    setNewProduct({...newProduct, image: newProduct.image.concat(fd)})
 }
 
 const handleChange = event => {
