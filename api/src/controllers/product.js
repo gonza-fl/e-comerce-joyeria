@@ -5,7 +5,7 @@ const {
   Image,
 } = require('../models/index');
 
-const CreateProduct = async (req, res) => {
+const createProduct = async (req, res) => {
   try {
     const {
       name,
@@ -56,6 +56,20 @@ const CreateProduct = async (req, res) => {
   }
 };
 
+const getSinlgeProduct = async (req, res) => {
+  const { idProduct } = req.params;
+  try {
+    const product = await Product.findByPk(idProduct);
+    if (product === null) {
+      return res.send('Product not Found');
+    }
+    return res.send(product);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
 module.exports = {
-  CreateProduct,
+  createProduct,
+  getSinlgeProduct,
 };
