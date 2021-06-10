@@ -25,8 +25,8 @@ Product.hasMany(Image, {});
 Image.belongsTo(Product);
 
 module.exports = {
-  conn: sequelize,
-  Category,
-  Product,
-  Image,
+    conn: sequelize,
+    Category,
+    Product,
+    Image
 };

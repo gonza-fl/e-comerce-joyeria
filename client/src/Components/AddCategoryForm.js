@@ -2,10 +2,8 @@ import React from "react"
 import Nav from "./Nav/Nav"
 import swal from 'sweetalert';
 const axios = require('axios');
-//import dotenv from 'dotenv';
-const REACT_APP_API = process.env.REACT_APP_API
 
-function FormularioAgregarCategoria(){
+function AddCategoryForm(){
 
     function enviar(e){
         e.preventDefault()
@@ -37,7 +35,7 @@ function FormularioAgregarCategoria(){
         //swal("test","test","success")*/
 
         
-        axios.post(`${process.env.REACT_APP_API}api/products/category?name=${valor}&description=${description}`,{
+        axios.post(`${process.env.REACT_APP_API}api/category?name=${valor}&description=${description}`,{
             name:valor,
             description:description
         }).then((res)=>{
@@ -54,15 +52,15 @@ function FormularioAgregarCategoria(){
 
     return(
         <div style={{height:"100%",justifyContent:"center",alignItems:"center",display:"flex",marginTop:"50px"}}>
-        <div style={{width:"50%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
+        <div style={{width:"100%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
             <form method="POST" onSubmit={enviar}>
                 <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>Nombre</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
+                    <span style={{color:"#F589DF"}}>Name</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
                 </div>
                 
-                <p style={{color:"#F589DF"}}>Descripción</p>
+                <p style={{color:"#F589DF"}}>Description</p> 
                 
-                <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px"}}></textarea>
+                <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px",margin:"0px 20px"}}></textarea>
                 <div style={{display:"flex",justifyContent:"center",margin:"15px 0px"}}>
                     <input type="submit" value="Aceptar" style={{backgroundColor:"transparent",color:"#F589DF",fontSize:"16px",fontWeight:"600",padding:"5px 10px",border:"1px solid #F589DF",borderRadius:"10px"}}></input>
                 </div>
@@ -72,24 +70,4 @@ function FormularioAgregarCategoria(){
     )
 }
 
-export default FormularioAgregarCategoria
-
-/*
-
-
-            <Nav/>
-            <div style={{height:"100%",justifyContent:"center",alignItems:"center",display:"flex"}}>
-                <div style={{width:"50%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
-                    <form onSubmit={enviar}>
-                        <span>Agregar Categoría</span><input type="text" id="categoria" style={{marginLeft:"10px"}}></input>
-                        <p>Descripción</p>
-                        <textarea id="descripcion"></textarea>
-                        <div style={{display:"flex",justifyContent:"center"}}>
-                            <input type="submit" value="Aceptar"></input>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
-*/
+export default AddCategoryForm

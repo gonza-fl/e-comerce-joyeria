@@ -61,8 +61,30 @@ const updateCategory = async (req, res) => {
   }
 };
 
+const delCategory = async (req, res) => {
+  const { categoryId } = req.params;
+
+  if (categoryId === undefined || categoryId == null) {
+    return res.json({ err: 'El id de la categoria no puede ser vacia' });
+  }
+  try {
+    const cat = await Category.findByPk(Number(categoryId));
+
+    if (cat === null) {
+      return res.json({ err: 'La categoria no existe' });
+    }
+
+    await cat.destroy();
+
+    return res.json({ success: 'La categoria ha sido eliminada!' });
+  } catch {
+    return res.json({ err: 'Algo ocurrio :( la categoria no ha sido creada' });
+  }
+};
+
 module.exports = {
   addCategory,
   getCategory,
   updateCategory,
+  delCategory,
 };
