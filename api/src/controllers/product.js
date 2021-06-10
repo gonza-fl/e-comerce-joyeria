@@ -56,6 +56,17 @@ const createProduct = async (req, res) => {
   }
 };
 
+const getProducts = async (_req, res) => {
+  try {
+    const response = await Product.findAll();
+    if (!response.length) return res.status(400).json('Products not founded');
+    return res.status(201).json(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json('Internal server error');
+  }
+};
+
 const getSinlgeProduct = async (req, res) => {
   const { idProduct } = req.params;
   try {
@@ -71,5 +82,6 @@ const getSinlgeProduct = async (req, res) => {
 
 module.exports = {
   createProduct,
+  getProducts,
   getSinlgeProduct,
 };

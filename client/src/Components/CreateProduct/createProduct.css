@@ -9,11 +9,13 @@
     justify-content: center;
 }
 .cont{
+    
     margin-top: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
+    
 }
 .container{
     height:"100%";
@@ -21,26 +23,28 @@
     align-Items:"center";
     display:"flex";
     margin-Top:"50px";
+    
 }
 .divForm{
     width:110%;
-    margin:15px 15px;
-    border-Radius:20px;
-    border:1px solid gray
+
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+border-radius: 20px;
+border: 2px double rgba(228, 167, 243, 0.931);
 }
 .divsInputs{
     margin-Top:15px
 }
 .spans{
-    color:#2c2121
+    color:#201414
 }
 .boton{
     background-Color:transparent;
-    color:#2c2121;
+    color:#201414;
     font-Size:16px;
     font-Weight:600;
     padding:5px 10px;
-    border:1px solid #F589DF;
+    border:1px double #F589DF;
     border-Radius:10px
 }
 .boton:hover{
@@ -53,4 +57,7 @@
 .description{
     width:60%;
     
+}
+.insertImg{
+    color:transparent;
 }

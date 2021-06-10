@@ -7,8 +7,13 @@ import { getCategories } from "../actions/actions";
 import ProductCard from './ProductCard/ProductCard';
 import { Link } from "react-router-dom";
 import './Home.css';
+import NewsFlyer from './NewsFlyer/NewsFlyer.js';
 
 export function Home() {
+
+  const images = ["https://i.ibb.co/1X8bTBj/flyer-mothers-day.png",
+                    "https://i.ibb.co/Vtjchmm/product-one-md.png",
+                    "https://i.ibb.co/ypqTSx7/product-two-md.png"]
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -16,14 +21,10 @@ export function Home() {
   })
 
   return (
-    <div className='home'>
-      <ProductCard
-        id={1}
-        name={'Aretes A105'}
-        price={20000}
-        review={3}
-        image={['https://i.ibb.co/TP0L9w9/aretes-kmora.png', "https://i.ibb.co/ChNDJ8J/5843436fa7d2ac55891ea07768d2f1fee88278fd.jpg"]}
-      />
+    <div className='home bg-color-six'>
+      <h1>NEWS</h1>
+      <NewsFlyer images = {images}/>
+
       <Filters />
 
       <Link to="/createProduct"> <div style={{

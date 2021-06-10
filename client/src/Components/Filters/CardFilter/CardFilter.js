@@ -20,7 +20,7 @@ export default function CardFilter({ id, name, img }) {
                 <img src={img} alt={name} />
             </div>
             <Link to={'/products'}>
-                <StyledButton text={name} handleClick={handleClick} />
+                <StyledButton text={name}  handleClick={handleClick} />
             </Link>
         </div>
     )
