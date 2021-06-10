@@ -68,6 +68,11 @@ const DivCard = styled.div`
           align-items: center;
           width: 290px;
           padding: 5px;
+          
+          &:hover {
+            transform: Scale(1.05);
+            transition: transform 500ms;
+          }
 `;
 
 const DivCarousel = styled.div`

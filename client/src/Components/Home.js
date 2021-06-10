@@ -17,6 +17,7 @@ export function Home() {
 
   return (
     <div className='home'>
+      <h1>PROMOS</h1>
       <ProductCard
         id={1}
         name={'Aretes A105'}

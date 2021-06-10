@@ -12,8 +12,9 @@ import { Footer } from './Components/Footer/Footer';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App font-color-seven">
       <Nav />
+      <div className='app-content'>
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route exact path="/agregarcategoria/" component={FormularioAgregarCategoria}/>
@@ -21,6 +22,7 @@ function App() {
         <Route path='/products' component={Catalogue}/>
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
       </Switch>
+      </div>
       <Footer />
     </div>
   );
