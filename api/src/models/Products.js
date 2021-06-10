@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
       type: DataTypes.DECIMAL,
       allownull: false,
     },
-    stock: {
+    stockAmount: {
       type: DataTypes.INTEGER,
       allownull: false,
     },

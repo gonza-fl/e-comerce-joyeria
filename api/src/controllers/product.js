@@ -11,16 +11,16 @@ const createProduct = async (req, res) => {
       name,
       description,
       price,
-      stock,
-      images,
+      stockAmount,
+      image,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stock || !images) return res.status(400).send('Error falta algún campo');
+    if (!name || !description || !price || !stockAmount || !image) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
       price,
-      stock,
+      stockAmount,
     });
     for (let c = 0; c < categories.length; c += 1) {
       const categorie = await Category.findOne({
@@ -30,9 +30,9 @@ const createProduct = async (req, res) => {
       });
       await productCreated.addCategory(categorie);
     }
-    for (let i = 0; i < images.length; i += 1) {
+    for (let i = 0; i < image.length; i += 1) {
       const imageCreated = await Image.create({
-        // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
+        // url:image[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
         url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
       });
       await productCreated.addImage(imageCreated);

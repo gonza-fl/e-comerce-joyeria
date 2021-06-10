@@ -70,7 +70,7 @@ const handleChange = event => {
             return;
         }
 
-        axios.post(`${process.env.REACT_APP_API}api/products`, newProduct)
+        axios.post(`http://localhost:3001/api/products`, newProduct)
         .then(res=> {console.log(res)})
         .then((res)=>{
             if(res.data.hasOwnProperty("err")){
@@ -112,7 +112,7 @@ const handleChange = event => {
                 {categories.map((g) => {
                 return  <div > 
                   <label className="gname">{g.name}</label>
-                  <input type="checkbox" id={g.id} name="categories" value={g.name} className="checkbox" onChange={handleChange}></input> 
+                  <input type="checkbox" id={g.id} name="categories" value={g.id} className="checkbox" onChange={handleChange}></input> 
                   </div>;
               })}    
               </div>
