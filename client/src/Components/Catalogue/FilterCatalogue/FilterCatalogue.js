@@ -31,10 +31,10 @@ export default function FilterCatalogue({ products, setProducts }) {
     }};
 
     return (
-        <div>
-            <StyledButton text={'Quitar filtros'} handleClick={()=>setProducts([...productsGlobal])} ></StyledButton>
+        <div className='ctnFiltersCat  bg-color-six'>
             <h1>{products.length} Resultados</h1>
-            <h3>Ver:</h3>
+            <StyledButton text={'Deshacer'} handleClick={()=>setProducts([...productsGlobal])} ></StyledButton>
+            <h3>Ver </h3>
             <h5>Alfabéticamente</h5>
             <p onClick={() => setProducts([...sortNameAsc(products)])}>A-Z</p>
             <p onClick={() => setProducts([...sortNameDesc(products)])}>Z-A</p>
@@ -52,11 +52,11 @@ export default function FilterCatalogue({ products, setProducts }) {
             </form>
 
             <h5>Estrellas</h5>
-            <p onClick={() => setProducts([...sortDescending(products, 'review')])} >Mas Estrellas
-                <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" /></p>
+            <div onClick={() => setProducts([...sortDescending(products, 'review')])} >Mas Estrellas
+                <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" /></div>
 
-            <p onClick={() => setProducts([...sortAscending(products, 'review')])}>Menos Estrellas
-                <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" /></p>
+            <div onClick={() => setProducts([...sortAscending(products, 'review')])}>Menos Estrellas
+                <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" /></div>
 
             <span>Elegir</span>
             <ReactStars count={5} size={20} value={0} activeColor="#ffd700"
