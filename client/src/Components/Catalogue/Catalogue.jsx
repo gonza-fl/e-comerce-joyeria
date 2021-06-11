@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import "./catalogo.css"
 import ProductCard from "../ProductCard/ProductCard"
@@ -11,7 +11,7 @@ export default function Catalogue() {
 
   return (
     <div className="catalogo">
-      <FilterCatalogue products={productsDisplay} />
+      <FilterCatalogue  setProducts={setProductsDisplay} />
       {productsDisplay.map(product => {
         return <ProductCard name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
       })}
