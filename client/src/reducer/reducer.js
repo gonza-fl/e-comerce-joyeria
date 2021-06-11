@@ -1,4 +1,5 @@
-import { TESTING, GET_PRODUCTS, GET_CATEGORIES, GET_PRODUCTS_BY_NAME, ADD_TO_CART } from '../actions/actions.js'
+import axios from 'axios'
+import { TESTING, GET_PRODUCTS, GET_CATEGORIES, GET_PRODUCTS_BY_NAME, ADD_TO_CART, DELETE_PRODUCT } from '../actions/actions.js'
 
 const InitialState = {
     test: 'This is a test. Write something and click on the button to modify this text',
@@ -40,6 +41,13 @@ export default function rootReducer(state = InitialState, action) {
             cart: state.cart.concat(action.payload)
         }
     }
-
+    if(action.type === DELETE_PRODUCT){
+        
+        return {
+            ...state,
+           
+        }
+    }
+    
     return state;
 }
