@@ -141,12 +141,15 @@ const getProductsByQuery = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const {
-    idProduct, name, description, stockAmount, price, categories, images,
+    idProduct,
+  } = req.params
+  const {
+    name, description, stockAmount, price, categories, images,
   } = req.body
   try {
     const searchProduct = await searchProductF(idProduct)
     if (!searchProduct) {
-      return res.status(404).json({
+      return res.status(400).json({
         err: 'No se encontro el producto.',
       })
     }
@@ -161,11 +164,11 @@ const updateProduct = async (req, res) => {
       },
     })
     const haveError = await updateCategories(searchProduct, categories)
-    if (!haveError) return res.status(404).json('Hay campos erroneos')
+    if (!haveError) return res.status(400).json('Hay campos erroneos')
     await updateImages(searchProduct, images)
-    return res.status(201).json(await searchProductF(idProduct))
+    return res.status(200).json(await searchProductF(idProduct))
   } catch (err) {
-    return res.status(404).json(err)
+    return res.status(400).json(err)
   }
 }
 

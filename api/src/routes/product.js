@@ -11,7 +11,7 @@ router.get('/search', getProductsByQuery)
 router.get('/:idProduct', getSinlgeProduct)
 router.get('/', getProducts)
 router.post('/', createProduct)
-router.put('/', updateProduct)
+router.put('/:idProduct', updateProduct)
 router.delete('/:idProduct', delProduct)
 
 module.exports = router
