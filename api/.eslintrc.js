@@ -11,5 +11,7 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    semi: ['error', 'never'],
+    'object-curly-newline': ['error', 'always'],
   },
 };
