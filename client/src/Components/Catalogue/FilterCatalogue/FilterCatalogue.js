@@ -1,45 +1,67 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './FilterCatalogue.css';
-import StyledButton from '../../../StyledComponents/Button';
 import ReactStars from "react-rating-stars-component";
+import { sortAscending, sortDescending, sortNameAsc, sortNameDesc } from './utils/sorts';
+import { findByPrice, findByStars } from './utils/finds';
 
 
-export default function FilterCatalogue({ products }) {
+export default function FilterCatalogue({ setProducts }) {
 
-    const handleClick = (e) => {
-        console.log(e.target.innerText);
+    const [input, setInput] = useState({ min: '', max: '' });
+    const products = useSelector((state) => state.products);
 
-    }
+    const handleInputChange = (e) => {
+        setInput({ ...input, [e.target.name]: e.target.value });
+    };
+
+
+    useEffect(() => {
+        document.getElementById('submit').disabled = (!input.min || !input.max || !Number(input.min) || !Number(input.max))
+    },[input]);
+
+
+    const handleChoise = (e) => {
+
+        if ( typeof e === 'number')
+            setProducts([...findByStars(products,e)]);
+            
+        else{
+        e.preventDefault();
+        setProducts([...findByPrice(products,input.max, input.min)])
+    }}
 
     return (
         <div>
+  
             <h1>{products.length} Resultados</h1>
             <h3>Ver:</h3>
             <h5>Alfabeticamente</h5>
-            <StyledButton text={'A-Z'} handleClick={handleClick} />
-            <StyledButton text={'Z-A'} handleClick={handleClick} />
-            <hr></hr>
+            <p onClick={() => setProducts([...sortNameAsc(products)])}>A..Z</p>
+            <p onClick={() => setProducts([...sortNameDesc(products)])}>Z..A</p>
+
 
             <h5>Precio</h5>
-            <StyledButton text={'Mayor'} handleClick={handleClick} />
-            <StyledButton text={'Menor'} handleClick={handleClick} />
-            <form>
-                <input placeholder='Minimo..'></input>
+            <p onClick={() => setProducts([...sortDescending(products, 'price')])}>Mayor</p>
+            <p onClick={() => setProducts([...sortAscending(products, 'price')])}>Menor</p>
+
+            <form onSubmit={handleChoise}>
+                <input name='min' placeholder='Minimo..'  onChange={handleInputChange} />
                 <span>-</span>
-                <input placeholder='Maximo'></input>
-                <input type='submit' value='>'></input>
+                <input name='max' placeholder='Maximo..' onChange={handleInputChange} />
+                <input id='submit' type='submit' value='>' disabled />
             </form>
-            <hr></hr>
 
             <h5>Estrellas</h5>
-            <span>Mas Estrellas</span>
-            <ReactStars count={5} size={24} edit={false} value={5} activeColor="#ffd700" />
-            <span>Menos Estrellas</span>
-            <ReactStars count={5} size={24} edit={false} value={1} activeColor="#ffd700" />
+            <p onClick={() => setProducts([...sortDescending(products, 'review')])} >Mas Estrellas
+                <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" /></p>
+
+            <p onClick={() => setProducts([...sortAscending(products, 'review')])}>Menos Estrellas
+                <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" /></p>
+
             <span>Elegir</span>
-            <ReactStars count={5} size={24} onChange={()=>alert()} value={1} activeColor="#ffd700" />
-            <hr></hr>
+            <ReactStars count={5} size={20} value={0} activeColor="#ffd700"
+                onChange={handleChoise} />
 
         </div>
     )
