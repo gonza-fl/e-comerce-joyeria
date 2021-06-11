@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = {
   dbUser: process.env.DB_USER || 'postgres',
@@ -7,4 +7,4 @@ module.exports = {
   dbHost: process.env.HOST || 'localhost',
   dbPassword: process.env.DB_PASSWORD || '12345',
   PORT: process.env.PORT || 3001,
-}
+};

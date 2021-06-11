@@ -2,16 +2,16 @@
 /* eslint radix: ["error", "as-needed"] */
 const {
   Op,
-} = require('sequelize')
+} = require('sequelize');
 const {
   searchProductF, updateCategories, updateImages,
-} = require('../helpers/productHelpers')
+} = require('../helpers/productHelpers');
 
 const {
   Product,
   Category,
   Image,
-} = require('../models/index')
+} = require('../models/index');
 
 const createProduct = async (req, res) => {
   try {
@@ -22,28 +22,28 @@ const createProduct = async (req, res) => {
       stockAmount,
       // images,
       categories,
-    } = req.body
-    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo')
+    } = req.body;
+    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
       price: parseInt(price),
       stockAmount: parseInt(stockAmount),
-    })
+    });
     for (let c = 0; c < categories.length; c += 1) {
       const categorie = await Category.findOne({
         where: {
           id: parseInt(categories[c]),
         },
-      })
-      await productCreated.addCategory(categorie)
+      });
+      await productCreated.addCategory(categorie);
     }
 
     const imageCreated = await Image.create({
     // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
       url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
-    })
-    await productCreated.addImage(imageCreated)
+    });
+    await productCreated.addImage(imageCreated);
     const resultado = await Product.findOne({
       where: {
         id: productCreated.id,
@@ -56,67 +56,67 @@ const createProduct = async (req, res) => {
           model: Image,
         },
       ],
-    })
-    return res.status(201).json(resultado)
+    });
+    return res.status(201).json(resultado);
   } catch (err) {
-    return res.status(400).json(err)
+    return res.status(400).json(err);
   }
-}
+};
 
 const getProducts = async (_req, res) => {
   try {
-    const response = await Product.findAll()
-    if (!response.length) return res.status(400).json('Products not founded')
-    return res.status(201).json(response)
+    const response = await Product.findAll();
+    if (!response.length) return res.status(400).json('Products not founded');
+    return res.status(201).json(response);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log(error)
-    return res.status(500).json('Internal server error')
+    console.log(error);
+    return res.status(500).json('Internal server error');
   }
-}
+};
 
 const getSinlgeProduct = async (req, res) => {
   const {
     idProduct,
-  } = req.params
+  } = req.params;
   try {
-    const product = await Product.findByPk(idProduct)
+    const product = await Product.findByPk(idProduct);
     if (product === null) {
-      return res.status(400).json('Product not Found')
+      return res.status(400).json('Product not Found');
     }
-    return res.send(product)
+    return res.send(product);
   } catch (err) {
-    return res.status(400).json(err)
+    return res.status(400).json(err);
   }
-}
+};
 
 const delProduct = async (req, res) => {
   const {
     idProduct,
-  } = req.params
+  } = req.params;
   try {
     const product = await Product.destroy({
       where: {
         id: idProduct,
       },
-    })
+    });
     if (product === null) {
-      return res.status(400).json('Product not Found')
+      return res.status(400).json('Product not Found');
     }
-    return res.status(200).json('Product deleted')
+    return res.status(200).json('Product deleted');
   } catch (err) {
-    return res.status(400).json(err)
+    return res.status(400).json(err);
   }
-}
+};
 
 const getProductsByQuery = async (req, res) => {
   const {
     query,
-  } = req.query
+  } = req.query;
   if (!query) {
     return res.status(400).json({
       err: 'There was no query sent',
-    })
+    });
   }
   try {
     const productsFound = await Product.findAll({
@@ -125,33 +125,33 @@ const getProductsByQuery = async (req, res) => {
           [Op.iLike]: `%${query}%`,
         },
       },
-    })
+    });
     if (productsFound.length === 0) {
       return res.status(400).json({
         err: 'There were no products found with that query name',
-      })
+      });
     }
-    return res.json(productsFound)
+    return res.json(productsFound);
   } catch {
     return res.status(500).json({
       err: 'Internal server error',
-    })
+    });
   }
-}
+};
 
 const updateProduct = async (req, res) => {
   const {
     idProduct,
-  } = req.params
+  } = req.params;
   const {
     name, description, stockAmount, price, categories, images,
-  } = req.body
+  } = req.body;
   try {
-    const searchProduct = await searchProductF(idProduct)
+    const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) {
       return res.status(400).json({
         err: 'No se encontro el producto.',
-      })
+      });
     }
     await Product.update({
       name,
@@ -162,15 +162,15 @@ const updateProduct = async (req, res) => {
       where: {
         id: idProduct,
       },
-    })
-    const haveError = await updateCategories(searchProduct, categories)
-    if (!haveError) return res.status(400).json('Hay campos erroneos')
-    await updateImages(searchProduct, images)
-    return res.status(200).json(await searchProductF(idProduct))
+    });
+    const haveError = await updateCategories(searchProduct, categories);
+    if (!haveError) return res.status(400).json('Hay campos erroneos');
+    await updateImages(searchProduct, images);
+    return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
-    return res.status(400).json(err)
+    return res.status(400).json(err);
   }
-}
+};
 
 module.exports = {
   createProduct,
@@ -179,4 +179,4 @@ module.exports = {
   delProduct,
   getProductsByQuery,
   updateProduct,
-}
+};

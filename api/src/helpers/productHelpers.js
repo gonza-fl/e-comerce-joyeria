@@ -7,7 +7,7 @@ const {
   Product,
   Category,
   Image,
-} = require('../models/index')
+} = require('../models/index');
 
 const searchProductF = async (id) => Product.findOne({
   where: {
@@ -21,28 +21,28 @@ const searchProductF = async (id) => Product.findOne({
       model: Image,
     },
   ],
-})
+});
 
 const updateCategories = async (searchProduct, categories) => {
-  if (!categories) return true
-  if (categories[0] === '') return true
+  if (!categories) return true;
+  if (categories[0] === '') return true;
   try {
-    const categoriesSearch = []
+    const categoriesSearch = [];
     for (let i = 0; i < categories.length; i++) {
-      categoriesSearch.push(await Category.findByPk(categories[i]))
+      categoriesSearch.push(await Category.findByPk(categories[i]));
     }
     return Promise.all(categoriesSearch).then(() => {
-      if (categoriesSearch.includes(null)) return false
-      return searchProduct.setCategories(categoriesSearch)
-    })
+      if (categoriesSearch.includes(null)) return false;
+      return searchProduct.setCategories(categoriesSearch);
+    });
   } catch (err) {
-    throw new Error('Campos erroneos')
+    throw new Error('Campos erroneos');
   }
-}
+};
 const updateImages = async (searchProduct, images) => {
-  if (images[0] === '') return
+  if (images[0] === '') return;
   try {
-    const imagesSearch = []
+    const imagesSearch = [];
     for (let i = 0; i < images.length; i++) {
       imagesSearch.push(await Image.findOrCreate({
         where: {
@@ -51,19 +51,19 @@ const updateImages = async (searchProduct, images) => {
         defaults: {
           url: images[i],
         },
-      }))
+      }));
     }
     return Promise.all(imagesSearch).then(() => {
-      const imagesMap = imagesSearch.map((el) => el && el[0])
-      return searchProduct.setImages(imagesMap)
-    })
+      const imagesMap = imagesSearch.map((el) => el && el[0]);
+      return searchProduct.setImages(imagesMap);
+    });
   } catch (err) {
-    return console.log(err)
+    return console.log(err);
   }
-}
+};
 
 module.exports = {
   searchProductF,
   updateCategories,
   updateImages,
-}
+};
