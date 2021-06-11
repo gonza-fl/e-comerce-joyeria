@@ -11,6 +11,7 @@ export default function FilterCatalogue({ products, setProducts }) {
 
     const productsGlobal = useSelector((state) => state.products);
     const [input, setInput] = useState({ min: '', max: '' });
+    const [undo, setUndo] = useState(false);
 
     const handleInputChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
@@ -18,22 +19,24 @@ export default function FilterCatalogue({ products, setProducts }) {
 
     useEffect(() => {
         document.getElementById('submit').disabled = (!input.min || !input.max || !Number(input.min) || !Number(input.max))
-    },[input]);
+    }, [input]);
 
     const handleChoise = (e) => {
 
-        if ( typeof e === 'number')
-            setProducts([...findByStars(products,e)]);
-            
-        else{
-        e.preventDefault();
-        setProducts([...findByPrice(products,input.max, input.min)])
-    }};
+        if (typeof e === 'number')
+            setProducts([...findByStars(products, e)]);
+
+        else {
+            e.preventDefault();
+            setProducts([...findByPrice(products, input.max, input.min)])
+        }
+        setUndo(true);
+    };
 
     return (
         <div className='ctnFiltersCat  bg-color-six'>
             <h1>{products.length} Resultados</h1>
-            <StyledButton text={'Deshacer'} handleClick={()=>setProducts([...productsGlobal])} ></StyledButton>
+            {undo && <StyledButton text={'Deshacer'} handleClick={() => setProducts([...productsGlobal])} ></StyledButton>}
             <h3>Ver </h3>
             <h5>Alfabéticamente</h5>
             <p onClick={() => setProducts([...sortNameAsc(products)])}>A-Z</p>
@@ -45,7 +48,7 @@ export default function FilterCatalogue({ products, setProducts }) {
             <p onClick={() => setProducts([...sortAscending(products, 'price')])}>Menor</p>
 
             <form onSubmit={handleChoise}>
-                <input name='min' placeholder='Minimo..'  onChange={handleInputChange} />
+                <input name='min' placeholder='Minimo..' onChange={handleInputChange} />
                 <span>-</span>
                 <input name='max' placeholder='Maximo..' onChange={handleInputChange} />
                 <input id='submit' type='submit' value='>' disabled />
