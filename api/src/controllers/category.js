@@ -1,7 +1,11 @@
 const { Category } = require('../models/index');
+const { cloudinary } = require('../utils/cloudinary');
 
 const addCategory = async (req, res) => {
-  const { name, description, img } = req.body; // Img por ahora es estatico.
+  const {
+    name, description, img,
+  } = req.body; // Img por ahora es estatico.
+
   if (!name || name.trim().length === 0) {
     return res.json({ err: 'El nombre de la categoria no puede ser vacia' });
   }
@@ -12,12 +16,29 @@ const addCategory = async (req, res) => {
     return res.json({ err: 'La imagen de la categoria no puede ser vacia' });
   }
   try {
+    const uploadedResponse = await cloudinary.uploader.upload(img, { upload_preset: 'henry' });
+
+    if (!uploadedResponse) {
+      const [category, created] = await Category.findOrCreate({
+        where: { name: name.trim() },
+        defaults: {
+          name: name.trim(),
+          description: description.trim(),
+          img: 'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg',
+        },
+      });
+      if (created) {
+        return res.json({ success: `La categoria ha sido creada! con el nombre: ${category.dataValues.name}` });
+      }
+      return res.json({ err: 'La categoria ya existe' });
+    }
+
     const [category, created] = await Category.findOrCreate({
       where: { name: name.trim() },
       defaults: {
         name: name.trim(),
         description: description.trim(),
-        img: 'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg',
+        img: uploadedResponse.secure_url,
       },
     });
     if (created) {
