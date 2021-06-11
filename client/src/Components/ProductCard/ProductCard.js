@@ -4,10 +4,15 @@ import ReactStars from "react-rating-stars-component";
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch } from "react-redux"
+import { addToCart } from '../../actions/actions';
+import "./productCard.css"
 
 
-export default function ProductCard({id, name, price, image, review}) {
-  
+export default function ProductCard({product, id, name, price, image, review}) {
+
+  const dispatch = useDispatch()
+
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -24,7 +29,8 @@ export default function ProductCard({id, name, price, image, review}) {
               value={review}
               activeColor="#ffd700"
             />
-          <StyledButton text = 'Agregar al carrito'/>
+          <button className="botonCart" onClick={() => dispatch(addToCart(product))} text = 'Agregar al carrito'> AGREGAR AL CARRITO </button>
+          
       </DivCard>
   );
 };
