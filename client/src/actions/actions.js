@@ -2,6 +2,8 @@ import {filtrado} from "../Components/fakeDB-Categories";
 import {array, categories} from "../Components/fakeDb"
 import axios from "axios";
 
+import axios from "axios";
+
 export const TESTING = 'TESTING';
 export const GET_PRODUCTS = "GET_PRODUCTS"
 export const GET_CATEGORIES = "GET_CATEGORIES"
@@ -45,6 +47,6 @@ export function deleteProduct(id){
     //const prods = axios.get("http://localhost:3001/api/product")
     return {
         type:DELETE_PRODUCT,
-        //payload: prods,
+        //payload: prods, 
     }
 }
