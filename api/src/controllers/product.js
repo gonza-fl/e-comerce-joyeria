@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint radix: ["error", "as-needed"] */
+const { Op } = require('sequelize');
+
 const {
   Product,
   Category,
@@ -98,9 +100,26 @@ const delProduct = async (req, res) => {
   }
 };
 
+const getProductsByQuery = async (req, res) => {
+  const { query } = req.query;
+  if (!query) {
+    return res.status(400).json({ err: 'There was no query sent' });
+  }
+  try {
+    const productsFound = await Product.findAll({ where: { name: { [Op.iLike]: `%${query}%` } } });
+    if (productsFound.length === 0) {
+      return res.status(400).json({ err: 'There were no products found with that query name' });
+    }
+    return res.json(productsFound);
+  } catch {
+    return res.status(500).json({ err: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createProduct,
   getProducts,
   getSinlgeProduct,
   delProduct,
+  getProductsByQuery,
 };
