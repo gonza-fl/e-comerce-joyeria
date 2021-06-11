@@ -60,7 +60,13 @@ function AddCategoryForm(){
                     swal("Error",res.data.err,"warning")
                 }
                 if(res.data.hasOwnProperty("success")){
-                    setFileInputState('');
+                    setSelectedFile();
+                    setPreviewSource('')
+                    setFileInputState('')
+                    let elemento = document.getElementById("flexQuery")
+                    elemento.style.flexDirection="column"
+                    document.getElementById("categoria").value=""
+                    document.getElementById("descripcion").value=""
                     swal("Success",res.data.success,"success")
                 }
             }).catch(err=>{
@@ -89,7 +95,11 @@ function AddCategoryForm(){
     };
 
     const limpiarImagen = () => {
+        let elemento = document.getElementById("flexQuery")
+        elemento.style.flexDirection="column"
+        setSelectedFile();
         setPreviewSource('')
+        setFileInputState('')
     }
 
     return(
@@ -101,15 +111,12 @@ function AddCategoryForm(){
                 </div>
                 
                 <p style={{color:"#F589DF"}}>Description</p> 
+
+                <div id="flexQuery" style={{display:"flex",flexDirection:"column",flexWrap:"wrap"}}>
+
+                    <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px",margin:"0px 20px"}}></textarea>
                 
-
-
-
-                <div id="flexQuery" style={{display:"flex",flexDirection:"column"}}>
-
-                <textarea id="descripcion" style={{width:"300px",minWidth:"300px",minHeight:"200px",margin:"0px 20px"}}></textarea>
-                
-                <div style={{display:"flex",flexDirection:"column", position:"relative"}}>
+                    <div style={{display:"flex",flexDirection:"column", position:"relative"}}>
                     {previewSource && (
                         <img
                         src={previewSource}
@@ -119,14 +126,14 @@ function AddCategoryForm(){
                     )}
                     {
                         previewSource && (
-                            <div style={{display:"inline",backgroundColor:"red",color:"white",border:"1px solid white",borderRadius:"100px",position:"absolute",top:"10px",right:"30px",zIndex:"1",height:"10px",width:"10px"}} onClick={limpiarImagen}>X</div>
+                            <div className="botonEliminarImagenCategoria" style={{display:"inline",backgroundColor:"#F55046",color:"white",border:"1px solid white",borderRadius:"100px",position:"absolute",top:"10px",right:"30px",zIndex:"1",height:"23px",width:"23px",fontWeight:"bold"}} onClick={limpiarImagen}>X</div>
                         )
                     }
 
 
                     <input type="file" name="image" onChange={handleFileInputChange} value={fileInputState} style={{marginLeft:"20px",marginTop:"15px"}}/>
 
-                </div>
+                    </div>
                 
                 </div>
 

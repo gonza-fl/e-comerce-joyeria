@@ -1,9 +1,11 @@
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
-  cloud_name: 'grupo6',
-  api_key: '256513813971585',
-  api_secret: 'aaDvTHfyRbcGV3RmuXVNzKtI-6I',
+  cloud_name: process.env.REACT_APP_CLOUDNAME,
+  api_key: process.env.REACT_APP_APIKEY,
+  api_secret: process.env.REACT_APP_APISECRET,
 });
 
-module.exports = { cloudinary };
+module.exports = {
+  cloudinary,
+};
