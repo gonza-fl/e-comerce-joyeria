@@ -1,6 +1,6 @@
 //simula la respuesta del back a un get a la ruta que devuelve las categorias
 
-export const categoriesF = [
+export const categories = [
     {
         id: 0,
         name: 'Anillos',
