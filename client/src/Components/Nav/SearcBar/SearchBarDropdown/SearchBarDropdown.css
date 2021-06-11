@@ -1,0 +1,23 @@
+.searchbar-dropdown{
+    background-color: #f0ddd8;
+    position: absolute;
+    top: 70%;
+    left: 48%;
+    right: 0;
+    width: 46%;
+    border: 1px solid #201414;
+    border-radius: 5px;
+    padding: 0;
+}
+
+.dropdown-li{
+    list-style: none;
+    text-align: left;
+    padding: 3% 4%;
+    font-size: 18px;
+}
+
+.dropdown-li:hover{
+    cursor: pointer;
+    background-color: #e6c7b7;
+}

@@ -21,7 +21,6 @@ function CreateProduct(){
     categories: [],
 })
 
-
 const handleChangeImage = event =>  {
     const previewImage = document.querySelector(".image-preview__image")
     const file = event.target.files[0]
@@ -83,6 +82,8 @@ const handleChange = event => {
         })
     }
     return(
+
+
         <div className="container" >
         <div className="divForm bg-color-six">
             <form method="POST" onSubmit={(e)=> enviar(e)}>
@@ -123,8 +124,9 @@ const handleChange = event => {
                     <input type="submit" value="Aceptar" className="boton"></input>
                 </div>
             </form>
+         </div>
         </div>
-    </div>
+    
     )
 }
 

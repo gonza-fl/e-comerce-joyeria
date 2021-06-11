@@ -9,7 +9,7 @@ export default function Catalogue() {
   return (
     <div className="catalogo">
       {products.map(product => {
-          return <ProductCard name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
+          return <ProductCard product={product} name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
       })}
     </div>
   );

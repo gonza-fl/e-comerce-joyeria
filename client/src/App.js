@@ -9,7 +9,7 @@ import Catalogue from "./Components/Catalogue/Catalogue"
 import Product from './Components/Product/Product';
 import CreateProduct from "./Components/CreateProduct/CreateProduct"
 import { Footer } from './Components/Footer/Footer';
-
+import ModalCreatProductos from "./Components/CreateProduct/modalCreateProducts/ModalCreateProducts.jsx";
 function App() {
   return (
     <div className="App font-color-seven">
@@ -18,9 +18,9 @@ function App() {
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route exact path="/addcategory/" component={AddCategoryForm}/> 
-        <Route exact path="/createProduct/" component={ CreateProduct }/>
-        <Route path='/products' component={Catalogue}/>
+        <Route exact path="/createProduct/" component={ ModalCreatProductos }/>
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
+        <Route path='/products' component={Catalogue}/>
       </Switch>
       </div>
       <Footer />
