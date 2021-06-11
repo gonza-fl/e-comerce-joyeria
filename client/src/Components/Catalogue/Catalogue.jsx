@@ -11,7 +11,7 @@ export default function Catalogue() {
 
   return (
     <div className="catalogo">
-      <FilterCatalogue  setProducts={setProductsDisplay} />
+      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} />
       {productsDisplay.map(product => {
         return <ProductCard name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
       })}

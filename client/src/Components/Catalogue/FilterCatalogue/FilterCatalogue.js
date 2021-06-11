@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './FilterCatalogue.css';
+import StyledButton from '../../../StyledComponents/Button'
 import ReactStars from "react-rating-stars-component";
 import { sortAscending, sortDescending, sortNameAsc, sortNameDesc } from './utils/sorts';
 import { findByPrice, findByStars } from './utils/finds';
 
 
-export default function FilterCatalogue({ setProducts }) {
+export default function FilterCatalogue({ products, setProducts }) {
 
+    const productsGlobal = useSelector((state) => state.products);
     const [input, setInput] = useState({ min: '', max: '' });
-    const products = useSelector((state) => state.products);
 
     const handleInputChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
-
     useEffect(() => {
         document.getElementById('submit').disabled = (!input.min || !input.max || !Number(input.min) || !Number(input.max))
     },[input]);
-
 
     const handleChoise = (e) => {
 
@@ -29,16 +28,16 @@ export default function FilterCatalogue({ setProducts }) {
         else{
         e.preventDefault();
         setProducts([...findByPrice(products,input.max, input.min)])
-    }}
+    }};
 
     return (
         <div>
-  
+            <StyledButton text={'Quitar filtros'} handleClick={()=>setProducts([...productsGlobal])} ></StyledButton>
             <h1>{products.length} Resultados</h1>
             <h3>Ver:</h3>
-            <h5>Alfabeticamente</h5>
-            <p onClick={() => setProducts([...sortNameAsc(products)])}>A..Z</p>
-            <p onClick={() => setProducts([...sortNameDesc(products)])}>Z..A</p>
+            <h5>Alfabéticamente</h5>
+            <p onClick={() => setProducts([...sortNameAsc(products)])}>A-Z</p>
+            <p onClick={() => setProducts([...sortNameDesc(products)])}>Z-A</p>
 
 
             <h5>Precio</h5>
