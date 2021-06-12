@@ -12,7 +12,7 @@ function AddCategoryForm(){
     function enviar(e){
         e.preventDefault()
 
-        if (!selectedFile) return swal("Error","Debes ingresar una imagen","warning");
+        
 
         let valor=document.getElementById("categoria").value
         let description=document.getElementById("descripcion").value
@@ -41,11 +41,7 @@ function AddCategoryForm(){
         })
         //swal("test","test","success")*/
 
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = () => {
-            uploadImage(reader.result,valor,description);
-        };
+        
 
     }
 
