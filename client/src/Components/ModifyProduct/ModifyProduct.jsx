@@ -12,11 +12,8 @@ function ModifyProduct(id){
     
     const [selectedFile, setSelectedFile] = useState([]);
     const [previewSource, setPreviewSource] = useState('');
-    const [newProduct, setNewProduct] = useState({name:"",
-    price:"",
-    stockAmount:"",
-    description:"",
-    image:[],
+    const [newProduct, setNewProduct] = useState({
+    
     categories: [],
     })
     const [filled, setFilled] = useState("conEspacio")
