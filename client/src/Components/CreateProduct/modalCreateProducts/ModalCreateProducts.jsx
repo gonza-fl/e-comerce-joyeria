@@ -13,7 +13,7 @@ export default function ModalCreatProductos(){
         }
       }
     return(<div>
-        <button id="myBtn"onClick={() => {const modal = document.getElementById("myModal"); modal.style.display = "block";}}>Ingresar nuevo Producto</button>
+        <button id="myBtn"onClick={() => {const modal = document.getElementById("myModal"); modal.style.display = "block";}}>Agregar nuevo producto</button>
         <div id="myModal" className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => {const modal = document.getElementById("myModal"); modal.style.display = "none";}}>X</span>
