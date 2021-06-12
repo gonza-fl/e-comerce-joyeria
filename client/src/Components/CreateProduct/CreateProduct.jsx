@@ -149,7 +149,7 @@ function CreateProduct(){
                 
                 <textarea placeholder="  Descripcion del producto" id="descripcion" name="description" className="description" onChange={handleChange}></textarea>
                 <div className="aceptar">
-                    <input type="submit" value="Aceptar" className="boton"></input>
+                    <input type="submit" value="Aceptar" className="boton bg-color-three"></input>
                 </div>
             </form>
          </div>

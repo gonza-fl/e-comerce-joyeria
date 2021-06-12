@@ -23,14 +23,12 @@
     align-Items:center;
     display:flex;
     margin-Top:50px;
-    
 }
 .divForm{
     width:110%;
-
-box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-border-radius: 20px;
-border: 2px double rgba(228, 167, 243, 0.931);
+    padding: 20px;
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    border-radius: 20px;
 }
 .divsInputs{
     margin-Top:15px
@@ -44,16 +42,16 @@ border: 2px double rgba(228, 167, 243, 0.931);
 
 }
 .boton{
-    background-Color:transparent;
+    background-Color:#f0ddd8;
     color:#201414;
     font-Size:16px;
     font-Weight:600;
-    padding:5px 10px;
-    border:1px double #F589DF;
-    border-Radius:10px
+    padding: 10px 20px 10px 20px;
+    border-style: none;
 }
 .boton:hover{
-    background-color: pink;
+    cursor: pointer;
+    background-Color:#CF988C;
 }
 .aceptar{
     margin-top: 20px;

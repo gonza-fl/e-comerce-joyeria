@@ -5,7 +5,7 @@ import Logo from '../../StyledComponents/Logo.js';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import styled from 'styled-components';
 import { getProdutsByCategory } from '../../actions/actions.js';
-import { categoriesF } from '../fakeDB-Categories.js';
+import { categories } from '../fakeDb.js';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -33,11 +33,11 @@ export default function Nav() {
                 <div style={{display: 'flex', fontWeight: 'bold', fontSize: '13px', flexGrow: 3}}>
                     <MenuDiv onMouseEnter={showMenu} onMouseLeave={hideMenu}>
                         CATEGORIAS
-                        <Menu data={categoriesF} 
+                        <Menu data={categories} 
                         display={menu} 
                         x={'-89px'} 
                         y={'28px'}
-                        onClick={onDispatch}/>
+                       />
                     </MenuDiv>
                     <MenuDiv>TIPS</MenuDiv>                    
                     <MenuDiv>ARTE</MenuDiv>
@@ -66,7 +66,7 @@ function Menu({data, display, x, y, onClick}) {
     return(
     <OptionDiv className={'bg-color-six'} 
     style={{display: display, transform: `translate(${x}, ${y})`}}>
-        {data.map(d=><Link to='/products' className={'link-without-styles'} onClick={()=>onClick(d.id)}><p style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></Link>)}
+        {data.map(d=><Link to={`/products?${d.name}`} className={'link-without-styles'} ><p style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></Link>)}
     </OptionDiv>);
 }
 
