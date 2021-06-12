@@ -34,37 +34,32 @@ export const array = [{
 export const categories = [
     {
         id: 0,
-        name: 'Anillos',
-        img: 'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg'
+        name: 'Aretes',
+        img: "https://i.ibb.co/fCk2ZJn/A1.jpg"
     },
     {
         id: 1,
         name: 'Collares',
-        img: 'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/37755/collares-verano-2012-dorado-con-colgantes.jpg'
+        img: "https://i.ibb.co/8gGPJZ9/C13.jpg" 
     },
     {
         id: 2,
-        name: 'Aretes',
-        img: 'https://static.ella-hoy.es/ellahoy/fotogallery/780X0/480607/pendientes-de-aro-tous-bear-de-oro.jpg'
+        name: 'Earcuffs',
+        img: "https://i.ibb.co/7R8y1xj/E8.jpg"
     },
     {
         id: 3,
-        name: 'Earcuffs',
-        img: 'https://i.pinimg.com/736x/9a/d7/06/9ad7065d354a328708fccc8a6b930d30.jpg'
+        name: 'Manillas',
+        img: "https://i.ibb.co/pnL5C4C/M9.jpg"
     },
     {
         id: 4,
         name: 'Sets',
-        img: 'https://i.postimg.cc/yNBLVfmN/Set-combo-Reloj-Pulsera-y-Cadena-con-Diamantes-Simulados-Cz-chapado-en-oro-14-K-12.jpg'
+        img: "https://i.ibb.co/vH7Npwv/SA10.jpg" 
     },
     {
         id: 5,
-        name: 'Cuelga Gafas',
-        img: 'https://http2.mlstatic.com/D_NQ_NP_721564-MCO43970127309_112020-O.jpg'
-    },
-    {
-        id: 6,
-        name: 'Fichas de Alf',
-        img: 'https://www.tierragamer.com/wp-content/uploads/2018/08/ALF_Fichas.jpg'
-    },
+        name: 'Otros',
+        img: "https://i.ibb.co/GtsFZqK/O1.jpg"
+    }
 ]

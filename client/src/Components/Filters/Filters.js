@@ -11,14 +11,14 @@ export default function Filters() {
 
     return (
         <div className='ctnFilters'>
-            <Link className='link' to='/products'>
-                <StyledButton text='Ver catalogo completo'/>
-            </Link>
             <div className='ctnCards'>
-                <h1>Nuestras categorias</h1>
+                <h1 className={'bg-color-six'} style={{padding: '0px 10px'}}>Nuestras categorías</h1>
                 {categories.map(cat =>
                     <CardFilter id={cat.id} name={cat.name} img={cat.img} />)}
             </div>
+            <Link className='link' to='/products'>
+                <StyledButton text='Ver catalogo completo'/>
+            </Link>
         </div>
     )
 }

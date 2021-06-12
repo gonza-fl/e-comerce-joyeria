@@ -23,6 +23,8 @@ export default function Catalogue() {
 
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
+  React.useEffect(()=>{},[productsDisplay])
+  
   return (
     <div className="catalogue">
       <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} />

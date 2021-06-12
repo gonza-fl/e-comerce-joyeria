@@ -10,6 +10,7 @@ import Product from './Components/Product/Product';
 import CreateProduct from "./Components/CreateProduct/CreateProduct"
 import { Footer } from './Components/Footer/Footer';
 import ModalCreatProductos from "./Components/CreateProduct/modalCreateProducts/ModalCreateProducts.jsx";
+import AdminWindow from './Components/Admin/AdminWindow';
 function App() {
   return (
     <div className="App font-color-seven">
@@ -17,8 +18,8 @@ function App() {
       <div className='app-content'>
       <Switch>
         <Route exact path='/' component={Home}/>
-        <Route exact path="/addcategory/" component={AddCategoryForm}/> 
-        <Route exact path="/createProduct/" component={ ModalCreatProductos }/>
+        <Route exact path="/admin/addcategory" component={AddCategoryForm}/> 
+        <Route exact path="/admin" component={AdminWindow}/> 
         <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
         <Route path='/products' component={Catalogue}/>
       </Switch>
