@@ -23,11 +23,11 @@ const createProduct = async (req, res) => {
       // images,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
+    if (!name.trim() || !description.trim() || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
-      price: parseInt(price),
+      price: parseFloat(price),
       stockAmount: parseInt(stockAmount),
     });
     for (let c = 0; c < categories.length; c += 1) {
@@ -182,10 +182,10 @@ const updateProduct = async (req, res) => {
       });
     }
     await Product.update({
-      name,
-      description,
-      stockAmount,
-      price,
+      name: name.trim(),
+      description: description.trim(),
+      stockAmount: parseInt(stockAmount),
+      price: parseFloat(price),
     }, {
       where: {
         id: idProduct,
