@@ -101,17 +101,24 @@ const updateCategory = async (req, res) => {
         err: `No existe categoría con el id: ${id} en la base de datos`,
       });
     }
-    await Category.update({
-      name: newName,
-      description: newDescription,
-      img: newImg,
-    }, {
-      where: {
-        id,
-      },
-    });
-    return res.json({
-      success: 'La categoria ha sido modificada exitosamente!',
+    const uploadedResponse = (newImg !== 'test' && await cloudinary.uploader.upload(newImg, {
+      upload_preset: 'henry',
+    }));
+    if (uploadedResponse) {
+      await Category.update({
+        name: newName,
+        description: newDescription,
+        img: uploadedResponse.secure_url,
+      }, {
+        where: {
+          id,
+        },
+      });
+      return res.json({
+        success: 'La categoria ha sido modificada exitosamente!',
+      });
+    } return res.status(500).json({
+      err: 'Error en la conexión con la base de datos. Faltan imagenes.',
     });
   } catch {
     return res.status(500).json({

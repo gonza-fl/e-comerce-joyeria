@@ -8,6 +8,9 @@ const {
   Category,
   Image,
 } = require('../models/index');
+const {
+  cloudinary,
+} = require('../utils/cloudinary');
 
 const searchProductF = async (id) => Product.findOne({
   where: {
@@ -46,17 +49,21 @@ const deleteImages = async (id) => Image.destroy({
   force: true,
 });
 const updateImages = async (searchProduct, images, idProduct) => {
-  if (images[0] === '') return;
+  // if (images[0] === '') return;
   try {
     await deleteImages(idProduct);
     const imagesSearch = [];
+    console.log('images', images);
     for (let i = 0; i < images.length; i++) {
+      const uploadedResponse = (images[i] !== 'test' && await cloudinary.uploader.upload(images[i], {
+        upload_preset: 'henry',
+      }));
       imagesSearch.push(await Image.findOrCreate({
         where: {
-          url: images[i],
+          url: uploadedResponse.secure_url,
         },
         defaults: {
-          url: images[i],
+          url: uploadedResponse.secure_url,
         },
       }));
     }
