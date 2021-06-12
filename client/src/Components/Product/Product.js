@@ -24,6 +24,7 @@ const Product = (props) => {
 
     // esto despues hay que borrarlo:
     const productDetailTest = {
+        id:2,
         name: 'K-Mora Accesorios',
         price: 500,
         description: 'Una joya o alhaja es un objeto ornamental usado para adornar o embellecer el cuerpo. Generalmente una joya se fabrica con piedras y metales preciosos, aunque también se pueden emplear otros materiales para fabricar joyas, como por ejemplo papel de revistas endurecido o joyas de plástico recuperado del océano, entre otras innovaciones en bisutería. Colgantes de ámbar. En sus diversas formas, las joyas sirven principalmente para efectos estéticos y ornamentales en todas las culturas humanas y continentes. En algunos casos, las joyas se usan bajo el concepto del pudor con el objetivo de cubrir algunos genitales mientras que en otros casos se usan para destacar estos.​ También las joyas se usan simbólicamente para representas características propias de cada individuo y de sus creencias.',
