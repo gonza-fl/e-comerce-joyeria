@@ -1,6 +1,13 @@
 /* eslint-disable no-await-in-loop */
 /* eslint radix: ["error", "as-needed"] */
 const {
+  Op,
+} = require('sequelize');
+const {
+  searchProductF, updateCategories, updateImages,
+} = require('../helpers/productHelpers');
+
+const {
   Product,
   Category,
   Image,
@@ -62,13 +69,16 @@ const getProducts = async (_req, res) => {
     if (!response.length) return res.status(400).json('Products not founded');
     return res.status(201).json(response);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
     return res.status(500).json('Internal server error');
   }
 };
 
 const getSinlgeProduct = async (req, res) => {
-  const { idProduct } = req.params;
+  const {
+    idProduct,
+  } = req.params;
   try {
     const product = await Product.findByPk(idProduct);
     if (product === null) {
@@ -80,8 +90,93 @@ const getSinlgeProduct = async (req, res) => {
   }
 };
 
+const delProduct = async (req, res) => {
+  const {
+    idProduct,
+  } = req.params;
+  try {
+    const product = await Product.destroy({
+      where: {
+        id: idProduct,
+      },
+    });
+    if (product === null) {
+      return res.status(400).json('Product not Found');
+    }
+    return res.status(200).json('Product deleted');
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
+const getProductsByQuery = async (req, res) => {
+  const {
+    query,
+  } = req.query;
+  if (!query) {
+    return res.status(400).json({
+      err: 'There was no query sent',
+    });
+  }
+  try {
+    const productsFound = await Product.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${query}%`,
+        },
+      },
+    });
+    if (productsFound.length === 0) {
+      return res.status(400).json({
+        err: 'There were no products found with that query name',
+      });
+    }
+    return res.json(productsFound);
+  } catch {
+    return res.status(500).json({
+      err: 'Internal server error',
+    });
+  }
+};
+
+const updateProduct = async (req, res) => {
+  const {
+    idProduct,
+  } = req.params;
+  const {
+    name, description, stockAmount, price, categories, images,
+  } = req.body;
+  try {
+    const searchProduct = await searchProductF(idProduct);
+    if (!searchProduct) {
+      return res.status(400).json({
+        err: 'No se encontro el producto.',
+      });
+    }
+    await Product.update({
+      name,
+      description,
+      stockAmount,
+      price,
+    }, {
+      where: {
+        id: idProduct,
+      },
+    });
+    const haveError = await updateCategories(searchProduct, categories);
+    if (!haveError) return res.status(400).json('Hay campos erroneos');
+    await updateImages(searchProduct, images);
+    return res.status(200).json(await searchProductF(idProduct));
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
 module.exports = {
   createProduct,
   getProducts,
   getSinlgeProduct,
+  delProduct,
+  getProductsByQuery,
+  updateProduct,
 };

@@ -5,29 +5,30 @@ import { GoPrimitiveDot } from 'react-icons/go';
 function NewsFlyer({images}) {
     const [flyer, setFlyer] = React.useState(0);
 
-    setTimeout(function (){
-        if(flyer === images.length-1){
-            setFlyer(0);
-        } else {
-            setFlyer(flyer+1);
-        }        
-    }, 3000)
-
     function dots(index){
         if(flyer === index){
             return {color: 'white'};
         }        
     };
 
-    function onClickIndex(index){
+    let timeoutHandle = setTimeout(function (){
+        if(flyer === images.length-1){
+            setFlyer(0);
+        } else {
+            setFlyer(flyer+1);
+        }        
+    }, 4000)
+    
+    function onClickIndex(index, timeoutHandle){
         setFlyer(index);
+        clearTimeout(timeoutHandle)
     }
 
     return (
         <div>
-            {images.map((img,i)=><GoPrimitiveDot style={dots(i)} onClick={(i)=>onClickIndex(i)}/>)}
+            {images.map((img,i)=><GoPrimitiveDot style={dots(i)} onClick={()=>onClickIndex(i, timeoutHandle)}/>)}
             {images
-            .filter((img,i)=>i===flyer)
+            .filter((img,i)=> i === flyer)
             .map(img=><StyledImg key={img} src={img} alt="Image not found" width='900px' height='500px'/>)}
         </div>
     );
@@ -36,7 +37,7 @@ function NewsFlyer({images}) {
 const StyledImg = styled.img`
         display: block;
         box-shadow: 0px 0px 15px 2px rgb(102, 102, 102) ;
-        animation: transitionIn 600ms;
+        animation: transitionIn 1000ms;
         opacity: 0.8;
 
         &:hover {

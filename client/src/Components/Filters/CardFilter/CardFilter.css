@@ -19,6 +19,11 @@
     background-color: khaki;
 }
 
+.ctnCardC a {
+    width: 100%;
+    height: 100%;
+}
+
 .headerCard {
     display: flex;
     justify-content: center;
