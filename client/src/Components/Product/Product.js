@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { addToCart } from '../../actions/actions';
 import Button from '../../StyledComponents/Button';
+import ModalModifyProduct from '../ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 // import axios from 'axios';
 import './Product.css';
 
@@ -72,6 +73,7 @@ const Product = (props) => {
                     {/* botón para agregar al carrito: le falta la prop handleClick que le debería pasar la accion de agregar al carrito. Para los usuarios debería guardarlo en la tabla de orden de compra, y para los invitados debería guardarlo en el local storage */}
                     <Button text={'AGREGAR AL CARRITO'} />
                 </div>
+                <ModalModifyProduct></ModalModifyProduct>
             </div>
         </div>
     )

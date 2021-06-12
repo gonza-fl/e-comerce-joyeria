@@ -9,7 +9,7 @@ export const GET_CATEGORIES = "GET_CATEGORIES"
 export const GET_PRODUCTS_BY_NAME = "GET_PRODUCTS_BY_NAME"
 export const ADD_TO_CART = "ADD_TO_CART"
 export const DELETE_PRODUCT = "DELETE_PRODUCT"
-
+export const MODIFY_PRODUCT = "MODIFY_PRODUCT"
 
 export function setTest(data) {
     return {type: TESTING, payload: data}
@@ -47,5 +47,11 @@ export function deleteProduct(id){
     return {
         type:DELETE_PRODUCT,
         //payload: prods, 
+    }
+}
+export function modifyProduct(id){
+    return {
+        type:MODIFY_PRODUCT,
+        payload: id,
     }
 }
