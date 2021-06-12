@@ -65,7 +65,16 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (_req, res) => {
   try {
-    const response = await Product.findAll();
+    const response = await Product.findAll({
+      include: [
+        {
+          model: Category,
+        },
+        {
+          model: Image,
+        },
+      ],
+    });
     if (!response.length) return res.status(400).json('Products not founded');
     return res.status(201).json(response);
   } catch (error) {
@@ -80,7 +89,16 @@ const getSinlgeProduct = async (req, res) => {
     idProduct,
   } = req.params;
   try {
-    const product = await Product.findByPk(idProduct);
+    const product = await Product.findByPk(idProduct, {
+      include: [
+        {
+          model: Category,
+        },
+        {
+          model: Image,
+        },
+      ],
+    });
     if (product === null) {
       return res.status(400).json('Product not Found');
     }
@@ -188,6 +206,8 @@ const getProductsByCategory = async (req, res) => {
         where: {
           id: categories,
         },
+      }, {
+        model: Image,
       }],
     });
     if (response.length === 0) return res.status(404).json('Producto no encontrado');
