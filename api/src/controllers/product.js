@@ -145,6 +145,14 @@ const getProductsByQuery = async (req, res) => {
           [Op.iLike]: `%${query}%`,
         },
       },
+      include: [
+        {
+          model: Category,
+        },
+        {
+          model: Image,
+        },
+      ],
     });
     if (productsFound.length === 0) {
       return res.status(400).json({
