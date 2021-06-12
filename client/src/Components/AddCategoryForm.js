@@ -107,10 +107,10 @@ function AddCategoryForm(){
         <div style={{width:"100%",margin:"15px 15px",borderRadius:"20px",border:"1px solid gray"}}>
             <form method="POST" onSubmit={enviar}>
                 <div style={{marginTop:"15px"}}>
-                    <span style={{color:"#F589DF"}}>Name</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
+                    <span >Name</span><input type="text" id="categoria" style={{marginLeft:"10px",width:"220px"}}></input>
                 </div>
                 
-                <p style={{color:"#F589DF"}}>Description</p> 
+                <p >Description</p> 
 
                 <div id="flexQuery" style={{display:"flex",flexDirection:"column",flexWrap:"wrap"}}>
 
@@ -140,7 +140,7 @@ function AddCategoryForm(){
 
 
                 <div style={{display:"flex",justifyContent:"center",margin:"15px 0px"}}>
-                    <input type="submit" value="Aceptar" style={{backgroundColor:"transparent",color:"#F589DF",fontSize:"16px",fontWeight:"600",padding:"5px 10px",border:"1px solid #F589DF",borderRadius:"10px"}}></input>
+                    <input type="submit" value="Aceptar" style={{backgroundColor:"#f0ddd8",color:"black",fontSize:"16px",fontWeight:"600",padding:"10px 20px 10px 20px", borderStyle: "none"}}></input>
                 </div>
             </form>
         </div>

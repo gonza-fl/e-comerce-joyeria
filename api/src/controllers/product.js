@@ -165,10 +165,34 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).json('Hay campos erroneos');
-    await updateImages(searchProduct, images);
+    if (images && images.length !== 0) await updateImages(searchProduct, images);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
     return res.status(400).json(err);
+  }
+};
+
+const getProductsByCategory = async (req, res) => {
+  const {
+    categories,
+  } = req.body;
+  if (!Array.isArray(categories)) return res.status(500).json('El objeto no es de tipo array');
+  if (categories.length === 0) return res.status(500).json('El arreglo está vacío');
+  try {
+    const response = await Product.findAll({
+      include: [{
+        model: Category,
+        where: {
+          id: categories,
+        },
+      }],
+    });
+    if (response.length === 0) return res.status(404).json('Producto no encontrado');
+    return res.json(response);
+  } catch (error) {
+    return res.send(500).json({
+      error: error.message, mensaje: 'Internal server error',
+    });
   }
 };
 
@@ -179,4 +203,5 @@ module.exports = {
   delProduct,
   getProductsByQuery,
   updateProduct,
+  getProductsByCategory,
 };

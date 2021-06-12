@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { useDispatch } from "react-redux"
 import { addToCart } from '../../actions/actions';
 import "./productCard.css"
+import Button from '../../StyledComponents/Button';
 
 
 export default function ProductCard({product, id, name, price, image, review}) {
@@ -29,7 +30,7 @@ export default function ProductCard({product, id, name, price, image, review}) {
               value={review}
               activeColor="#ffd700"
             />
-          <button className="botonCart" onClick={() => dispatch(addToCart(product))} text = 'Agregar al carrito'> AGREGAR AL CARRITO </button>
+          <Button style={{backgroundColor: '#f1eee3'}} handleClick={() => dispatch(addToCart(product))} text = 'Agregar al carrito'/>
           
       </DivCard>
   );
@@ -74,10 +75,11 @@ const DivCard = styled.div`
           align-items: center;
           width: 290px;
           padding: 5px;
+          margin-bottom: 30px;
           
           &:hover {
             transform: Scale(1.05);
-            transition: transform 500ms;
+            transition: transform 300ms;
           }
 `;
 
