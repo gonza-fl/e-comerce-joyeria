@@ -13,12 +13,11 @@ export default function Catalogue() {
   const categories = useSelector(state => state.categories);
   if (!categories.length) dispatch(getCategories());
 
-  if (query === 'search');// busco lo buscado
+  if (query === 'search');// cargo lo buscado
   else {
     const category = categories.find(category => category.name === query);
     category ? dispatch(getProdutsByCategory(category.id)) : dispatch(getProducts())
   }
-
 
   const products = useSelector((state) => state.products);
 
