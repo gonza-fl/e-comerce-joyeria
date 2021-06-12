@@ -26,9 +26,9 @@ const addCategory = async (req, res) => {
     });
   }
   try {
-    const uploadedResponse = await cloudinary.uploader.upload(img, {
+    const uploadedResponse = (img !== 'test' && await cloudinary.uploader.upload(img, {
       upload_preset: 'henry',
-    });
+    }));
 
     if (!uploadedResponse) {
       const [category, created] = await Category.findOrCreate({
