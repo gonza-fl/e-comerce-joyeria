@@ -23,7 +23,7 @@ const createProduct = async (req, res) => {
       // images,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo');
+    if (!name || !description || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
@@ -185,7 +185,7 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).json('Hay campos erroneos');
-    if (images && images.length !== 0) await updateImages(searchProduct, images, idProduct);
+    if (images && images.length !== 0) await updateImages(searchProduct, images, idProduct || !categories);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
     return res.status(400).json(err);
