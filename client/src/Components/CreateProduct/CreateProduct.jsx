@@ -6,13 +6,12 @@ import {getCategories} from "../../actions/actions"
 import "./createProduct.css"
 import axios from "axios"
 
-
-
-//import dotenv from 'dotenv';
 const REACT_APP_API = process.env.REACT_APP_API
 
 function CreateProduct(){
-    const categories = useSelector((state) => state.categories)
+
+    const [selectedFile, setSelectedFile] = useState([]);
+    const [previewSource, setPreviewSource] = useState('');
     const [newProduct, setNewProduct] = useState({name:"",
     price:0,
     stockAmount:0,
@@ -20,34 +19,51 @@ function CreateProduct(){
     image:[],
     categories: [],
 })
+    const [filled, setFilled] = useState("conEspacio")
 
-const handleChangeImage = event =>  {
-    const previewImage = document.querySelector(".image-preview__image")
-    const file = event.target.files[0]
-    if(file){
+    const categories = useSelector((state) => state.categories)
+ 
+
+    const handleFileInputChange = (e) => {
+        const file = e.target.files[0];
+        
+
         const reader = new FileReader();
-        previewImage.style.display = "block";
-        reader.addEventListener("load", function(){
-            console.log(this)
-            previewImage.setAttribute("src", this.result);
-        });
-        reader.readAsDataURL(file)
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            if(selectedFile.length < 3){previewFile(file);setSelectedFile( selectedFile.concat(reader.result));}
+            else{ setFilled("lleno")}
+        };
     }
-    const imagen = event.target.files[0]
-    const fd = new FormData();
-    fd.append("image", imagen, imagen.name)
-    setNewProduct({...newProduct, image: newProduct.image.concat(fd)})
-}
 
-const handleChange = event => {
-    const {name, value} = event.target;
-    if(name === "categories"){setNewProduct({...newProduct,   categories: newProduct.categories.find(e => e === value)? newProduct.categories.filter(item => item !== value) :  newProduct.categories.concat(value)})}
-    else setNewProduct({...newProduct, [name]: value});
-}
+    const previewFile = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setPreviewSource(reader.result);
+        };
+    };
+
+    const limpiarImagen = () => {
+        let elemento = document.getElementById("flexQuery")
+        elemento.style.flexDirection="column"
+        setSelectedFile();
+        setPreviewSource('')
+    }
+
+    const handleChange = event => {
+        const {name, value} = event.target;
+        if(name === "categories"){setNewProduct({...newProduct,   categories: newProduct.categories.find(e => e === value)? newProduct.categories.filter(item => item !== value) :  newProduct.categories.concat(value)})}
+        else setNewProduct({...newProduct, [name]: value});
+    }
    
     function enviar(e){
+
         e.preventDefault()
         console.log(newProduct)
+
+        if (!selectedFile) return swal("Error","Debes ingresar una imagen","warning");
+
         if(newProduct.stockAmount.length === 0){
             swal("Error","El campo del stock debe ser completado","warning")
             return;
@@ -69,18 +85,30 @@ const handleChange = event => {
             return;
         }
 
-        axios.post(`http://localhost:3001/api/products`, newProduct)
+         setNewProduct({...newProduct, image: selectedFile})
         
-        .then((res)=>{
-            console.log(res)
-            if(res.data.hasOwnProperty("err")){
-                swal("Error",res.data.err,"warning")
-            }
-            else {
-                swal("Success","Se creo el producto!")
-            }
-        })
+            uploadProduct();
     }
+
+    const uploadProduct = async () => {
+               
+        try {
+            axios.post(`${REACT_APP_API}/api/products`, newProduct ) 
+            .then((res)=>{
+                console.log(res)
+                if(res.data.hasOwnProperty("err")){
+                    swal("Error",res.data.err,"warning")
+                }
+                else {
+                    swal("Success","Se creo el producto!")
+                }
+            })
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    
     return(
 
 
@@ -99,10 +127,10 @@ const handleChange = event => {
 
 
                 <div  className="divsInputs">
-                    <span className="spans">ingresar imagen:   </span> <input type="file" id="image" name="image" accept="image/*" className="insertImg" visbility="hidden" onChange={handleChangeImage}></input>
+                    <p className="spanImagen">ingresar imagen: </p> <p className={filled}>maximo de 3 imagenes alcanzado!</p> <button  type="button"  className="imgLabel"> <label htmlFor="image" >insert image </label> </button>  <input type="file" id="image" name="image" accept="image/*" className="insertImg" onChange={handleFileInputChange}></input>
                     <div  className="cont">
                         <div className="divImg">    
-                            <img id="preview" src="" alt="vista previa de la imagen" className="imagen" class="image-preview__image" width="200px"></img>
+                            <img id="preview" src={previewSource} alt="" className="imagen" class="image-preview__image" width="200px"></img>
                         </div>
                     </div>
                 </div>
