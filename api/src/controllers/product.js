@@ -185,7 +185,7 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).json('Hay campos erroneos');
-    if (images && images.length !== 0) await updateImages(searchProduct, images, idProduct || !categories);
+    if (images && images.length !== 0) await updateImages(searchProduct, images, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
     return res.status(400).json(err);
