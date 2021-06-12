@@ -104,7 +104,7 @@ const Product = (props) => {
                     {!lowStock && !noStock && <h5>Stock: {productDetailTest.stockAmount} unidades</h5>}
                     
                     {/* botón para agregar al carrito: le falta la prop handleClick que le debería pasar la accion de agregar al carrito. Para los usuarios debería guardarlo en la tabla de orden de compra, y para los invitados debería guardarlo en el local storage */}
-                    <Button text={'AGREGAR AL CARRITO'} />
+                    {noStock ? null : <Button text={'AGREGAR AL CARRITO'} /> }
                 </div>
                 <ModalModifyProduct id={productDetailTest.id}></ModalModifyProduct> <span><button onClick={(e) => handleDelete(e)}>Eliminar Producto</button></span>
             </div>
