@@ -8,7 +8,7 @@ export default function ModalCreatProductos(){
     var modal = document.getElementById("myModal");
     window.onclick = function(event) {
         if (event.target == modal) {
-            const modal = document.getElementById("myModal");
+            
           modal.style.display = "none";
         }
       }

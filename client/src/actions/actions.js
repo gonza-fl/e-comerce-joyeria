@@ -1,7 +1,7 @@
 import {filtrado} from "../Components/fakeDB-Categories";
 import {array, categories} from "../Components/fakeDb"
 
-import axios from "axios";
+
 
 export const TESTING = 'TESTING';
 export const GET_PRODUCTS = "GET_PRODUCTS"
