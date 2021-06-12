@@ -4,7 +4,7 @@ const {
   Op,
 } = require('sequelize');
 const {
-  searchProductF, updateCategories, updateImages,
+  searchProductF, updateCategories, updateImages, deleteImages,
 } = require('../helpers/productHelpers');
 
 const {
@@ -95,14 +95,16 @@ const delProduct = async (req, res) => {
     idProduct,
   } = req.params;
   try {
+    await deleteImages(idProduct);
     const product = await Product.destroy({
       where: {
         id: idProduct,
       },
     });
-    if (product === null) {
+    if (!product) {
       return res.status(400).json('Product not Found');
     }
+
     return res.status(200).json('Product deleted');
   } catch (err) {
     return res.status(400).json(err);
@@ -153,6 +155,7 @@ const updateProduct = async (req, res) => {
         err: 'No se encontro el producto.',
       });
     }
+    await deleteImages(idProduct);
     await Product.update({
       name,
       description,

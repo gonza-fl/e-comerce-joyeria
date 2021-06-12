@@ -62,8 +62,15 @@ const updateImages = async (searchProduct, images) => {
   }
 };
 
+const deleteImages = async (id) => Image.destroy({
+  where: {
+    productId: id,
+  },
+  force: true,
+});
 module.exports = {
   searchProductF,
   updateCategories,
   updateImages,
+  deleteImages,
 };
