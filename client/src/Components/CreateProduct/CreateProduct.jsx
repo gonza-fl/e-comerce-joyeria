@@ -19,17 +19,20 @@ function CreateProduct(){
     image:[],
     categories: [],
 })
+    const [filled, setFilled] = useState("conEspacio")
+
     const categories = useSelector((state) => state.categories)
  
 
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
-        previewFile(file);
+        
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setSelectedFile( selectedFile.concat(reader.result));
+            if(selectedFile.length < 3){previewFile(file);setSelectedFile( selectedFile.concat(reader.result));}
+            else{ setFilled("lleno")}
         };
     }
 
@@ -90,7 +93,7 @@ function CreateProduct(){
     const uploadProduct = async () => {
                
         try {
-            axios.post(`${process.env.REACT_APP_API}/api/products`, newProduct ) 
+            axios.post(`${REACT_APP_API}/api/products`, newProduct ) 
             .then((res)=>{
                 console.log(res)
                 if(res.data.hasOwnProperty("err")){
@@ -124,10 +127,10 @@ function CreateProduct(){
 
 
                 <div  className="divsInputs">
-                    <span className="spans">ingresar imagen:   </span> <input type="file" id="image" name="image" accept="image/*" className="insertImg" visbility="hidden" onChange={handleFileInputChange}></input>
+                    <p className="spanImagen">ingresar imagen: </p> <p className={filled}>maximo de 3 imagenes alcanzado!</p> <button  type="button"  className="imgLabel"> <label htmlFor="image" >insert image </label> </button>  <input type="file" id="image" name="image" accept="image/*" className="insertImg" onChange={handleFileInputChange}></input>
                     <div  className="cont">
                         <div className="divImg">    
-                            <img id="preview" src={previewSource} alt="vista previa de la imagen" className="imagen" class="image-preview__image" width="200px"></img>
+                            <img id="preview" src={previewSource} alt="" className="imagen" class="image-preview__image" width="200px"></img>
                         </div>
                     </div>
                 </div>
