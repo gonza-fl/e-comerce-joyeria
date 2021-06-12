@@ -14,9 +14,10 @@ export default function Catalogue() {
       <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} />
       <div className='catalogueMap'>
         {productsDisplay.map(product => {
-          return <ProductCard name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
+          return <ProductCard product={product} name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
         })}
       </div>
+
     </div>
   );
 };

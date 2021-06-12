@@ -18,11 +18,11 @@
     
 }
 .container{
-    height:"100%";
-    justify-Content:"center";
-    align-Items:"center";
-    display:"flex";
-    margin-Top:"50px";
+    height:100%;
+    justify-Content: center;
+    align-Items:center;
+    display:flex;
+    margin-Top:50px;
     
 }
 .divForm{
@@ -61,3 +61,6 @@ border: 2px double rgba(228, 167, 243, 0.931);
 .insertImg{
     color:transparent;
 }
+
+
+
