@@ -4,7 +4,7 @@ import "./modalModifyProduct.css"
 
 
 
-export default function ModalModifyProduct(){
+export default function ModalModifyProduct(id){
     var modal = document.getElementById("myModal");
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -17,7 +17,7 @@ export default function ModalModifyProduct(){
         <div id="myModal" className="modal">
           <div className="modal-content">
             <span className="close" onClick={() => {const modal = document.getElementById("myModal"); modal.style.display = "none";}}>X</span>
-            <ModifyProduct> </ModifyProduct>
+            <ModifyProduct id={id}> </ModifyProduct>
           </div>
         </div>
       </div>
