@@ -66,7 +66,7 @@ function Menu({data, display, x, y, onClick}) {
     return(
     <OptionDiv className={'bg-color-six'} 
     style={{display: display, transform: `translate(${x}, ${y})`}}>
-        {data.map(d=><Link to={`/products?${d.name}`} className={'link-without-styles'} ><p style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></Link>)}
+        {data.map(d=><a href={`/products?${d.name}`} className={'link-without-styles'} ><p style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></a>)}
     </OptionDiv>);
 }
 
