@@ -8,12 +8,11 @@ import axios from "axios"
 
 const REACT_APP_API = process.env.REACT_APP_API
 
-function ModifyProduct(id){
+function ModifyProduct(props){
     
     const [selectedFile, setSelectedFile] = useState([]);
     const [previewSource, setPreviewSource] = useState('');
     const [newProduct, setNewProduct] = useState({
-    
     categories: [],
     })
     const [filled, setFilled] = useState("conEspacio")
@@ -64,7 +63,7 @@ function ModifyProduct(id){
     const uploadProduct = async () => {
                
         try {
-            axios.put(`${REACT_APP_API}/api/products:${id}`, newProduct ) 
+            axios.put(`${REACT_APP_API}api/products/${props.id}`, newProduct ) 
             .then((res)=>{
                 console.log(res)
                 if(res.data.hasOwnProperty("err")){
@@ -78,8 +77,6 @@ function ModifyProduct(id){
             console.error(err);
         }
     };
-
-    
     return(
 
         <div className="containerModify" >
