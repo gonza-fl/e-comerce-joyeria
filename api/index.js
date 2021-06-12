@@ -2,13 +2,21 @@ const express = require('express');
 const morgan = require('morgan');
 const router = require('./src/routes/index');
 
-const { conn } = require('./src/models/index');
-const { PORT } = require('./src/utils/config/index');
+const {
+  conn,
+} = require('./src/models/index');
+const {
+  PORT,
+} = require('./src/utils/config/index');
 
 const server = express();
 
-server.use(express.urlencoded({ extended: true, limit: '50mb' }));
-server.use(express.json({ limit: '50mb' }));
+server.use(express.urlencoded({
+  extended: true, limit: '50mb',
+}));
+server.use(express.json({
+  limit: '50mb',
+}));
 server.use(morgan('dev'));
 server.use((_req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -27,7 +35,9 @@ server.use((err, _req, res) => {
   return res.status(status).send(message);
 });
 
-conn.sync({ force: true }).then(() => {
+conn.sync({
+  force: true,
+}).then(() => {
   console.log('DB conectada');
   server.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
