@@ -4,7 +4,7 @@ const {
   Op,
 } = require('sequelize');
 const {
-  searchProductF, updateCategories, updateImages,
+  searchProductF, updateCategories, updateImages, deleteImages,
 } = require('../helpers/productHelpers');
 
 const {
@@ -23,7 +23,7 @@ const createProduct = async (req, res) => {
       // images,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stockAmount) return res.status(400).send('Error falta algún campo');
+    if (!name || !description || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
@@ -65,7 +65,16 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (_req, res) => {
   try {
-    const response = await Product.findAll();
+    const response = await Product.findAll({
+      include: [
+        {
+          model: Category,
+        },
+        {
+          model: Image,
+        },
+      ],
+    });
     if (!response.length) return res.status(400).json('Products not founded');
     return res.status(201).json(response);
   } catch (error) {
@@ -80,7 +89,16 @@ const getSinlgeProduct = async (req, res) => {
     idProduct,
   } = req.params;
   try {
-    const product = await Product.findByPk(idProduct);
+    const product = await Product.findByPk(idProduct, {
+      include: [
+        {
+          model: Category,
+        },
+        {
+          model: Image,
+        },
+      ],
+    });
     if (product === null) {
       return res.status(400).json('Product not Found');
     }
@@ -95,14 +113,16 @@ const delProduct = async (req, res) => {
     idProduct,
   } = req.params;
   try {
+    await deleteImages(idProduct);
     const product = await Product.destroy({
       where: {
         id: idProduct,
       },
     });
-    if (product === null) {
+    if (!product) {
       return res.status(400).json('Product not Found');
     }
+
     return res.status(200).json('Product deleted');
   } catch (err) {
     return res.status(400).json(err);
@@ -125,6 +145,14 @@ const getProductsByQuery = async (req, res) => {
           [Op.iLike]: `%${query}%`,
         },
       },
+      include: [
+        {
+          model: Category,
+        },
+        {
+          model: Image,
+        },
+      ],
     });
     if (productsFound.length === 0) {
       return res.status(400).json({
@@ -165,7 +193,7 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).json('Hay campos erroneos');
-    if (images && images.length !== 0) await updateImages(searchProduct, images);
+    if (images && images.length !== 0) await updateImages(searchProduct, images, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
     return res.status(400).json(err);
@@ -185,6 +213,8 @@ const getProductsByCategory = async (req, res) => {
         where: {
           id: categories,
         },
+      }, {
+        model: Image,
       }],
     });
     if (response.length === 0) return res.status(404).json('Producto no encontrado');
