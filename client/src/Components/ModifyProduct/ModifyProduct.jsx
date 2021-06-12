@@ -63,7 +63,7 @@ function ModifyProduct(props){
     const uploadProduct = async () => {
                
         try {
-            axios.put(`${REACT_APP_API}api/products/:${props.id}`, newProduct ) 
+            axios.put(`${REACT_APP_API}api/products/${props.id}`, newProduct ) 
             .then((res)=>{
                 console.log(res)
                 if(res.data.hasOwnProperty("err")){

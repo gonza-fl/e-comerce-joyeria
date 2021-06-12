@@ -60,7 +60,7 @@ const Product = (props) => {
           })
           .then((willDelete) => {
             if (willDelete) {
-            axios.delete(`${REACT_APP_API}/api/products:${productDetail.id}`)
+            axios.delete(`${REACT_APP_API}/api/products/${productDetail.id}`)
               swal("Producto eliminado!", {
                 icon: "success",
               });
