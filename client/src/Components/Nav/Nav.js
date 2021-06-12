@@ -5,7 +5,7 @@ import Logo from '../../StyledComponents/Logo.js';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import styled from 'styled-components';
 import { getProdutsByCategory } from '../../actions/actions.js';
-import { categoriesF } from '../fakeDB-Categories.js';
+import { categories } from '../fakeDB-Categories.js';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ export default function Nav() {
                 <div style={{display: 'flex', fontWeight: 'bold', fontSize: '13px', flexGrow: 3}}>
                     <MenuDiv onMouseEnter={showMenu} onMouseLeave={hideMenu}>
                         CATEGORIAS
-                        <Menu data={categoriesF} 
+                        <Menu data={categories} 
                         display={menu} 
                         x={'-89px'} 
                         y={'28px'}
