@@ -9,7 +9,7 @@
 }
 
 .app-content {
-    min-height: calc(100vh - 110px - 200px);
+    min-height: calc(100vh - 130px - 200px);
     text-align: center;
     align-items: center;
     display: flex;

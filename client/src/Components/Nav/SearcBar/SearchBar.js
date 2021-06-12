@@ -5,6 +5,7 @@ import Button from '../../../StyledComponents/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, getProductsByName } from '../../../actions/actions';
 import SearchBarDropdown from './SearchBarDropdown/SearchBarDropdown';
+import styled from 'styled-components';
 
 export default function SearchBar() {
 
@@ -15,6 +16,8 @@ export default function SearchBar() {
 
     const[open, setOpen] = useState(false);
     const node = useRef();
+
+    const [displayBar, setDisplayBar] = useState('none')
     
     const handleClick = (e) => {
         if (node.current.contains(e.target)) {
@@ -64,17 +67,22 @@ export default function SearchBar() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`searching ${input} ...`);
+        //alert(`searching ${input} ...`);
         document.getElementById('searchBar').reset()
         dispatch(getProductsByName(input));
         setInput('');
     };
 
+    function onClickSearch(){
+        setDisplayBar('inline')
+    }
+
     return (
         <div className='searchBar' ref={node}>
             <form id='searchBar' onSubmit={handleSubmit}>
-                <input className='searchInput' autoComplete='off' type="text" name="products" value={input} placeholder="Search..." onChange={handleInputChange} />
-                <Button 
+                <MovingInput style = {{display: `${displayBar}`}} 
+                autoComplete='off' type="text" name="products" value={input} placeholder="Search..." onChange={handleInputChange} />
+                <Button handleClick = { onClickSearch }
                 text = {<FaSearch className = { 'font-color-seven' } style={{fontSize: '110%'}}/>}/> 
             </form>
             <div>
@@ -88,3 +96,26 @@ export default function SearchBar() {
         </div>
     )
 }
+
+const MovingInput = styled.input`
+            border: none;
+            padding: 10px;
+            border-bottom: black 1px solid;
+            background: transparent;
+            font-size: 20px;
+            margin-right: 10px;
+            animation: transitionInput 1000ms;
+
+            &:focus {
+                outline: none;
+            }
+            @keyframes transitionInput {
+                from {
+                    width: 0px;
+                }
+    
+                to {
+                    width: 240px;
+                }
+            }
+`;
