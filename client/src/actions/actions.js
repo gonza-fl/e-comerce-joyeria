@@ -59,7 +59,14 @@ export function getCategories(){
 export function getProductsByName(name){
     // aca va el axios.get que pide a la ruta que devuelve productos por query
     // axios.get(`http://localhost:3001/api/search?name=${query}`)
-    return {type: GET_PRODUCTS_BY_NAME, payload: filtrado.flat().filter(object => object.name.toLowerCase().includes(name.toLowerCase()))}
+    return  axios.get(`http://localhost:3001/api/search?name=${name}`).then((response) => {
+        dispatch({
+          type: GET_PRODUCTS_BY_NAME,
+          payload: response.data
+        });
+      })
+      .catch((err) => {alert(err)});
+
 }
 export function addToCart(product){
     return {
