@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Nav from "./Nav/Nav"
 import swal from 'sweetalert';
 const axios = require('axios');
 

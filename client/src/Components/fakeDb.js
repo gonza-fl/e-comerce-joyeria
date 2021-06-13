@@ -1,3 +1,5 @@
+import {filtrado} from './fakeDB-Categories';
+
 export const array = [{
     name: "chokers",
     id:"1",
@@ -29,7 +31,8 @@ export const array = [{
             'https://i.ibb.co/TP0L9w9/aretes-kmora.png'],
     review:"5",
     price:"66",
-}]
+}
+, ...filtrado.flat()]
 
 export const categories = [
     {

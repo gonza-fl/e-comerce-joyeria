@@ -2,12 +2,14 @@ import React from 'react';
 import './Filters.css';
 import CardFilter from './CardFilter/CardFilter';
 import StyledButton from '../../StyledComponents/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getProducts } from '../../actions/actions';
 
 export default function Filters() {
 
     const categories = useSelector(state => state.categories)
+    const dispatch = useDispatch();
 
     return (
         <div className='ctnFilters'>
@@ -17,7 +19,7 @@ export default function Filters() {
                     <CardFilter id={cat.id} name={cat.name} img={cat.img} />)}
             </div>
             <Link className='link' to='/products'>
-                <StyledButton text='Ver catalogo completo'/>
+                <StyledButton text='Ver catalogo completo' handleClick={() => dispatch(getProducts())}/>
             </Link>
         </div>
     )

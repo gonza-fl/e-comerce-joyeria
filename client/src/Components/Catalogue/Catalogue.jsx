@@ -1,35 +1,27 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import "./catalogo.css"
 import ProductCard from "../ProductCard/ProductCard"
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
 import { useLocation } from 'react-router-dom';
-import { getCategories, getProducts, getProdutsByCategory } from '../../actions/actions';
 
 export default function Catalogue() {
 
-  const query = useLocation().search.replaceAll('%20', ' ').substr(1);
-  const dispatch = useDispatch();
-  const categories = useSelector(state => state.categories);
-  if (!categories.length) dispatch(getCategories());
+  const isQuery = useLocation().search.includes('search')
 
-  if (query === 'search');// cargo lo buscado
-  else {
-    const category = categories.find(category => category.name === query);
-    category ? dispatch(getProdutsByCategory(category.id)) : dispatch(getProducts())
-  }
-
-  const products = useSelector((state) => state.products);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  const products = useSelector((state) => isQuery ? state.productsByQuery : state.products);
 
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
-  React.useEffect(()=>{},[query])
-  
   return (
     <div className="catalogue">
-      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} />
+      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} productsGlobal={products} />
       <div className='catalogueMap'>
-        {!productsDisplay.length ? <h1>Lo siento, no se encontraron coincidencias</h1> : null}
+        {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
         {productsDisplay.map(product => {
           return <ProductCard product={product} name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
         })}
@@ -38,5 +30,4 @@ export default function Catalogue() {
     </div>
   );
 };
-
 
