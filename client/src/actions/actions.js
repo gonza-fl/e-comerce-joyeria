@@ -20,17 +20,42 @@ export function setTest(data) {
 export function getProducts() {
    // const prods = await axios.get("http://localhost:3001/api/product")
     // aca va el axios.get al back end y el payload seria la ruta de get a los productos, mientrastanto traigo el array de constantes
-    return {type: GET_PRODUCTS, payload: axios.get("http://localhost:3001/api/product")}
+        return function (dispatch) {
+          return axios.get("http://localhost:3001/api/product").then((response) => {
+            dispatch({
+              type: GET_PRODUCTS,
+              payload: response.data
+            });
+          })
+          .catch((err) => {alert(err)});
+        };
 };
 
 export function getProdutsByCategory(id){
     // Aca va el axios para traer categoria segun id
-    return {type: GET_PRODUCTS, payload: axios.get(`http://localhost:3001/api/product/category/${id}`)}
-}
+ return function (dispatch) {
+          return axios.get(`http://localhost:3001/api/product/category/${id}`).then((response) => {
+            dispatch({
+              type: GET_PRODUCTS,
+              payload: response.data
+            });
+          })
+          .catch((err) => {alert(err)});
+        };
+};
+
 export function getCategories(){
     // aca va el axios.get al back pidiendo las categorias.
-    return {type: GET_CATEGORIES, payload: axios.get(`http://localhost:3001/api/category`)}
-}
+
+    return  axios.get(`http://localhost:3001/api/category`).then((response) => {
+        dispatch({
+          type: GET_CATEGORIES,
+          payload: response.data
+        });
+      })
+      .catch((err) => {alert(err)});
+    };
+
 export function getProductsByName(name){
     // aca va el axios.get que pide a la ruta que devuelve productos por query
     // axios.get(`http://localhost:3001/api/search?name=${query}`)
