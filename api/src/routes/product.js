@@ -13,7 +13,7 @@ const {
 
 const router = Router();
 
-router.get('/category', getProductsByCategory);
+router.get('/category/:id', getProductsByCategory);
 router.get('/search', getProductsByQuery);
 router.get('/:idProduct', getSinlgeProduct);
 router.get('/', getProducts);
