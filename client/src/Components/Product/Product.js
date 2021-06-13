@@ -1,27 +1,29 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { addToCart } from '../../actions/actions';
+import { addToCart, getProductDetail } from '../../actions/actions';
 import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 import './Product.css';
 import swal from 'sweetalert';
+import { useDispatch, useSelector } from 'react-redux';
 
 const REACT_APP_API = process.env.REACT_APP_API
 
+
+
 const Product = (props) => {
-    const [productDetail, setProductDetail] = useState({});
+
+    const dispatch = useDispatch()
+    const detail = useSelector(state => state.detail)
+
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/api/products/${props.match.params.id}`)
-            .then((response) => {
-                setProductDetail(response.data);
-                console.log("llegue a product", response.data)
-            })
-            .catch((err) => console.log(err));
-    }, [])
+                dispatch(getProductDetail(props.match.params.id))
+                
+            },[])
 
     
-    const [bigImage, setBigImage] = useState("");
+    const [bigImage, setBigImage] = useState(detail.images[0].url);
 
     const changeImage = (e) => {
         setBigImage(e.target.src);
@@ -29,13 +31,13 @@ const Product = (props) => {
 
     let noStock = false;
     let lowStock = false;
-    // if (productDetail && productDetail.stockAmount === 0) {
-    //     noStock = true;
-    // } else if(productDetail && productDetail.stockAmount < 5) {
-    //     lowStock = true;
-    // }
+    if (detail && detail.stockAmount === 0) {
+        noStock = true;
+    } else if(detail && detail.stockAmount < 5) {
+        lowStock = true;
+    }
 
-    console.log(productDetail)
+    
     const handleDelete = (e) => {
         e.preventDefault();
         swal({
@@ -47,7 +49,7 @@ const Product = (props) => {
           })
           .then((willDelete) => {
             if (willDelete) {
-            axios.delete(`${REACT_APP_API}api/products/${productDetail.id}`)
+            axios.delete(`${REACT_APP_API}api/products/${detail.id}`)
               swal("Producto eliminado!", {
                 icon: "success",
               });
@@ -61,32 +63,32 @@ const Product = (props) => {
         <div className="product-container">
             <div className="product-img">
                 <div className="bigimg-container">
-                    <img src={bigImage} alt={productDetail.name} />
+                    <img src={bigImage} alt={detail.name} />
                 </div>
                 
-                {/* <div className="container-minpics">
-                     { productDetail && productDetail.images.length <= 3
+                <div className="container-minpics">
+                     { detail && detail.images.length <= 3
                     ?
-                    productDetail.images.map(image => <img src={image} onClick={(e) => changeImage(e)} />)
+                    detail.images.map(image => <img src={image.url} onClick={(e) => changeImage(e)} />)
                     : null
                     }
-                </div> */}
+                </div>
             </div>
 
             <div className="product-info">
-                <h1>{productDetail.name}</h1>
-                <h4>${productDetail.price}</h4>
-                <p className="product-info-description">{productDetail.description}</p>
-                {/* <h4>Rating: {productDetail.rating || '5'}</h4>   */}
+                <h1>{detail.name}</h1>
+                <h4>${detail.price}</h4>
+                <p className="product-info-description">{detail.description}</p>
+                {/* <h4>Rating: {detail.rating || '5'}</h4>   */}
                 <div className="product-addCart">
                     {noStock && <h5 className="last-stock">Stock Agotado</h5>}
-                    {lowStock && <h5 className="last-stock">Ultimas {productDetail.stockAmount} unidades!!</h5>}
-                    {!lowStock && !noStock && <h5>Stock: {productDetail.stockAmount} unidades</h5>}
+                    {lowStock && <h5 className="last-stock">Ultimas {detail.stockAmount} unidades!!</h5>}
+                    {!lowStock && !noStock && <h5>Stock: {detail.stockAmount} unidades</h5>}
                     
                     {/* botón para agregar al carrito: le falta la prop handleClick que le debería pasar la accion de agregar al carrito. Para los usuarios debería guardarlo en la tabla de orden de compra, y para los invitados debería guardarlo en el local storage */}
                     {noStock ? null : <Button text={'AGREGAR AL CARRITO'} /> }
                 </div>
-                <ModalModifyProduct id={productDetail.id}></ModalModifyProduct> <span><button onClick={(e) => handleDelete(e)}>Eliminar Producto</button></span>
+                <ModalModifyProduct id={detail.id}></ModalModifyProduct> <span><button onClick={(e) => handleDelete(e)}>Eliminar Producto</button></span>
             </div>
         </div>
     )

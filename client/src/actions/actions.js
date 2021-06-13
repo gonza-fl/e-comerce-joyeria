@@ -11,6 +11,7 @@ export const GET_PRODUCTS_BY_NAME = "GET_PRODUCTS_BY_NAME"
 export const ADD_TO_CART = "ADD_TO_CART"
 export const DELETE_PRODUCT = "DELETE_PRODUCT"
 export const MODIFY_PRODUCT = "MODIFY_PRODUCT"
+export const GET_PRODUCT_DETAIL = "GET_PRODUCT_DETAIL"
 
 export function setTest(data) {
     return {type: TESTING, payload: data}
@@ -62,7 +63,8 @@ export function getProductsByName(name){
     // axios.get(`http://localhost:3001/api/search?name=${query}`)
    
     return function (dispatch) {
-    return  axios.get(`http://localhost:3001/api/products/search?name=${name}`).then((response) => {
+    return  axios.get(`http://localhost:3001/api/products/search?name=${name}`)
+    .then((response) => {
         dispatch({
           type: GET_PRODUCTS_BY_NAME,
           payload: response.data
@@ -77,6 +79,25 @@ export function addToCart(product){
         payload: product,
     }
 }
+
+export function getProductDetail(id){
+
+    return function (dispatch) {
+        return  axios.get(`http://localhost:3001/api/products/${id}`)
+        .then((response) => {
+            console.log(response.data)
+            dispatch({
+                type: GET_PRODUCT_DETAIL,
+                payload: response.data,
+            });
+          })
+          .catch((err) => {alert(err)});
+        }
+    }
+
+
+
+
 // export function deleteProduct(id){
 //     // axios.delete(`http://localhost:3001/api/product/:${id}`)
 //     //const prods = axios.get("http://localhost:3001/api/product")
