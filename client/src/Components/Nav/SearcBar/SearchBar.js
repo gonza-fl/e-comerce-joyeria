@@ -29,9 +29,6 @@ export default function SearchBar() {
         setOpen(false);
     }
 
-    useEffect(() => {
-        dispatch(getProducts())
-    }, [])
 
     useEffect(() => {
         if (input.trim().length >= 1) {
@@ -72,12 +69,13 @@ export default function SearchBar() {
         dispatch(getProductsByName(input));
         // setInput('');
         setOpen(false);
-        if (input) window.location.href = window.location + 'products?search'
+        if (input) window.location.href = window.location + 'products?search=' + input
         setInput('')
     };
 
     function onClickSearch() {
-        setDisplayBar('inline')
+        setDisplayBar('inline');
+        dispatch(getProducts())
     }
 
     return (
