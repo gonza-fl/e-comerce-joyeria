@@ -77,8 +77,6 @@ function ModifyProduct(props){
             console.error(err);
         }
     };
-
-    
     return(
 
         <div className="containerModify" >

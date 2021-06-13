@@ -8,12 +8,12 @@ export default function CardFilter({ id, name, img }) {
 
     return (
         <div className='ctnCardC'>
-            <Link to={'/products?' + name}>
+            <a href={'/products?' + name}>
                 <div className='headerCard'>
                     <img src={img} alt={name} />
                 </div>
                 <StyledButton text={name} />
-            </Link>
+            </a>
         </div>
     )
 }

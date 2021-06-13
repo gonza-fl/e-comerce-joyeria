@@ -23,7 +23,7 @@ export default function Catalogue() {
 
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
-  React.useEffect(()=>{},[productsDisplay])
+  React.useEffect(()=>{},[query])
   
   return (
     <div className="catalogue">
