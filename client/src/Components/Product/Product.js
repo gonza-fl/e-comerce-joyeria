@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { addToCart } from '../../actions/actions';
 import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../ModifyProduct/ModalModifyProduct/ModalModifyProduct';
-import axios from 'axios';
 import './Product.css';
 import swal from 'sweetalert';
 
