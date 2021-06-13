@@ -14,11 +14,11 @@ export default function SearchBar() {
     const products = useSelector(state => state.products);
     const dispatch = useDispatch();
 
-    const[open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     const node = useRef();
 
     const [displayBar, setDisplayBar] = useState('none')
-    
+
     const handleClick = (e) => {
         if (node.current.contains(e.target)) {
             //inside click
@@ -34,7 +34,7 @@ export default function SearchBar() {
     }, [])
 
     useEffect(() => {
-        if(input.trim().length >= 1) {
+        if (input.trim().length >= 1) {
             getResults();
         } else {
             setResults([]);
@@ -72,25 +72,27 @@ export default function SearchBar() {
         dispatch(getProductsByName(input));
         // setInput('');
         setOpen(false);
+        if (input) window.location.href = window.location + 'products?search'
+        setInput('')
     };
 
-    function onClickSearch(){
+    function onClickSearch() {
         setDisplayBar('inline')
     }
 
     return (
         <div className='searchBar' ref={node}>
             <form id='searchBar' onSubmit={handleSubmit}>
-                <MovingInput style = {{display: `${displayBar}`}} 
-                autoComplete='off' type="text" name="products" value={input} placeholder="Search..." onChange={handleInputChange} />
-                <Button handleClick = { onClickSearch }
-                text = {<FaSearch className = { 'font-color-seven' } style={{fontSize: '110%'}}/>}/> 
+                <MovingInput style={{ display: `${displayBar}` }}
+                    autoComplete='off' type="text" name="products" value={input} placeholder="Search..." onChange={handleInputChange} />
+                <Button handleClick={onClickSearch}
+                    text={<FaSearch className={'font-color-seven'} style={{ fontSize: '110%' }} />} />
             </form>
             <div>
                 {open && (
-                    <SearchBarDropdown 
-                        results = {results}
-                        handleQueryResultClick = {handleQueryResultClick}
+                    <SearchBarDropdown
+                        results={results}
+                        handleQueryResultClick={handleQueryResultClick}
                     />
                 )}
             </div>
