@@ -8,23 +8,11 @@ import { getCategories, getProducts, getProdutsByCategory } from '../../actions/
 
 export default function Catalogue() {
 
-  const query = useLocation().search.replaceAll('%20', ' ').substr(1);
-  const dispatch = useDispatch();
-  const categories = useSelector(state => state.categories);
-  if (!categories.length) dispatch(getCategories());
-
-  if (query === 'search');// cargo lo buscado
-  else {
-    const category = categories.find(category => category.name === query);
-    category ? dispatch(getProdutsByCategory(category.id)) : dispatch(getProducts())
-  }
-
   const products = useSelector((state) => state.products);
 
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
-  React.useEffect(()=>{},[query])
-  
+
   return (
     <div className="catalogue">
       <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} />
@@ -40,3 +28,15 @@ export default function Catalogue() {
 };
 
 
+/* 
+  const query = useLocation().search.replaceAll('%20', ' ').substr(1);
+  const dispatch = useDispatch();
+  const categories = useSelector(state => state.categories);
+  if (!categories.length) dispatch(getCategories());
+
+  if (query === 'search');// cargo lo buscado
+  else {
+    const category = categories.find(category => category.name === query);
+    category ? dispatch(getProdutsByCategory(category.id)) : dispatch(getProducts())
+  }
+*/
