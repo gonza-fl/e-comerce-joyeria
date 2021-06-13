@@ -11,11 +11,8 @@ const REACT_APP_API = process.env.REACT_APP_API
 const Product = (props) => {
     const [productDetail, setProductDetail] = useState({});
 
-
-console.log(props)
     useEffect(() => {
         axios.get(`http://localhost:3001/api/products/${props.match.params.id}`)
-
             .then((response) => {
                 setProductDetail(response.data);
                 console.log("llegue a product", response.data)
@@ -32,11 +29,11 @@ console.log(props)
 
     let noStock = false;
     let lowStock = false;
-    if (productDetail && productDetail.stockAmount === 0) {
-        noStock = true;
-    } else if(productDetail && productDetail.stockAmount < 5) {
-        lowStock = true;
-    }
+    // if (productDetail && productDetail.stockAmount === 0) {
+    //     noStock = true;
+    // } else if(productDetail && productDetail.stockAmount < 5) {
+    //     lowStock = true;
+    // }
 
     console.log(productDetail)
     const handleDelete = (e) => {
@@ -67,13 +64,13 @@ console.log(props)
                     <img src={bigImage} alt={productDetail.name} />
                 </div>
                 
-                <div className="container-minpics">
+                {/* <div className="container-minpics">
                      { productDetail && productDetail.images.length <= 3
                     ?
                     productDetail.images.map(image => <img src={image} onClick={(e) => changeImage(e)} />)
                     : null
                     }
-                </div>
+                </div> */}
             </div>
 
             <div className="product-info">
