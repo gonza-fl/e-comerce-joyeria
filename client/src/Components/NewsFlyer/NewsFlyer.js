@@ -11,22 +11,24 @@ function NewsFlyer({images}) {
         }        
     };
 
-    let timeoutHandle = setTimeout(function (){
-        if(flyer === images.length-1){
-            setFlyer(0);
-        } else {
-            setFlyer(flyer+1);
-        }        
-    }, 4000)
+    React.useEffect(() => {
+        let timeoutHandle = setInterval(function (){
+            if(flyer === images.length-1){
+                setFlyer(0);
+            } else {
+                setFlyer(flyer+1);
+            }        
+        }, 4000);
+        return () => clearInterval(timeoutHandle);
+    }, [flyer])
     
-    function onClickIndex(index, timeoutHandle){
+    function onClickIndex(index){
         setFlyer(index);
-        clearTimeout(timeoutHandle)
     }
 
     return (
         <div>
-            {images.map((img,i)=><GoPrimitiveDot style={dots(i)} onClick={()=>onClickIndex(i, timeoutHandle)}/>)}
+            {images.map((img,i)=><GoPrimitiveDot style={dots(i)} onClick={()=>onClickIndex(i)}/>)}
             {images
             .filter((img,i)=> i === flyer)
             .map(img=><StyledImg key={img} src={img} alt="Image not found" width='900px' height='500px'/>)}
