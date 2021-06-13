@@ -46,7 +46,7 @@ export function getProdutsByCategory(id){
 
 export function getCategories(){
     // aca va el axios.get al back pidiendo las categorias.
-
+return function(dispatch){
     return  axios.get(`http://localhost:3001/api/category`).then((response) => {
         dispatch({
           type: GET_CATEGORIES,
@@ -55,10 +55,13 @@ export function getCategories(){
       })
       .catch((err) => {alert(err)});
     };
+}
 
 export function getProductsByName(name){
     // aca va el axios.get que pide a la ruta que devuelve productos por query
     // axios.get(`http://localhost:3001/api/search?name=${query}`)
+   
+    return function (dispatch) {
     return  axios.get(`http://localhost:3001/api/search?name=${name}`).then((response) => {
         dispatch({
           type: GET_PRODUCTS_BY_NAME,
@@ -66,7 +69,7 @@ export function getProductsByName(name){
         });
       })
       .catch((err) => {alert(err)});
-
+    }
 }
 export function addToCart(product){
     return {
