@@ -19,7 +19,7 @@ export default function Catalogue() {
 
   return (
     <div className="catalogue">
-      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} isQuery={isQuery} />
+      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} productsGlobal={products} />
       <div className='catalogueMap'>
         {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
         {productsDisplay.map(product => {
