@@ -215,17 +215,19 @@ const updateProduct = async (req, res) => {
 };
 
 const getProductsByCategory = async (req, res) => {
-  const {
-    categories,
-  } = req.body;
-  if (!Array.isArray(categories)) return res.status(500).json('El objeto no es de tipo array');
-  if (categories.length === 0) return res.status(500).json('El arreglo está vacío');
+  let {
+    id,
+  } = req.params;
+  id = parseInt(id);
+
+  console.log(id, typeof id);
+  if (typeof id !== 'number') return res.status(500).json('El id no es de tipo númerico');
   try {
     const response = await Product.findAll({
       include: [{
         model: Category,
         where: {
-          id: categories,
+          id,
         },
       }, {
         model: Image,
