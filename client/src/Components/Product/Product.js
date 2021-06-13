@@ -18,12 +18,14 @@ const Product = (props) => {
 
 
     useEffect(() => {
+        console.log(detail)
                 dispatch(getProductDetail(props.match.params.id))
-                
+             
             },[])
 
-    
-    const [bigImage, setBigImage] = useState(detail.images[0].url);
+
+
+    const [bigImage, setBigImage] = useState("");
 
     const changeImage = (e) => {
         setBigImage(e.target.src);
@@ -69,7 +71,7 @@ const Product = (props) => {
                 <div className="container-minpics">
                      { detail && detail.images.length <= 3
                     ?
-                    detail.images.map(image => <img src={image.url} onClick={(e) => changeImage(e)} />)
+                    detail.images.map(image => <img src={image.urlgi} onClick={(e) => changeImage(e)} />)
                     : null
                     }
                 </div>

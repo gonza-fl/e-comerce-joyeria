@@ -5,12 +5,13 @@ import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux"
-import { addToCart } from '../../actions/actions';
+import { addToCart, getProductDetail } from '../../actions/actions';
 import "./productCard.css"
 import Button from '../../StyledComponents/Button';
 
 
 export default function ProductCard({product, id, name, price, image, review}) {
+
 
   const dispatch = useDispatch()
 
@@ -53,6 +54,7 @@ function Carousel({id, image}){
       setImgIndex(imgIndex + 1);
     }
   }
+ 
 
   return(
     <DivCarousel>
@@ -60,8 +62,8 @@ function Carousel({id, image}){
       <div>
         {img.filter((img, i) => i===imgIndex)
         .map(img => 
-        <Link to = {`/products/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}}>
-          <img src={`${img}`} alt='Image not found' width='250px' height='250px'/>
+        <Link to = {`/products/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}} >
+          <img src={`${img}`} alt='Image not found' width='250px' height='250px' />
         </Link>
         )}
       </div>
