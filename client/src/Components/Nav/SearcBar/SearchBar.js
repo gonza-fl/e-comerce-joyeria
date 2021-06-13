@@ -68,9 +68,10 @@ export default function SearchBar() {
     const handleSubmit = (e) => {
         e.preventDefault();
         //alert(`searching ${input} ...`);
-        document.getElementById('searchBar').reset()
+        // document.getElementById('searchBar').reset()
         dispatch(getProductsByName(input));
-        setInput('');
+        // setInput('');
+        setOpen(false);
     };
 
     function onClickSearch(){
