@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { getProdutsByCategory } from '../../actions/actions.js';
 import { categories } from '../fakeDb.js';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 export default function Nav() {
 
