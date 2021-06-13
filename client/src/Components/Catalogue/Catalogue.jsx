@@ -12,7 +12,7 @@ export default function Catalogue() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
+  
   const products = useSelector((state) => isQuery ? state.productsByQuery : state.products);
 
   const [productsDisplay, setProductsDisplay] = useState([...products]);
