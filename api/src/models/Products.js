@@ -1,4 +1,6 @@
-const { DataTypes } = require('sequelize');
+const {
+  DataTypes,
+} = require('sequelize');
 
 module.exports = (sequelize) => {
   const model = sequelize.define('product', {
@@ -10,13 +12,15 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.FLOAT,
       allownull: false,
     },
     stockAmount: {
       type: DataTypes.INTEGER,
       allownull: false,
     },
-  }, { timestamps: false });
+  }, {
+    timestamps: false,
+  });
   return model;
 };
