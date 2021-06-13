@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import "./catalogo.css"
 import ProductCard from "../ProductCard/ProductCard"
@@ -7,6 +7,10 @@ import { useLocation } from 'react-router-dom';
 import { getCategories, getProducts, getProdutsByCategory } from '../../actions/actions';
 
 export default function Catalogue() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const products = useSelector((state) => state.products);
 
@@ -28,7 +32,7 @@ export default function Catalogue() {
 };
 
 
-/* 
+/*
   const query = useLocation().search.replaceAll('%20', ' ').substr(1);
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories);
