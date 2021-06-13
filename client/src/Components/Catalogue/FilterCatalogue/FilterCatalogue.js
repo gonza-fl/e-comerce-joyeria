@@ -7,9 +7,9 @@ import { sortAscending, sortDescending, sortNameAsc, sortNameDesc } from './util
 import { findByPrice, findByStars } from './utils/finds';
 
 
-export default function FilterCatalogue({ products, setProducts }) {
+export default function FilterCatalogue({ products, setProducts, isQuery }) {
 
-    const productsGlobal = useSelector((state) => state.products);
+    const productsGlobal = useSelector((state) => isQuery ? state.productsByQuery : state.products)
     const [input, setInput] = useState({ min: '', max: '' });
     const [undo, setUndo] = useState(false);
 

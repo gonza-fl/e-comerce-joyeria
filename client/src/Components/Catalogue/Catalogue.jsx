@@ -7,19 +7,19 @@ import { useLocation } from 'react-router-dom';
 
 export default function Catalogue() {
 
-  const query = useLocation().search;
+  const isQuery = useLocation().search.includes('search')
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const products = useSelector((state) => query.includes('search') ? state.productsByQuery : state.products);
+  const products = useSelector((state) => isQuery ? state.productsByQuery : state.products);
 
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
   return (
     <div className="catalogue">
-      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} />
+      <FilterCatalogue products={productsDisplay} setProducts={setProductsDisplay} isQuery={isQuery} />
       <div className='catalogueMap'>
         {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
         {productsDisplay.map(product => {
