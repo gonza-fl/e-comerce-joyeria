@@ -1,5 +1,6 @@
 import {filtrado} from "../Components/fakeDB-Categories";
 import {array, categories} from "../Components/fakeDb"
+import axios from "axios";
 
 
 
@@ -24,11 +25,11 @@ export function getProducts() {
 
 export function getProdutsByCategory(id){
     // Aca va el axios para traer categoria segun id
-    return {type: GET_PRODUCTS, payload:filtrado[id]}
+    return {type: GET_PRODUCTS, payload: axios.get(`http://localhost:3001/api/product/category/${id}`)}
 }
 export function getCategories(){
     // aca va el axios.get al back pidiendo las categorias.
-    return {type: GET_CATEGORIES, payload: categories}
+    return {type: GET_CATEGORIES, payload: axios.get(`http://localhost:3001/api/category`)}
 }
 export function getProductsByName(name){
     // aca va el axios.get que pide a la ruta que devuelve productos por query
@@ -41,17 +42,17 @@ export function addToCart(product){
         payload: product,
     }
 }
-export function deleteProduct(id){
-    // axios.delete(`http://localhost:3001/api/product/:${id}`)
-    //const prods = axios.get("http://localhost:3001/api/product")
-    return {
-        type:DELETE_PRODUCT,
-        //payload: prods, 
-    }
-}
-export function modifyProduct(id){
-    return {
-        type:MODIFY_PRODUCT,
-        payload: id,
-    }
-}
+// export function deleteProduct(id){
+//     // axios.delete(`http://localhost:3001/api/product/:${id}`)
+//     //const prods = axios.get("http://localhost:3001/api/product")
+//     return {
+//         type:DELETE_PRODUCT,
+        
+//     }
+// }
+// export function modifyProduct(id){
+//     return {
+//         type:MODIFY_PRODUCT,
+//         payload: id,
+//     }
+// }
