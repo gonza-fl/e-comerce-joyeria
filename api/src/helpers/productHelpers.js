@@ -39,9 +39,16 @@ const updateCategories = async (searchProduct, categories) => {
     throw new Error('Campos erroneos');
   }
 };
-const updateImages = async (searchProduct, images) => {
+const deleteImages = async (id) => Image.destroy({
+  where: {
+    productId: id,
+  },
+  force: true,
+});
+const updateImages = async (searchProduct, images, idProduct) => {
   if (images[0] === '') return;
   try {
+    await deleteImages(idProduct);
     const imagesSearch = [];
     for (let i = 0; i < images.length; i++) {
       imagesSearch.push(await Image.findOrCreate({
@@ -66,4 +73,5 @@ module.exports = {
   searchProductF,
   updateCategories,
   updateImages,
+  deleteImages,
 };

@@ -1,9 +1,13 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { addToCart } from '../../actions/actions';
 import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 // import axios from 'axios';
 import './Product.css';
+import swal from 'sweetalert';
+
+const REACT_APP_API = process.env.REACT_APP_API
 
 const Product = (props) => {
 
@@ -20,6 +24,7 @@ const Product = (props) => {
 
     // esto despues hay que borrarlo:
     const productDetailTest = {
+        id:2,
         name: 'K-Mora Accesorios',
         price: 500,
         description: 'Una joya o alhaja es un objeto ornamental usado para adornar o embellecer el cuerpo. Generalmente una joya se fabrica con piedras y metales preciosos, aunque también se pueden emplear otros materiales para fabricar joyas, como por ejemplo papel de revistas endurecido o joyas de plástico recuperado del océano, entre otras innovaciones en bisutería. Colgantes de ámbar. En sus diversas formas, las joyas sirven principalmente para efectos estéticos y ornamentales en todas las culturas humanas y continentes. En algunos casos, las joyas se usan bajo el concepto del pudor con el objetivo de cubrir algunos genitales mientras que en otros casos se usan para destacar estos.​ También las joyas se usan simbólicamente para representas características propias de cada individuo y de sus creencias.',
@@ -43,6 +48,35 @@ const Product = (props) => {
     } else if(productDetailTest.stockAmount < 5) {
         lowStock = true;
     }
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        swal({
+            title: "Estas seguro?",
+            text: "Al aceptar este producto desaparecera del catalogo!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+            axios.delete(`${REACT_APP_API}/api/products/${productDetail.id}`)
+              swal("Producto eliminado!", {
+                icon: "success",
+              });
+            } else {
+              swal("cancel");
+            }
+          });
+    }
+
+
+
+
+
+
+
+    
 
     return (
         <div className="product-container">
@@ -71,9 +105,9 @@ const Product = (props) => {
                     {!lowStock && !noStock && <h5>Stock: {productDetailTest.stockAmount} unidades</h5>}
                     
                     {/* botón para agregar al carrito: le falta la prop handleClick que le debería pasar la accion de agregar al carrito. Para los usuarios debería guardarlo en la tabla de orden de compra, y para los invitados debería guardarlo en el local storage */}
-                    <Button text={'AGREGAR AL CARRITO'} />
+                    {noStock ? null : <Button text={'AGREGAR AL CARRITO'} /> }
                 </div>
-                <ModalModifyProduct id={productDetailTest.id}></ModalModifyProduct>
+                <ModalModifyProduct id={productDetailTest.id}></ModalModifyProduct> <span><button onClick={(e) => handleDelete(e)}>Eliminar Producto</button></span>
             </div>
         </div>
     )
