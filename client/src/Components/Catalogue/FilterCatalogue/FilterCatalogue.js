@@ -7,9 +7,8 @@ import { sortAscending, sortDescending, sortNameAsc, sortNameDesc } from './util
 import { findByPrice, findByStars } from './utils/finds';
 
 
-export default function FilterCatalogue({ products, setProducts }) {
+export default function FilterCatalogue({ products, setProducts, productsGlobal }) {
 
-    const productsGlobal = useSelector((state) => state.products);
     const [input, setInput] = useState({ min: '', max: '' });
     const [undo, setUndo] = useState(false);
 
@@ -20,6 +19,8 @@ export default function FilterCatalogue({ products, setProducts }) {
     useEffect(() => {
         document.getElementById('submit').disabled = (!input.min || !input.max || !Number(input.min) || !Number(input.max))
     }, [input]);
+
+
 
     const handleChoise = (e) => {
 
@@ -36,16 +37,16 @@ export default function FilterCatalogue({ products, setProducts }) {
     return (
         <div className='ctnFiltersCat  bg-color-six'>
             <h1>{products.length} Resultados</h1>
-            {undo && <StyledButton text={'Deshacer'} handleClick={() => setProducts([...productsGlobal])} ></StyledButton>}
+            {undo && <StyledButton text={'Deshacer'} handleClick={() => { setProducts([...productsGlobal]); setUndo(false)}} ></StyledButton>}
             <h3>Ver </h3>
             <h5>Alfabéticamente</h5>
-            <p onClick={() => setProducts([...sortNameAsc(products)])}>A-Z</p>
-            <p onClick={() => setProducts([...sortNameDesc(products)])}>Z-A</p>
+            <p onClick={() => { setProducts([...sortNameAsc(products)]); setUndo(true) }}>A-Z</p>
+            <p onClick={() => { setProducts([...sortNameDesc(products)]); setUndo(true) }}>Z-A</p>
 
 
             <h5>Precio</h5>
-            <p onClick={() => setProducts([...sortDescending(products, 'price')])}>Mayor</p>
-            <p onClick={() => setProducts([...sortAscending(products, 'price')])}>Menor</p>
+            <p onClick={() => { setProducts([...sortDescending(products, 'price')]); setUndo(true) }}>Mayor</p>
+            <p onClick={() => { setProducts([...sortAscending(products, 'price')]); setUndo(true) }}>Menor</p>
 
             <form onSubmit={handleChoise}>
                 <input name='min' placeholder='Minimo..' onChange={handleInputChange} />
@@ -55,10 +56,10 @@ export default function FilterCatalogue({ products, setProducts }) {
             </form>
 
             <h5>Estrellas</h5>
-            <div onClick={() => setProducts([...sortDescending(products, 'review')])} >Mas Estrellas
+            <div onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true) }} >Mas Estrellas
                 <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" /></div>
 
-            <div onClick={() => setProducts([...sortAscending(products, 'review')])}>Menos Estrellas
+            <div onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true) }}>Menos Estrellas
                 <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" /></div>
 
             <span>Elegir</span>

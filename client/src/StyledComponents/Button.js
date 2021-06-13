@@ -17,7 +17,8 @@ const StyledButton = styled.button`
     &:hover {
         cursor: pointer;
         background-color: #f0ddd8;
-        font-size: 18px
+        transform: scale(1.1);
+        transition: 0.5s;
     }
 `
 

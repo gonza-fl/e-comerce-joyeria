@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { getProdutsByCategory } from '../../actions/actions.js';
 import { categories } from '../fakeDb.js';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 export default function Nav() {
 
@@ -63,10 +62,13 @@ export default function Nav() {
 }
 
 function Menu({data, display, x, y, onClick}) {
+
+    const dispatch = useDispatch();
+
     return(
     <OptionDiv className={'bg-color-six'} 
     style={{display: display, transform: `translate(${x}, ${y})`}}>
-        {data.map(d=><a href={`/products?${d.name}`} className={'link-without-styles'} ><p style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></a>)}
+        {data.map(d=><a href={`/products?${d.name}`} className={'link-without-styles'} ><p onClick={()=>dispatch(getProdutsByCategory(d.id))} style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></a>)}
     </OptionDiv>);
 }
 
