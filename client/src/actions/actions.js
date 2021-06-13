@@ -19,7 +19,7 @@ export function setTest(data) {
 export function getProducts() {
    // const prods = await axios.get("http://localhost:3001/api/product")
     // aca va el axios.get al back end y el payload seria la ruta de get a los productos, mientrastanto traigo el array de constantes
-    return {type: GET_PRODUCTS, payload: array}
+    return {type: GET_PRODUCTS, payload: axios.get("http://localhost:3001/api/product")}
 };
 
 export function getProdutsByCategory(id){
