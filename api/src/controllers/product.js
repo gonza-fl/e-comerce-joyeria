@@ -24,7 +24,7 @@ const createProduct = async (req, res) => {
       description,
       price,
       stockAmount,
-      images,
+      image,
       categories,
     } = req.body;
     if (!name.trim() || !description.trim() || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
@@ -42,15 +42,16 @@ const createProduct = async (req, res) => {
       });
       await productCreated.addCategory(categorie);
     }
-
-    for (let i = 0; i < images.length; i++) {
-      const uploadedResponse = (images[i] !== 'test' && await cloudinary.uploader.upload(images[i], {
-        upload_preset: 'henry',
-      }));
-      const imageCreated = await Image.create({
-        url: uploadedResponse.secure_url,
-      });
-      await productCreated.addImage(imageCreated);
+    if (image) {
+      for (let i = 0; i < image.length; i++) {
+        const uploadedResponse = (image[i] !== 'test' && await cloudinary.uploader.upload(image[i], {
+          upload_preset: 'henry',
+        }));
+        const imageCreated = await Image.create({
+          url: uploadedResponse.secure_url,
+        });
+        await productCreated.addImage(imageCreated);
+      }
     }
 
     const resultado = await Product.findOne({
@@ -68,6 +69,7 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(resultado);
   } catch (err) {
+    console.log(err);
     return res.status(400).json(err);
   }
 };
@@ -181,7 +183,7 @@ const updateProduct = async (req, res) => {
     idProduct,
   } = req.params;
   const {
-    name, description, stockAmount, price, categories, images,
+    name, description, stockAmount, price, categories, image,
   } = req.body;
   try {
     const searchProduct = await searchProductF(idProduct);
@@ -190,20 +192,21 @@ const updateProduct = async (req, res) => {
         err: 'No se encontro el producto.',
       });
     }
+    const stock = (stockAmount && parseInt(stockAmount));
+    const priceVar = (price && parseFloat(price));
     await Product.update({
       name,
       description,
-      stockAmount: parseInt(stockAmount),
-      price: parseFloat(price),
+      stockAmount: stock,
+      price: priceVar,
     }, {
       where: {
         id: idProduct,
       },
     });
-
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).json('Hay campos erroneos');
-    await updateImages(searchProduct, images, idProduct);
+    await updateImages(searchProduct, image, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
     console.log(err);
