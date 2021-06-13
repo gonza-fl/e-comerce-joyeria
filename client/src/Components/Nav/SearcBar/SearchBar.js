@@ -69,7 +69,7 @@ export default function SearchBar() {
         dispatch(getProductsByName(input));
         // setInput('');
         setOpen(false);
-        if (input) window.location.href = window.location + 'products?search=' + input
+        if (input) window.location.href = 'http://localhost:3000/products?search=' + input
         setInput('')
     };
 
