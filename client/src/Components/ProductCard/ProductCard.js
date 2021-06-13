@@ -20,7 +20,7 @@ export default function ProductCard({product, id, name, price, image, review}) {
 
   return (
       <DivCard>
-          <Carousel image = {image} id = { id }/>
+          <Carousel image = {image.map(i => i.url)} id = { id }/>
           <h3>{name}</h3>
           <span>$ {numberWithCommas(price)}</span><br/>
           <ReactStars

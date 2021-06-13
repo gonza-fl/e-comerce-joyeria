@@ -14,7 +14,7 @@ export default function Catalogue() {
   }, []);
   
   const products = useSelector((state) => isQuery ? state.productsByQuery : state.products);
-
+  console.log(products)
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
   return (
@@ -23,7 +23,7 @@ export default function Catalogue() {
       <div className='catalogueMap'>
         {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
         {productsDisplay.map(product => {
-          return <ProductCard product={product} name={product.name} price={product.price} id={product.id} image={product.image} review={product.review}></ProductCard>
+          return <ProductCard product={product} name={product.name} price={product.price} id={product.id} image={product.images} review={product.review}></ProductCard>
         })}
       </div>
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Filters from './Filters/Filters.js';
 import { useDispatch, useSelector } from "react-redux";
+
 import { getCategories } from "../actions/actions";
 import './Home.css';
 import NewsFlyer from './NewsFlyer/NewsFlyer.js';
@@ -14,7 +15,10 @@ export function Home() {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories);
 
-  if (!categories.length) dispatch(getCategories())
+  useEffect(()=>{
+   dispatch(getCategories())
+  },[])
+  
 
   return (
     <div className='home'>

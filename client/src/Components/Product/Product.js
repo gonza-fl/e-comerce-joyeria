@@ -9,18 +9,22 @@ import swal from 'sweetalert';
 const REACT_APP_API = process.env.REACT_APP_API
 
 const Product = (props) => {
-
     const [productDetail, setProductDetail] = useState({});
 
+
+console.log(props)
     useEffect(() => {
-        axios.get(`http://localhost:3001/products/${props.match.params.id}`)
+        axios.get(`http://localhost:3001/api/products/${props.match.params.id}`)
+
             .then((response) => {
                 setProductDetail(response.data);
+                console.log("llegue a product", response.data)
             })
             .catch((err) => console.log(err));
-    }, [props.match.params.id])
+    }, [])
 
-    const [bigImage, setBigImage] = useState(productDetail.url[0]);
+    
+    const [bigImage, setBigImage] = useState("");
 
     const changeImage = (e) => {
         setBigImage(e.target.src);
@@ -28,12 +32,13 @@ const Product = (props) => {
 
     let noStock = false;
     let lowStock = false;
-    if (productDetail.stockAmount === 0) {
+    if (productDetail && productDetail.stockAmount === 0) {
         noStock = true;
-    } else if(productDetail.stockAmount < 5) {
+    } else if(productDetail && productDetail.stockAmount < 5) {
         lowStock = true;
     }
 
+    console.log(productDetail)
     const handleDelete = (e) => {
         e.preventDefault();
         swal({
@@ -45,7 +50,7 @@ const Product = (props) => {
           })
           .then((willDelete) => {
             if (willDelete) {
-            axios.delete(`${REACT_APP_API}/api/products/${productDetail.id}`)
+            axios.delete(`${REACT_APP_API}api/products/${productDetail.id}`)
               swal("Producto eliminado!", {
                 icon: "success",
               });
@@ -63,9 +68,9 @@ const Product = (props) => {
                 </div>
                 
                 <div className="container-minpics">
-                    {productDetail.url.length <= 3
+                     { productDetail && productDetail.images.length <= 3
                     ?
-                    productDetail.url.map(image => <img src={image} onClick={(e) => changeImage(e)} />)
+                    productDetail.images.map(image => <img src={image} onClick={(e) => changeImage(e)} />)
                     : null
                     }
                 </div>
@@ -88,6 +93,6 @@ const Product = (props) => {
             </div>
         </div>
     )
-}
+} 
 
 export default Product;

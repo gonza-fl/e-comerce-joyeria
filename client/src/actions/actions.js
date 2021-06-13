@@ -21,7 +21,7 @@ export function getProducts() {
    // const prods = await axios.get("http://localhost:3001/api/product")
     // aca va el axios.get al back end y el payload seria la ruta de get a los productos, mientrastanto traigo el array de constantes
         return function (dispatch) {
-          return axios.get("http://localhost:3001/api/product").then((response) => {
+          return axios.get("http://localhost:3001/api/products").then((response) => {
             dispatch({
               type: GET_PRODUCTS,
               payload: response.data
@@ -34,7 +34,7 @@ export function getProducts() {
 export function getProdutsByCategory(id){
     // Aca va el axios para traer categoria segun id
  return function (dispatch) {
-          return axios.get(`http://localhost:3001/api/product/category/${id}`).then((response) => {
+          return axios.get(`http://localhost:3001/api/products/category/${id}`).then((response) => {
             dispatch({
               type: GET_PRODUCTS,
               payload: response.data
@@ -62,7 +62,7 @@ export function getProductsByName(name){
     // axios.get(`http://localhost:3001/api/search?name=${query}`)
    
     return function (dispatch) {
-    return  axios.get(`http://localhost:3001/api/search?name=${name}`).then((response) => {
+    return  axios.get(`http://localhost:3001/api/products/search?name=${name}`).then((response) => {
         dispatch({
           type: GET_PRODUCTS_BY_NAME,
           payload: response.data

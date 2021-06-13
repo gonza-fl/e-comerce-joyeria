@@ -93,7 +93,7 @@ function CreateProduct(){
     const uploadProduct = async () => {
                
         try {
-            axios.post(`${REACT_APP_API}/api/products`, newProduct ) 
+            axios.post(`${REACT_APP_API}api/products`, newProduct ) 
             .then((res)=>{
                 console.log(res)
                 if(res.data.hasOwnProperty("err")){
