@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 /* eslint radix: ["error", "as-needed"] */
 const {
@@ -6,6 +7,9 @@ const {
 const {
   searchProductF, updateCategories, updateImages, deleteImages,
 } = require('../helpers/productHelpers');
+const {
+  cloudinary,
+} = require('../utils/cloudinary');
 
 const {
   Product,
@@ -20,14 +24,14 @@ const createProduct = async (req, res) => {
       description,
       price,
       stockAmount,
-      // images,
+      image,
       categories,
     } = req.body;
-    if (!name || !description || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
+    if (!name.trim() || !description.trim() || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
-      price: parseInt(price),
+      price: parseFloat(price),
       stockAmount: parseInt(stockAmount),
     });
     for (let c = 0; c < categories.length; c += 1) {
@@ -38,12 +42,18 @@ const createProduct = async (req, res) => {
       });
       await productCreated.addCategory(categorie);
     }
+    if (image) {
+      for (let i = 0; i < image.length; i++) {
+        const uploadedResponse = (image[i] !== 'test' && await cloudinary.uploader.upload(image[i], {
+          upload_preset: 'henry',
+        }));
+        const imageCreated = await Image.create({
+          url: uploadedResponse.secure_url,
+        });
+        await productCreated.addImage(imageCreated);
+      }
+    }
 
-    const imageCreated = await Image.create({
-    // url:images[i]   SE MODIFICA CUANDO ESTÉ EL FORMULARIO Y LA CONEXIÓN A LA API
-      url: 'https://i.ibb.co/yd9Nxnm/imgnone.jpg',
-    });
-    await productCreated.addImage(imageCreated);
     const resultado = await Product.findOne({
       where: {
         id: productCreated.id,
@@ -59,6 +69,7 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(resultado);
   } catch (err) {
+    console.log(err);
     return res.status(400).json(err);
   }
 };
@@ -172,7 +183,7 @@ const updateProduct = async (req, res) => {
     idProduct,
   } = req.params;
   const {
-    name, description, stockAmount, price, categories, images,
+    name, description, stockAmount, price, categories, image,
   } = req.body;
   try {
     const searchProduct = await searchProductF(idProduct);
@@ -181,11 +192,13 @@ const updateProduct = async (req, res) => {
         err: 'No se encontro el producto.',
       });
     }
+    const stock = (stockAmount && parseInt(stockAmount));
+    const priceVar = (price && parseFloat(price));
     await Product.update({
       name,
       description,
-      stockAmount,
-      price,
+      stockAmount: stock,
+      price: priceVar,
     }, {
       where: {
         id: idProduct,
@@ -193,9 +206,10 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).json('Hay campos erroneos');
-    if (images && images.length !== 0) await updateImages(searchProduct, images, idProduct);
+    await updateImages(searchProduct, image, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
+    console.log(err);
     return res.status(400).json(err);
   }
 };

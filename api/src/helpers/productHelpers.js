@@ -8,6 +8,9 @@ const {
   Category,
   Image,
 } = require('../models/index');
+const {
+  cloudinary,
+} = require('../utils/cloudinary');
 
 const searchProductF = async (id) => Product.findOne({
   where: {
@@ -45,24 +48,32 @@ const deleteImages = async (id) => Image.destroy({
   },
   force: true,
 });
-const updateImages = async (searchProduct, images, idProduct) => {
-  if (images[0] === '') return;
+const updateImages = async (searchProduct, image, idProduct) => {
+  // if (images[0] === '') return;
   try {
     await deleteImages(idProduct);
     const imagesSearch = [];
-    for (let i = 0; i < images.length; i++) {
-      imagesSearch.push(await Image.findOrCreate({
-        where: {
-          url: images[i],
-        },
-        defaults: {
-          url: images[i],
-        },
+    const urlImages = [];
+    for (let i = 0; i < image.length; i++) {
+      urlImages.push(await cloudinary.uploader.upload(image[i], {
+        upload_preset: 'henry',
       }));
     }
-    return Promise.all(imagesSearch).then(() => {
-      const imagesMap = imagesSearch.map((el) => el && el[0]);
-      return searchProduct.setImages(imagesMap);
+    Promise.all(urlImages).then(async () => {
+      for (let i = 0; i < urlImages.length; i++) {
+        imagesSearch.push(await Image.findOrCreate({
+          where: {
+            url: urlImages[i].secure_url,
+          },
+          defaults: {
+            url: urlImages[i].secure_url,
+          },
+        }));
+      }
+      return Promise.all(imagesSearch).then(() => {
+        const imagesMap = imagesSearch.map((el) => el && el[0]);
+        return searchProduct.setImages(imagesMap);
+      });
     });
   } catch (err) {
     return console.log(err);
