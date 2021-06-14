@@ -19,7 +19,9 @@ function ModifyProduct(props){
 
     const categories = useSelector((state) => state.categories)
     
-
+    useEffect(()=>{
+        setNewProduct({...newProduct, image: selectedFile})
+    },[selectedFile])
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
 
