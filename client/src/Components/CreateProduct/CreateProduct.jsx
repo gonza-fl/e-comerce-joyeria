@@ -111,6 +111,12 @@ function CreateProduct(){
                 }
                 else {
                     swal("Success","Se creo el producto!")
+                    document.getElementById("nombre").value=''
+                    document.getElementById("precio").value=''
+                    document.getElementById("stockAmount").value=''
+                    document.getElementById("descripcion").value=''
+                    setSelectedFile([])
+                    setPreviewSource('')
                 }
             })
         } catch (err) {
