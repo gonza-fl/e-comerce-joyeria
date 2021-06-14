@@ -66,7 +66,10 @@ export default function SearchBar() {
         e.preventDefault();
         //alert(`searching ${input} ...`);
         // document.getElementById('searchBar').reset()
-        dispatch(getProductsByName(input));
+        if(input.length > 0) {
+            dispatch(getProductsByName(input));
+        }
+        
         // setInput('');
         setOpen(false);
         if (input) window.location.href = 'http://localhost:3000/products?search=' + input
@@ -75,7 +78,7 @@ export default function SearchBar() {
 
     function onClickSearch() {
         setDisplayBar('inline');
-        dispatch(getProducts())
+        dispatch(getProducts());
     }
 
     return (

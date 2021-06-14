@@ -7,10 +7,10 @@ import Nav from './Components/Nav/Nav';
 import AddCategoryForm from "./Components/AddCategoryForm"
 import Catalogue from "./Components/Catalogue/Catalogue"
 import Product from './Components/Product/Product';
-import CreateProduct from "./Components/CreateProduct/CreateProduct"
 import { Footer } from './Components/Footer/Footer';
-import ModalCreatProductos from "./Components/CreateProduct/modalCreateProducts/ModalCreateProducts.jsx";
 import AdminWindow from './Components/Admin/AdminWindow';
+import Category from './Components/Category/Category';
+
 function App() {
   return (
     <div className="App font-color-seven">
@@ -20,7 +20,8 @@ function App() {
         <Route exact path='/' component={Home}/>
         <Route exact path="/admin/addcategory" component={AddCategoryForm}/> 
         <Route exact path="/admin" component={AdminWindow}/> 
-        <Route path='/products/:id' render={({match}) => <Product match={match}/>}/>
+        <Route path='/products/product/:productId' component={Product}/>
+        <Route path='/products/:categoryId' component={Category}/>        
         <Route path='/products' component={Catalogue}/>
       </Switch>
       </div>

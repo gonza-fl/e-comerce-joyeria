@@ -3,25 +3,21 @@ import {array, categories} from "../Components/fakeDb"
 import axios from "axios";
 
 
-
-export const TESTING = 'TESTING';
+export const GET_PRODUCTS_BY_CATEGORY = 'GET_PRODUCTS_BY_CATEGORY';
+export const GET_CATEGORY_ID = 'GET_CATEGORY_ID';
 export const GET_PRODUCTS = "GET_PRODUCTS"
 export const GET_CATEGORIES = "GET_CATEGORIES"
 export const GET_PRODUCTS_BY_NAME = "GET_PRODUCTS_BY_NAME"
 export const ADD_TO_CART = "ADD_TO_CART"
 export const DELETE_PRODUCT = "DELETE_PRODUCT"
 export const MODIFY_PRODUCT = "MODIFY_PRODUCT"
-
-export function setTest(data) {
-    return {type: TESTING, payload: data}
-};
-
+export const GET_PRODUCT_DETAIL = "GET_PRODUCT_DETAIL"
 
 export function getProducts() {
    // const prods = await axios.get("http://localhost:3001/api/product")
     // aca va el axios.get al back end y el payload seria la ruta de get a los productos, mientrastanto traigo el array de constantes
         return function (dispatch) {
-          return axios.get("http://localhost:3001/api/product").then((response) => {
+          return axios.get("http://localhost:3001/api/products").then((response) => {
             dispatch({
               type: GET_PRODUCTS,
               payload: response.data
@@ -34,9 +30,9 @@ export function getProducts() {
 export function getProdutsByCategory(id){
     // Aca va el axios para traer categoria segun id
  return function (dispatch) {
-          return axios.get(`http://localhost:3001/api/product/category/${id}`).then((response) => {
+          return axios.get(`http://localhost:3001/api/products/category/${id}`).then((response) => {
             dispatch({
-              type: GET_PRODUCTS,
+              type: GET_PRODUCTS_BY_CATEGORY,
               payload: response.data
             });
           })
@@ -62,7 +58,8 @@ export function getProductsByName(name){
     // axios.get(`http://localhost:3001/api/search?name=${query}`)
    
     return function (dispatch) {
-    return  axios.get(`http://localhost:3001/api/search?name=${name}`).then((response) => {
+    return  axios.get(`http://localhost:3001/api/products/search?name=${name}`)
+    .then((response) => {
         dispatch({
           type: GET_PRODUCTS_BY_NAME,
           payload: response.data
@@ -77,6 +74,27 @@ export function addToCart(product){
         payload: product,
     }
 }
+
+export function getProductDetail(id){
+
+    return function (dispatch) {
+        return  axios.get(`http://localhost:3001/api/products/${id}`)
+        .then((response) => {
+            console.log(response.data)
+            dispatch({
+                type: GET_PRODUCT_DETAIL,
+                payload: response.data,
+            });
+          })
+          .catch((err) => {alert(err)});
+        }
+    }
+
+export function getCategoryId(id){
+    return {type: GET_CATEGORY_ID, payload: id}
+}
+
+
 // export function deleteProduct(id){
 //     // axios.delete(`http://localhost:3001/api/product/:${id}`)
 //     //const prods = axios.get("http://localhost:3001/api/product")

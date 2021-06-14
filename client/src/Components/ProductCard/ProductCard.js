@@ -5,12 +5,13 @@ import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from "react-redux"
-import { addToCart } from '../../actions/actions';
+import { addToCart, getProductDetail } from '../../actions/actions';
 import "./productCard.css"
 import Button from '../../StyledComponents/Button';
 
 
 export default function ProductCard({product, id, name, price, image, review}) {
+
 
   const dispatch = useDispatch()
 
@@ -20,8 +21,10 @@ export default function ProductCard({product, id, name, price, image, review}) {
 
   return (
       <DivCard>
-          <Carousel image = {image} id = { id }/>
+          <Link to = {`/products/product/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}} >
+            <Carousel image = {image.map(i => i.url)} id = { id }/>
           <h3>{name}</h3>
+          </Link>
           <span>$ {numberWithCommas(price)}</span><br/>
           <ReactStars
               count={5}
@@ -53,6 +56,7 @@ function Carousel({id, image}){
       setImgIndex(imgIndex + 1);
     }
   }
+ 
 
   return(
     <DivCarousel>
@@ -60,9 +64,7 @@ function Carousel({id, image}){
       <div>
         {img.filter((img, i) => i===imgIndex)
         .map(img => 
-        <Link to = {`/products/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}}>
-          <img src={`${img}`} alt='Image not found' width='250px' height='250px'/>
-        </Link>
+          <img src={`${img}`} alt='Image not found' width='250px' height='250px' />
         )}
       </div>
       <MdNavigateNext onClick = { nextCarousel }/>
@@ -73,10 +75,13 @@ const DivCard = styled.div`
           display: flex;
           flex-direction: column;
           align-items: center;
+          padding:5px;
           width: 290px;
-          padding: 5px;
           margin-bottom: 30px;
-          
+          border-color: #201414;
+          border-style: double;
+          border-width: 7px;
+
           &:hover {
             transform: Scale(1.05);
             transition: transform 300ms;

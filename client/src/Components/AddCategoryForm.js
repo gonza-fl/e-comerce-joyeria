@@ -39,14 +39,18 @@ function AddCategoryForm(){
             alert("entro en fetch error")
         })
         //swal("test","test","success")*/
+        const reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+        reader.onloadend = () => {
+            uploadImage(reader.result,valor,description);
+        };
 
-        
 
     }
 
     const uploadImage = async (base64EncodedImage,valor,description) => {
         try {
-            axios.post(`${process.env.REACT_APP_API}api/category?name=${valor}&description=${description}`,{
+            axios.post(`http://localhost:3001/api/category`,{
                 name:valor,
                 description:description,
                 img: base64EncodedImage

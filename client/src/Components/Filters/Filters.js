@@ -19,7 +19,7 @@ export default function Filters() {
                     <CardFilter id={cat.id} name={cat.name} img={cat.img} />)}
             </div>
             <Link className='link' to='/products'>
-                <StyledButton text='Ver catalogo completo' handleClick={() => dispatch(getProducts())}/>
+                <StyledButton text='Ver catalogo completo'/>
             </Link>
         </div>
     )

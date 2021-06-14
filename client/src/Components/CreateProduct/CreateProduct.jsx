@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import swal from 'sweetalert';
 import {useSelector, useDispatch} from "react-redux"
 import {useEffect, useState} from "react"
@@ -10,6 +10,7 @@ const REACT_APP_API = process.env.REACT_APP_API
 
 function CreateProduct(){
 
+    const UseForceUpdate = () => useState()[1];
     const [selectedFile, setSelectedFile] = useState([]);
     const [previewSource, setPreviewSource] = useState('');
     const [newProduct, setNewProduct] = useState({name:"",
@@ -31,11 +32,18 @@ function CreateProduct(){
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            if(selectedFile.length < 3){previewFile(file);setSelectedFile( selectedFile.concat(reader.result));}
+            if(selectedFile.length < 3){previewFile(file);
+               setSelectedFile((selected) => [...selected,reader.result],console.log(selectedFile));
+              
+            }
             else{ setFilled("lleno")}
         };
+        
+        
     }
-
+    useEffect(()=>{
+        setNewProduct({...newProduct, image: selectedFile})
+    },[selectedFile])
     const previewFile = (file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -56,14 +64,16 @@ function CreateProduct(){
         if(name === "categories"){setNewProduct({...newProduct,   categories: newProduct.categories.find(e => e === value)? newProduct.categories.filter(item => item !== value) :  newProduct.categories.concat(value)})}
         else setNewProduct({...newProduct, [name]: value});
     }
-   
+    const Forcechange = useCallback(() => {
+        
+    },[newProduct,selectedFile])
     function enviar(e){
 
         e.preventDefault()
         console.log(newProduct)
 
         if (!selectedFile) return swal("Error","Debes ingresar una imagen","warning");
-
+        console.log(selectedFile)
         if(newProduct.stockAmount.length === 0){
             swal("Error","El campo del stock debe ser completado","warning")
             return;
@@ -85,15 +95,15 @@ function CreateProduct(){
             return;
         }
 
-         setNewProduct({...newProduct, image: selectedFile})
+        //Forcechange();
         
-            uploadProduct();
+        uploadProduct();
     }
 
     const uploadProduct = async () => {
                
         try {
-            axios.post(`${REACT_APP_API}/api/products`, newProduct ) 
+            axios.post(`${REACT_APP_API}api/products`, newProduct ) 
             .then((res)=>{
                 console.log(res)
                 if(res.data.hasOwnProperty("err")){
