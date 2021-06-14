@@ -3,9 +3,11 @@ import './SearchBar.css';
 import { FaSearch } from 'react-icons/fa';
 import Button from '../../../StyledComponents/Button';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { getProducts, getProductsByName } from '../../../actions/actions';
 import SearchBarDropdown from './SearchBarDropdown/SearchBarDropdown';
 import styled from 'styled-components';
+import { Redirect } from 'react-router';
 
 export default function SearchBar() {
 
@@ -18,7 +20,7 @@ export default function SearchBar() {
     const node = useRef();
 
     const [displayBar, setDisplayBar] = useState('none')
-
+    let history = useHistory();
     const handleClick = (e) => {
         if (node.current.contains(e.target)) {
             //inside click
@@ -29,12 +31,13 @@ export default function SearchBar() {
         setOpen(false);
     }
 
-
     useEffect(() => {
-        if (input.trim().length >= 1) {
+
+        if (input) {
             getResults();
         } else {
             setResults([]);
+
         }
     }, [input]);
 
@@ -57,6 +60,7 @@ export default function SearchBar() {
 
     const handleQueryResultClick = (e) => {
         const query = e.target.innerText.toLowerCase();
+        history.push("/products?search="+query);
         dispatch(getProductsByName(query));
         setInput(query);
         setOpen(false);
@@ -67,18 +71,29 @@ export default function SearchBar() {
         //alert(`searching ${input} ...`);
         // document.getElementById('searchBar').reset()
         if(input.length > 0) {
+            console.log('query',input)
             dispatch(getProductsByName(input));
         }
         
         // setInput('');
         setOpen(false);
-        if (input) window.location.href = 'http://localhost:3000/products?search=' + input
+        if (input) history.push("/products?search="+input);
         setInput('')
     };
 
-    function onClickSearch() {
+    function onClickSearch(e) {
+        
         setDisplayBar('inline');
-        dispatch(getProducts());
+        if(input.length > 0) {
+           
+            history.push("/products?search="+input);
+            console.log('input es ',input)
+            setOpen(false);
+            //
+            dispatch(getProductsByName(input));
+            
+        }
+        //dispatch(getProducts());
     }
 
     return (

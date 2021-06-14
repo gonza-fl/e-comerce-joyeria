@@ -35,8 +35,14 @@ export function getProdutsByCategory(id){
               type: GET_PRODUCTS_BY_CATEGORY,
               payload: response.data
             });
+            
           })
-          .catch((err) => {alert(err)});
+          .catch((err) => {
+            dispatch({
+              type: GET_PRODUCTS_BY_CATEGORY,
+              payload: []
+            });
+          });
         };
 };
 
