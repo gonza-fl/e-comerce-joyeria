@@ -81,6 +81,7 @@ const DivCard = styled.div`
           border-color: #201414;
           border-style: double;
           border-width: 7px;
+          margin:2rem;
 
           &:hover {
             transform: Scale(1.05);
