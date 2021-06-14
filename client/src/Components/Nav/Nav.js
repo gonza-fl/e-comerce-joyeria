@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './SearcBar/SearchBar';
 import './Nav.css';
 import Logo from '../../StyledComponents/Logo.js';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import styled from 'styled-components';
-import { getProdutsByCategory } from '../../actions/actions.js';
-import { categories } from '../fakeDb.js';
-import { useDispatch } from 'react-redux';
+import { getCategories } from '../../actions/actions.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Nav() {
 
     const dispatch = useDispatch();
+    const categories = useSelector((state)=>state.categories)
 
-    const [menu, setMenu] = React.useState('none')
+    const [menu, setMenu] = useState('none')
 
     function showMenu() {
         setMenu('inline');
@@ -22,10 +22,10 @@ export default function Nav() {
         setMenu('none');
     }
 
-    function onDispatch(id) {
-        dispatch(getProdutsByCategory(id))
-    }
-
+    useEffect(()=>{
+        dispatch(getCategories());
+    },[])
+        
     return (
         <div className='ctnNav bg-color-three'>
             <div className='nav bg-color-three'>
@@ -68,7 +68,7 @@ function Menu({data, display, x, y, onClick}) {
     return(
     <OptionDiv className={'bg-color-six'} 
     style={{display: display, transform: `translate(${x}, ${y})`}}>
-        {data.map(d=><a href={`/products?${d.name}`} className={'link-without-styles'} ><p onClick={()=>dispatch(getProdutsByCategory(d.id))} style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></a>)}
+        {data.map(d=><a href={`/products/${d.id}`} className={'link-without-styles'} ><p style={{padding: '10px 0px 10px 0px'}}>{d.name.toUpperCase()}<br/></p></a>)}
     </OptionDiv>);
 }
 
