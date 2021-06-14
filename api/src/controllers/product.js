@@ -186,6 +186,7 @@ const updateProduct = async (req, res) => {
   const {
     name, description, stockAmount, price, categories, image,
   } = req.body;
+  
   try {
     const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) {

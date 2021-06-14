@@ -27,7 +27,9 @@ const searchProductF = async (id) => Product.findOne({
 });
 
 const updateCategories = async (searchProduct, categories) => {
-  if (!categories) return true;
+  if (categories.length === 0) {
+    return true;
+  }
   if (categories[0] === '') return true;
   try {
     const categoriesSearch = [];
@@ -50,10 +52,12 @@ const deleteImages = async (id) => Image.destroy({
 });
 const updateImages = async (searchProduct, image, idProduct) => {
   // if (images[0] === '') return;
+  if (image.length === 0) return;
   try {
     await deleteImages(idProduct);
     const imagesSearch = [];
     const urlImages = [];
+    if (!image) return;
     for (let i = 0; i < image.length; i++) {
       urlImages.push(await cloudinary.uploader.upload(image[i], {
         upload_preset: 'henry',

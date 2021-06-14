@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Filters from './Filters/Filters.js';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getCategories } from "../actions/actions";
+import { getCategories,getProducts } from "../actions/actions";
 import './Home.css';
 import NewsFlyer from './NewsFlyer/NewsFlyer.js';
 
@@ -17,6 +17,7 @@ export function Home() {
 
   useEffect(()=>{
    dispatch(getCategories())
+   dispatch(getProducts())
   },[])
   
 

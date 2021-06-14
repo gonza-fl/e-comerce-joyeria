@@ -19,7 +19,9 @@ function ModifyProduct(props){
 
     const categories = useSelector((state) => state.categories)
     
-
+    useEffect(()=>{
+        setNewProduct({...newProduct, image: selectedFile})
+    },[selectedFile])
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
 
@@ -54,7 +56,6 @@ function ModifyProduct(props){
    
     function enviar(e){
         e.preventDefault()
-        console.log(newProduct)
          setNewProduct({...newProduct, image: selectedFile})
         
             uploadProduct();
@@ -70,7 +71,7 @@ function ModifyProduct(props){
                     swal("Error",res.data.err,"warning")
                 }
                 else {
-                    swal("Success","Se creo el producto!")
+                    swal("Success","Producto modificado!")
                 }
             })
         } catch (err) {
