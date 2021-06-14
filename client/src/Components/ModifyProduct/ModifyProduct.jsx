@@ -54,7 +54,11 @@ function ModifyProduct(props){
    
     function enviar(e){
         e.preventDefault()
-        console.log(newProduct)
+
+        if(newProduct.categories.length === 0){
+            swal("Error","debe seleccionar una categoria!","warning")
+            return;
+        }
          setNewProduct({...newProduct, image: selectedFile})
         
             uploadProduct();
