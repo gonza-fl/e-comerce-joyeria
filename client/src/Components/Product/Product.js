@@ -1,29 +1,27 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { addToCart, getProductDetail } from '../../actions/actions';
 import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 import './Product.css';
 import swal from 'sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 const REACT_APP_API = process.env.REACT_APP_API
 
-
-
 const Product = (props) => {
-
-    const dispatch = useDispatch()
-    const detail = useSelector(state => state.detail)
-
-
-    useEffect(() => {
-        console.log(detail)
-                dispatch(getProductDetail(props.match.params.id))
-             
-            },[])
-
-
+    const { productId } = useParams();
+    const dispatch = useDispatch();
+    const detail = useSelector(state => state.detail);
+  
+    
+    useEffect(()=>{
+        dispatch(getProductDetail(productId));    
+    }, [])
+          
+    
+     
 
     const [bigImage, setBigImage] = useState("");
 
@@ -69,10 +67,9 @@ const Product = (props) => {
                 </div>
                 
                 <div className="container-minpics">
-                     { detail && detail.images.length <= 3
-                    ?
+                     { 
                     detail.images.map(image => <img src={image.urlgi} onClick={(e) => changeImage(e)} />)
-                    : null
+                    
                     }
                 </div>
             </div>

@@ -21,8 +21,10 @@ export default function ProductCard({product, id, name, price, image, review}) {
 
   return (
       <DivCard>
-          <Carousel image = {image.map(i => i.url)} id = { id }/>
+          <Link to = {`/products/product/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}} >
+            <Carousel image = {image.map(i => i.url)} id = { id }/>
           <h3>{name}</h3>
+          </Link>
           <span>$ {numberWithCommas(price)}</span><br/>
           <ReactStars
               count={5}
@@ -62,9 +64,7 @@ function Carousel({id, image}){
       <div>
         {img.filter((img, i) => i===imgIndex)
         .map(img => 
-        <Link to = {`/products/${id}`} style={{textDecoration: 'inherit', color: 'inherit'}} >
           <img src={`${img}`} alt='Image not found' width='250px' height='250px' />
-        </Link>
         )}
       </div>
       <MdNavigateNext onClick = { nextCarousel }/>

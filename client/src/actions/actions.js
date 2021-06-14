@@ -3,8 +3,8 @@ import {array, categories} from "../Components/fakeDb"
 import axios from "axios";
 
 
-
-export const TESTING = 'TESTING';
+export const GET_PRODUCTS_BY_CATEGORY = 'GET_PRODUCTS_BY_CATEGORY';
+export const GET_CATEGORY_ID = 'GET_CATEGORY_ID';
 export const GET_PRODUCTS = "GET_PRODUCTS"
 export const GET_CATEGORIES = "GET_CATEGORIES"
 export const GET_PRODUCTS_BY_NAME = "GET_PRODUCTS_BY_NAME"
@@ -12,11 +12,6 @@ export const ADD_TO_CART = "ADD_TO_CART"
 export const DELETE_PRODUCT = "DELETE_PRODUCT"
 export const MODIFY_PRODUCT = "MODIFY_PRODUCT"
 export const GET_PRODUCT_DETAIL = "GET_PRODUCT_DETAIL"
-
-export function setTest(data) {
-    return {type: TESTING, payload: data}
-};
-
 
 export function getProducts() {
    // const prods = await axios.get("http://localhost:3001/api/product")
@@ -37,7 +32,7 @@ export function getProdutsByCategory(id){
  return function (dispatch) {
           return axios.get(`http://localhost:3001/api/products/category/${id}`).then((response) => {
             dispatch({
-              type: GET_PRODUCTS,
+              type: GET_PRODUCTS_BY_CATEGORY,
               payload: response.data
             });
           })
@@ -95,7 +90,9 @@ export function getProductDetail(id){
         }
     }
 
-
+export function getCategoryId(id){
+    return {type: GET_CATEGORY_ID, payload: id}
+}
 
 
 // export function deleteProduct(id){
