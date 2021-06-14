@@ -10,13 +10,25 @@ export default function Catalogue() {
   const dispatch = useDispatch();
   const isQuery = useLocation().search.includes('search')
   const categoryId = useSelector(state => state.categorieId);
+  
   const products = useSelector((state) => isQuery ? state.productsByQuery : state.products);
+  console.log('state',products)
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
+  useEffect(()=>{
+    if(productsDisplay.length === 0 || 
+      productsDisplay.length !== products.length &&
+      productsDisplay[0] !== products[0]){
+      setProductsDisplay(products)
+    } 
+    
+  },[products])
   useEffect(() => {
     dispatch(getProducts())
     window.scrollTo(0, 0);
   }, [productsDisplay]);
+
+
   
   return (
     <div className="catalogue">

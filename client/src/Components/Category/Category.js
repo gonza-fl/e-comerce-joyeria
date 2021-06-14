@@ -12,8 +12,10 @@ function Category() {
 
     useEffect(()=>{
         dispatch(getProdutsByCategory(categoryId));
-    },[])
-
+    },[categoryId])
+    useEffect(()=>{
+        console.log('PRODUCTOS',products)
+    },[products])
     return (
         <div className="categoryDiv">
             {products.map((p)=>
