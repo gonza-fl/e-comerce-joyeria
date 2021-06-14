@@ -11,20 +11,25 @@ import { useParams } from 'react-router';
 const REACT_APP_API = process.env.REACT_APP_API
 
 const Product = (props) => {
+    
     const { productId } = useParams();
     const dispatch = useDispatch();
     const detail = useSelector(state => state.detail);
   
-    
-    useEffect(()=>{
-        dispatch(getProductDetail(productId));    
-    }, [])
-          
+
     
      
 
-    const [bigImage, setBigImage] = useState("");
+    const [bigImage, setBigImage] = useState('');
 
+    useEffect(()=>{
+        dispatch(getProductDetail(productId));
+    }, [])
+    useEffect(()=>{
+        console.log('QUE PASA',detail.images)
+        if(detail.images.length !== 0)setBigImage(detail.images[0].url)
+    },[detail])
+          
     const changeImage = (e) => {
         setBigImage(e.target.src);
     }
@@ -68,7 +73,7 @@ const Product = (props) => {
                 
                 <div className="container-minpics">
                      { 
-                    detail.images.map(image => <img src={image.urlgi} onClick={(e) => changeImage(e)} />)
+                    detail.images.map(image => <img src={image.url} onClick={(e) => changeImage(e)} />)
                     
                     }
                 </div>
