@@ -75,10 +75,13 @@ const DivCard = styled.div`
           display: flex;
           flex-direction: column;
           align-items: center;
+          padding:5px;
           width: 290px;
-          padding: 5px;
           margin-bottom: 30px;
-          
+          border-color: #201414;
+          border-style: double;
+          border-width: 7px;
+
           &:hover {
             transform: Scale(1.05);
             transition: transform 300ms;

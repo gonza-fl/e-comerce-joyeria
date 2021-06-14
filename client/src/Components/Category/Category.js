@@ -3,6 +3,7 @@ import ProductCard from '../ProductCard/ProductCard';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { getProdutsByCategory } from '../../actions/actions.js';
 import { useParams } from 'react-router';
+import "./category.css"
 
 function Category() {
     const products = useSelector((state)=>state.productsByCategory)
@@ -14,7 +15,7 @@ function Category() {
     },[])
 
     return (
-        <div style={{display: 'flex', justifyContent: 'space-around', padding: '20px'}}>
+        <div className="categoryDiv">
             {products.map((p)=>
                 <ProductCard 
                 product={p} 
