@@ -142,9 +142,10 @@ const delProduct = async (req, res) => {
 
 const getProductsByQuery = async (req, res) => {
   const {
-    query,
+    name,
   } = req.query;
-  if (!query) {
+  console.log('query', name);
+  if (!name) {
     return res.status(400).json({
       err: 'There was no query sent',
     });
@@ -153,7 +154,7 @@ const getProductsByQuery = async (req, res) => {
     const productsFound = await Product.findAll({
       where: {
         name: {
-          [Op.iLike]: `%${query}%`,
+          [Op.iLike]: `%${name}%`,
         },
       },
       include: [

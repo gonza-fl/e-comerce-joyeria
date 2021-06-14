@@ -66,7 +66,7 @@ export default function SearchBar() {
         e.preventDefault();
         //alert(`searching ${input} ...`);
         // document.getElementById('searchBar').reset()
-        if(!input) {
+        if(input.length > 0) {
             dispatch(getProductsByName(input));
         }
         
