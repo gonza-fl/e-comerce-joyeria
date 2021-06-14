@@ -56,11 +56,6 @@ function ModifyProduct(props){
    
     function enviar(e){
         e.preventDefault()
-
-        if(newProduct.categories.length === 0){
-            swal("Error","debe seleccionar una categoria!","warning")
-            return;
-        }
          setNewProduct({...newProduct, image: selectedFile})
         
             uploadProduct();
