@@ -71,7 +71,7 @@ function ModifyProduct(props){
                     swal("Error",res.data.err,"warning")
                 }
                 else {
-                    swal("Success","Se creo el producto!")
+                    swal("Success","Producto modificado!")
                 }
             })
         } catch (err) {
