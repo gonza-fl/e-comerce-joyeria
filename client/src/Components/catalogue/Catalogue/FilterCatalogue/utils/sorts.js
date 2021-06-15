@@ -1,5 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
-
 export const sortNameAsc = (arr) => arr.sort((a, b) => {
   if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
   if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
