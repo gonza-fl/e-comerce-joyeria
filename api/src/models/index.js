@@ -33,6 +33,7 @@ Category.belongsToMany(Product, {
 Product.hasMany(Image, {
 });
 Image.belongsTo(Product);
+
 // User.hasMany(Cart)
 // Product.hasMany(OrderLine)
 // Cart.hasMany(OrderLine)

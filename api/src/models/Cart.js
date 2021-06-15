@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       defaultValue: 'creada',
     },
-    endTimestamp: { // generar al momento de cerrar compra
+    endTimestamp: { // generar al momento de cerrar compra .
       type: DataTypes.DATE,
     },
     total: {
