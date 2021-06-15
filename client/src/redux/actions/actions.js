@@ -87,6 +87,7 @@ export function addToCart(product) {
     const sinProductAmount = equal.map((p) => {
       const container = { ...p, amount: 1 }; return container;
     });
+    //
     if (sinProductAmount.some((p) => p.id === prodAmount.id)) {
       const sinJson2 = sinJson;
       const posic = sinProductAmount.map((el) => el.id);
