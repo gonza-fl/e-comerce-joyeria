@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint linebreak-style: ["error", "windows"] */
-/* eslint linebreak-style: ["error", "unix"] */
 import React, { useState } from 'react';
 import swal from 'sweetalert';
 import axios from 'axios';

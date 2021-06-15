@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 /* eslint linebreak-style: ["error", "windows"] */
-/* eslint linebreak-style: ["error", "unix"] */
 import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';

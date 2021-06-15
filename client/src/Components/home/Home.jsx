@@ -1,6 +1,4 @@
 /* eslint linebreak-style: ["error", "windows"] */
-/* eslint linebreak-style: ["error", "unix"] */
-
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ShowCategories from './ShowCategories/ShowCategories';

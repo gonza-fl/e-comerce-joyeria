@@ -1,5 +1,4 @@
 /* eslint linebreak-style: ["error", "windows"] */
-/* eslint linebreak-style: ["error", "unix"] */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../StyledComponents/Button';

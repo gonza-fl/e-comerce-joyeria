@@ -1,5 +1,4 @@
 /* eslint linebreak-style: ["error", "windows"] */
-/* eslint linebreak-style: ["error", "unix"] */
 import {
   GET_PRODUCTS_BY_CATEGORY,
   GET_CATEGORY_ID,

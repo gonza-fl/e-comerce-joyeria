@@ -2,7 +2,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable react/prop-types */
 /* eslint linebreak-style: ["error", "windows"] */
-/* eslint linebreak-style: ["error", "unix"] */
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import { useSelector } from 'react-redux';
