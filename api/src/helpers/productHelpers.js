@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 /* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */

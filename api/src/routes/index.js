@@ -1,4 +1,7 @@
-const { Router } = require('express');
+/* eslint linebreak-style: ["error", "windows"] */
+const {
+  Router,
+} = require('express');
 const categoryRoutes = require('./category');
 const product = require('./product');
 

@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 /* eslint radix: ["error", "as-needed"] */
@@ -69,7 +70,6 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(resultado);
   } catch (err) {
-    console.log(err);
     return res.status(400).json(err);
   }
 };
@@ -89,8 +89,6 @@ const getProducts = async (_req, res) => {
     if (!response.length) return res.status(400).json('Products not founded');
     return res.status(201).json(response);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
     return res.status(500).json('Internal server error');
   }
 };
@@ -144,7 +142,6 @@ const getProductsByQuery = async (req, res) => {
   const {
     name,
   } = req.query;
-  console.log('query', name);
   if (!name) {
     return res.status(400).json({
       err: 'There was no query sent',
@@ -186,7 +183,7 @@ const updateProduct = async (req, res) => {
   const {
     name, description, stockAmount, price, categories, image,
   } = req.body;
-  
+
   try {
     const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) {
@@ -211,7 +208,6 @@ const updateProduct = async (req, res) => {
     await updateImages(searchProduct, image, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
-    console.log(err);
     return res.status(400).json(err);
   }
 };
@@ -222,7 +218,6 @@ const getProductsByCategory = async (req, res) => {
   } = req.params;
   id = parseInt(id);
 
-  console.log(id, typeof id);
   if (typeof id !== 'number') return res.status(500).json('El id no es de tipo númerico');
   try {
     const response = await Product.findAll({
