@@ -80,6 +80,16 @@ export function getProductsByName(name) {
 }
 
 export function addToCart(product) {
+  if (localStorage.getItem('cart')) {
+    const unJson = JSON.parse(localStorage.getItem('cart'));
+    const arr = [];
+    const array = arr.concat(unJson);
+    localStorage.setItem('cart', JSON.stringify(array.concat(product)));
+  } else {
+    const arr = [];
+    const array = arr.concat(product);
+    localStorage.setItem('cart', JSON.stringify(array));
+  }
   return {
     type: ADD_TO_CART,
     payload: product,
