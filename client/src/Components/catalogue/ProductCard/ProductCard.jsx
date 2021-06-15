@@ -1,0 +1,97 @@
+/* eslint-disable react/prop-types */
+/* eslint linebreak-style: ["error", "windows"] */
+import React from 'react';
+import ReactStars from 'react-rating-stars-component';
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../redux/actions/actions';
+import Button from '../../StyledComponents/Button';
+
+export default function ProductCard({
+  product, id, name, price, image, review,
+}) {
+  const dispatch = useDispatch();
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  return (
+    <DivCard>
+      <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+        <Carousel image={image.map((i) => i.url)} id={id} />
+        <h3>{name}</h3>
+      </Link>
+      <span>
+        $
+        {' '}
+        {numberWithCommas(price)}
+      </span>
+      <br />
+      <ReactStars
+        count={5}
+        size={24}
+        edit={false}
+        value={review}
+        activeColor="#ffd700"
+      />
+      <Button style={{ backgroundColor: '#f1eee3' }} handleClick={() => dispatch(addToCart(product))} text="Agregar al carrito" />
+
+    </DivCard>
+  );
+}
+
+function Carousel({ image }) {
+  const img = typeof image === 'object' ? [...image] : [image];
+
+  const [imgIndex, setImgIndex] = React.useState(0);
+
+  function beforeCarousel() {
+    if (imgIndex > 0) {
+      setImgIndex(imgIndex - 1);
+    }
+  }
+
+  function nextCarousel() {
+    if (imgIndex < img.length - 1) {
+      setImgIndex(imgIndex + 1);
+    }
+  }
+
+  return (
+    <DivCarousel>
+      <MdNavigateBefore onClick={beforeCarousel} />
+      <div>
+        {img.filter((imgEl, i) => i === imgIndex)
+          .map((imgEl) => <img src={`${imgEl}`} alt="" width="250px" height="250px" />)}
+      </div>
+      <MdNavigateNext onClick={nextCarousel} />
+    </DivCarousel>
+  );
+}
+
+const DivCard = styled.div`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding:5px;
+          width: 290px;
+          margin-bottom: 30px;
+          border-color: #201414;
+          border-style: double;
+          border-width: 7px;
+          margin:2rem;
+
+          &:hover {
+            transform: Scale(1.05);
+            transition: transform 300ms;
+          }
+`;
+
+const DivCarousel = styled.div`
+          display: flex;
+          align-items: center;
+          font-size: 130%;
+`;
