@@ -1,4 +1,5 @@
 /* eslint linebreak-style: ["error", "windows"] */
+/* eslint linebreak-style: ["error", "unix"] */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

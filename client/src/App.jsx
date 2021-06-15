@@ -1,4 +1,6 @@
 /* eslint linebreak-style: ["error", "windows"] */
+/* eslint linebreak-style: ["error", "unix"] */
+
 import React from 'react';
 import './App.css';
 import './colors.css';
