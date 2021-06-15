@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 require('dotenv').config();
 
 module.exports = {

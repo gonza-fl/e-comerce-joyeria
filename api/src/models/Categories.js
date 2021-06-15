@@ -1,4 +1,7 @@
-const { DataTypes } = require('sequelize');
+/* eslint linebreak-style: ["error", "windows"] */
+const {
+  DataTypes,
+} = require('sequelize');
 
 module.exports = (sequelize) => {
   const model = sequelize.define('category', {
@@ -16,6 +19,9 @@ module.exports = (sequelize) => {
     img: {
       type: DataTypes.STRING,
     },
-  }, { timestamps: false });
+  },
+  {
+    timestamps: false,
+  });
   return model;
 };
