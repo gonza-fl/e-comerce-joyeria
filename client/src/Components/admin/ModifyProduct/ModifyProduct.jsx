@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable react/prop-types */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import { useSelector } from 'react-redux';

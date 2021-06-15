@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';

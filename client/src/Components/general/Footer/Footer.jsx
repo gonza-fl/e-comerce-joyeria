@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint linebreak-style: ["error", "windows"] */
 /* eslint react/prop-types: 0 */
 
 import React from 'react';
