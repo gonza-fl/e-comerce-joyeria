@@ -80,9 +80,15 @@ const addItem = async (req, res) => {
           where: {
             id: cart.orderlines[i].id,
           },
-        }).then((obj) => {
+        }).then(async (obj) => {
+          if (obj.quantity + req.body.products[i].amount > arrayProducts[i].stockAmount) {
+            return res.json({
+              err: '',
+            });
+          }
           obj.quantity += req.body.products[i].amount;
-          obj.save();
+          await obj.save();
+          return '';
         });
       }
     }
