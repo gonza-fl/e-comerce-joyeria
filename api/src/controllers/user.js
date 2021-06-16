@@ -6,7 +6,7 @@ const {
 
 const createUser = async (req, res) => {
   const {
-    id, email, username, name, lastname, address, genre, birthday,
+    id, email, username, name, lastname, address, genre, birthday, phone,
     codePostal, description,
   } = req.body;
 
@@ -19,6 +19,7 @@ const createUser = async (req, res) => {
       lastname,
       address,
       genre,
+      phone,
       birthday,
     });
     const newAddress = await Address.create({
