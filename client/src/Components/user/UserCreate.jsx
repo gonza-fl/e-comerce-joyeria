@@ -45,9 +45,10 @@ export default function UserCreate() {
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
       swal('Exito', 'Usuario fue creado con exito', 'success');
+      document.getElementsByClassName('swal-button swal-button--confirm')[0].onclick = () => window.history.back();
     } else
       swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
-      // "swal-button swal-button--confirm"
+
   };
 
   return (
@@ -56,11 +57,11 @@ export default function UserCreate() {
         <h2>Bienvenido a K-Mora</h2>
         <p>Regístrate y sé parte de nuestra tienda online.</p>
 
-        <span><span className="require">*</span>Campos Obligatorios</span>
+        <span id="span"><span className="require">*</span>Campos Obligatorios</span>
         <form id="formUserCreate" onSubmit={handleSubmit}>
           <div>
             <label>E-mail<span className="require">*</span> </label>
-            <input name="email" type="email" placeholder="Ingrese su E-mail..." required onChange={handleInputChange} />
+            <input name="email" type="email" placeholder="Ingrese su E-mail..." required onChange={handleInputChange} autoComplete="off" />
             <span className={submit && errors.email ? 'requireMsg' : 'transparent'}>El email ingresado es invalido</span>
           </div>
           <div>
@@ -76,12 +77,12 @@ export default function UserCreate() {
 
           <div>
             <label>Nombre<span className="require">*</span></label>
-            <input name="name" placeholder="Ingrese su Nombre..." required onChange={handleInputChange} />
+            <input name="name" placeholder="Ingrese su Nombre..." required onChange={handleInputChange} autocomplete="off" />
           </div>
 
           <div>
             <label>Apellido<span className="require">*</span> </label>
-            <input name="lastname" placeholder="Ingrese su Apellido..." required onChange={handleInputChange} />
+            <input name="lastname" placeholder="Ingrese su Apellido..." required onChange={handleInputChange} autocomplete="off" />
           </div>
 
           <div>

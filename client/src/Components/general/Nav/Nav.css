@@ -57,14 +57,16 @@
         padding-block: 10px;
     }
     
-    .userOptions p {
+    .userOptions a {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #000;
         height: 50px;
-        margin: 0;
+        width: 100%;
     }
     
-    .userOptions p:hover {
+    .userOptions a:hover {
         background-color: #f0ddd8;
     }

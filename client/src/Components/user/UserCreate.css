@@ -21,7 +21,7 @@
     margin-top: 10px;
 }
 
-.formUserCreate span {
+#span {
     align-self: flex-end;
     font-size: 13px;
 }
@@ -46,6 +46,7 @@
     border: none;
     border-bottom: orchid 1px solid;
     background-color: transparent;
+    outline: none;
 }
 
 .formUserCreate form select {

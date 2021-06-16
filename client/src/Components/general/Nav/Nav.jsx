@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
@@ -60,8 +61,8 @@ export default function Nav() {
         <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
           <div className="userOptions">
-            <p>Iniciar Sesion</p>
-            <p>Registrarme</p>
+            <Link to="#login"><p>Iniciar Sesion</p></Link>
+            <Link to="/account/register"><p>Registrarme</p></Link>
           </div>
 &ensp;&ensp;
           <FaShoppingCart />
