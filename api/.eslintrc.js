@@ -13,5 +13,8 @@ module.exports = {
   rules: {
     semi: ['error', 'always'],
     'object-curly-newline': ['error', 'always'],
+    'no-param-reassign': ['error', {
+      props: false,
+    }],
   },
 };

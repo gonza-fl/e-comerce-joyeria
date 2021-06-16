@@ -7,11 +7,6 @@ const {
 } = require('../models/index');
 
 const addItem = async (req, res) => {
-  /*
-  const cart = await Cart.create({
-    total: req.body.total,
-    orderNumber: 'generar',
-  }); */
   // primero busco el usuario en la base de datos
   const user = await User.findOne({
     where: {
@@ -41,13 +36,14 @@ const addItem = async (req, res) => {
       where: {
         status: 'creada',
       },
+      include: Orderline,
+    });
+  } else {
+    // SI NO TENE CARRITO PREVIAMENTE CREADO, SE CREA UNO Y SE LO DA AL FRONT
+    cart = await Cart.create({
+
     });
   }
-  // SI NO TENE CARRITO PREVIAMENTE CREADO, SE CREA UNO Y SE LO DA AL FRONT
-
-  cart = await Cart.create({
-
-  });
 
   // encuentro los productos enviado desde el front
   const results = [];
@@ -73,16 +69,36 @@ const addItem = async (req, res) => {
       });
     }
   }
-  // SE CREA LA ORDER LINE CON SUS PRODUCTOS ASOCIADOS.
+  // CORROBORO SI EXISTIA PREVIAMENTE EL PRODUCTO EN EL CARRO Y SI ES ASI LO SUMO AL ORDERLINE
+  const idsguardados = [];
+  for (let i = 0; i < cart.orderlines.length; i += 1) {
+    for (let j = 0; j < arrayProducts.length; j += 1) {
+      if (cart.orderlines[i].productId === arrayProducts[j].id) {
+        idsguardados.push(arrayProducts[j].id);
+
+        Orderline.findOne({
+          where: {
+            id: cart.orderlines[i].id,
+          },
+        }).then((obj) => {
+          obj.quantity += req.body.products[i].amount;
+          obj.save();
+        });
+      }
+    }
+  }
+  // SE CREA LA ORDER LINE CON SU RESPECTIVO PRODUCTO SI NO SE ENCONTRABA ASOCIADO.
   // ARREGLAR CUANDO CREEN EL MODELO ORDERLINE
   const resultsOrderlines = [];
   for (let i = 0; i < arrayProducts.length; i += 1) {
-    resultsOrderlines.push(Orderline.create({
-      price: arrayProducts[i].price,
-      quantity: req.body.products[i].quantity,
-      name: arrayProducts[i].name,
-      total: (arrayProducts[i].price * req.body.products[i].quantity),
-    }));
+    if (!idsguardados.includes(arrayProducts[i].id)) {
+      resultsOrderlines.push(Orderline.create({
+        price: arrayProducts[i].price,
+        quantity: req.body.products[i].quantity,
+        name: arrayProducts[i].name,
+        total: (arrayProducts[i].price * req.body.products[i].quantity),
+      }));
+    }
   }
 
   const arrayOrderlines = await Promise.all(resultsOrderlines);
@@ -90,9 +106,34 @@ const addItem = async (req, res) => {
   for (let i = 0; i < arrayOrderlines.length; i += 1) {
     arrayOrderlines[i].addCart(cart);
   }
+  // HAGO LAS NUEVAS ASOCIACIONES Y GUARDO EN BASE DE DATOS
+
   cart.addUser(user);
+
+  await cart.save();
+  // BUSCO EL CART CON SUS ORDERLINES ACTUALIZADAS
+  cart = await Cart.findOne({
+    where: {
+      status: 'creada',
+    },
+    include: Orderline,
+  });
+  // TRAIGO LAS ORDER LINES CON SUS PRODUCTOS
+  const resultsLines = [];
+  for (let i = 0; i < cart.orderlines.length; i += 1) {
+    resultsLines.push(Orderline.findOne({
+      where: {
+        id: cart.orderlines[i].id,
+      },
+      include: Product,
+    }));
+  }
+
+  const lines = await Promise.all(resultsLines);
+  // ENVIO EL CARRO Y SUS ORDERLINES CON SUS PRODUCTOS AL FRONT
   return res.json({
     cart,
+    lines,
   });
 };
 
