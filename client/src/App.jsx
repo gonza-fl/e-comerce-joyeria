@@ -24,7 +24,7 @@ function App() {
           <Route path="/products/product/:productId" component={Product} />
           <Route path="/products/:categoryId" component={CategoryCatalogue} />
           <Route path="/products" component={Catalogue} />
-          <Route path="/user/register" component={UserCreate} />
+          <Route path="/account/register" component={UserCreate} />
         </Switch>
       </div>
       <Footer />
