@@ -36,13 +36,9 @@ Category.belongsToMany(Product, {
 Product.hasMany(Image, {
 });
 Image.belongsTo(Product);
-User.hasMany(Cart, {
-  foreingKey: 'UserId',
-});
+User.hasMany(Cart);
 Cart.belongsTo(User);
-User.hasMany(Address, {
-  foreingKey: 'UserId',
-});
+User.hasMany(Address);
 Address.belongsTo(User);
 
 // User.hasMany(Cart)
