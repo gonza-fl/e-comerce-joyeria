@@ -7,11 +7,11 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
+import swal from 'sweetalert';
 
 export default function UserCreate() {
-
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
     email: '', name: '', password: '', passwordConfirmation: '', document: '', date: '', genre: 'Seleccionar',
@@ -20,6 +20,10 @@ export default function UserCreate() {
   const [errors, setErrors] = useState({
     email: false, password: false, empty: false,
   });
+
+  useEffect(() => {
+    setErrors({ ...errors, empty: !errors.email && !errors.password && form.genre !== 'Seleccionar' });
+  }, [form]);
 
   const handleInputChange = (e) => {
 
@@ -35,12 +39,16 @@ export default function UserCreate() {
   };
 
   const handleSubmit = (e) => {
+    console.log(form);
+
     e.preventDefault();
     setSubmit(true);
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
-      alert('creado');
-    }
+      swal('Exito', 'Usuario fue creado con exito', 'success');
+    } else
+      swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
+
   };
 
   return (
@@ -81,7 +89,8 @@ export default function UserCreate() {
         </select>
         {submit && form.genre === 'Seleccionar' && <pan className="requireMsg">Seleccione un género</pan>}
 
-        <input type="submit" value="Resgistrarme" required />
+        <input type="button" value="Regresar" onClick={() => window.history.back()} />
+        <input type="submit" value="Resgistrarme" />
       </form>
     </div>
   );
