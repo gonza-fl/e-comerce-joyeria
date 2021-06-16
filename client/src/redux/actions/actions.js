@@ -19,6 +19,7 @@ export const ADD_TO_CART = 'ADD_TO_CART';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const MODIFY_PRODUCT = 'MODIFY_PRODUCT';
 export const GET_PRODUCT_DETAIL = 'GET_PRODUCT_DETAIL';
+export const TAKE_FROM_CART = 'TAKE_FROM_CART';
 
 export function getProducts() {
   return function (dispatch) {
@@ -106,9 +107,20 @@ export function addToCart(product) {
   };
 }
 export function takeFromCart(product) {
-  // const cartATM = JSON.parse(localStorage.getItem('cart'));
+  const sinJson = JSON.parse(localStorage.getItem('cart'));
+  const prodAmount = { ...product, amount: 1 };
+  const equal = sinJson;
+  const sinProductAmount = equal.map((p) => {
+    const container = { ...p, amount: 1 }; return container;
+  });
+  const posic = sinProductAmount.map((el) => el.id);
+  const indx = posic.indexOf(prodAmount.id);
+  if (sinJson[indx].amount > 1) {
+    sinJson[indx].aumount -= 1;
+    localStorage.setItem('cart', JSON.stringify(sinJson));
+  } else { localStorage.setItem('cart', JSON.stringify(sinJson.splice(indx, 1))); }
   return {
-    type: ADD_TO_CART,
+    type: TAKE_FROM_CART,
     payload: product,
   };
 }
@@ -132,6 +144,7 @@ export function getCategoryId(id) {
 
 // export function deleteProduct(id){
 // QUE ONDA ACA? HAY QUE CAMBIAR LA RUTAAAAA, USATE EL CONSTANTS ;)
+// creo que habian quedado ambas rutas definidas y usadas en products, y no se necesita el estado
 //     // axios.delete(`http://localhost:3001/api/product/:${id}`)
 //     //const prods = axios.get("http://localhost:3001/api/product")
 //     return {
