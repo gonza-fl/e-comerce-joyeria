@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
     birthday: {
       type: DataTypes.DATE,
     },
+    phone: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     timestamps: false,

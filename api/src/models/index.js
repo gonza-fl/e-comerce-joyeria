@@ -13,6 +13,7 @@ const CategoriesFactory = require('./Categories');
 const ProductsFactory = require('./Products');
 const ImagesFactory = require('./Images');
 const CartFactory = require('./Cart');
+const UserFactory = require('./User');
 
 const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${dbName}`, {
   logging: false,
@@ -22,6 +23,7 @@ const Category = CategoriesFactory(sequelize);
 const Product = ProductsFactory(sequelize);
 const Image = ImagesFactory(sequelize);
 const Cart = CartFactory(sequelize);
+const User = UserFactory(sequelize);
 
 Product.belongsToMany(Category, {
   through: 'product_category',
@@ -32,6 +34,8 @@ Category.belongsToMany(Product, {
 Product.hasMany(Image, {
 });
 Image.belongsTo(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
 
 // User.hasMany(Cart)
 // Product.hasMany(OrderLine)
