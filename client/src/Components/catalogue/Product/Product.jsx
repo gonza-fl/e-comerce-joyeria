@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { getProductDetail } from '../../../redux/actions/actions';
+import { addToCart, getProductDetail } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../../admin/ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 import './Product.css';
@@ -61,6 +61,10 @@ const Product = () => {
       });
   };
 
+  const handleClickCart = () => {
+    dispatch(addToCart(detail));
+  };
+
   return (
     <div className="product-container">
       <div className="product-img">
@@ -108,7 +112,7 @@ const Product = () => {
           le falta la prop handleClick que le debería pasar la accion de agregar al carrito.
           Para los usuarios debería guardarlo en la tabla de orden de compra,
           y para los invitados debería guardarlo en el local storage */}
-          {noStock ? null : <Button text="AGREGAR AL CARRITO" /> }
+          {noStock ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
         </div>
         <ModalModifyProduct id={detail.id} />
         {' '}
