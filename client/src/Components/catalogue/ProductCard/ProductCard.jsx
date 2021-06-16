@@ -9,7 +9,7 @@ import { addToCart } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
 
 export default function ProductCard({
-  product, id, name, price, image, review,
+  product, id, name, price, image, review, stockAmount,
 }) {
   const dispatch = useDispatch();
 
@@ -18,11 +18,10 @@ export default function ProductCard({
   }
 
   return (
-    <DivCard>
-      <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
-        <Carousel image={image.map((i) => i.url)} id={id} />
-        <h3>{name}</h3>
-      </Link>
+    <DivCard style={{ display: `${stockAmount <= 0 ? 'none' : 'flex'}` }}>
+
+      <Carousel image={image.map((i) => i.url)} id={id} />
+      <h3>{name}</h3>
       <span>
         $
         {' '}
@@ -36,13 +35,13 @@ export default function ProductCard({
         value={review}
         activeColor="#ffd700"
       />
-      <Button style={{ backgroundColor: '#f1eee3' }} handleClick={() => dispatch(addToCart(product))} text="Agregar al carrito" />
+      <Button style={{ backgroundColor: '#f1eee3', marginTop: '10px' }} handleClick={() => dispatch(addToCart(product))} text="Agregar al carrito" />
 
     </DivCard>
   );
 }
 
-function Carousel({ image }) {
+function Carousel({ image, id }) {
   const img = typeof image === 'object' ? [...image] : [image];
 
   const [imgIndex, setImgIndex] = React.useState(0);
@@ -63,8 +62,10 @@ function Carousel({ image }) {
     <DivCarousel>
       <MdNavigateBefore onClick={beforeCarousel} />
       <div>
-        {img.filter((imgEl, i) => i === imgIndex)
-          .map((imgEl) => <img src={`${imgEl}`} alt="" width="250px" height="250px" />)}
+        <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+          {img.filter((imgEl, i) => i === imgIndex)
+            .map((imgEl) => <img src={`${imgEl}`} alt="" width="250px" height="250px" />)}
+        </Link>
       </div>
       <MdNavigateNext onClick={nextCarousel} />
     </DivCarousel>
@@ -72,16 +73,11 @@ function Carousel({ image }) {
 }
 
 const DivCard = styled.div`
-          display: flex;
           flex-direction: column;
           align-items: center;
           padding:5px;
           width: 290px;
           margin-bottom: 30px;
-          border-color: #201414;
-          border-style: double;
-          border-width: 7px;
-          margin:2rem;
 
           &:hover {
             transform: Scale(1.05);

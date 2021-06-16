@@ -24,6 +24,7 @@ function CategoryCatalogue() {
           id={p.id}
           image={p.images}
           review={p.review}
+          stockAmount={p.stockAmount}
         />
       ))}
 
