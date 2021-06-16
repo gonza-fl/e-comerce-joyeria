@@ -51,63 +51,66 @@ export default function UserCreate() {
   };
 
   return (
-    <div className="formUserCreate">
-      <h2>Bienvenido a K-Mora</h2>
-      <p>Regístrate y sé parte de nuestra tienda online.</p>
+    <div className="formBackGrond">
+      <div className="formUserCreate">
+        <h2>Bienvenido a K-Mora</h2>
+        <p>Regístrate y sé parte de nuestra tienda online.</p>
 
-      <span><span className="require">*</span>Campos Obligatorios</span>
-      <form id="formUserCreate" onSubmit={handleSubmit}>
-        <div>
-          <label>E-mail<span className="require">*</span> </label>
-          <input name="email" type="email" placeholder="Ingrese su E-mail..." required onChange={handleInputChange} />
-          <span className={submit && errors.email ? 'requireMsg' : 'transparent'}>El email ingresado es invalido</span>
-        </div>
-        <div>
-          <label>Contrseña<span className="require">*</span> </label>
-          <input name="password" type="password" placeholder="Ingrese su Contrseña..." required minlength="6" onChange={handleInputChange} />
-        </div>
+        <span><span className="require">*</span>Campos Obligatorios</span>
+        <form id="formUserCreate" onSubmit={handleSubmit}>
+          <div>
+            <label>E-mail<span className="require">*</span> </label>
+            <input name="email" type="email" placeholder="Ingrese su E-mail..." required onChange={handleInputChange} />
+            <span className={submit && errors.email ? 'requireMsg' : 'transparent'}>El email ingresado es invalido</span>
+          </div>
+          <div>
+            <label>Contrseña<span className="require">*</span> </label>
+            <input name="password" type="password" placeholder="Ingrese su Contrseña..." required minlength="6" onChange={handleInputChange} />
+          </div>
 
-        <div>
-          <label>Confirmar Contraseña<span className="require">*</span> </label>
-          <input name="passwordConfirmation" type="password" placeholder="Confirme su Contraseña..." required minlength="6" onChange={handleInputChange} />
-          <span className={errors.password ? 'requireMsg' : 'transparent'}>Las contraseñas no coinciden</span>
-        </div>
+          <div>
+            <label>Confirmar Contraseña<span className="require">*</span> </label>
+            <input name="passwordConfirmation" type="password" placeholder="Confirme su Contraseña..." required minlength="6" onChange={handleInputChange} />
+            <span className={errors.password ? 'requireMsg' : 'transparent'}>Las contraseñas no coinciden</span>
+          </div>
 
-        <div>
-          <label>Nombre<span className="require">*</span></label>
-          <input name="name" placeholder="Ingrese su Nombre..." required onChange={handleInputChange} />
-        </div>
+          <div>
+            <label>Nombre<span className="require">*</span></label>
+            <input name="name" placeholder="Ingrese su Nombre..." required onChange={handleInputChange} />
+          </div>
 
-        <div>
-          <label>Apellido<span className="require">*</span> </label>
-          <input name="lastname" placeholder="Ingrese su Apellido..." required onChange={handleInputChange} />
-        </div>
+          <div>
+            <label>Apellido<span className="require">*</span> </label>
+            <input name="lastname" placeholder="Ingrese su Apellido..." required onChange={handleInputChange} />
+          </div>
 
-        <div>
-          <label>Fecha de Nacimiento<span className="require">*</span> </label>
-          <input name="date" type="date" required onChange={handleInputChange} />
-        </div>
+          <div>
+            <label>Fecha de Nacimiento<span className="require">*</span> </label>
+            <input name="date" type="date" required onChange={handleInputChange} />
+          </div>
 
-        <div>
-          <label>Género<span className="require">*</span></label>
-          <select name="genre" onChange={handleInputChange}>
-            <option>Seleccionar</option>
-            <option>Masculino</option>
-            <option>Femenino</option>
-            <option>Sin Género</option>
-          </select>
-          <span className={submit && form.genre === 'Seleccionar' ? 'requireMsg' : 'transparent'}>Seleccione un género</span>
-        </div>
+          <div>
+            <label>Género<span className="require">*</span></label>
+            <select name="genre" onChange={handleInputChange}>
+              <option>Seleccionar</option>
+              <option>Masculino</option>
+              <option>Femenino</option>
+              <option>Sin Género</option>
+            </select>
+            <span className={submit && form.genre === 'Seleccionar' ? 'requireMsg' : 'transparent'}>Seleccione un género</span>
+          </div>
 
+          <div>
+            <input className="btnForm  btnBack" type="button" value="Regresar" onClick={() => window.history.back()} />
+            <input className="btnForm font-color-four" type="submit" value="Crear Cuenta" />
+          </div>
+        </form>
         <div>
-          <input className="btnForm  btnBack" type="button" value="Regresar" onClick={() => window.history.back()} />
-          <input className="btnForm font-color-four" type="submit" value="Crear Cuenta" />
+          <p>¿Ya tienes un usuario?</p>
+          <Button text="Iniciar Sesion" />
         </div>
-      </form>
-      <div>
-        <p>¿Ya tienes un usuario?</p>
-        <Button text="Iniciar Sesion" />
       </div>
     </div>
+
   );
 }

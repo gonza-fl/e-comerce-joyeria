@@ -29,6 +29,7 @@ export default function Nav() {
   return (
     <div className="ctnNav bg-color-three">
       <div className="nav bg-color-three">
+
         <div style={{
           display: 'flex', fontWeight: 'bold', fontSize: '13px', flexGrow: 3,
         }}
@@ -56,12 +57,17 @@ export default function Nav() {
         <div style={{ flexGrow: 1 }}>
           <SearchBar />
         </div>
-        <div style={{ flexGrow: 0.1, fontSize: '120%' }}>
+        <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
+          <div className="userOptions">
+            <p>Iniciar Sesion</p>
+            <p>Registrarme</p>
+          </div>
 &ensp;&ensp;
           <FaShoppingCart />
         </div>
       </div>
+
     </div>
   );
 }

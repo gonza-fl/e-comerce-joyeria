@@ -1,11 +1,19 @@
 .formUserCreate {
-    border: #f0ddd8 50px solid;
-    background-color: #f1eee3;
+    border: #f0ddd8 40px solid;
+    background-color: white;
     display: flex;
     flex-direction: column;
     width: 35%;
     margin: 50px;
-    padding-bottom: 10px;
+    padding: 10px;
+}
+
+.formBackGrond {
+    display: flex;
+    justify-content: center;
+    background-color: #f0ddd8;
+    background: linear-gradient(to top, #f0ddd8 0%, #f0ddd8 60%, white 40%, white 100%);
+    width: 100%;
 }
 
 .formUserCreate h2 {
@@ -83,5 +91,4 @@
 
 .formUserCreate .btnBack {
     background-color: #f1eee3;
-    border: #cf988c 1px solid;
 }
