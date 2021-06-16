@@ -19,6 +19,10 @@
         "react"
     ],
     "rules": {
+<<<<<<< HEAD
         "linebreak-style": ["error", "unix"]
+=======
+       
+>>>>>>> 9fe23248da103832dac70839212009f0b8daca17
     }
 }
