@@ -35,8 +35,8 @@ Product.hasMany(Image, {
 Image.belongsTo(Product);
 
 // User.hasMany(Cart)
-// Product.hasMany(OrderLine)
-// Cart.hasMany(OrderLine)
+// Product.hasMany(Orderline)
+// Cart.hasMany(Orderline)
 
 module.exports = {
   conn: sequelize,
