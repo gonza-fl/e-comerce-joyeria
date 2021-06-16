@@ -1,5 +1,4 @@
 /* eslint-disable func-names */
-/* eslint linebreak-style: ["error", "windows"] */
 
 import axios from 'axios';
 

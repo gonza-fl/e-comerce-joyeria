@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 const {
   Sequelize,
 } = require('sequelize');
@@ -12,8 +11,10 @@ const {
 
 const CategoriesFactory = require('./Categories');
 const ProductsFactory = require('./Products');
+const AddressFactory = require('./Address');
 const ImagesFactory = require('./Images');
 const CartFactory = require('./Cart');
+const UserFactory = require('./User');
 const OrderLineFactory = require('./OrderLine');
 
 const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${dbName}`, {
@@ -22,8 +23,10 @@ const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${
 
 const Category = CategoriesFactory(sequelize);
 const Product = ProductsFactory(sequelize);
+const Address = AddressFactory(sequelize);
 const Image = ImagesFactory(sequelize);
 const Cart = CartFactory(sequelize);
+const User = UserFactory(sequelize);
 const OrderLine = OrderLineFactory(sequelize);
 
 Product.belongsToMany(Category, {
@@ -35,8 +38,12 @@ Category.belongsToMany(Product, {
 
 Product.hasMany(Image, {
 });
-
 Image.belongsTo(Product);
+User.hasMany(Cart);
+Cart.belongsTo(User);
+User.hasMany(Address);
+Address.belongsTo(User);
+
 Product.belongsToMany(Cart, {
   through: OrderLine,
 });
