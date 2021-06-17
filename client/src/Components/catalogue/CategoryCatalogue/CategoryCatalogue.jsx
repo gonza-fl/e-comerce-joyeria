@@ -9,11 +9,10 @@ function CategoryCatalogue() {
   const products = useSelector((state) => state.productsByCategory);
   const dispatch = useDispatch();
   const { categoryId } = useParams();
-
+  console.log(products);
   useEffect(() => {
     dispatch(getProdutsByCategory(categoryId));
   }, [categoryId]);
-
   return (
     <div className="categoryDiv">
       {products.map((p) => (
