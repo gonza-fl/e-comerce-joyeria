@@ -27,14 +27,8 @@ function OrderList() {
       {lista.map((o) => (
         <div className="orderContainer">
           <p>{o.userName}</p>
-          <span>
-            $
-            {' '}
-            {o.precioFinal}
-            {', '}
-          </span>
-          <span>{o.status}</span>
           <button type="button" onClick={() => handleClick(o.userId)}> ver detalle </button>
+          <p />
           <div id={o.userId} className="hidden">
             {o.productos.map((p) => (
               <div>
@@ -52,12 +46,19 @@ function OrderList() {
                 <span className="span">
                   {' - '}
                   subtotal
-                  {' '}
+                  {' $'}
                   {p.precio * p.amount}
                 </span>
               </div>
             ))}
           </div>
+          <span>
+            $
+            {' '}
+            {o.precioFinal}
+            {', '}
+          </span>
+          <span>{o.status}</span>
         </div>
       ))}
     </div>
