@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFirebaseApp, useUser } from 'reactfire';
 import 'firebase/auth';
+import swal from 'sweetalert';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories } from '../../../redux/actions/actions';
@@ -38,6 +39,11 @@ export default function Nav() {
   useEffect(() => {
     dispatch(getCategories());
   }, []);
+
+  const handleSingOut = () => {
+    firebase.auth().signOut()
+      .then(() => swal('Gracias', 'Cerro Sesión correctamente', 'success'));
+  };
 
   return (
     <div className="ctnNav bg-color-three">
@@ -68,21 +74,31 @@ export default function Nav() {
         <div style={{ flexGrow: 1 }}>
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
+
         <div style={{ flexGrow: 1 }}>
           <SearchBar />
         </div>
+
         <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
-          <div className="userOptions">
-            <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesion</p></Link>
-            <Link to="/account/register"><p>Registrarme</p></Link>
-            {user.data && (<Link to="#logout"> <p onClick={ () => firebase.auth().signOut() }> Cerrar Sesion</p> </Link>)}
-          </div>
-&ensp;&ensp;
-        </div>
-        <FaShoppingCart />
-      </div>
+          {user.data
+            ? (
+              <div className="userOptions">
+                <Link to="/account/profile"><p>Mi Cuenta</p></Link>
+                <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesion</p> </Link>
+              </div>
+            )
+            : (
+              <div className="userOptions">
+                <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesion</p></Link>
+                <Link to="/account/register"><p>Registrarme</p></Link>
+              </div>
+            )}
+            &ensp;&ensp;
 
+        </div>
+        <FaShoppingCart />&ensp;
+      </div>
     </div>
   );
 }

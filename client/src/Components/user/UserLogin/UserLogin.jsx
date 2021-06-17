@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-return-assign */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -8,6 +9,7 @@ import React, { useState } from 'react';
 import './UserLogin.css';
 import { Link } from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
+import swal from 'sweetalert';
 import logo from '../../../img/logo.png';
 import 'firebase/auth';
 
@@ -22,14 +24,13 @@ export default function UserLogin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     firebase.auth().signInWithEmailAndPassword(input.email, input.password)
-      .then((res) => {
-        console.log('respon', res);
-        alert('exito');
-      })
+      .then(() => { swal('Hola', 'Inicio de sesión exitoso', 'success'); })
+      .then(() => document.getElementById('login').style.display = 'none')
       .catch((error) => {
-        console.log(error);
-        alert('error');
+        error.message.includes('user record') && swal('Email incorrecto', 'Por favor, verifique su e-mail', 'warning');
+        error.message.includes('password is invalid') && swal('Contraseña incorrecta', 'Por favor, verifique su contraseña', 'warning');
       });
   };
 

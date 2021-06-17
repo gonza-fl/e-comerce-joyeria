@@ -24,7 +24,6 @@ export default function UserCreate() {
   const [form, setForm] = useState({
     email: '', name: '', password: '', passwordConfirmation: '', date: '',
   });
-
   const [errors, setErrors] = useState({
     email: false, password: false, number: false, empty: false,
   });
@@ -34,7 +33,6 @@ export default function UserCreate() {
   }, [submit]);
 
   const handleInputChange = (e) => {
-
     setForm({ ...form, [e.target.name]: e.target.value });
 
     if (e.target.name === 'passwordConfirmation')
@@ -45,22 +43,23 @@ export default function UserCreate() {
       setErrors({ ...errors, email: !reg.test(form.email) });
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmit(true);
 
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
+
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
-        .then((res) => console.log('respon', res));
-      swal('Exito', 'Usuario fue creado con exito', 'success');
-      document.getElementsByClassName('swal-button swal-button--confirm')[0].onclick = () => window.history.back();
+        .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
+        .then(() => window.history.back())
+        .catch(() => swal('Error', 'Se produjo un error inesperado. Por favor, intente nuevamente', 'error'));
+
     } else
       swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
 
   };
-  if (user.data) console.log('data', user.data.email);
-  console.log('user', user);
 
   return (
     <div className="formBackGrond">
