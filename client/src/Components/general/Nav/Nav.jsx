@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable no-return-assign */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +10,7 @@ import styled from 'styled-components';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories } from '../../../redux/actions/actions';
+import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 
 export default function Nav() {
@@ -29,6 +33,7 @@ export default function Nav() {
 
   return (
     <div className="ctnNav bg-color-three">
+      <UserLogin />
       <div className="nav bg-color-three">
 
         <div style={{
@@ -61,7 +66,7 @@ export default function Nav() {
         <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
           <div className="userOptions">
-            <Link to="#login"><p>Iniciar Sesion</p></Link>
+            <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesion</p></Link>
             <Link to="/account/register"><p>Registrarme</p></Link>
           </div>
 &ensp;&ensp;
