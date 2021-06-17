@@ -6,6 +6,7 @@ import AdminNavBar from './AdminNavBar/AdminNavBar';
 import AddCategoryForm from './AddCategoryForm';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
+import AdminProductCard from './AdminProducts/AdminProductCard';
 
 function AdminWindow() {
   return (
@@ -17,6 +18,7 @@ function AdminWindow() {
         <WindowDiv className="bg-color-six">
           <Switch>
             <Route exact path="/admin/products" component={AdminProducts} />
+            <Route exact path="/admin/products/:productId" component={AdminProductCard} />
             <Route exact path="/admin/addcategory" component={AddCategoryForm} />
             <Route exact path="/admin/createproduct" component={ModalCreatProductos} />
             <Route exact path="/admin/statistics" component={AdminStatistics} />
