@@ -69,7 +69,7 @@
 }
 
 .transparent {
-    color: transparent;
+    display: none;
     position: absolute;
     z-index: 99;
     font-size: 10px;
