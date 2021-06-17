@@ -11,6 +11,7 @@ import Product from './Components/catalogue/Product/Product';
 import Footer from './Components/general/Footer/Footer';
 import AdminWindow from './Components/admin/AdminWindow';
 import CategoryCatalogue from './Components/catalogue/CategoryCatalogue/CategoryCatalogue';
+import OrderList from './Components/admin/OrderList/OrderList';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/admin/addcategory" component={AddCategoryForm} />
+          <Route exact path="/admin/orders" component={OrderList} />
           <Route exact path="/admin" component={AdminWindow} />
           <Route path="/products/product/:productId" component={Product} />
           <Route path="/products/:categoryId" component={CategoryCatalogue} />
