@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 const {
   DataTypes,
 } = require('sequelize');

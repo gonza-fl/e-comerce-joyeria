@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 import {
   GET_PRODUCTS_BY_CATEGORY,
   GET_CATEGORY_ID,
@@ -18,7 +17,7 @@ const InitialState = {
   cart: [],
   idToChange: [],
   detail: {
-    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [],
+    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }],
   },
   categorieId: null,
   productsByCategory: [],
