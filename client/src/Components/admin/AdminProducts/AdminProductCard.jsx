@@ -1,7 +1,5 @@
-
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/prop-types */
-/* eslint linebreak-style: ["error", "windows"] */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
@@ -150,4 +148,3 @@ const CloseButton = styled.button`
 `;
 
 export default AdminProductCard;
-
