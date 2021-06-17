@@ -15,5 +15,4 @@ module.exports = {
     'object-curly-newline': ['error', 'always'],
     'linebreak-style': ['error', 'windows'],
   },
-
 };
