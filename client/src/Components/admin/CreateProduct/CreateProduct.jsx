@@ -3,12 +3,14 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './createProduct.css';
 import axios from 'axios';
 import { URL_PRODUCTS } from '../../../constants';
+import { getCategories } from '../../../redux/actions/actions';
 
 function CreateProduct() {
+  const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState([]);
   const [previewSource, setPreviewSource] = useState('');
   const [newProduct, setNewProduct] = useState({
@@ -25,6 +27,7 @@ function CreateProduct() {
 
   useEffect(() => {
     setNewProduct({ ...newProduct, image: selectedFile });
+    dispatch(getCategories());
   }, [selectedFile]);
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -73,9 +76,7 @@ function CreateProduct() {
       });
   };
 
-  function enviar(e) {
-    e.preventDefault();
-
+  function enviar() {
     if (!selectedFile) return swal('Error', 'Debes ingresar una imagen', 'warning');
     if (newProduct.stockAmount.length === 0) {
       return swal('Error', 'El campo del stock debe ser completado', 'warning');
@@ -101,11 +102,11 @@ function CreateProduct() {
       <div className="divForm bg-color-six">
         <form method="POST" onSubmit={(e) => enviar(e)}>
           <div className="divsInputs">
-            <span className="spans">Nombre del Producto</span>
+            <span className="spans">Nombre: </span>
             <input type="text" id="nombre" name="name" style={{ marginLeft: '10px', width: '220px' }} onChange={handleChange} />
           </div>
           <div className="divsInputs">
-            <span className="spans">Precio del producto:</span>
+            <span className="spans">Precio:</span>
             <input type="text" id="precio" name="price" style={{ marginLeft: '10px', width: '220px' }} onChange={handleChange} />
           </div>
           <div className="divsInputs">
@@ -114,17 +115,17 @@ function CreateProduct() {
           </div>
 
           <div className="divsInputs">
-            <p className="spanImagen">ingresar imagen: </p>
+            <p className="spanImagen">Insertar imagen: </p>
             <p className={filled}>maximo de 3 imagenes alcanzado!</p>
             <button type="button" className="imgLabel">
 
-              <label htmlFor="image">insert image </label>
+              <label htmlFor="image">Insertar imagen</label>
 
             </button>
             <input type="file" id="image" name="image" accept="image/*" className="insertImg" onChange={handleFileInputChange} />
             <div className="cont">
               <div className="divImg">
-                <img id="preview" src={previewSource} alt="" className="imagen image-preview__image" width="200px" />
+                <img id="preview" src={previewSource} alt="" className="imagen image-preview__image" width="100px" />
               </div>
             </div>
           </div>

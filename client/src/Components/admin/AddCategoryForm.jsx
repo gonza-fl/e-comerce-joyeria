@@ -91,7 +91,13 @@ function AddCategoryForm() {
 
   return (
     <div style={{
-      height: '100%', justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: '50px',
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      padding: '10px 10px',
+      transform: 'translate(0px,-60px)',
+      width: '700px',
     }}
     >
       <div style={{
@@ -120,7 +126,7 @@ function AddCategoryForm() {
               <img
                 src={previewSource}
                 alt="chosen"
-                style={{ height: '300px', marginBottom: '15px' }}
+                style={{ height: '200px', width: '200px', marginBottom: '15px' }}
               />
               )}
               {
