@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-useless-escape */
 /* eslint-disable curly */
 /* eslint-disable nonblock-statement-body-position */
@@ -10,7 +11,8 @@
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';
-import Button from '../StyledComponents/Button';
+import Button from '../../StyledComponents/Button';
+import UserLogin from '../UserLogin/UserLogin';
 
 export default function UserCreate() {
   const [submit, setSubmit] = useState(false);
@@ -97,7 +99,7 @@ export default function UserCreate() {
         </form>
         <div>
           <p>¿Ya tienes un usuario?</p>
-          <Button text="Iniciar Sesion" />
+          <Button text="Iniciar Sesion" handleClick={() => document.getElementById('login').style.display = 'block'} />
         </div>
       </div>
     </div>
