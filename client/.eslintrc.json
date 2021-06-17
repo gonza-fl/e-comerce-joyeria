@@ -1,4 +1,3 @@
-
 {
     "env": {
         "browser": true,
@@ -20,6 +19,6 @@
     ],
     "rules": {
 
-        "linebreak-style": ["error", "unix"]
+        "linebreak-style": ["error", "windows"]
     }
 }
