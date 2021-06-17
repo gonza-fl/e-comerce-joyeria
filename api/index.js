@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require('express');
 const morgan = require('morgan');
 const router = require('./src/routes/index');
@@ -36,7 +37,7 @@ server.use((err, _req, res) => {
 });
 
 conn.sync({
-  force: true,
+  force: false,
 }).then(() => {
   console.log('DB conectada');
   server.listen(PORT, () => {
