@@ -13,12 +13,12 @@ const StyledButton = styled.button`
     color: black;
     padding: 10px;
     font-size: 105%;
+    transition: 0.5s;
 
     &:hover {
         cursor: pointer;
         background-color: #f0ddd8;
         transform: scale(1.1);
-        transition: 0.5s;
     }
 `;
 
