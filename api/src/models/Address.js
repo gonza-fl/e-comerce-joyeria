@@ -3,7 +3,7 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const model = sequelize.define('category', {
+  const model = sequelize.define('address', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -11,12 +11,18 @@ module.exports = (sequelize) => {
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
-    },
-    img: {
+    direction: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    region: {
+      type: DataTypes.STRING,
+      defaultValue: 'Medellin',
+    },
+    postalCode: {
+      type: DataTypes.INTEGER,
     },
   },
   {

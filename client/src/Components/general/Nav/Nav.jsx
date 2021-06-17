@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-/* eslint linebreak-style: ["error", "windows"] */
+
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
@@ -30,6 +31,7 @@ export default function Nav() {
   return (
     <div className="ctnNav bg-color-three">
       <div className="nav bg-color-three">
+
         <div style={{
           display: 'flex', fontWeight: 'bold', fontSize: '13px', flexGrow: 3,
         }}
@@ -57,12 +59,17 @@ export default function Nav() {
         <div style={{ flexGrow: 1 }}>
           <SearchBar />
         </div>
-        <div style={{ flexGrow: 0.1, fontSize: '120%' }}>
+        <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
+          <div className="userOptions">
+            <Link to="#login"><p>Iniciar Sesion</p></Link>
+            <Link to="/account/register"><p>Registrarme</p></Link>
+          </div>
 &ensp;&ensp;
           <FaShoppingCart />
         </div>
       </div>
+
     </div>
   );
 }
