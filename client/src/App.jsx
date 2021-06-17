@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import './colors.css';
 import { Route, Switch } from 'react-router-dom';
+import { useFirebaseApp } from 'reactfire';
 import Home from './Components/home/Home';
 import Nav from './Components/general/Nav/Nav';
 import Catalogue from './Components/catalogue/Catalogue/Catalogue';
@@ -13,6 +14,8 @@ import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
 
 function App() {
+  const fi = useFirebaseApp();
+  console.log(fi);
   return (
     <div>
       <Switch>
