@@ -1,3 +1,4 @@
+
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/prop-types */
 /* eslint linebreak-style: ["error", "windows"] */
@@ -189,3 +190,4 @@ const CloseButton = styled.button`
 `;
 
 export default AdminProductCard;
+

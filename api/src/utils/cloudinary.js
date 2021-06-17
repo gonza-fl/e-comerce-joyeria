@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({

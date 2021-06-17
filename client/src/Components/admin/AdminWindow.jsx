@@ -1,10 +1,10 @@
-/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import AdminNavBar from './AdminNavBar/AdminNavBar';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
+import OrderList from './OrderList/OrderList';
 import AdminProductCard from './AdminProducts/AdminProductCard';
 import CreateProduct from './CreateProduct/CreateProduct';
 import AdminControlCategories from './AdminCategories/AdminControlCategories';
@@ -18,6 +18,7 @@ function AdminWindow() {
         <AdminNavBar />
         <WindowDiv className="bg-color-six">
           <Switch>
+            <Route exact path="/admin/orders" component={OrderList} />
             <Route exact path="/admin/products" component={AdminProducts} />
             <Route exact path="/admin/products/:productId" component={AdminProductCard} />
             <Route exact path="/admin/controlcategories" component={AdminControlCategories} />
@@ -26,7 +27,6 @@ function AdminWindow() {
           </Switch>
         </WindowDiv>
       </AdminPanel>
-
     </MainDiv>
   );
 }
