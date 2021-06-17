@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
     },
     status: {
       type: DataTypes.STRING,
-      defaultValue: 'creada',
+      defaultValue: 'carrito',
     },
     endTimestamp: { // generar al momento de cerrar compra .
       type: DataTypes.DATE,

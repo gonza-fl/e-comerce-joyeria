@@ -61,4 +61,5 @@ module.exports = {
   Product,
   Image,
   Cart,
+  OrderLine,
 };

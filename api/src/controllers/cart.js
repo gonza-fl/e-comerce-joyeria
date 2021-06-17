@@ -2,7 +2,7 @@
 const {
   Cart,
   User,
-  Orderline,
+  OrderLine,
   Product,
 } = require('../models/index');
 
@@ -20,32 +20,14 @@ const addItem = async (req, res) => {
       err: 'El usuario no existe',
     });
   }
-  // busco si hay un carrito previamente creado del usuario
-  let bandera = false;
-  for (let i = 0; i < user.carts.length; i += 1) {
-    if (user.carts[i].status === 'creada') {
-      bandera = true;
-      break;
-    }
-  }
-  // encuentro el carrito previamente creado
+  // busco si hay un carrito previamente creado del usuario sino crea uno nuevo
+  let cart = await Cart.findOrCreate({
+    where: {
+      status: 'carrito',
+      include: OrderLine,
+    },
+  });
 
-  let cart;
-  if (bandera) {
-    cart = await Cart.findOne({
-      where: {
-        status: 'creada',
-      },
-      include: Orderline,
-    });
-  } else {
-    // SI NO TENE CARRITO PREVIAMENTE CREADO, SE CREA UNO Y SE LO DA AL FRONT
-    cart = await Cart.create({
-
-    });
-  }
-
-  // encuentro los productos enviado desde el front
   const results = [];
   for (let i = 0; i < req.body.products.length; i += 1) {
     results.push(Product.findOne({
@@ -71,14 +53,14 @@ const addItem = async (req, res) => {
   }
   // CORROBORO SI EXISTIA PREVIAMENTE EL PRODUCTO EN EL CARRO Y SI ES ASI LO SUMO AL ORDERLINE
   const idsguardados = [];
-  for (let i = 0; i < cart.orderlines.length; i += 1) {
+  for (let i = 0; i < cart.orderLines.length; i += 1) {
     for (let j = 0; j < arrayProducts.length; j += 1) {
-      if (cart.orderlines[i].productId === arrayProducts[j].id) {
+      if (cart.orderLines[i].productId === arrayProducts[j].id) {
         idsguardados.push(arrayProducts[j].id);
 
-        Orderline.findOne({
+        OrderLine.findOne({
           where: {
-            id: cart.orderlines[i].id,
+            id: cart.orderLines[i].id,
           },
         }).then(async (obj) => {
           if (obj.quantity + req.body.products[i].amount > arrayProducts[i].stockAmount) {
@@ -95,10 +77,10 @@ const addItem = async (req, res) => {
   }
   // SE CREA LA ORDER LINE CON SU RESPECTIVO PRODUCTO SI NO SE ENCONTRABA ASOCIADO.
   // ARREGLAR CUANDO CREEN EL MODELO ORDERLINE
-  const resultsOrderlines = [];
+  const resultsOrderLines = [];
   for (let i = 0; i < arrayProducts.length; i += 1) {
     if (!idsguardados.includes(arrayProducts[i].id)) {
-      resultsOrderlines.push(Orderline.create({
+      resultsOrderLines.push(OrderLine.create({
         price: arrayProducts[i].price,
         quantity: req.body.products[i].quantity,
         name: arrayProducts[i].name,
@@ -107,10 +89,10 @@ const addItem = async (req, res) => {
     }
   }
 
-  const arrayOrderlines = await Promise.all(resultsOrderlines);
+  const arrayOrderLines = await Promise.all(resultsOrderLines);
   // AGREGO A CADA ORDERLINE EL CARRITO ASOCIADO
-  for (let i = 0; i < arrayOrderlines.length; i += 1) {
-    arrayOrderlines[i].addCart(cart);
+  for (let i = 0; i < arrayOrderLines.length; i += 1) {
+    arrayOrderLines[i].addCart(cart);
   }
   // HAGO LAS NUEVAS ASOCIACIONES Y GUARDO EN BASE DE DATOS
 
@@ -122,24 +104,11 @@ const addItem = async (req, res) => {
     where: {
       status: 'creada',
     },
-    include: Orderline,
+    include: Product,
   });
-  // TRAIGO LAS ORDER LINES CON SUS PRODUCTOS
-  const resultsLines = [];
-  for (let i = 0; i < cart.orderlines.length; i += 1) {
-    resultsLines.push(Orderline.findOne({
-      where: {
-        id: cart.orderlines[i].id,
-      },
-      include: Product,
-    }));
-  }
-
-  const lines = await Promise.all(resultsLines);
   // ENVIO EL CARRO Y SUS ORDERLINES CON SUS PRODUCTOS AL FRONT
   return res.json({
     cart,
-    lines,
   });
 };
 
