@@ -12,6 +12,8 @@ const AdminNavBar = () => (
       <Link to="/admin/addcategory" className="link-without-styles"><li>AGREGAR CATEGORÍA</li></Link>
       <br />
       <Link to="/admin/statistics" className="link-without-styles"><li>VER ESTADÍSTICAS</li></Link>
+      <br />
+      <Link to="/admin/orders" className="link-without-styles"><li>VER VENTAS</li></Link>
     </ul>
   </DivContainer>
 );
