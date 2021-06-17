@@ -4,16 +4,39 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useState } from 'react';
 import './UserLogin.css';
 import { Link } from 'react-router-dom';
+import { useFirebaseApp } from 'reactfire';
 import logo from '../../../img/logo.png';
+import 'firebase/auth';
 
 export default function UserLogin() {
+  const firebase = useFirebaseApp();
+
+  const [input, setInput] = useState({ email: '', password: '' });
+
+  const handleInputChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    firebase.auth().signInWithEmailAndPassword(input.email, input.password)
+      .then((res) => {
+        console.log('respon', res);
+        alert('exito');
+      })
+      .catch((error) => {
+        console.log(error);
+        alert('error');
+      });
+  };
+
   return (
 
     <div id="login" className="loginModal">
-      <form className="modalCtn animate">
+      <form className="modalCtn animate" onSubmit={handleSubmit}>
         <div className="logoForm">
           <span className="close" onClick={() => document.getElementById('login').style.display = 'none'}>&times;</span>
           <img src={logo} alt="Kmora" />
@@ -21,10 +44,10 @@ export default function UserLogin() {
 
         <div className="ctnInputs">
           <label><b>E-mail</b></label>
-          <input className="loginInput" type="text" placeholder="Ingrese su E-mail..." name="email" required autoComplete="off" />
+          <input className="loginInput" type="text" placeholder="Ingrese su E-mail..." name="email" required autoComplete="off" onChange={handleInputChange} />
 
           <label><b>Contraseña</b></label>
-          <input className="loginInput" type="password" placeholder="Ingrese su contraseña" name="password" required />
+          <input className="loginInput" type="password" placeholder="Ingrese su contraseña" name="password" required onChange={handleInputChange} />
 
           <input className="loginInput" type="submit" value="Iniciar Sesión" />
           <input className="loginInput " type="button" value="Iniciar con Google" name="google" />

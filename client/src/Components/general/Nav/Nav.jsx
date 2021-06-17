@@ -76,7 +76,7 @@ export default function Nav() {
           <div className="userOptions">
             <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesion</p></Link>
             <Link to="/account/register"><p>Registrarme</p></Link>
-            {user && (<Link to="logout"> <p onClick={async () => await firebase.auth().signOut }> Cerrar Sesion</p> </Link>)}
+            {user.data && (<Link to="#logout"> <p onClick={ () => firebase.auth().signOut() }> Cerrar Sesion</p> </Link>)}
           </div>
 &ensp;&ensp;
         </div>

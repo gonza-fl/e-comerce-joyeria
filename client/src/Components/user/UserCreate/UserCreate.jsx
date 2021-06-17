@@ -45,21 +45,22 @@ export default function UserCreate() {
       setErrors({ ...errors, email: !reg.test(form.email) });
     }
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setSubmit(true);
 
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
-      await firebase.auth().createUserWithEmailAndPassword(form.email, form.password);
+      firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+        .then((res) => console.log('respon', res));
       swal('Exito', 'Usuario fue creado con exito', 'success');
       document.getElementsByClassName('swal-button swal-button--confirm')[0].onclick = () => window.history.back();
     } else
       swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
 
   };
-  console.log(user.data.email);
-  console.log(user);
+  if (user.data) console.log('data', user.data.email);
+  console.log('user', user);
 
   return (
     <div className="formBackGrond">
