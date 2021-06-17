@@ -7,7 +7,8 @@ import AddCategoryForm from './AddCategoryForm';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
 import OrderList from './OrderList/OrderList';
-// 2
+import AdminProductCard from './AdminProducts/AdminProductCard';
+
 function AdminWindow() {
   return (
     <MainDiv>
@@ -19,6 +20,7 @@ function AdminWindow() {
           <Switch>
             <Route exact path="/admin/orders" component={OrderList} />
             <Route exact path="/admin/products" component={AdminProducts} />
+            <Route exact path="/admin/products/:productId" component={AdminProductCard} />
             <Route exact path="/admin/addcategory" component={AddCategoryForm} />
             <Route exact path="/admin/createproduct" component={ModalCreatProductos} />
             <Route exact path="/admin/statistics" component={AdminStatistics} />

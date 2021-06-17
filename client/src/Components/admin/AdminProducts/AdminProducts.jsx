@@ -1,15 +1,18 @@
+
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getProducts } from '../../../redux/actions/actions';
-// import AdminProductCard from './AdminProductCard';
 
 function AdminProducts() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+
   useEffect(() => {
     dispatch(getProducts());
   }, []);
+
   return (
     <DivContainer>
       <table>
@@ -23,7 +26,9 @@ function AdminProducts() {
         </tr>
         {products.map((p) => (
           <ProductContainer className="bg-color-three">
-            <td>{p.id}</td>
+            <Link to={`/admin/products/${p.id}`} className="link-without-styles">
+              <td>{p.id}</td>
+            </Link>
             <td>{p.name}</td>
             <td>{p.price}</td>
             <td>{p.stockAmount}</td>
@@ -32,6 +37,7 @@ function AdminProducts() {
           </ProductContainer>
         ))}
       </table>
+
     </DivContainer>
   );
 }
@@ -48,7 +54,7 @@ const DivContainer = styled.div`
 const ProductContainer = styled.tr`
         border-style: solid;
         border-radius: 5px;
-        
+
         &:hover {
             cursor: pointer;
             transform: scale(1.01);
