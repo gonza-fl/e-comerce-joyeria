@@ -7,7 +7,7 @@ import AddCategoryForm from './AddCategoryForm';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
 import OrderList from './OrderList/OrderList';
-
+// 2
 function AdminWindow() {
   return (
     <MainDiv>
