@@ -9,7 +9,7 @@ import Product from './Components/catalogue/Product/Product';
 import Footer from './Components/general/Footer/Footer';
 import AdminWindow from './Components/admin/AdminWindow';
 import CategoryCatalogue from './Components/catalogue/CategoryCatalogue/CategoryCatalogue';
-import UserCreate from './Components/user/UserCreate';
+import UserCreate from './Components/user/UserCreate/UserCreate';
 
 function App() {
   return (
