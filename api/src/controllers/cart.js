@@ -83,7 +83,7 @@ const addItem = async (req, res) => {
         }).then(async (obj) => {
           if (obj.quantity + req.body.products[i].amount > arrayProducts[i].stockAmount) {
             return res.json({
-              err: '',
+              err: 'La cantidad no puede superar el stock',
             });
           }
           obj.quantity += req.body.products[i].amount;
