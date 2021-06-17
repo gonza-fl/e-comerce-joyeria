@@ -11,10 +11,15 @@
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';
+import { useFirebaseApp, useUser } from 'reactfire';
+import 'firebase/auth';
 import Button from '../../StyledComponents/Button';
-import UserLogin from '../UserLogin/UserLogin';
 
 export default function UserCreate() {
+
+  const firebase = useFirebaseApp();
+  const user = useUser();
+
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
     email: '', name: '', password: '', passwordConfirmation: '', date: '',
@@ -40,18 +45,21 @@ export default function UserCreate() {
       setErrors({ ...errors, email: !reg.test(form.email) });
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmit(true);
 
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
+      await firebase.auth().createUserWithEmailAndPassword(form.email, form.password);
       swal('Exito', 'Usuario fue creado con exito', 'success');
       document.getElementsByClassName('swal-button swal-button--confirm')[0].onclick = () => window.history.back();
     } else
       swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
 
   };
+  console.log(user.data.email);
+  console.log(user);
 
   return (
     <div className="formBackGrond">
