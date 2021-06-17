@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import './colors.css';
 import { Route, Switch } from 'react-router-dom';
-import { useFirebaseApp, useUser } from 'reactfire';
+// import { useFirebaseApp, useUser } from 'reactfire';
 import Home from './Components/home/Home';
 import Nav from './Components/general/Nav/Nav';
 import Catalogue from './Components/catalogue/Catalogue/Catalogue';
@@ -14,10 +14,10 @@ import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
 
 function App() {
-  const fi = useFirebaseApp();
-  const user = useUser();
-  console.log(fi);
-  console.log(user);
+  // const fi = useFirebaseApp();
+  // const user = useUser();
+  // console.log(fi);
+  // console.log(user);
 
   return (
     <div>

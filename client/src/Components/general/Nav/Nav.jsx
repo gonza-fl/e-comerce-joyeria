@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/jsx-curly-spacing */
+/* eslint-disable no-return-await */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-return-assign */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -7,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useFirebaseApp, useUser } from 'reactfire';
+import 'firebase/auth';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories } from '../../../redux/actions/actions';
@@ -14,6 +19,9 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 
 export default function Nav() {
+  const user = useUser();
+  const firebase = useFirebaseApp();
+
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
 
@@ -68,10 +76,11 @@ export default function Nav() {
           <div className="userOptions">
             <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesion</p></Link>
             <Link to="/account/register"><p>Registrarme</p></Link>
+            {user && (<Link to="logout"> <p onClick={async () => await firebase.auth().signOut }> Cerrar Sesion</p> </Link>)}
           </div>
 &ensp;&ensp;
-          <FaShoppingCart />
         </div>
+        <FaShoppingCart />
       </div>
 
     </div>
