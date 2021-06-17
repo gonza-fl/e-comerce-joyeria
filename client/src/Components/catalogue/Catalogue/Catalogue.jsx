@@ -30,7 +30,6 @@ export default function catalogue() {
   useEffect(() => {
     dispatch(getProducts());
   }, [productsDisplay]);
-  console.log(products);
   return (
     <div className="catalogue">
       <FilterCatalogue
