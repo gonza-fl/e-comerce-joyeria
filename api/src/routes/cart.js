@@ -3,10 +3,10 @@ const {
   Router,
 } = require('express');
 const {
-  addCategory,
-} = require('../controllers/category');
+  addItem,
+} = require('../controllers/cart');
 
 const router = Router();
-router.post('/', addCategory);
+router.post('/', addItem);
 
 module.exports = router;

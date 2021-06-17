@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint linebreak-style: ["error", "windows"] */
 const {
   Cart,
@@ -14,6 +15,7 @@ const addItem = async (req, res) => {
     },
     include: Cart,
   });
+
   // si no lo encuentro mando un error
   if (user == null) {
     return res.json({
@@ -21,12 +23,18 @@ const addItem = async (req, res) => {
     });
   }
   // busco si hay un carrito previamente creado del usuario sino crea uno nuevo
-  let cart = await Cart.findOrCreate({
+  // eslint-disable-next-line prefer-const
+  let [cart, created] = await Cart.findOrCreate({
     where: {
       status: 'carrito',
-      include: OrderLine,
     },
+    include: OrderLine,
   });
+
+  if (created) {
+    user.addCart(cart);
+    user.save();
+  }
 
   const results = [];
   for (let i = 0; i < req.body.products.length; i += 1) {
@@ -37,7 +45,9 @@ const addItem = async (req, res) => {
     }));
   }
   // esto lo tuve que hacer porque sino el eslint tira error
+
   const arrayProducts = await Promise.all(results);
+
   // corroboro que existan y tengan stock disponible, SI NO HAY MANDA ERROR
   for (let i = 0; i < arrayProducts.length; i += 1) {
     if (arrayProducts[i] == null) {
@@ -51,58 +61,99 @@ const addItem = async (req, res) => {
       });
     }
   }
+
+  if (created || cart.orderlines === undefined || cart.orderlines == null) {
+    // FLUJO: SI EL CART ES CREADO (O SI EXISTIA) Y NO TENIA ORDERLINES ASOCIADOS
+
+    for (let i = 0; i < arrayProducts.length; i += 1) {
+      const pro = await Product.findOne({
+        where: {
+          id: arrayProducts[i].id,
+        },
+      });
+
+      if (pro == null) {
+        return res.json({
+          err: 'El producto no fue encontrado',
+        });
+      }
+      // cart.addProduct(pro); funciona pero no agrega total o cantidad
+      OrderLine.create({
+        productId: pro.id,
+        cartId: cart.id,
+        price: parseFloat(pro.price, 10) * parseInt(req.body.products[i].amount, 10),
+        amount: parseInt(req.body.products[i].amount, 10),
+      });
+    }
+
+    // HAGO LAS NUEVAS ASOCIACIONES Y GUARDO EN BASE DE DATOS
+    await cart.save();
+    await user.addCart(cart);
+
+    // BUSCO EL CART CON SUS ORDERLINES ACTUALIZADAS
+    // si el cart queda como let, created tira error en eslint
+    cart = await Cart.findOne({
+      where: {
+        status: 'carrito',
+      },
+      include: Product,
+    });
+    // ENVIO EL CARRO Y SUS ORDERLINES CON SUS PRODUCTOS AL FRONT
+    return res.json({
+      cart,
+    });
+  }
+  // FLUJO: SI EL CART EXISTIA Y TENIA ORDERLINES ASOCIADOS
   // CORROBORO SI EXISTIA PREVIAMENTE EL PRODUCTO EN EL CARRO Y SI ES ASI LO SUMO AL ORDERLINE
   const idsguardados = [];
-  for (let i = 0; i < cart.orderLines.length; i += 1) {
+
+  for (let i = 0; i < cart.orderlines.length; i += 1) {
     for (let j = 0; j < arrayProducts.length; j += 1) {
-      if (cart.orderLines[i].productId === arrayProducts[j].id) {
+      if (cart.orderlines[i].productId === arrayProducts[j].id) {
         idsguardados.push(arrayProducts[j].id);
 
-        OrderLine.findOne({
+        const obj = await OrderLine.findOne({
           where: {
-            id: cart.orderLines[i].id,
+            cartId: cart.id,
+            productId: arrayProducts[j].id,
           },
-        }).then(async (obj) => {
-          if (obj.quantity + req.body.products[i].amount > arrayProducts[i].stockAmount) {
-            return res.json({
-              err: 'La cantidad no puede superar el stock',
-            });
-          }
-          obj.quantity += req.body.products[i].amount;
-          await obj.save();
-          return '';
         });
+
+        // eslint-disable-next-line max-len
+        if (parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount, 10) > parseInt(arrayProducts[i].stockAmount, 10)) {
+          return res.json({
+            err: 'La cantidad no puede superar el stock',
+          });
+        }
+        obj.amount = parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount,10);
+        await obj.save();
+        // return '';
       }
     }
   }
+
   // SE CREA LA ORDER LINE CON SU RESPECTIVO PRODUCTO SI NO SE ENCONTRABA ASOCIADO.
   // ARREGLAR CUANDO CREEN EL MODELO ORDERLINE
-  const resultsOrderLines = [];
+
   for (let i = 0; i < arrayProducts.length; i += 1) {
     if (!idsguardados.includes(arrayProducts[i].id)) {
-      resultsOrderLines.push(OrderLine.create({
-        price: arrayProducts[i].price,
-        quantity: req.body.products[i].quantity,
-        name: arrayProducts[i].name,
-        total: (arrayProducts[i].price * req.body.products[i].quantity),
-      }));
+      await OrderLine.create({
+        productId: arrayProducts[i].id,
+        cartId: cart.id,
+        price: parseFloat(arrayProducts[i].price, 10) * parseInt(req.body.products[i].amount, 10),
+        amount: parseInt(req.body.products[i].amount, 10),
+      });
     }
   }
 
-  const arrayOrderLines = await Promise.all(resultsOrderLines);
-  // AGREGO A CADA ORDERLINE EL CARRITO ASOCIADO
-  for (let i = 0; i < arrayOrderLines.length; i += 1) {
-    arrayOrderLines[i].addCart(cart);
-  }
   // HAGO LAS NUEVAS ASOCIACIONES Y GUARDO EN BASE DE DATOS
-
-  cart.addUser(user);
-
   await cart.save();
+  await user.addCart(cart);
+
   // BUSCO EL CART CON SUS ORDERLINES ACTUALIZADAS
   cart = await Cart.findOne({
     where: {
-      status: 'creada',
+      status: 'carrito',
     },
     include: Product,
   });
