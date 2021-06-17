@@ -8,11 +8,12 @@ import swal from 'sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { addToCart, getProductDetail } from '../../../redux/actions/actions';
+import { getProductDetail } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../../admin/ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 import './Product.css';
 import { URL_PRODUCTS } from '../../../constants';
+import { addToCart } from '../../../utils/cartFunctions';
 
 const Product = () => {
   const { productId } = useParams();
@@ -62,7 +63,7 @@ const Product = () => {
   };
 
   const handleClickCart = () => {
-    dispatch(addToCart(detail));
+    addToCart(detail);
   };
 
   return (

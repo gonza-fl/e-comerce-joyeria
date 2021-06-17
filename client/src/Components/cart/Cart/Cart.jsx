@@ -1,9 +1,13 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '../../StyledComponents/Button';
+import './Cart.css';
 
 const Cart = () => {
   const cartProducts = JSON.parse(localStorage.getItem('cart'));
@@ -18,13 +22,14 @@ const Cart = () => {
   }
   const [subTotal, setSubtotal] = useState(operation);
   const [total, setTotal] = useState(subTotal + shipping + tax);
+  const [showProduct, setShowProduct] = useState(false);
 
   const sumAmount = (id) => {
     const index = cartProducts.findIndex((product) => product.id === id);
     cartProducts[index].amount += 1;
     localStorage.setItem('cart', JSON.stringify(cartProducts));
-    //
     setSubtotal((prevState) => prevState + cartProducts[index].price);
+    setTotal((prevState) => prevState + cartProducts[index].price);
   };
 
   const substractAmount = (id) => {
@@ -33,42 +38,76 @@ const Cart = () => {
       cartProducts[index].amount -= 1;
       localStorage.setItem('cart', JSON.stringify(cartProducts));
       setSubtotal((prevState) => prevState - cartProducts[index].price);
+      setTotal((prevState) => prevState - cartProducts[index].price);
     }
+  };
+
+  const deleteFromCart = (id) => {
+    const index = cartProducts.findIndex((product) => product.id === id);
+    const pricePerAmount = cartProducts[index].price * cartProducts[index].amount;
+    setSubtotal((prevState) => prevState - pricePerAmount);
+    setTotal((prevState) => prevState - pricePerAmount);
+    cartProducts.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cartProducts));
+    // setShowProduct(!showProduct);
   };
 
   if (cartProducts) {
     return (
-      <div>
-        <div className="cart-container">
+      <div className="cart-container">
+        <div className="cart-detail-container">
           <h2>Carrito de Compras</h2>
-          <div>
+          <div className="card-detail-border">
             {cartProducts.map((product) => (
-              <div>
-                <img src={product.images[0].url} alt={product.name} />
-                <div>
-                  <h4>{product.name}</h4>
-                  <p>{product.description}</p>
-                  <h5>{product.price}</h5>
+              <div className="card-detail-map">
+                <div className="card-detail-map-left">
+                  <div className="card-detail-img-container">
+                    <img src={product.images[0].url} alt={product.name} />
+                  </div>
+                  <div className="card-detail-data">
+                    <h4>{product.name.toUpperCase()}</h4>
+                    <p>{product.description}</p>
+                    <h4>${product.price}</h4>
+                  </div>
                 </div>
-                <div>
-                  <p>{product.amount}</p>
-                  <button onClick={() => sumAmount(product.id)}>+</button>
-                  <button onClick={() => substractAmount(product.id)}>-</button>
+                <div className="card-detail-map-right">
+                  <div className="card-detail-amount">
+                    <span id="card-detail-amount-p">{product.amount}</span>
+                    <div className="card-detail-amount-buttons">
+                      <button onClick={() => sumAmount(product.id)}>+</button>
+                      <button onClick={() => substractAmount(product.id)}>-</button>
+                    </div>
+                  </div>
+                  <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
                 </div>
               </div>
             ))}
           </div>
-          <button>Siguiente</button>
-          <button>Volver al Catálogo</button>
+          <button id="next-btn">Siguiente</button>
+          <Link to="/products">
+            <Button text="Volver al Catálogo" />
+          </Link>
         </div>
-        <div className="summary-container">
+        <div className="cart-summary-container">
           <h2>Resumen</h2>
-          <div>
-            <h4>{subTotal}</h4>
-            <h4>{shipping}</h4>
-            <h4>{tax}</h4>
+          <div className="cart-summary-border">
+            <div className="cart-summary-data">
+              <h4>Subtotal: </h4>
+              <h4>${subTotal}</h4>
+            </div>
+            <div className="cart-summary-data">
+              <h4>Envío: </h4>
+              <h4>${shipping}</h4>
+            </div>
+            <div className="cart-summary-data">
+              <h4>Impuestos: </h4>
+              <h4>${tax}</h4>
+            </div>
           </div>
-          <h2>{total}</h2>
+          <div className="cart-summary-data">
+            <h2>TOTAL: </h2>
+            <h2>${total}</h2>
+          </div>
         </div>
       </div>
     );
