@@ -18,14 +18,6 @@
         "react"
     ],
     "rules": {
-<<<<<<< HEAD
-<<<<<<< HEAD
         "linebreak-style": ["error", "unix"]
-=======
-       
->>>>>>> 9fe23248da103832dac70839212009f0b8daca17
-=======
-        "linebreak-style": ["error", "windows"]
->>>>>>> 0294073357bf7212512a66826de1b9cbb231a630
     }
 }
