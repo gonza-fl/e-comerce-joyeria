@@ -12,6 +12,7 @@ import Button from '../../StyledComponents/Button';
 import ModalModifyProduct from '../../admin/ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 import './Product.css';
 import { URL_PRODUCTS } from '../../../constants';
+import { addToCart } from '../../../utils/cartFunctions';
 
 const Product = () => {
   const { productId } = useParams();
@@ -58,6 +59,10 @@ const Product = () => {
           swal('cancel');
         }
       });
+  };
+
+  const handleClickCart = () => {
+    addToCart(detail);
   };
 
   return (
@@ -107,7 +112,7 @@ const Product = () => {
           le falta la prop handleClick que le debería pasar la accion de agregar al carrito.
           Para los usuarios debería guardarlo en la tabla de orden de compra,
           y para los invitados debería guardarlo en el local storage */}
-          {noStock ? null : <Button text="AGREGAR AL CARRITO" /> }
+          {noStock ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
         </div>
         <ModalModifyProduct id={detail.id} />
         {' '}
