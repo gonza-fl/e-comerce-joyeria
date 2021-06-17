@@ -1,0 +1,25 @@
+.modal-container{
+  background-color: #f1eee3;
+  width: 80%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 50px;
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  border-radius: 20px;
+}
+
+.modal-table{
+  padding: 2%;
+  width: 95%;
+}
+
+.table-data{
+  background-color: #f0ddd8;
+  height: 50px;
+}
+
+.table-data:hover{
+  cursor: pointer;
+	color: white;
+	transform: scale(1.01);
+}

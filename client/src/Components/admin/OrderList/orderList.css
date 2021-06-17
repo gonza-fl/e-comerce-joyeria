@@ -1,24 +1,37 @@
 .hidden{
-    display: none;
-    
-    flex-direction: column;
+	display: none;
+	flex-direction: column;
 }
 
-.spans{
-    margin-left: 10px;
+.containerDiv{
+	display: flex;
+	flex-direction: column;
+	height: 90%;
+	width: 90%;
+	border-style: solid;
+	padding: 10px 20px;
+}
+
+.user-data{
+	background-color: #f0ddd8;
+	height: 50px;
+}
+
+.user-data:hover{
+	cursor: pointer;
+	color: white;
+	transform: scale(1.01);
+}
+
+/* .spans{
+	margin-left: 10px;
 }
 .orderContainer{
-    border-color: blue;
-    border-width: 2px;
-    border-style: solid;
-    margin: 2rem;
-    width:35%;
-    padding: 5px;
-    font-weight: 600;
-}
-.containerDiv{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-around;
-}
+	border-color: blue;
+	border-width: 2px;
+	border-style: solid;
+	margin: 2rem;
+	width:35%;
+	padding: 5px;
+	font-weight: 600;
+} */
