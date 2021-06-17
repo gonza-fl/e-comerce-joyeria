@@ -2,8 +2,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
-/* eslint linebreak-style: ["error", "windows"] */
+
 import React from 'react';
+import Button from '../../../StyledComponents/Button';
 import CreateProduct from '../CreateProduct';
 import './modalcreateProducts.css';
 
@@ -19,7 +20,7 @@ export default function ModalCreatProductos() {
   };
   return (
     <div>
-      <button id="myBtn" onClick={() => { const modal = document.getElementById('myModal'); modal.style.display = 'block'; }}>Agregar nuevo producto</button>
+      <Button id="myBtn" handleClick={() => { const modal = document.getElementById('myModal'); modal.style.display = 'block'; }} text="Agregar nuevo producto" />
       <div id="myModal" className="modal">
         <div className="modal-content">
           <span className="close" onClick={() => { const modal = document.getElementById('myModal'); modal.style.display = 'none'; }}>X</span>

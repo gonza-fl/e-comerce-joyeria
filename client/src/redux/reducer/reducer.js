@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 import {
   GET_PRODUCTS_BY_CATEGORY,
   GET_CATEGORY_ID,
