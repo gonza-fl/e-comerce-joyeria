@@ -41,3 +41,32 @@
         justify-content: center;
         width: 50%;
     }
+    
+    .userIcon:hover .userOptions {
+        display: block;
+        position: absolute;
+    }
+    
+    .userOptions {
+        display: none;
+        position: absolute;
+        background-color: #f1eee3;
+        width: 150px;
+        cursor: pointer;
+        right: 5px;
+        padding-block: 10px;
+    }
+    
+    .userOptions a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #000;
+        height: 50px;
+        width: 100%;
+    }
+    
+    .userOptions a:hover {
+        background-color: #f0ddd8;
+    }
