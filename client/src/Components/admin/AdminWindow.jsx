@@ -25,7 +25,6 @@ function AdminWindow() {
           </Switch>
         </WindowDiv>
       </AdminPanel>
-
     </MainDiv>
   );
 }
