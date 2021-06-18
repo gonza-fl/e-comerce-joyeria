@@ -11,14 +11,11 @@
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';
-import { useFirebaseApp, useUser } from 'reactfire';
+import firebase from 'firebase/app';
 import 'firebase/auth';
 import Button from '../../StyledComponents/Button';
 
 export default function UserCreate() {
-
-  const firebase = useFirebaseApp();
-  const user = useUser();
 
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
@@ -54,7 +51,9 @@ export default function UserCreate() {
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
         .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
         .then(() => window.history.back())
-        .catch(() => swal('Error', 'Se produjo un error inesperado. Por favor, intente nuevamente', 'error'));
+        .catch((err) => (err.message.includes('another account')
+          ? swal('Error', 'Ya existe una cuenta asociada al email ingresado. Por favor, inicie sesión o intente con un email diferente', 'error')
+          : swal('Error', 'Se produjo un error inesperado. Por favor, intente nuevamente', 'error')));
 
     } else
       swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
