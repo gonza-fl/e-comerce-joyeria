@@ -10,8 +10,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
     status: {
-      type: DataTypes.STRING,
-      defaultValue: 'creada',
+      type: DataTypes.ENUM(['Cart', 'DeliveryPending', 'Delivered']),
     },
     endTimestamp: { // generar al momento de cerrar compra .
       type: DataTypes.DATE,

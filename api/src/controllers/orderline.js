@@ -1,13 +1,25 @@
-// const OrderLine = require('../models/OrderLine');
+const {
+  Cart,
+} = require('../models/index');
 
 const getOrderLines = (req, res) => {
-  const {
-    id,
+  let {
+    status,
   } = req.query;
-  return res.status(200).json({
-    id,
-    message: 'Inicialización de la función',
-  });
+  if (!status) status = ['Cart', 'DeliveryPending', 'Delivered'];
+  try {
+    const result = Cart.findAll({
+      where: {
+        status,
+      },
+    });
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Internal server error',
+      error: error.message,
+    });
+  }
 };
 
 module.exports = {
