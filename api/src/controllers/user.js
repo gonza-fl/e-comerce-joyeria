@@ -62,7 +62,35 @@ const getUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const {
+    name, lastname, email, genre, birthday, phone, admin,
+  } = req.body;
+  try {
+    // capturo el usuario que se quiere cambiar
+    const user = await User.findByPk(idUser);
+    // identifico si se cambia algun espacio y le asigno el nuevo valor
+    if (name) user.name = name;
+    if (lastname) user.lastname = lastname;
+    if (email) user.email = email;
+    if (genre) user.genre = genre;
+    if (birthday) user.birthday = new Date(birthday[2], birthday[1] - 1, birthday[0]);
+    if (phone) user.phone = phone;
+    // esto solo sera posible de cambiar si el user es admin
+    if (admin && user.admin === true) user.admin = admin;
+    // Updeteo el user
+    await user.save();
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(404).json(err);
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
+  updateUser,
 };
