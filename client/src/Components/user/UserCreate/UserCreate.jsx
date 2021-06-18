@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-useless-escape */
 /* eslint-disable curly */
 /* eslint-disable nonblock-statement-body-position */
@@ -10,21 +11,22 @@
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';
-import Button from '../StyledComponents/Button';
+import Button from '../../StyledComponents/Button';
+import UserLogin from '../UserLogin/UserLogin';
 
 export default function UserCreate() {
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
-    email: '', name: '', password: '', passwordConfirmation: '', date: '', genre: 'Seleccionar',
+    email: '', name: '', password: '', passwordConfirmation: '', date: '',
   });
 
   const [errors, setErrors] = useState({
-    email: false, password: false, empty: false,
+    email: false, password: false, number: false, empty: false,
   });
 
   useEffect(() => {
-    setErrors({ ...errors, empty: !errors.email && !errors.password && form.genre !== 'Seleccionar' });
-  }, [form]);
+    setErrors({ ...errors, empty: !errors.email && !errors.password });
+  }, [submit]);
 
   const handleInputChange = (e) => {
 
@@ -34,14 +36,14 @@ export default function UserCreate() {
       setErrors(e.target.value === form.password ? { ...errors, password: false } : { ...errors, password: true });
 
     if (e.target.name === 'email') {
-      const reg = new RegExp('^[^@]+@[^@]+\.[a-zA-Z]{2,}$');
+      const reg = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$');
       setErrors({ ...errors, email: !reg.test(form.email) });
     }
   };
   const handleSubmit = (e) => {
-
     e.preventDefault();
     setSubmit(true);
+
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
       swal('Exito', 'Usuario fue creado con exito', 'success');
@@ -91,24 +93,13 @@ export default function UserCreate() {
           </div>
 
           <div>
-            <label>Género<span className="require">*</span></label>
-            <select name="genre" onChange={handleInputChange}>
-              <option>Seleccionar</option>
-              <option>Masculino</option>
-              <option>Femenino</option>
-              <option>Sin Género</option>
-            </select>
-            <span className={submit && form.genre === 'Seleccionar' ? 'requireMsg' : 'transparent'}>Seleccione un género</span>
-          </div>
-
-          <div>
             <input className="btnForm  btnBack" type="button" value="Regresar" onClick={() => window.history.back()} />
             <input className="btnForm font-color-four" type="submit" value="Crear Cuenta" />
           </div>
         </form>
         <div>
           <p>¿Ya tienes un usuario?</p>
-          <Button text="Iniciar Sesion" />
+          <Button text="Iniciar Sesion" handleClick={() => document.getElementById('login').style.display = 'block'} />
         </div>
       </div>
     </div>

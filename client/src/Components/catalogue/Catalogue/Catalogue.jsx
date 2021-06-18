@@ -30,7 +30,6 @@ export default function catalogue() {
   useEffect(() => {
     dispatch(getProducts());
   }, [productsDisplay]);
-
   return (
     <div className="catalogue">
       <FilterCatalogue
@@ -48,6 +47,7 @@ export default function catalogue() {
             id={product.id}
             image={product.images}
             review={product.review}
+            stockAmount={product.stockAmount}
           />
         ))}
       </div>
