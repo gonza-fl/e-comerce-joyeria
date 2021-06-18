@@ -57,4 +57,6 @@ module.exports = {
   Product,
   Image,
   Cart,
+  User,
+  Address,
 };

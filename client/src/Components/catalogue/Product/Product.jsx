@@ -1,7 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import swal from 'sweetalert';
@@ -113,7 +112,7 @@ const Product = () => {
           le falta la prop handleClick que le debería pasar la accion de agregar al carrito.
           Para los usuarios debería guardarlo en la tabla de orden de compra,
           y para los invitados debería guardarlo en el local storage */}
-          {noStock ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
+          {detail.stockAmount < 1 ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
         </div>
         <ModalModifyProduct id={detail.id} />
         {' '}

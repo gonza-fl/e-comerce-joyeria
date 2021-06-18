@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
@@ -16,7 +15,7 @@ export default function ProductCard({
   }
 
   return (
-    <DivCard style={{ display: `${stockAmount <= 0 ? 'none' : 'flex'}` }}>
+    <DivCard style={{ display: 'flex' }}>
 
       <Carousel image={image.map((i) => i.url)} id={id} />
       <h3>{name}</h3>
@@ -33,7 +32,7 @@ export default function ProductCard({
         value={review}
         activeColor="#ffd700"
       />
-      <Button style={{ backgroundColor: '#f1eee3', marginTop: '10px' }} handleClick={() => addToCart(product)} text="Agregar al carrito" />
+      {stockAmount === 0 ? <h3> AGOTADO </h3> : <Button style={{ backgroundColor: '#f1eee3', marginTop: '10px' }} handleClick={() => addToCart(product)} text="Agregar al carrito" />}
 
     </DivCard>
   );

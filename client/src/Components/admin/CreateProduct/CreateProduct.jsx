@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-prototype-builtins */
-
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import { useSelector, useDispatch } from 'react-redux';
@@ -80,10 +79,10 @@ function CreateProduct() {
     e.preventDefault();
 
     if (!selectedFile) return swal('Error', 'Debes ingresar una imagen', 'warning');
-    if (newProduct.stockAmount.length === 0) {
+    if (newProduct.stockAmount.length === 0 || newProduct.stockAmount < 0) {
       return swal('Error', 'El campo del stock debe ser completado', 'warning');
     }
-    if (newProduct.price.length === 0) {
+    if (newProduct.price.length === 0 || newProduct.price < 0) {
       return swal('Error', 'El campo del precio debe ser completado', 'warning');
     }
     if (newProduct.name.length === 0) {
