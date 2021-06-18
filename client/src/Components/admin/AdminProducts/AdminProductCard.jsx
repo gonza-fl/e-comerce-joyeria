@@ -1,13 +1,13 @@
-
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/prop-types */
-/* eslint linebreak-style: ["error", "windows"] */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getCategories, getProductDetail } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
+import { deleteProduct, sendChanges } from './utils/request';
 
 function AdminProductCard() {
   const dispatch = useDispatch();
@@ -28,16 +28,21 @@ function AdminProductCard() {
         <br />
         <Button text="Modificar producto" handleClick={() => setModify(!modify)} />
         &ensp;
-        <Button text="Eliminar producto" />
+        <a href="/admin/products" className="link-without-styles">
+          <Button text="Eliminar producto" handleClick={() => deleteProduct(product)} />
+        </a>
       </div>
     );
   }
 
   return (
     <div style={{}}>
-      <ModifyProduct product={product} categories={categories} />
-      <br />
-      <Button text="Aceptar" handleClick={() => setModify(!modify)} />
+      <ModifyProduct
+        product={product}
+        categories={categories}
+        modify={modify}
+        setModify={setModify}
+      />
     </div>
   );
 }
@@ -49,8 +54,8 @@ function ShowProduct({ product }) {
         <img
           src={product.images.filter((img, i) => i === 0)[0].url}
           alt="Not found"
-          width="300px"
-          height="300px"
+          width="350px"
+          height="350px"
         />
       </div>
       <Detail>
@@ -82,49 +87,83 @@ function ShowProduct({ product }) {
   );
 }
 
-function ModifyProduct({ product, categories }) {
+function ModifyProduct({
+  product, categories, modify, setModify,
+}) {
+  const [input, setInput] = useState({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    stockAmount: product.stockAmount,
+    description: product.description,
+    categories: product.categories,
+  });
+
+  function onChangeInput(e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  }
+
   return (
-    <ProductDetail>
+    <ProductDetail method="PUT" onSubmit={() => sendChanges(input)}>
       <div>
-        <img src={product.images.filter((img, i) => i === 0)[0].url} alt="Not found" width="300px" height="300px" />
+        <img
+          src={product.images.filter((img, i) => i === 0)[0].url}
+          alt="Not found"
+          width="350px"
+          height="350px"
+        />
       </div>
       <Detail>
         <b>ID: </b>
         <span>{product.id}</span>
         <br />
         <b>Nombre: </b>
-        <input value={product.name} />
+        <input name="name" value={input.name} onChange={(e) => onChangeInput(e)} />
         <br />
         <b>Precio: </b>
-        <input value={product.price} />
+        <input name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
         <br />
         <b>Cantidad: </b>
-        <input value={product.stockAmount} />
+        <input name="stockAmount" value={input.stockAmount} onChange={(e) => onChangeInput(e)} />
         <br />
         <b>Descripción: </b>
         <br />
-        <textarea value={product.description} style={{ fontFamily: 'inherit', width: '100%' }} />
+        <textarea
+          name="description"
+          value={input.description}
+          style={{ fontFamily: 'inherit', width: '100%' }}
+          onChange={(e) => onChangeInput(e)}
+        />
         <br />
         <b>Categorías: </b>
         <div>
           {categories.map((c) => (
             <label>
               <input
+                onChange={(e) => onChangeInput(e)}
+                name="categories"
                 type="checkbox"
-                checked={product.categories.map((pc) => pc.name).includes(c.name) ? 'checked' : ''}
+                checked={input.categories.map((pc) => pc.name).includes(c.name) ? 'checked' : ''}
               />
               {c.name}
             </label>
           ))}
         </div>
         <br />
-
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button type="submit" text="&#x2713;" />
+        &ensp;
+          <Button type="button" text="X" handleClick={() => setModify(!modify)} />
+        </div>
       </Detail>
     </ProductDetail>
   );
 }
 
-const ProductDetail = styled.div`
+const ProductDetail = styled.form`
         display: flex;
         align-items: center;
         border-style: solid;
@@ -150,4 +189,3 @@ const CloseButton = styled.button`
 `;
 
 export default AdminProductCard;
-

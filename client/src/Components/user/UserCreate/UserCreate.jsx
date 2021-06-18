@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-useless-escape */
 /* eslint-disable curly */
 /* eslint-disable nonblock-statement-body-position */
@@ -10,42 +11,50 @@
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';
-import Button from '../StyledComponents/Button';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import Button from '../../StyledComponents/Button';
 
 export default function UserCreate() {
+
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
-    email: '', name: '', password: '', passwordConfirmation: '', date: '', genre: 'Seleccionar',
+    email: '', name: '', password: '', passwordConfirmation: '', date: '', address: '',
   });
-
   const [errors, setErrors] = useState({
-    email: false, password: false, empty: false,
+    email: false, password: false, number: false, empty: false,
   });
 
   useEffect(() => {
-    setErrors({ ...errors, empty: !errors.email && !errors.password && form.genre !== 'Seleccionar' });
-  }, [form]);
+    setErrors({ ...errors, empty: !errors.email && !errors.password });
+  }, [submit]);
 
   const handleInputChange = (e) => {
-
     setForm({ ...form, [e.target.name]: e.target.value });
 
     if (e.target.name === 'passwordConfirmation')
       setErrors(e.target.value === form.password ? { ...errors, password: false } : { ...errors, password: true });
 
     if (e.target.name === 'email') {
-      const reg = new RegExp('^[^@]+@[^@]+\.[a-zA-Z]{2,}$');
+      const reg = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$');
       setErrors({ ...errors, email: !reg.test(form.email) });
     }
   };
-  const handleSubmit = (e) => {
 
+  const handleSubmit = (e) => {
     e.preventDefault();
     setSubmit(true);
+
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
-      swal('Exito', 'Usuario fue creado con exito', 'success');
-      document.getElementsByClassName('swal-button swal-button--confirm')[0].onclick = () => window.history.back();
+
+      firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+        .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
+        .then(() => window.history.back())
+        .catch((err) => (err.message.includes('another account')
+          ? swal('Error', 'Ya existe una cuenta asociada al email ingresado. Por favor, inicie sesión o intente con un email diferente', 'error')
+          : swal('Error', 'Se produjo un error inesperado. Por favor, intente nuevamente', 'error')));
+
     } else
       swal('Error', 'Se produjo un error, por favor verifique los datos', 'warning');
 
@@ -91,14 +100,9 @@ export default function UserCreate() {
           </div>
 
           <div>
-            <label>Género<span className="require">*</span></label>
-            <select name="genre" onChange={handleInputChange}>
-              <option>Seleccionar</option>
-              <option>Masculino</option>
-              <option>Femenino</option>
-              <option>Sin Género</option>
-            </select>
-            <span className={submit && form.genre === 'Seleccionar' ? 'requireMsg' : 'transparent'}>Seleccione un género</span>
+            <label>Dirección<span className="require">*</span> </label>
+            <input name="address" placeholder="Ingrese su dirección..." required onChange={handleInputChange} autocomplete="off" />
+            <input name="postalCod" placeholder="Código Postal" required onChange={handleInputChange} autocomplete="off" type="number" />
           </div>
 
           <div>
@@ -108,7 +112,7 @@ export default function UserCreate() {
         </form>
         <div>
           <p>¿Ya tienes un usuario?</p>
-          <Button text="Iniciar Sesion" />
+          <Button text="Iniciar Sesión" handleClick={() => document.getElementById('login').style.display = 'block'} />
         </div>
       </div>
     </div>

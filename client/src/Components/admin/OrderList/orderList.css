@@ -1,24 +1,19 @@
-.hidden{
-    display: none;
-    
-    flex-direction: column;
+.containerDiv{
+	display: flex;
+	flex-direction: column;
+	height: 90%;
+	width: 90%;
+	border-style: solid;
+	padding: 10px 20px;
 }
 
-.spans{
-    margin-left: 10px;
+.user-data{
+	background-color: #f0ddd8;
+	height: 50px;
 }
-.orderContainer{
-    border-color: blue;
-    border-width: 2px;
-    border-style: solid;
-    margin: 2rem;
-    width:35%;
-    padding: 5px;
-    font-weight: 600;
-}
-.containerDiv{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-around;
+
+.user-data:hover{
+	cursor: pointer;
+	color: white;
+	transform: scale(1.01);
 }
