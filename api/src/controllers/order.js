@@ -2,7 +2,7 @@ const {
   Cart,
 } = require('../models/index');
 
-const getOrderLines = (req, res) => {
+const getOrders = (req, res) => {
   let {
     status,
   } = req.query;
@@ -12,6 +12,7 @@ const getOrderLines = (req, res) => {
       where: {
         status,
       },
+
     });
     return res.status(200).json(result);
   } catch (error) {
@@ -23,5 +24,5 @@ const getOrderLines = (req, res) => {
 };
 
 module.exports = {
-  getOrderLines,
+  getOrders,
 };
