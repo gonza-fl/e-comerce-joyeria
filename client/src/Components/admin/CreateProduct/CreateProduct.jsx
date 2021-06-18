@@ -66,7 +66,7 @@ function CreateProduct() {
     axios.post(URL_PRODUCTS, newProduct)
       .then((res) => {
         if (res.data.hasOwnProperty('err')) {
-          swal('Error', res.data.err, 'warning');
+          swal('error', 'No se pudo crear al producto', 'warning');
         } else {
           swal('Success', 'Se creo el producto!');
         }
@@ -76,7 +76,9 @@ function CreateProduct() {
       });
   };
 
-  function enviar() {
+  function enviar(e) {
+    e.preventDefault();
+
     if (!selectedFile) return swal('Error', 'Debes ingresar una imagen', 'warning');
     if (newProduct.stockAmount.length === 0) {
       return swal('Error', 'El campo del stock debe ser completado', 'warning');

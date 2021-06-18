@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getCategories } from '../../../redux/actions/actions';
 import AddCategoryForm from '../AddCategoryForm';
+import { deleteCategory } from '../AdminProducts/utils/request';
 
 function AdminControlCategories() {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ function AdminControlCategories() {
 
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [categories.length]);
   return (
     <Container>
       <div style={{ marginRight: '50px' }}>
@@ -24,7 +25,7 @@ function AdminControlCategories() {
             <tr className="bg-color-three">
               <td>{c.id}</td>
               <td>{c.name}</td>
-              <button type="button">X</button>
+              <a href="/admin/controlcategories"><button type="button" onClick={() => deleteCategory(c)}>X</button></a>
             </tr>
           ))}
         </table>

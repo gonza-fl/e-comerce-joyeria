@@ -17,7 +17,7 @@ function AdminProducts() {
 
   useEffect(() => {
     dispatch(getProducts());
-  }, [products]);
+  }, []);
 
   return (
     <DivContainer>
