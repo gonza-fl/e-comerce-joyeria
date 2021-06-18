@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-curly-spacing */
 /* eslint-disable no-return-await */
@@ -20,10 +21,9 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 
 export default function Nav() {
-  const user = firebase.auth().currentUser;
-
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
+  const user = useSelector((state) => state.user);
 
   const [menu, setMenu] = useState('none');
 
@@ -81,7 +81,7 @@ export default function Nav() {
 
         <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
-          {user
+          {user.id
             ? (
               <div className="userOptions">
                 <Link to="/account/profile"><p>Mi Cuenta</p></Link>

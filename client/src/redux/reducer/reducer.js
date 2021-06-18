@@ -8,6 +8,7 @@ import {
   DELETE_PRODUCT,
   MODIFY_PRODUCT,
   GET_PRODUCT_DETAIL,
+  SET_USER,
 } from '../actions/actions';
 
 const InitialState = {
@@ -21,6 +22,7 @@ const InitialState = {
   },
   categorieId: null,
   productsByCategory: [],
+  user: {},
 };
 
 export default function rootReducer(state = InitialState, action) {
@@ -81,6 +83,12 @@ export default function rootReducer(state = InitialState, action) {
     return {
       ...state,
       detail: action.payload,
+    };
+  }
+  if (action.type === SET_USER) {
+    return {
+      ...state,
+      user: action.payload,
     };
   }
   return state;
