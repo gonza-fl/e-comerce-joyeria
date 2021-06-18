@@ -69,6 +69,7 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(resultado);
   } catch (err) {
+    console.log(err);
     return res.status(400).json(err);
   }
 };

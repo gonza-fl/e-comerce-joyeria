@@ -1,3 +1,5 @@
+import swal from 'sweetalert';
+
 export function addToCart(product) {
   const prodAmount = { ...product, amount: 1 };
   if (localStorage.getItem('cart')) {
@@ -11,8 +13,10 @@ export function addToCart(product) {
       const sinJson2 = sinJson;
       const posic = sinProductAmount.map((el) => el.id);
       const indx = posic.indexOf(prodAmount.id);
-      sinJson2[indx].amount += 1;
-      localStorage.setItem('cart', JSON.stringify(sinJson2));
+      if (sinJson[indx].stockAmount > sinJson[indx].amount) {
+        sinJson2[indx].amount += 1;
+        localStorage.setItem('cart', JSON.stringify(sinJson2));
+      } else { swal('Lo sentimos!', 'no hay stock suficiente de este producto para seguir sumando al carrito :('); }
     } else { localStorage.setItem('cart', JSON.stringify(sinJson.concat(prodAmount))); }
   } else {
     const arr = [];

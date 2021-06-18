@@ -6,6 +6,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import Button from '../../StyledComponents/Button';
 import './Cart.css';
 
@@ -74,7 +75,11 @@ const Cart = () => {
                   <div className="card-detail-amount">
                     <span id="card-detail-amount-p">{product.amount}</span>
                     <div className="card-detail-amount-buttons">
-                      <button onClick={() => sumAmount(product.id)}>+</button>
+                      <button onClick={
+                        () => (product.amount < product.stockAmount ? sumAmount(product.id) : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
+}
+                      >+
+                      </button>
                       <button onClick={() => substractAmount(product.id)}>-</button>
                     </div>
                   </div>

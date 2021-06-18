@@ -6,11 +6,28 @@ import React, { useState } from 'react';
 import swal from 'sweetalert';
 import axios from 'axios';
 import { URL_CATEGORIES } from '../../constants';
+import './AddCategoryForms.css';
 
 function AddCategoryForm() {
   const [selectedFile, setSelectedFile] = useState();
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  function loadingIcon() {
+    return (
+      <div
+        className="lds-facebook"
+        style={{
+          display: `${loading ? 'inline' : 'none'}`, position: 'absolute', top: '50', left: '50',
+        }}
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+    );
+  }
 
   const uploadImage = async (base64EncodedImage, valor, description) => {
     try {
@@ -31,6 +48,7 @@ function AddCategoryForm() {
           document.getElementById('categoria').value = '';
           document.getElementById('descripcion').value = '';
           swal('Success', res.data.success, 'success');
+          setLoading(false);
         }
       }).catch(() => {
         swal('Error', 'Ocurrio un error inesperado', 'warning');
@@ -42,7 +60,7 @@ function AddCategoryForm() {
 
   function enviar(e) {
     e.preventDefault();
-
+    setLoading(!loading);
     const valor = document.getElementById('categoria').value;
     const description = document.getElementById('descripcion').value;
 
@@ -91,7 +109,13 @@ function AddCategoryForm() {
 
   return (
     <div style={{
-      height: '100%', justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: '50px',
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      padding: '10px 10px',
+      transform: 'translate(0px,-60px)',
+      width: '700px',
     }}
     >
       <div style={{
@@ -120,7 +144,7 @@ function AddCategoryForm() {
               <img
                 src={previewSource}
                 alt="chosen"
-                style={{ height: '300px', marginBottom: '15px' }}
+                style={{ height: '200px', width: '200px', marginBottom: '15px' }}
               />
               )}
               {
@@ -144,16 +168,20 @@ function AddCategoryForm() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0px' }}>
+
             <input
+              className="submit-button"
               type="submit"
               value="Aceptar"
               style={{
                 backgroundColor: '#f0ddd8', color: 'black', fontSize: '16px', fontWeight: '600', padding: '10px 20px 10px 20px', borderStyle: 'none',
               }}
             />
+
           </div>
         </form>
       </div>
+      {loadingIcon()}
     </div>
   );
 }
