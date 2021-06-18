@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-prototype-builtins */
-
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import { useSelector, useDispatch } from 'react-redux';

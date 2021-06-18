@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
