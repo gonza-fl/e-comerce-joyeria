@@ -93,7 +93,7 @@ const addAddressFunction = async (req, res) => {
     });
   } catch (err) {
     return res.json({
-      err: 'No se pudo crear / modificar el domicilio.',
+      err: 'No se pudo crear el domicilio.',
     });
   }
 };
