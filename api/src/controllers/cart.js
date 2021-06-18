@@ -125,7 +125,8 @@ const addItem = async (req, res) => {
             err: 'La cantidad no puede superar el stock',
           });
         }
-        obj.amount = parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount,10);
+        obj.amount = parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount, 10);
+        obj.price = parseInt(arrayProducts[j].price, 10) * obj.amount;
         await obj.save();
         // return '';
       }
