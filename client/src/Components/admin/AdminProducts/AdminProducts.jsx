@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { getProducts } from '../../../redux/actions/actions';
 import { deleteProduct } from './utils/request';
 import loadingImg from '../../../img/loading-img.jpg';
+import ModalCreateProducts from '../CreateProduct/modalCreateProducts/ModalCreateProducts';
 
 function AdminProducts() {
   const dispatch = useDispatch();
@@ -18,47 +19,58 @@ function AdminProducts() {
   }, []);
 
   return (
-    <DivContainer>
-      <table>
-        <tr>
-          <th>ID</th>
-          <th>NOMBRE</th>
-          <th>PRECIO</th>
-          <th>CANTIDAD</th>
-          <th>CATEGORIAS</th>
-          <th>IMAGEN</th>
-        </tr>
-        {products.map((p) => (
+    <WindowContainer>
+      <DivContainer style={{ overflowY: 'scroll' }}>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>PRECIO</th>
+            <th>CANTIDAD</th>
+            <th>CATEGORIAS</th>
+            <th>IMAGEN</th>
+          </tr>
+          {products.map((p) => (
 
-          <ProductContainer className="bg-color-three">
-            <td>{p.id}</td>
-            <td>{p.name}</td>
-            <td>{p.price}</td>
-            <td>{p.stockAmount}</td>
-            <td>{p.categories.map((c) => <li>{c.name}</li>)}</td>
-            <img src={p.images.filter((img, i) => i === 0)[0].url || loadingImg} alt="Not found" height="50px" width="50px" />
-            <td>
-              <Link to={`/admin/products/${p.id}`} className="link-without-styles">
-                <button type="button">Editar</button>
-              </Link>
-            </td>
-            <td>
-              <a href="/admin/products" className="link-wihout-styles"><button type="button" onClick={() => deleteProduct(p)}>X</button></a>
-            </td>
-          </ProductContainer>
+            <ProductContainer className="bg-color-three">
+              <td>{p.id}</td>
+              <td>{p.name}</td>
+              <td>{p.price}</td>
+              <td>{p.stockAmount}</td>
+              <td>{p.categories.map((c) => <li>{c.name}</li>)}</td>
+              <img src={p.images.filter((img, i) => i === 0)[0].url || loadingImg} alt="Not found" height="50px" width="50px" />
+              <td>
+                <Link to={`/admin/products/${p.id}`} className="link-without-styles">
+                  <button type="button">Editar</button>
+                </Link>
+              </td>
+              <td>
+                <button type="button" onClick={() => deleteProduct(p)}>X</button>
+              </td>
+            </ProductContainer>
 
-        ))}
-      </table>
-    </DivContainer>
+          ))}
+        </table>
+
+      </DivContainer>
+      <ModalCreateProducts />
+    </WindowContainer>
   );
 }
 
-const DivContainer = styled.div`
+const WindowContainer = styled.div`
         display: flex;
         flex-direction: column;
         height: 90%;
         width: 90%;
         border-style: solid;
+        padding: 10px 20px;
+`;
+
+const DivContainer = styled.div`
+        display: flex;
+        flex-direction: column;
+        height: 95%;
         padding: 10px 20px;
 `;
 

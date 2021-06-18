@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '../../../StyledComponents/Button';
-import CreateProduct from '../CreateProduct';
+import AdminCreateProduct from '../AdminCreateProduct';
 import { getCategories } from '../../../../redux/actions/actions';
 import './modalcreateProducts.css';
 
@@ -24,12 +24,11 @@ export default function ModalCreatProductos() {
     }
   };
   return (
-    <div>
+    <div style={{ marginTop: '20px' }}>
       <Button id="myBtn" handleClick={() => { const modal = document.getElementById('myModal'); modal.style.display = 'block'; }} text="Agregar nuevo producto" />
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <span className="close" onClick={() => { const modal = document.getElementById('myModal'); modal.style.display = 'none'; }}>X</span>
-          <CreateProduct />
+          <AdminCreateProduct />
         </div>
       </div>
     </div>

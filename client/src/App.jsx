@@ -19,6 +19,9 @@ import Profile from './Components/user/Profile/Profile';
 import 'firebase/auth';
 import { setUser } from './redux/actions/actions';
 
+
+
+  
 function App() {
   const dispatch = useDispatch();
 
