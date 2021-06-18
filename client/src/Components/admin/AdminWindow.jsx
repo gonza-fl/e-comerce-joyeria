@@ -25,7 +25,7 @@ function AdminWindow() {
             <Route exact path="/admin/addcategory" component={AddCategoryForm} />
             <Route exact path="/admin/createproduct" component={ModalCreatProductos} />
             <Route exact path="/admin/statistics" component={AdminStatistics} />
-            <Route exact path="/admin/orderdetail" component={OrderDetail} />
+            <Route exact path="/admin/orders/:orderId" component={OrderDetail} />
           </Switch>
         </WindowDiv>
       </AdminPanel>

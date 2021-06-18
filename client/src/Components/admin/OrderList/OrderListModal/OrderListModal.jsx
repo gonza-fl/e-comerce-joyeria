@@ -11,16 +11,18 @@ const OrderListModal = ({ userOrders }) => (
         <th>FECHA</th>
         <th>TOTAL</th>
         <th>ESTADO</th>
+        <th>DETALLE</th>
       </tr>
       {userOrders.map((userOrder) => (
-        <Link to="/admin/orderdetail">
-          <tr className="table-data">
-            <td>{userOrder.orderNumber}</td>
-            <td>{userOrder.endTimestamp}</td>
-            <td>{userOrder.total}</td>
-            <td>{userOrder.status}</td>
-          </tr>
-        </Link>
+        <tr className="table-data">
+          <td>{userOrder.orderNumber}</td>
+          <td>{userOrder.endTimestamp}</td>
+          <td>{userOrder.total}</td>
+          <td>{userOrder.status}</td>
+          <td>
+            <Link className="table-detail" to="/admin/orders/:orderId">Ver Detalle</Link>
+          </td>
+        </tr>
       ))}
     </table>
   </div>

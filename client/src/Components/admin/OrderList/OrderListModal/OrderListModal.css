@@ -19,7 +19,23 @@
 }
 
 .table-data:hover{
-  cursor: pointer;
 	color: white;
 	transform: scale(1.01);
+}
+
+.table-detail {
+  text-decoration: none;
+  color: black;
+  border: 0.5px solid black;
+  padding: 5%;
+  display: flex;
+  align-items: center;
+  width: 60%;
+  margin: auto;
+
+}
+
+.table-detail:hover{
+  border: none;
+  background-color: #cf988c;
 }
