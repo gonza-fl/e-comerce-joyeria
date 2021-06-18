@@ -10,9 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useFirebaseApp, useUser } from 'reactfire';
 import 'firebase/auth';
 import swal from 'sweetalert';
+import firebase from 'firebase/app';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories } from '../../../redux/actions/actions';
@@ -20,8 +20,7 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 
 export default function Nav() {
-  const user = useUser();
-  const firebase = useFirebaseApp();
+  const user = firebase.auth().currentUser;
 
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
@@ -42,7 +41,8 @@ export default function Nav() {
 
   const handleSingOut = () => {
     firebase.auth().signOut()
-      .then(() => swal('Gracias', 'Cerro Sesión correctamente', 'success'));
+      .then(() => swal('Gracias', 'Cerro Sesión correctamente', 'success'))
+      .then(() => window.location.reload());
   };
 
   return (
@@ -81,7 +81,7 @@ export default function Nav() {
 
         <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
-          {user.data
+          {user
             ? (
               <div className="userOptions">
                 <Link to="/account/profile"><p>Mi Cuenta</p></Link>
@@ -95,7 +95,6 @@ export default function Nav() {
               </div>
             )}
             &ensp;&ensp;
-
         </div>
         <FaShoppingCart />&ensp;
       </div>
