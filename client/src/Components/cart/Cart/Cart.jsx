@@ -88,7 +88,9 @@ const Cart = () => {
               </div>
             ))}
           </div>
-          <button id="next-btn">Siguiente</button>
+          <Link to="/cart/checkout">
+            <button id="next-btn">Siguiente</button>
+          </Link>
           <Link to="/products">
             <Button text="Volver al Catálogo" />
           </Link>
