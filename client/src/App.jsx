@@ -1,7 +1,11 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable react/button-has-type */
 import React from 'react';
 import './App.css';
 import './colors.css';
 import { Route, Switch } from 'react-router-dom';
+import firebase from 'firebase/app';
+import { useDispatch } from 'react-redux';
 import Home from './Components/home/Home';
 import Nav from './Components/general/Nav/Nav';
 import Catalogue from './Components/catalogue/Catalogue/Catalogue';
@@ -11,8 +15,20 @@ import AdminWindow from './Components/admin/AdminWindow';
 import CategoryCatalogue from './Components/catalogue/CategoryCatalogue/CategoryCatalogue';
 import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
+import Profile from './Components/user/Profile/Profile';
+import 'firebase/auth';
+import { setUser } from './redux/actions/actions';
 
+
+
+  
 function App() {
+  const dispatch = useDispatch();
+
+  firebase.auth().onAuthStateChanged((user) => {
+    dispatch(setUser(user));
+  });
+
   return (
     <div>
       <Switch>
@@ -27,6 +43,7 @@ function App() {
               <Route path="/products" component={Catalogue} />
               <Route path="/cart" component={Cart} />
               <Route path="/account/register" component={UserCreate} />
+              <Route path="/account/profile" component={Profile} />
             </Switch>
           </div>
           <Footer />
