@@ -90,7 +90,7 @@ export default function Nav() {
             )
             : (
               <div className="userOptions">
-                <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesion</p></Link>
+                <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesión</p></Link>
                 <Link to="/account/register"><p>Registrarme</p></Link>
               </div>
             )}

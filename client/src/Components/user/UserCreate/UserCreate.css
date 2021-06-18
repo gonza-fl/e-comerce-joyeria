@@ -55,6 +55,10 @@
     outline: none;
 }
 
+.formUserCreate form input[type=number] {
+    width: 25%;
+}
+
 .require {
     color: rgb(203, 13, 13);
 }

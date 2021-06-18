@@ -22,7 +22,7 @@ export default function UserCreate() {
 
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
-    email: '', name: '', password: '', passwordConfirmation: '', date: '',
+    email: '', name: '', password: '', passwordConfirmation: '', date: '', address: '',
   });
   const [errors, setErrors] = useState({
     email: false, password: false, number: false, empty: false,
@@ -101,13 +101,19 @@ export default function UserCreate() {
           </div>
 
           <div>
+            <label>Dirección<span className="require">*</span> </label>
+            <input name="address" placeholder="Ingrese su dirección..." required onChange={handleInputChange} autocomplete="off" />
+            <input name="postalCod" placeholder="Código Postal" required onChange={handleInputChange} autocomplete="off" type="number" />
+          </div>
+
+          <div>
             <input className="btnForm  btnBack" type="button" value="Regresar" onClick={() => window.history.back()} />
             <input className="btnForm font-color-four" type="submit" value="Crear Cuenta" />
           </div>
         </form>
         <div>
           <p>¿Ya tienes un usuario?</p>
-          <Button text="Iniciar Sesion" handleClick={() => document.getElementById('login').style.display = 'block'} />
+          <Button text="Iniciar Sesión" handleClick={() => document.getElementById('login').style.display = 'block'} />
         </div>
       </div>
     </div>
