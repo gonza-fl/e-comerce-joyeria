@@ -32,12 +32,12 @@ export default function FilterCatalogue({ products, setProducts, productsGlobal 
 
   return (
     <div className="ctnFiltersCat  bg-color-six">
+      {undo && <div className="undo"><StyledButton text="Deshacer" handleClick={() => { setProducts([...productsGlobal]); setUndo(false); }} /></div>}
       <h1>
         {products.length}
         {' '}
         Resultados
       </h1>
-      {undo && <StyledButton text="Deshacer" handleClick={() => { setProducts([...productsGlobal]); setUndo(false); }} />}
       <h3>Ver </h3>
       <h5>Alfabéticamente</h5>
       <p onClick={() => { setProducts([...sortNameAsc(products)]); setUndo(true); }}>A-Z</p>
