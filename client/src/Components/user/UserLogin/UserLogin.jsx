@@ -24,13 +24,13 @@ export default function UserLogin() {
   const googleLogin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider)
-      .then(() => window.location.reload());
+      .then(() => document.getElementById('login').style.display = 'none');
   };
 
   const facebookLogin = () => {
     const provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().signInWithPopup(provider)
-      .then(() => window.location.reload());
+      .then(() => document.getElementById('login').style.display = 'none');
   };
 
   const handleSubmit = (e) => {
@@ -39,7 +39,6 @@ export default function UserLogin() {
     firebase.auth().signInWithEmailAndPassword(input.email, input.password)
       .then(() => swal('Hola', 'Inicio de sesión exitoso', 'success'))
       .then(() => document.getElementById('login').style.display = 'none')
-      .then(() => window.location.reload())
       .catch((error) => {
         error.message.includes('user record') && swal('Email incorrecto', 'Por favor, verifique su e-mail', 'warning');
         error.message.includes('password is invalid') && swal('Contraseña incorrecta', 'Por favor, verifique su contraseña', 'warning');

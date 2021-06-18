@@ -42,7 +42,7 @@ export default function Nav() {
   const handleSingOut = () => {
     firebase.auth().signOut()
       .then(() => swal('Adios', 'Cerro Sesión correctamente', 'success'))
-      .then(() => window.location.reload());
+      .then(() => document.getElementById('login').style.display = 'none');
   };
 
   return (
@@ -78,6 +78,7 @@ export default function Nav() {
         <div style={{ flexGrow: 1 }}>
           <SearchBar />
         </div>
+        {user.email ? <h3>{user.name}</h3> : null}
 
         <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
           <FaUserAlt />
