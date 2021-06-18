@@ -12,7 +12,6 @@ const getOrders = (req, res) => {
       where: {
         status,
       },
-
     });
     return res.status(200).json(result);
   } catch (error) {

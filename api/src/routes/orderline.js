@@ -2,10 +2,10 @@ const {
   Router,
 } = require('express');
 const {
-  getOrderLines,
-} = require('../controllers/orderline');
+  getOrders,
+} = require('../controllers/order');
 
 const router = Router();
-router.get('/', getOrderLines);
+router.get('/', getOrders);
 
 module.exports = router;
