@@ -11,6 +11,7 @@ import store from './redux/store/store';
 import firebaseConfig from './Firebase';
 
 firebase.initializeApp(firebaseConfig);
+// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 ReactDOM.render(
   <Provider store={store}>

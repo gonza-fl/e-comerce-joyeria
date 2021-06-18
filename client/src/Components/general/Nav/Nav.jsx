@@ -41,7 +41,7 @@ export default function Nav() {
 
   const handleSingOut = () => {
     firebase.auth().signOut()
-      .then(() => swal('Gracias', 'Cerro Sesión correctamente', 'success'))
+      .then(() => swal('Adios', 'Cerro Sesión correctamente', 'success'))
       .then(() => window.location.reload());
   };
 

@@ -12,6 +12,7 @@ import AdminWindow from './Components/admin/AdminWindow';
 import CategoryCatalogue from './Components/catalogue/CategoryCatalogue/CategoryCatalogue';
 import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
+import Profile from './Components/user/Profile/Profile';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/products" component={Catalogue} />
               <Route path="/cart" component={Cart} />
               <Route path="/account/register" component={UserCreate} />
+              <Route path="/account/profile" component={Profile} />
             </Switch>
           </div>
           <Footer />
