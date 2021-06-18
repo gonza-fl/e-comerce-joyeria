@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-/* eslint linebreak-style: ["error", "windows"] */
+
 const {
   Cart,
   User,
@@ -38,6 +38,17 @@ const addItem = async (req, res) => {
 
   const results = [];
   for (let i = 0; i < req.body.products.length; i += 1) {
+    // ESTO!
+    if (req.body.products[i].amount === '' || req.body.products[i].id === '') {
+      return res.status(400).json({
+        err: 'Algunos campos no se enviaron correctamente',
+      });
+    }
+    if (parseInt(req.body.products[i].amount, 10) < 0) {
+      return res.status(400).json({
+        err: 'La cantidad no puede ser negativa!',
+      });
+    }
     results.push(Product.findOne({
       where: {
         id: req.body.products[i].id,
@@ -47,7 +58,6 @@ const addItem = async (req, res) => {
   // esto lo tuve que hacer porque sino el eslint tira error
 
   const arrayProducts = await Promise.all(results);
-
   // corroboro que existan y tengan stock disponible, SI NO HAY MANDA ERROR
   for (let i = 0; i < arrayProducts.length; i += 1) {
     if (arrayProducts[i] == null) {
@@ -120,12 +130,12 @@ const addItem = async (req, res) => {
         });
 
         // eslint-disable-next-line max-len
-        if (parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount, 10) > parseInt(arrayProducts[i].stockAmount, 10)) {
+        if (parseInt(obj.amount, 10) + parseInt(req.body.products[j].amount, 10) > parseInt(arrayProducts[j].stockAmount, 10)) {
           return res.json({
             err: 'La cantidad no puede superar el stock',
           });
         }
-        obj.amount = parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount, 10);
+        obj.amount = parseInt(obj.amount, 10) + parseInt(req.body.products[j].amount, 10);
         obj.price = parseInt(arrayProducts[j].price, 10) * obj.amount;
         await obj.save();
         // return '';
