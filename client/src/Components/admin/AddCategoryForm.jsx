@@ -48,6 +48,7 @@ function AddCategoryForm() {
           document.getElementById('descripcion').value = '';
           swal('Success', res.data.success, 'success');
           setLoading(false);
+          window.location.href = '/admin/controlcategories';
         }
       }).catch(() => {
         swal('Error', 'Ocurrio un error inesperado', 'warning');

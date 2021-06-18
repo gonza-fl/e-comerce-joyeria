@@ -67,11 +67,11 @@ function CreateProduct() {
         if (res.data.hasOwnProperty('err')) {
           swal('error', 'No se pudo crear al producto', 'warning');
         } else {
-          swal('Success', 'Se creo el producto!');
+          swal('Success', '¡Se creó el producto con éxito!');
         }
       })
       .catch(() => {
-        swal('Error', 'Ocurrió un error. No se creó el producto. Intente nuevamente');
+        swal('Error', 'Ocurrió un error. No se creó el product, intenta nuevamente');
       });
   };
 
