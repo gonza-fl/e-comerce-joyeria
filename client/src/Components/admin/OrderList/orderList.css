@@ -1,0 +1,19 @@
+.containerDiv{
+	display: flex;
+	flex-direction: column;
+	height: 90%;
+	width: 90%;
+	border-style: solid;
+	padding: 10px 20px;
+}
+
+.user-data{
+	background-color: #f0ddd8;
+	height: 50px;
+}
+
+.user-data:hover{
+	cursor: pointer;
+	color: white;
+	transform: scale(1.01);
+}

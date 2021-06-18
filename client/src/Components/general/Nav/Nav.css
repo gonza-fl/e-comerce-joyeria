@@ -2,7 +2,6 @@
         width: 100%;
         height: 100px;
         display: flex;
-        justify-content: center;
         align-items: center;
     }
     
@@ -11,7 +10,6 @@
         width: 95%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 0 30px 0 30px;
         border-radius: 3rem;
     }
@@ -40,4 +38,39 @@
         display: flex;
         justify-content: center;
         width: 50%;
+    }
+    
+    .userIcon:hover .userOptions {
+        display: block;
+        position: absolute;
+    }
+    
+    .userOptions {
+        display: none;
+        position: absolute;
+        background-color: #f1eee3;
+        width: 150px;
+        cursor: pointer;
+        right: 15px;
+        padding-block: 10px;
+    }
+    
+    .userOptions a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #000;
+        height: 50px;
+        width: 100%;
+    }
+    
+    .userOptions a:hover {
+        background-color: #f0ddd8;
+    }
+    
+    .ctnNav h3 {
+        position: absolute;
+        top: 50px;
+        right: 10px;
     }

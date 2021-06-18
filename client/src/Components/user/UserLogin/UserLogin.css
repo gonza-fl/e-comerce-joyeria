@@ -1,0 +1,127 @@
+.loginModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow-x: scroll;
+}
+
+.modalCtn {
+    display: flex;
+    flex-direction: column;
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+.animate {
+    animation: animatezoom 0.6s
+}
+
+@keyframes animatezoom {
+    from {
+        transform: scale(0)
+    }
+    to {
+        transform: scale(1)
+    }
+}
+
+.logoForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logoForm img {
+    height: 150px;
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+    color: #000;
+    font-size: 35px;
+}
+
+.close:hover {
+    color: red;
+    cursor: pointer;
+    transform: scale(1.6);
+    transition: 0.5s;
+}
+
+.ctnInputs {
+    display: flex;
+    flex-direction: column;
+    padding: 60px;
+    padding-top: 10px;
+}
+
+.ctnInputs label {
+    align-self: flex-start;
+}
+
+.ctnInputs .loginInput {
+    width: 100%;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.ctnInputs .loginInput[type=button],
+.loginInput[type=submit] {
+    border: none;
+    margin-bottom: 5px;
+    cursor: pointer;
+    width: 100%;
+    background-color: #f0ddd8;
+    border: none
+}
+
+.ctnInputs .loginInput[name=google] {
+    background-color: #db4a39;
+}
+
+.ctnInputs .loginInput[name=facebook] {
+    background-color: #3b5998;
+}
+
+.ctnInputs .loginInput[type=button]:hover,
+.loginInput[type=submit]:hover {
+    opacity: 0.8;
+    transition: 0.5s;
+}
+
+.ctnInputs .btnCancel {
+    width: 15%;
+    padding: 10px 18px;
+    background-color: #f0ddd8;
+    border: none;
+}
+
+.ctnInputs .btnCancel:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.footLogin {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footLogin a {
+    color: blue;
+    font-size: 13px;
+}

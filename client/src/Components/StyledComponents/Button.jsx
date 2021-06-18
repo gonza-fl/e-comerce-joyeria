@@ -2,9 +2,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Button({ text, handleClick, style }) {
+function Button({
+  text, handleClick, style, type,
+}) {
   return (
-    <StyledButton style={style} className="bg-color-three font-color-seven" onClick={handleClick}>{text}</StyledButton>
+    <StyledButton
+      style={style}
+      className="bg-color-three font-color-seven"
+      onClick={handleClick}
+      type={type || ''}
+    >
+      {text}
+    </StyledButton>
   );
 }
 
@@ -13,12 +22,12 @@ const StyledButton = styled.button`
     color: black;
     padding: 10px;
     font-size: 105%;
+    transition: 0.5s;
 
     &:hover {
         cursor: pointer;
         background-color: #f0ddd8;
         transform: scale(1.1);
-        transition: 0.5s;
     }
 `;
 
