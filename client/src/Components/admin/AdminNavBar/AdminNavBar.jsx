@@ -21,7 +21,7 @@ const AdminNavBar = () => (
 const DivContainer = styled.div`
         padding: 10px 10px;
         flex-grow: 1;
-        height: 100%;
+        height: 95%;
         font-weight: bold;
 `;
 

@@ -12,7 +12,6 @@ import CategoryCatalogue from './Components/catalogue/CategoryCatalogue/Category
 import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
 
-
 function App() {
   return (
     <div>

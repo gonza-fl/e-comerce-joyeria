@@ -7,8 +7,8 @@ import AdminStatistics from './AdminStatistics/AdminStatistics';
 import OrderList from './OrderList/OrderList';
 import AdminProductCard from './AdminProducts/AdminProductCard';
 import OrderDetail from './OrderList/OrderDetail/OrderDetail';
-import CreateProduct from './CreateProduct/CreateProduct';
 import AdminControlCategories from './AdminCategories/AdminControlCategories';
+import AdminCreateProduct from './CreateProduct/AdminCreateProduct';
 
 function AdminWindow() {
   return (
@@ -23,7 +23,7 @@ function AdminWindow() {
             <Route exact path="/admin/products" component={AdminProducts} />
             <Route exact path="/admin/products/:productId" component={AdminProductCard} />
             <Route exact path="/admin/controlcategories" component={AdminControlCategories} />
-            <Route exact path="/admin/createproduct" component={CreateProduct} />
+            <Route exact path="/admin/createproduct" component={AdminCreateProduct} />
             <Route exact path="/admin/statistics" component={AdminStatistics} />
             <Route exact path="/admin/orders/:orderId" component={OrderDetail} />
           </Switch>
