@@ -124,11 +124,11 @@ function AddCategoryForm() {
       >
         <form method="POST" onSubmit={enviar}>
           <div style={{ marginTop: '15px' }}>
-            <span>Name</span>
+            <span>Nombre</span>
             <input type="text" id="categoria" style={{ marginLeft: '10px', width: '220px' }} />
           </div>
 
-          <p>Description</p>
+          <p>Descripción</p>
 
           <div id="flexQuery" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
 
