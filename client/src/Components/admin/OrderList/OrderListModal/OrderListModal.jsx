@@ -35,13 +35,12 @@ const OrderListModal = ({ userOrders }) => {
               </select>
             </td>
             <td>
-              <Link className="table-detail" to="/admin/orders/:orderId">Ver Detalle</Link>
+              <Link className="table-detail" to={`/admin/orders/${userOrder.id}`}>Ver Detalle</Link>
             </td>
           </tr>
         ))}
       </table>
     </div>
-
   );
 };
 
