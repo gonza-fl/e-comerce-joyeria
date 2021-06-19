@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint linebreak-style: ["error", "windows"] */
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { showFloatingCart } from '../../../redux/actions/actions';
@@ -6,7 +7,10 @@ import { showFloatingCart } from '../../../redux/actions/actions';
 function FloatingCart() {
   const dispatch = useDispatch();
   const showCart = useSelector((state) => state.floatingCart);
-  const cartProducts = JSON.parse(localStorage.getItem('cart'));
+  const [cartProducts, setCartProducts] = useState([]);
+  useEffect(() => {
+    setCartProducts(JSON.parse(localStorage.getItem('cart')));
+  }, [JSON.parse(localStorage.getItem('cart'))]);
 
   function removeFromCart(id) {
     const updatedCart = cartProducts.filter((p) => p.id !== id);
@@ -31,8 +35,9 @@ function FloatingCart() {
               <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
               <div style={{ textAlign: 'left', marginLeft: '15px', flexGrow: 2 }}>
                 <span>{p.name}</span>
+                <span>{`  x ${p.amount}`}</span>
                 <br />
-                <b>{numberWithCommas(p.price)}</b>
+                <b>{numberWithCommas(p.price * p.amount)}</b>
               </div>
               <div style={{ flexGrow: 1, textAlign: 'right' }}>
 
@@ -74,7 +79,7 @@ function FloatingCart() {
           SUBTOTAL: $ 0
         </b>
       </SubTotal>
-      <a href="/products" className="link-without-styles">
+      <a href="/cart" className="link-without-styles">
         <GotoCart type="button" className="bg-color-three">
           Ir al carrito
         </GotoCart>
