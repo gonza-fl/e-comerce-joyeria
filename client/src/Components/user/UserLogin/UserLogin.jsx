@@ -5,6 +5,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState } from 'react';
 import './UserLogin.css';
 import { Link } from 'react-router-dom';
