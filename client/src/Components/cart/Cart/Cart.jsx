@@ -63,7 +63,7 @@ const Cart = () => {
               <div className="card-detail-map">
                 <div className="card-detail-map-left">
                   <div className="card-detail-img-container">
-                    <img src={product.images[0].url} alt={product.name} />
+                    <img src={product.images.length && product.images[0].url} alt={product.name} />
                   </div>
                   <div className="card-detail-data">
                     <h4>{product.name.toUpperCase()}</h4>
