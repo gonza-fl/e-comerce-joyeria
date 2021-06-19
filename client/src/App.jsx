@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/button-has-type */
-/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import './App.css';
 import './colors.css';
