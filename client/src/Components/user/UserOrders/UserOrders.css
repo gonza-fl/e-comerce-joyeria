@@ -18,3 +18,14 @@
   background-color: #f0ddd8;
   height: 50px;
 }
+
+.user-order-link{
+  text-decoration: none;
+  color: black;
+  border: 0.5px solid black;
+  padding: 2%;
+}
+
+.user-order-link:hover{
+  background-color: #e6c7b7;
+}

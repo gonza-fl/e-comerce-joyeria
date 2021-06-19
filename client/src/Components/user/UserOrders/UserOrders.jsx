@@ -2,6 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 // import { useParams } from 'react-router-dom';
 // import { URL_USERS } from '../../../constants';
+import { Link } from 'react-router-dom';
 import './UserOrders.css';
 
 const UserOrders = () => {
@@ -51,13 +52,17 @@ const UserOrders = () => {
           <th>N° de Orden</th>
           <th>Estado</th>
           <th>Total</th>
+          <th>Detalle</th>
         </tr>
         {userOrdersInventados.map((order) => (
           <tr className="user-orders-tablerows">
-            <th>{order.endTimestamp}</th>
-            <th>{order.orderNumber}</th>
-            <th>{order.status}</th>
-            <th>{order.total}</th>
+            <td>{order.endTimestamp}</td>
+            <td>{order.orderNumber}</td>
+            <td>{order.status}</td>
+            <td>{order.total}</td>
+            <td>
+              <Link className="user-order-link" to={`/user/order/${order.id}`}>Ver Detalle</Link>
+            </td>
           </tr>
         ))}
       </table>
