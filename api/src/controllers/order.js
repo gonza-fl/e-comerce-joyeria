@@ -127,6 +127,62 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
+const modifyOrder = async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  const {
+    status,
+  } = req.body;
+  try {
+    if (status !== 'deliveryPending' && status !== 'delivered') {
+      return res.status(400).json({
+        err: 'No se puede implemetar ese status!',
+      });
+    }
+    // Si el status es deliveryPending busca carrito, sino lo buscara como deliveryPending
+    const statusSearch = status === 'deliveryPending' ? 'cart' : 'deliveryPending';
+    const order = await Order.findOne({
+      where: {
+        id,
+        status: statusSearch,
+      },
+      include: Product,
+    });
+    if (status === 'deliveryPending') {
+      if (!order) {
+        return res.status(404).json({
+          err: `La orden id ${id} no posee un carrito`,
+        });
+      }
+      if (order.products.length === 0) {
+        return res.status(400).json({
+          err: 'La orden no tiene productos.',
+        });
+      }
+      const totalOrder = order.products.reduce((total, current) => total + current.orderline.subtotal, 0);
+      order.status = status;
+      order.total = totalOrder;
+      order.endTimestamp = new Date();
+      await order.save();
+      return res.json(order);
+    }
+    if (status === 'delivered') {
+      if (!order) {
+        return res.status(404).json({
+          err: `La orden id ${id} no tiene una orden pendiente!`,
+        });
+      }
+      order.status = status;
+      order.endTimestamp = new Date();
+      await order.save();
+      return res.json(order);
+    }
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
 module.exports = {
   createOrFindAndUpdateCart,
+  modifyOrder,
 };
