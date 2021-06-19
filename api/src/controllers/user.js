@@ -1,7 +1,7 @@
 const {
   User,
   Address,
-  Cart,
+  Order,
   Product,
 } = require('../models/index');
 
@@ -56,7 +56,7 @@ const getUser = async (req, res) => {
             model: Address,
           },
           {
-            model: Cart,
+            model: Order,
             include: Product,
           },
         ],
