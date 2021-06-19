@@ -21,6 +21,9 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 
+const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
+ADMIN_IDS.split(',');
+
 export default function Nav() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
@@ -70,7 +73,7 @@ export default function Nav() {
             NUEVO
           </MenuDiv>
 
-          <MenuDiv>NOSOTROS</MenuDiv>
+          {ADMIN_IDS.includes(user.id) ? <Link to="/admin"><MenuDiv> PANEL DE ADMINISTRADOR </MenuDiv> </Link> : <MenuDiv>NOSOTROS</MenuDiv> }
         </div>
         <div style={{ flexGrow: 1 }}>
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
