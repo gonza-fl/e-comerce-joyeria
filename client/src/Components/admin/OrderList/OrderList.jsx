@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
-/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import OrderListModal from './OrderListModal/OrderListModal';
 import './orderList.css';
