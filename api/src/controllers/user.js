@@ -2,6 +2,7 @@ const {
   User,
   Address,
   Cart,
+  Product,
 } = require('../models/index');
 
 const createUser = async (req, res) => {
@@ -52,6 +53,7 @@ const getUser = async (req, res) => {
           },
           {
             model: Cart,
+            include: Product,
           },
         ],
       },

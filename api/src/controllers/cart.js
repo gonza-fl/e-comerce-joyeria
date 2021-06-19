@@ -1,167 +1,132 @@
+/* eslint-disable max-len */
+/* eslint-disable radix */
+/* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
-/* eslint linebreak-style: ["error", "windows"] */
+
 const {
   Cart,
   User,
-  OrderLine,
   Product,
 } = require('../models/index');
 
 const addItem = async (req, res) => {
-  // primero busco el usuario en la base de datos
-  const user = await User.findOne({
-    where: {
-      id: req.body.id,
-    },
-    include: Cart,
-  });
-
-  // si no lo encuentro mando un error
-  if (user == null) {
-    return res.json({
-      err: 'El usuario no existe',
-    });
-  }
-  // busco si hay un carrito previamente creado del usuario sino crea uno nuevo
-  // eslint-disable-next-line prefer-const
-  let [cart, created] = await Cart.findOrCreate({
-    where: {
-      status: 'carrito',
-    },
-    include: OrderLine,
-  });
-
-  if (created) {
-    user.addCart(cart);
-    user.save();
-  }
-
-  const results = [];
-  for (let i = 0; i < req.body.products.length; i += 1) {
-    results.push(Product.findOne({
+  const {
+    id,
+    products,
+  } = req.body;
+  try {
+    const user = await User.findOne({
       where: {
-        id: req.body.products[i].id,
+        id,
       },
-    }));
-  }
-  // esto lo tuve que hacer porque sino el eslint tira error
-
-  const arrayProducts = await Promise.all(results);
-
-  // corroboro que existan y tengan stock disponible, SI NO HAY MANDA ERROR
-  for (let i = 0; i < arrayProducts.length; i += 1) {
-    if (arrayProducts[i] == null) {
-      return res.json({
-        err: 'El producto '.concat(req.body.products[i].name).concat(' no fue encontrado'),
-      });
-    }
-    if (arrayProducts[i].stockAmount < req.body.products[i].amount) {
-      return res.json({
-        err: 'La cantidad solicitada de '.concat(arrayProducts[i].name).concat(' supera el stock disponible'),
-      });
-    }
-  }
-
-  if (created || cart.orderlines === undefined || cart.orderlines == null) {
-    // FLUJO: SI EL CART ES CREADO (O SI EXISTIA) Y NO TENIA ORDERLINES ASOCIADOS
-
-    for (let i = 0; i < arrayProducts.length; i += 1) {
-      const pro = await Product.findOne({
-        where: {
-          id: arrayProducts[i].id,
-        },
-      });
-
-      if (pro == null) {
-        return res.json({
-          err: 'El producto no fue encontrado',
-        });
-      }
-      // cart.addProduct(pro); funciona pero no agrega total o cantidad
-      OrderLine.create({
-        productId: pro.id,
-        cartId: cart.id,
-        price: parseFloat(pro.price, 10) * parseInt(req.body.products[i].amount, 10),
-        amount: parseInt(req.body.products[i].amount, 10),
-      });
-    }
-
-    // HAGO LAS NUEVAS ASOCIACIONES Y GUARDO EN BASE DE DATOS
-    await cart.save();
-    await user.addCart(cart);
-
-    // BUSCO EL CART CON SUS ORDERLINES ACTUALIZADAS
-    // si el cart queda como let, created tira error en eslint
-    cart = await Cart.findOne({
+      include: Cart,
+    });
+    if (!user) return res.json(' no existe!');
+    const cart = await Cart.findOne({
       where: {
         status: 'carrito',
+        userId: user.id,
       },
       include: Product,
     });
-    // ENVIO EL CARRO Y SUS ORDERLINES CON SUS PRODUCTOS AL FRONT
-    return res.json({
-      cart,
-    });
-  }
-  // FLUJO: SI EL CART EXISTIA Y TENIA ORDERLINES ASOCIADOS
-  // CORROBORO SI EXISTIA PREVIAMENTE EL PRODUCTO EN EL CARRO Y SI ES ASI LO SUMO AL ORDERLINE
-  const idsguardados = [];
-
-  for (let i = 0; i < cart.orderlines.length; i += 1) {
-    for (let j = 0; j < arrayProducts.length; j += 1) {
-      if (cart.orderlines[i].productId === arrayProducts[j].id) {
-        idsguardados.push(arrayProducts[j].id);
-
-        const obj = await OrderLine.findOne({
+    if (!cart) {
+      const cartNew = await Cart.create({
+        status: 'carrito',
+      });
+      await user.addCart(cartNew);
+      for (let i = 0; i < products.length; i++) {
+        const prod = await Product.findOne({
           where: {
-            cartId: cart.id,
-            productId: arrayProducts[j].id,
+            id: products[i].id,
           },
         });
-
-        // eslint-disable-next-line max-len
-        if (parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount, 10) > parseInt(arrayProducts[i].stockAmount, 10)) {
-          return res.json({
-            err: 'La cantidad no puede superar el stock',
+        if (!prod) {
+          return res.status(404).json({
+            err: `No se encontro el producto ${prod}`,
           });
         }
-        obj.amount = parseInt(obj.amount, 10) + parseInt(req.body.products[i].amount, 10);
-        obj.price = parseInt(arrayProducts[j].price, 10) * obj.amount;
-        await obj.save();
-        // return '';
+        if (prod.stockAmount < parseInt(products.amount)) {
+          return res.status(404).json({
+            err: 'El producto supera el stock',
+          });
+        }
+        await cartNew.addProduct(prod, {
+          through: {
+            amount: parseInt(products[i].amount),
+            price: parseInt(products[i].amount) * prod.price,
+          },
+        });
+      }
+
+      const cartNewFound = await Cart.findOne({
+        where: {
+          id: cartNew.id,
+        },
+        include: Product,
+      });
+      return res.json(cartNewFound);
+    }
+    // ACÁ TERMINA!
+    for (let i = 0; i < cart.products.length; i++) {
+      const productIndex = products.findIndex((product) => parseInt(product.id) === cart.products[i].id);
+      if (productIndex !== -1) {
+        // lo encontro , hay q aumentar la cantidad
+        if (cart.products[i].stockAmount < cart.products[i].orderline.amount + parseInt(products[productIndex].amount)) {
+          return res.status(404).json({
+            err: 'El producto supera el stock',
+          });
+        }
+
+        await cart.addProduct(cart.products[i], {
+          through: {
+            amount: cart.products[i].orderline.amount + parseInt(products[productIndex].amount),
+          },
+        });
+        const updatedCart = await Cart.findOne({
+          where: {
+            id: cart.id,
+          },
+          include: Product,
+        });
+        await cart.addProduct(cart.products[i], {
+          through: {
+            price: updatedCart.products[i].orderline.amount * updatedCart.products[i].price,
+          },
+        });
+        products.splice(productIndex, 1);
       }
     }
-  }
-
-  // SE CREA LA ORDER LINE CON SU RESPECTIVO PRODUCTO SI NO SE ENCONTRABA ASOCIADO.
-  // ARREGLAR CUANDO CREEN EL MODELO ORDERLINE
-
-  for (let i = 0; i < arrayProducts.length; i += 1) {
-    if (!idsguardados.includes(arrayProducts[i].id)) {
-      await OrderLine.create({
-        productId: arrayProducts[i].id,
-        cartId: cart.id,
-        price: parseFloat(arrayProducts[i].price, 10) * parseInt(req.body.products[i].amount, 10),
-        amount: parseInt(req.body.products[i].amount, 10),
+    for (let i = 0; i < products.length; i++) {
+      const prod = await Product.findOne({
+        where: {
+          id: products[i].id,
+        },
+      });
+      if (!prod) {
+        return res.status(404).json({
+          err: `No se encontro el producto ${prod}`,
+        });
+      }
+      if (prod.stockAmount < parseInt(products.amount)) {
+        return res.status(404).json({
+          err: 'El producto supera el stock',
+        });
+      }
+      await cart.addProduct(prod, {
+        through: {
+          amount: parseInt(products[i].amount),
+          price: parseInt(products[i].amount) * prod.price,
+        },
       });
     }
+    return res.json(cart);
+    // aca van todos los casos donde no se encontraron en el carrito
+    // aca tendrias  q hacer un for de products
+  } catch (err) {
+    return res.status(500).json({
+      err: 'hay un error',
+    });
   }
-
-  // HAGO LAS NUEVAS ASOCIACIONES Y GUARDO EN BASE DE DATOS
-  await cart.save();
-  await user.addCart(cart);
-
-  // BUSCO EL CART CON SUS ORDERLINES ACTUALIZADAS
-  cart = await Cart.findOne({
-    where: {
-      status: 'carrito',
-    },
-    include: Product,
-  });
-  // ENVIO EL CARRO Y SUS ORDERLINES CON SUS PRODUCTOS AL FRONT
-  return res.json({
-    cart,
-  });
 };
 
 module.exports = {
