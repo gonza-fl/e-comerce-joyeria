@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
-
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import ModifyProduct from '../ModifyProduct';
 import './modalModifyProduct.css';

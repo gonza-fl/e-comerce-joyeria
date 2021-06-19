@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-
 /* eslint react/prop-types: 0 */
+/* eslint linebreak-style: ["error", "windows"] */
 
 import React from 'react';
 import styled from 'styled-components';

@@ -31,17 +31,15 @@
   /* The Close Button */
   .close {
     color: rgb(61, 58, 58);
-    float: right;
-    font-size: 28px;
+    font-size: 15px;
     font-weight: bold;
     position: absolute;
-    top:3%;
-    right:10%;
+    background-color: tomato;
+    border-radius: 50%;
+    padding: 5px 10px;
+    transform: translate(130px, 140px);
   }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
+ 
+  .close:hover{
     cursor: pointer;
   }

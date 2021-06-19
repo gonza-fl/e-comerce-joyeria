@@ -1,10 +1,20 @@
 /* eslint react/prop-types: 0 */
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import styled from 'styled-components';
 
-function Button({ text, handleClick, style }) {
+function Button({
+  text, handleClick, style, type,
+}) {
   return (
-    <StyledButton style={style} className="bg-color-three font-color-seven" onClick={handleClick}>{text}</StyledButton>
+    <StyledButton
+      style={style}
+      className="bg-color-three font-color-seven"
+      onClick={handleClick}
+      type={type || ''}
+    >
+      {text}
+    </StyledButton>
   );
 }
 

@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -9,11 +10,10 @@ function CategoryCatalogue() {
   const products = useSelector((state) => state.productsByCategory);
   const dispatch = useDispatch();
   const { categoryId } = useParams();
-
+  console.log(products);
   useEffect(() => {
     dispatch(getProdutsByCategory(categoryId));
   }, [categoryId]);
-
   return (
     <div className="categoryDiv">
       {products.map((p) => (

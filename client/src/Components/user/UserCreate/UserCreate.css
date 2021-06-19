@@ -8,6 +8,12 @@
     padding: 10px;
 }
 
+.formUserCreate p {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
 .formBackGrond {
     display: flex;
     justify-content: center;
@@ -49,11 +55,8 @@
     outline: none;
 }
 
-.formUserCreate form select {
-    width: 50%;
-    border: none;
-    background-color: transparent;
-    border-bottom: orchid 1px solid;
+.formUserCreate form input[type=number] {
+    width: 25%;
 }
 
 .require {
@@ -69,7 +72,7 @@
 }
 
 .transparent {
-    color: transparent;
+    display: none;
     position: absolute;
     z-index: 99;
     font-size: 10px;
@@ -88,6 +91,7 @@
 .formUserCreate .btnForm:hover {
     color: #f1eee3;
     background-color: #cf988c;
+    transition: 0.2s;
 }
 
 .formUserCreate .btnBack {

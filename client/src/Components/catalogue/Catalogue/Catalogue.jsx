@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Catalogue.css';
@@ -30,7 +31,6 @@ export default function catalogue() {
   useEffect(() => {
     dispatch(getProducts());
   }, [productsDisplay]);
-
   return (
     <div className="catalogue">
       <FilterCatalogue
@@ -48,6 +48,7 @@ export default function catalogue() {
             id={product.id}
             image={product.images}
             review={product.review}
+            stockAmount={product.stockAmount}
           />
         ))}
       </div>

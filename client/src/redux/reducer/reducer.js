@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import {
   GET_PRODUCTS_BY_CATEGORY,
   GET_CATEGORY_ID,
@@ -8,6 +9,8 @@ import {
   DELETE_PRODUCT,
   MODIFY_PRODUCT,
   GET_PRODUCT_DETAIL,
+  SET_USER,
+  SHOW_FLOATING_CART,
 } from '../actions/actions';
 
 const InitialState = {
@@ -21,6 +24,8 @@ const InitialState = {
   },
   categorieId: null,
   productsByCategory: [],
+  user: {},
+  floatingCart: 'none',
 };
 
 export default function rootReducer(state = InitialState, action) {
@@ -81,6 +86,18 @@ export default function rootReducer(state = InitialState, action) {
     return {
       ...state,
       detail: action.payload,
+    };
+  }
+  if (action.type === SET_USER) {
+    return {
+      ...state,
+      user: action.payload,
+    };
+  }
+  if (action.type === SHOW_FLOATING_CART) {
+    return {
+      ...state,
+      floatingCart: action.payload,
     };
   }
   return state;
