@@ -48,25 +48,25 @@ function OrderList() {
   // }, [userId]);
   const userOrdersInventados = [
     {
-      userId: 1, id: 1, status: 'Pago Confirmado', endTimestamp: '01/02/03', total: 7606, orderNumber: '001',
+      userId: 1, id: 1, status: 'esperando entrega', endTimestamp: '01/02/03', total: 7606, orderNumber: '001',
     },
     {
-      userId: 2, id: 2, status: 'Pago Confirmado', endTimestamp: '02/25/26', total: 3000, orderNumber: '002',
+      userId: 2, id: 2, status: 'esperando entrega', endTimestamp: '02/25/26', total: 3000, orderNumber: '002',
     },
     {
-      userId: 3, id: 3, status: 'Entregado', endTimestamp: '21/12/12', total: 200, orderNumber: '003',
+      userId: 3, id: 3, status: 'finalizada', endTimestamp: '21/12/12', total: 200, orderNumber: '003',
     },
     {
-      userId: 4, id: 4, status: 'Entregado', endTimestamp: '05/04/21', total: 1800, orderNumber: '004',
+      userId: 4, id: 4, status: 'finalizada', endTimestamp: '05/04/21', total: 1800, orderNumber: '004',
     },
     {
-      userId: 1, id: 5, status: 'Entregado', endTimestamp: '08/10/19', total: 2145, orderNumber: '005',
+      userId: 1, id: 5, status: 'finalizada', endTimestamp: '08/10/19', total: 2145, orderNumber: '005',
     },
     {
-      userId: 1, id: 6, status: 'Pago Confirmado', endTimestamp: '22/04/20', total: 1912, orderNumber: '006',
+      userId: 1, id: 6, status: 'carrito', endTimestamp: '22/04/20', total: 1912, orderNumber: '006',
     },
     {
-      userId: 2, id: 7, status: 'Entregado', endTimestamp: '02/12/18', total: 4001, orderNumber: '007',
+      userId: 2, id: 7, status: 'finalizada', endTimestamp: '02/12/18', total: 4001, orderNumber: '007',
     },
   ];
 
