@@ -38,7 +38,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
       const cartNew = await Order.create({
         status: 'cart',
       });
-      await user.addCart(cartNew);
+      await user.addOrder(cartNew);
       // Validación: ver si los productos a incorporar sí existen en la DB y si superan stock
       for (let i = 0; i < products.length; i++) {
         const prod = await Product.findOne({
@@ -74,7 +74,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
       if (productIndex !== -1) {
         // Validación: Revisar si las cantidades de ese producto supera el stock
         if (cart.products[i].stockAmount < cart.products[i].orderline.amount + parseInt(products[productIndex].amount)) {
-          return res.status(404).json(`El producto ${cart.products[i]} supera el stock`);
+          return res.status(404).json(`El producto ${cart.products[i].name} supera el stock`);
         }
         // Actualizar su cantidad
         await cart.addProduct(cart.products[i], {
@@ -115,7 +115,13 @@ const createOrFindAndUpdateCart = async (req, res) => {
         },
       });
     }
-    return res.json(cart);
+    const finalCart = await Order.findOne({
+      where: {
+        id: cart.id,
+      },
+      include: Product,
+    });
+    return res.json(finalCart);
   } catch (err) {
     return res.status(500).json('hay un error');
   }
