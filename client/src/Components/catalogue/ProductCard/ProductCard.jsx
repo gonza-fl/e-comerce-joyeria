@@ -41,7 +41,14 @@ export default function ProductCard({
         : (
           <Button
             style={{ backgroundColor: '#f1eee3', marginTop: '10px' }}
-            handleClick={async () => { await addToCart(product); dispatch(showFloatingCart('inline')); }}
+            handleClick={
+              async () => {
+                await addToCart(product);
+                dispatch(showFloatingCart('inline'));
+                setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
+                window.scrollTo(0, 0);
+              }
+            }
             text="Agregar al carrito"
           />
         )}
