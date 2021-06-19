@@ -11,25 +11,15 @@ const OrderListModal = ({ userOrders }) => {
     // axios.put(API_URL/order?status=e.target.value)
   };
 
-return (
-  <div className="modal-container">
-    <table className="modal-table">
-      <tr>
-        <th>N° ORDEN</th>
-        <th>FECHA</th>
-        <th>TOTAL</th>
-        <th>ESTADO</th>
-        <th>DETALLE</th>
-      </tr>
-      {userOrders.map((userOrder) => (
-        <tr className="table-data">
-          <td>{userOrder.orderNumber}</td>
-          <td>{userOrder.endTimestamp}</td>
-          <td>{userOrder.total}</td>
-          <td>{userOrder.status}</td>
-          <td>
-            <Link className="table-detail" to={`/admin/orders/${userOrder.id}`}>Ver Detalle</Link>
-          </td>
+  return (
+    <div className="modal-container">
+      <table className="modal-table">
+        <tr>
+          <th>N° ORDEN</th>
+          <th>FECHA</th>
+          <th>TOTAL</th>
+          <th>ESTADO</th>
+          <th>DETALLE</th>
         </tr>
         {userOrders.map((userOrder) => (
           <tr className="table-data">
