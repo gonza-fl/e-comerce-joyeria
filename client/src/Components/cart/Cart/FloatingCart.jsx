@@ -8,9 +8,8 @@ function FloatingCart() {
   const dispatch = useDispatch();
   const showCart = useSelector((state) => state.floatingCart);
   const cartProducts = JSON.parse(localStorage.getItem('cart'));
-  const subTotal = cartProducts ? cartProducts.map(
-    (product) => product.price,
-  ).reduce((sum, p) => sum + p) : [1, 2];
+  // const subTotal = cartProducts.map((product) => product.price).reduce((sum, p) => sum + p);
+
   function removeFromCart(id) {
     const updatedCart = cartProducts.filter((p) => p.id !== id);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -28,7 +27,7 @@ function FloatingCart() {
       onMouseLeave={() => dispatch(showFloatingCart('none'))}
     >
       <div>
-        { cartProducts ? cartProducts.map((p) => (
+        {cartProducts.map((p) => (
           <ProductCardCart>
             <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
             <div style={{ textAlign: 'left', marginLeft: '15px', flexGrow: 2 }}>
@@ -42,13 +41,13 @@ function FloatingCart() {
               </a>
             </div>
           </ProductCardCart>
-        )) : null}
+        ))}
       </div>
       <SubTotal className="bg-color-three">
         <b>
           SUBTOTAL:
           {' '}
-          {`$${numberWithCommas(subTotal)}`}
+          {/* {`$${numberWithCommas(subTotal)}`} */}
         </b>
       </SubTotal>
       <a href="/cart" className="link-without-styles">
