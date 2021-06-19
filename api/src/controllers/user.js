@@ -28,7 +28,11 @@ const createUser = async (req, res) => {
       name,
     });
     await user.addAddress(newAddress);
-    const search = await User.findByPk(id, {
+    const search = await User.findOne({
+      where: {
+        id: user.id,
+      },
+    }, {
       include: [
         {
           model: Address,
