@@ -20,6 +20,8 @@ import Profile from './Components/user/Profile/Profile';
 import 'firebase/auth';
 import { setUser } from './redux/actions/actions';
 import CartCheckout from './Components/cart/CartCheckout/CartCheckout';
+import UserOrders from './Components/user/UserOrders/UserOrders';
+import UserOrderDetail from './Components/user/UserOrders/UserOrderDetail/UserOrderDetail';
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +46,8 @@ function App() {
               <Route path="/account/register" component={UserCreate} />
               <Route path="/account/profile" component={Profile} />
               <Route path="/cart/checkout" component={CartCheckout} />
+              <Route path="/user/:userId/orders" component={UserOrders} />
+              <Route path="/user/order/:id" component={UserOrderDetail} />
             </Switch>
           </div>
           <Footer />

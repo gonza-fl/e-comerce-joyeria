@@ -21,7 +21,7 @@ const OrderListModal = ({ userOrders }) => (
           <td>{userOrder.total}</td>
           <td>{userOrder.status}</td>
           <td>
-            <Link className="table-detail" to="/admin/orders/:orderId">Ver Detalle</Link>
+            <Link className="table-detail" to={`/admin/orders/${userOrder.id}`}>Ver Detalle</Link>
           </td>
         </tr>
       ))}
