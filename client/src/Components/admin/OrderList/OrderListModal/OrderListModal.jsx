@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './OrderListModal.css';

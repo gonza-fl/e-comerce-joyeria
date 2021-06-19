@@ -1,5 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable import/prefer-default-export */
+/* eslint linebreak-style: ["error", "windows"] */
 import axios from 'axios';
 import swal from 'sweetalert';
 import { URL_CATEGORIES, URL_PRODUCTS } from '../../../../constants';

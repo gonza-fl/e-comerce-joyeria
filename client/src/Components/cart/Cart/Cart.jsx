@@ -4,6 +4,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
