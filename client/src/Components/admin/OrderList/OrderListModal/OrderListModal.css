@@ -1,16 +1,19 @@
 .modal-container{
   background-color: #f1eee3;
-  width: 80%;
+  width: 78%;
   display: flex;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   margin-top: 50px;
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   border-radius: 20px;
+  padding: 2%;
+  /* justify-content: flex-start; */
 }
 
 .modal-table{
   padding: 2%;
-  width: 95%;
+  width: 170%;
+  margin-top: 2%;
 }
 
 .table-data{
@@ -19,14 +22,14 @@
 }
 
 .table-data:hover{
-	color: white;
+	color: #201414;
 	transform: scale(1.01);
 }
 
 .table-detail {
   text-decoration: none;
-  color: black;
-  border: 0.5px solid black;
+  color: #201414;
+  border: 0.5px solid #201414;
   padding: 5%;
   display: flex;
   align-items: center;
@@ -38,4 +41,13 @@
 .table-detail:hover{
   border: none;
   background-color: #cf988c;
+}
+
+.modal-filter-container{
+  width: 170%;
+  margin: auto;
+}
+
+.modal-filter-title{
+  margin-right: 4%;
 }
