@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 const firebaseConfig = {
   apiKey: 'AIzaSyBMq8oetRvcUAU1rhynwRGgy1ajpz2PFvk',
   authDomain: 'pf-ecommerse.firebaseapp.com',
