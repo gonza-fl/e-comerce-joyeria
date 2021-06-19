@@ -4,7 +4,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
@@ -64,7 +63,7 @@ const Cart = () => {
               <div className="card-detail-map">
                 <div className="card-detail-map-left">
                   <div className="card-detail-img-container">
-                    <img src={product.images[0].url} alt={product.name} />
+                    <img src={product.images.length && product.images[0].url} alt={product.name} />
                   </div>
                   <div className="card-detail-data">
                     <h4>{product.name.toUpperCase()}</h4>

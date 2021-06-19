@@ -2,6 +2,7 @@ const {
   User,
   Address,
   Cart,
+  Product,
 } = require('../models/index');
 
 const createUser = async (req, res) => {
@@ -27,7 +28,11 @@ const createUser = async (req, res) => {
       name,
     });
     await user.addAddress(newAddress);
-    const search = await User.findByPk(id, {
+    const search = await User.findOne({
+      where: {
+        id: user.id,
+      },
+    }, {
       include: [
         {
           model: Address,
@@ -52,6 +57,7 @@ const getUser = async (req, res) => {
           },
           {
             model: Cart,
+            include: Product,
           },
         ],
       },
@@ -62,44 +68,40 @@ const getUser = async (req, res) => {
   }
 };
 
-// Address __
-const addAddressFunction = async (req, res) => {
+const updateUser = async (req, res) => {
   const {
     idUser,
   } = req.params;
   const {
-    address,
-    postalCode,
-    description,
-    name,
+    name, lastname, email, genre, birthday, phone, admin,
   } = req.body;
-
-  const user = await User.findByPk(idUser);
-  if (!user) {
-    return res.status(404).json({
-      err: 'No hay ningún cliente con esa ID.',
-    });
-  }
   try {
-    const isAddress = await Address.create({
-      address,
-      postalCode,
-      name,
-      description,
-    });
-    await user.addAddress(isAddress);
-    return res.json({
-      success: 'Domicilio creado con éxito!',
-    });
+    // capturo el usuario que se quiere cambiar
+    const user = await User.findByPk(idUser);
+    // agrego validacion
+    if (!user) {
+      return res.status(404).json({
+        err: 'No hay ningún cliente con esa ID.',
+      });
+    }
+    // identifico si se cambia algun espacio y si se cambia le asigno el nuevo valor
+    if (name) user.name = name;
+    if (lastname) user.lastname = lastname;
+    if (email) user.email = email;
+    if (genre) user.genre = genre;
+    if (birthday) user.birthday = new Date(birthday[2], birthday[1] - 1, birthday[0]);
+    if (phone) user.phone = phone;
+    if (admin) user.admin = admin;
+    // Updeteo el user
+    await user.save();
+    return res.status(200).json(user);
   } catch (err) {
-    return res.json({
-      err: 'No se pudo crear el domicilio.',
-    });
+    return res.status(404).json(err);
   }
 };
 
 module.exports = {
   createUser,
   getUser,
-  addAddressFunction,
+  updateUser,
 };

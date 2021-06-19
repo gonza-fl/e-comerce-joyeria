@@ -1,8 +1,15 @@
 /* eslint linebreak-style: ["error", "windows"] */
+// import axios from 'axios';
+// import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 
 export function addToCart(product) {
+  // lo comentado aca arriba es lo que tendriamos que hacer
+  // una vez funcione la ruta de carrito, cambiar url cart por la ruta correcta.
+  // const user = useSelector((state) => state.user);
   const prodAmount = { ...product, amount: 1 };
+  // const response = { id: user.id, products: [prodAmount] };
+  // if(user.id.length > 1){axios.post(URL_CART/cart/, response )}
   if (localStorage.getItem('cart')) {
     const sinJson = JSON.parse(localStorage.getItem('cart'));
     const equal = sinJson;
