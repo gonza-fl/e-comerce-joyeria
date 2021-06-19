@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/button-has-type */
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import './App.css';
 import './colors.css';
@@ -18,6 +19,7 @@ import Cart from './Components/cart/Cart/Cart';
 import Profile from './Components/user/Profile/Profile';
 import 'firebase/auth';
 import { setUser } from './redux/actions/actions';
+import CartCheckout from './Components/cart/CartCheckout/CartCheckout';
 
 function App() {
   const dispatch = useDispatch();
@@ -38,9 +40,10 @@ function App() {
               <Route path="/products/product/:productId" component={Product} />
               <Route path="/products/:categoryId" component={CategoryCatalogue} />
               <Route path="/products" component={Catalogue} />
-              <Route path="/cart" component={Cart} />
+              <Route exact path="/cart" component={Cart} />
               <Route path="/account/register" component={UserCreate} />
               <Route path="/account/profile" component={Profile} />
+              <Route path="/cart/checkout" component={CartCheckout} />
             </Switch>
           </div>
           <Footer />

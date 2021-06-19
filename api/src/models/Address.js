@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
       defaultValue: 'Medellin',
     },
     postalCode: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
   },
   {

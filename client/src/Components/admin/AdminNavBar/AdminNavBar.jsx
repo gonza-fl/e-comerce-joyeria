@@ -7,8 +7,6 @@ const AdminNavBar = () => (
     <ul style={{ listStyle: 'none', textAlign: 'left' }}>
       <Link to="/admin/products" className="link-without-styles"><li>VER PRODUCTOS</li></Link>
       <br />
-      <Link to="/admin/createproduct" className="link-without-styles"><li>CREAR PRODUCTO</li></Link>
-      <br />
       <Link to="/admin/controlcategories" className="link-without-styles"><li>CATEGORÍAS</li></Link>
       <br />
       <Link to="/admin/statistics" className="link-without-styles"><li>VER ESTADÍSTICAS</li></Link>

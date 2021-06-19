@@ -40,9 +40,14 @@ Product.hasMany(Image, {
 });
 Image.belongsTo(Product);
 User.hasMany(Cart);
-Cart.belongsTo(User);
+// Cart.belongsTo(User);
 User.hasMany(Address);
 Address.belongsTo(User);
+
+User.hasMany(Cart);
+// Product.hasMany(Orderline)
+Cart.hasMany(OrderLine);
+Product.hasMany(OrderLine);
 
 Product.belongsToMany(Cart, {
   through: OrderLine,
@@ -57,6 +62,7 @@ module.exports = {
   Product,
   Image,
   Cart,
+  OrderLine,
   User,
   Address,
 };
