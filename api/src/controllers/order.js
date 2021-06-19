@@ -178,6 +178,7 @@ const modifyOrder = async (req, res) => {
       await order.save();
       return res.json(order);
     }
+    return res.sendStatus(404);
   } catch (err) {
     return res.status(500).json(err);
   }
