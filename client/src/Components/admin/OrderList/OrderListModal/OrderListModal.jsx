@@ -64,7 +64,6 @@ const OrderListModal = ({ userOrders }) => {
         </table>
       </div>
     </div>
-
   );
 };
 
