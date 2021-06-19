@@ -1,34 +1,52 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import AdminNavBar from './AdminNavBar/AdminNavBar';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
 import OrderList from './OrderList/OrderList';
 import AdminProductCard from './AdminProducts/AdminProductCard';
 import OrderDetail from './OrderList/OrderDetail/OrderDetail';
-import CreateProduct from './CreateProduct/CreateProduct';
 import AdminControlCategories from './AdminCategories/AdminControlCategories';
+import AdminCreateProduct from './CreateProduct/AdminCreateProduct';
+
+const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 
 function AdminWindow() {
+  ADMIN_IDS.split(',');
+  const user = useSelector((state) => state.user);
+  if (ADMIN_IDS.includes(user.id)) {
+    return (
+      <MainDiv>
+        <h1>ADMINISTRADOR</h1>
+
+        <AdminPanel>
+          <AdminNavBar />
+          <WindowDiv className="bg-color-six">
+            <Switch>
+              <Route exact path="/admin/orders" component={OrderList} />
+              <Route exact path="/admin/products" component={AdminProducts} />
+              <Route exact path="/admin/products/:productId" component={AdminProductCard} />
+              <Route exact path="/admin/controlcategories" component={AdminControlCategories} />
+              <Route exact path="/admin/createproduct" component={AdminCreateProduct} />
+              <Route exact path="/admin/statistics" component={AdminStatistics} />
+              <Route exact path="/admin/orders/:orderId" component={OrderDetail} />
+            </Switch>
+          </WindowDiv>
+        </AdminPanel>
+      </MainDiv>
+    );
+  }
+
   return (
     <MainDiv>
-      <h1>ADMINISTRADOR</h1>
-
-      <AdminPanel>
-        <AdminNavBar />
-        <WindowDiv className="bg-color-six">
-          <Switch>
-            <Route exact path="/admin/orders" component={OrderList} />
-            <Route exact path="/admin/products" component={AdminProducts} />
-            <Route exact path="/admin/products/:productId" component={AdminProductCard} />
-            <Route exact path="/admin/controlcategories" component={AdminControlCategories} />
-            <Route exact path="/admin/createproduct" component={CreateProduct} />
-            <Route exact path="/admin/statistics" component={AdminStatistics} />
-            <Route exact path="/admin/orders/:orderId" component={OrderDetail} />
-          </Switch>
-        </WindowDiv>
-      </AdminPanel>
+      <h1> Debe iniciar secion para acceder al panel de administrador</h1>
+      <Link to="/">
+        <button type="button">volver al home</button>
+      </Link>
+      <img alt="quien sos?" width="800px" src="https://i.redd.it/snyzys02hro31.jpg" />
     </MainDiv>
   );
 }

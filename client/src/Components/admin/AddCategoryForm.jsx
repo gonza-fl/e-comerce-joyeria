@@ -1,6 +1,7 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState } from 'react';
 import swal from 'sweetalert';
 import axios from 'axios';
@@ -48,6 +49,7 @@ function AddCategoryForm() {
           document.getElementById('descripcion').value = '';
           swal('Success', res.data.success, 'success');
           setLoading(false);
+          window.location.href = '/admin/controlcategories';
         }
       }).catch(() => {
         swal('Error', 'Ocurrio un error inesperado', 'warning');
@@ -123,11 +125,11 @@ function AddCategoryForm() {
       >
         <form method="POST" onSubmit={enviar}>
           <div style={{ marginTop: '15px' }}>
-            <span>Name</span>
+            <span>Nombre</span>
             <input type="text" id="categoria" style={{ marginLeft: '10px', width: '220px' }} />
           </div>
 
-          <p>Description</p>
+          <p>Descripción</p>
 
           <div id="flexQuery" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
 

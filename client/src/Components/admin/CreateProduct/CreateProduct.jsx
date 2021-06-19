@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-prototype-builtins */
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import { useSelector, useDispatch } from 'react-redux';
@@ -67,11 +68,11 @@ function CreateProduct() {
         if (res.data.hasOwnProperty('err')) {
           swal('error', 'No se pudo crear al producto', 'warning');
         } else {
-          swal('Success', 'Se creo el producto!');
+          swal('Success', '¡Se creó el producto con éxito!');
         }
       })
       .catch(() => {
-        swal('Error', 'Ocurrió un error. No se creó el producto. Intente nuevamente');
+        swal('Error', 'Ocurrió un error. No se creó el product, intenta nuevamente');
       });
   };
 

@@ -1,15 +1,20 @@
 /* eslint-disable react/prop-types */
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../utils/cartFunctions';
 import Button from '../../StyledComponents/Button';
+import { showFloatingCart } from '../../../redux/actions/actions';
 
 export default function ProductCard({
   product, id, name, price, image, review, stockAmount,
 }) {
+  const dispatch = useDispatch();
+
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
@@ -32,7 +37,21 @@ export default function ProductCard({
         value={review}
         activeColor="#ffd700"
       />
-      {stockAmount === 0 ? <h3> AGOTADO </h3> : <Button style={{ backgroundColor: '#f1eee3', marginTop: '10px' }} handleClick={() => addToCart(product)} text="Agregar al carrito" />}
+      {stockAmount === 0 ? <h3> AGOTADO </h3>
+        : (
+          <Button
+            style={{ backgroundColor: '#f1eee3', marginTop: '10px' }}
+            handleClick={
+              async () => {
+                await addToCart(product);
+                dispatch(showFloatingCart('inline'));
+                setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
+                window.scrollTo(0, 0);
+              }
+            }
+            text="Agregar al carrito"
+          />
+        )}
 
     </DivCard>
   );

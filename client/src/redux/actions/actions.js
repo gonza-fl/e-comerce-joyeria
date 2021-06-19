@@ -1,4 +1,5 @@
 /* eslint-disable func-names */
+/* eslint linebreak-style: ["error", "windows"] */
 
 import axios from 'axios';
 
@@ -19,6 +20,8 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const MODIFY_PRODUCT = 'MODIFY_PRODUCT';
 export const GET_PRODUCT_DETAIL = 'GET_PRODUCT_DETAIL';
 export const TAKE_FROM_CART = 'TAKE_FROM_CART';
+export const SET_USER = 'SET_USER';
+export const SHOW_FLOATING_CART = 'SHOW_FLOATING_CART';
 
 export function getProducts() {
   return function (dispatch) {
@@ -94,6 +97,15 @@ export function getProductDetail(id) {
 
 export function getCategoryId(id) {
   return { type: GET_CATEGORY_ID, payload: id };
+}
+
+export function setUser(user) {
+  const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName } : {};
+  return { type: SET_USER, payload: actualUser };
+}
+
+export function showFloatingCart(value) {
+  return { type: SHOW_FLOATING_CART, payload: value };
 }
 
 // export function deleteProduct(id){

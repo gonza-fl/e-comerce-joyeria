@@ -1,17 +1,29 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getCategories } from '../../../redux/actions/actions';
+import swal from 'sweetalert';
+import { getCategories, getProducts } from '../../../redux/actions/actions';
 import AddCategoryForm from '../AddCategoryForm';
 import { deleteCategory } from '../AdminProducts/utils/request';
 
 function AdminControlCategories() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
+  const products = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(getCategories());
-  }, [categories.length]);
+    dispatch(getProducts());
+  }, []);
+
+  function eraseCategory(category) {
+    if (!products.filter((p) => p.categories.filter((c) => c.id === category.id)[0])[0]) {
+      return deleteCategory(category);
+    }
+    return swal('Esta categoría tiene productos asociados.  Elimina estos productos primero si quieres eliminar la categoría');
+  }
+
   return (
     <Container>
       <div style={{ marginRight: '50px' }}>
@@ -25,7 +37,7 @@ function AdminControlCategories() {
             <tr className="bg-color-three">
               <td>{c.id}</td>
               <td>{c.name}</td>
-              <a href="/admin/controlcategories"><button type="button" onClick={() => deleteCategory(c)}>X</button></a>
+              <button type="button" onClick={() => eraseCategory(c)}>X</button>
             </tr>
           ))}
         </table>
