@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import { FaSearch } from 'react-icons/fa';

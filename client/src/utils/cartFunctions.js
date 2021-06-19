@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import swal from 'sweetalert';
 
 export function addToCart(product) {
