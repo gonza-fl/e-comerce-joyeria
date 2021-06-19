@@ -6,30 +6,26 @@ import ProductCard from '../ProductCard/ProductCard';
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
 import { getProducts } from '../../../redux/actions/actions';
 
-// DIEGO, REVISATE LO DE CATEGORYID
-
 export default function catalogue() {
   const dispatch = useDispatch();
   const isQuery = useLocation().search.includes('search');
-  // const categoryId = useSelector((state) => state.categorieId);
 
   const products = useSelector((state) => (isQuery ? state.productsByQuery : state.products));
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(getProducts());
   }, []);
 
   useEffect(() => {
     if (productsDisplay.length === 0
       || (productsDisplay.length !== products.length
       && productsDisplay[0] !== products[0])) {
-      setProductsDisplay(products);
+      setProductsDisplay([...products]);
     }
   }, [products]);
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [productsDisplay]);
+
   return (
     <div className="catalogue">
       <FilterCatalogue
