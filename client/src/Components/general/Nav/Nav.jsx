@@ -6,6 +6,7 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
@@ -16,9 +17,10 @@ import swal from 'sweetalert';
 import firebase from 'firebase/app';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
-import { getCategories } from '../../../redux/actions/actions';
+import { getCategories, showFloatingCart } from '../../../redux/actions/actions';
 import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
+import FloatingCart from '../../cart/Cart/FloatingCart';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 ADMIN_IDS.split(',');
@@ -100,7 +102,11 @@ export default function Nav() {
             )}
             &ensp;&ensp;
         </div>
-        <FaShoppingCart />&ensp;
+        <FaShoppingCart
+          style={{ fontSize: '20px' }}
+          onMouseEnter={() => dispatch(showFloatingCart('inline'))}
+        />&ensp;
+        <FloatingCart />
       </div>
     </div>
   );
