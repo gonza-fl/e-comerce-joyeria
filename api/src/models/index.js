@@ -13,7 +13,7 @@ const CategoriesFactory = require('./Categories');
 const ProductsFactory = require('./Products');
 const AddressFactory = require('./Address');
 const ImagesFactory = require('./Images');
-const CartFactory = require('./Cart');
+const OrderFactory = require('./Order');
 const UserFactory = require('./User');
 const OrderLineFactory = require('./OrderLine');
 
@@ -25,7 +25,7 @@ const Category = CategoriesFactory(sequelize);
 const Product = ProductsFactory(sequelize);
 const Address = AddressFactory(sequelize);
 const Image = ImagesFactory(sequelize);
-const Cart = CartFactory(sequelize);
+const Order = OrderFactory(sequelize);
 const User = UserFactory(sequelize);
 const OrderLine = OrderLineFactory(sequelize);
 
@@ -36,23 +36,19 @@ Category.belongsToMany(Product, {
   through: 'product_category',
 });
 
-Product.hasMany(Image, {
-});
+Product.hasMany(Image);
 Image.belongsTo(Product);
-User.hasMany(Cart);
-// Cart.belongsTo(User);
+
 User.hasMany(Address);
 Address.belongsTo(User);
 
-User.hasMany(Cart);
-// Product.hasMany(Orderline)
-Cart.hasMany(OrderLine);
-Product.hasMany(OrderLine);
+User.hasMany(Order);
+Order.belongsTo(User);
 
-Product.belongsToMany(Cart, {
+Product.belongsToMany(Order, {
   through: OrderLine,
 });
-Cart.belongsToMany(Product, {
+Order.belongsToMany(Product, {
   through: OrderLine,
 });
 
@@ -61,7 +57,7 @@ module.exports = {
   Category,
   Product,
   Image,
-  Cart,
+  Order,
   OrderLine,
   User,
   Address,
