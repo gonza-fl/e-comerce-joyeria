@@ -5,6 +5,7 @@ const {
   Order,
   User,
   Product,
+  OrderLine,
 } = require('../models/index');
 
 const createOrFindAndUpdateCart = async (req, res) => {
@@ -244,8 +245,61 @@ const editCartAmount = async (req, res) => {
     });
   }
 };
+
+const vaciarCarro = async (req, res) => {
+  // primero busco el usuario en la base de datos
+  if (req.body.id == null || req.body.id === undefined) {
+    return res.json({
+      err: 'No hay id',
+    });
+  }
+
+  const user = await User.findOne({
+    where: {
+      id: req.body.id,
+    },
+  });
+
+  // si no lo encuentro mando un error
+  if (user == null) {
+    return res.json({
+      err: 'El usuario no existe',
+    });
+  }
+  // busco el carrito activo del user
+  const order = await Order.findOne({
+    where: {
+      status: 'cart',
+      userId: user.id,
+    },
+  });
+  // si no existe carrito activo mando error
+  if (order == null) {
+    return res.json({
+      err: 'No tiene carritos activos',
+    });
+  }
+  // busco todas las orderlines asociadas al carro
+  const ordersArray = await OrderLine.findAll({
+    where: {
+      orderId: order.id,
+    },
+  });
+  // si existen las borro, si no hay carrito activo pero no hay orderlines no hago nada
+  if (ordersArray.length > 0) {
+    for (let i = 0; i < ordersArray.length; i += 1) {
+      await ordersArray[i].destroy();
+    }
+  }
+
+  return res.json({
+    success: 'carrito vaciado',
+  });
+};
+
 module.exports = {
   createOrFindAndUpdateCart,
   modifyOrder,
   editCartAmount,
+  vaciarCarro,
 };
