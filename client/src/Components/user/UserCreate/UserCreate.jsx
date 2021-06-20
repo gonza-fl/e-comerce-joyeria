@@ -8,7 +8,6 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';

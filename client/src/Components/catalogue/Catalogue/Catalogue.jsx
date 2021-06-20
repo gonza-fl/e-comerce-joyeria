@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Catalogue.css';
