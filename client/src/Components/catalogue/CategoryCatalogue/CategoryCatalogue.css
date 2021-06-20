@@ -1,9 +1,12 @@
-.categoryDiv{
+.categoryDiv {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     margin-top: 5rem;
     margin: 3rem;
-    
-    
+}
+
+.categoryDiv h1 {
+    align-self: center;
+    margin-left: 50px;
 }

@@ -3,15 +3,14 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const model = sequelize.define('cart', {
+  const model = sequelize.define('order', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     status: {
-      type: DataTypes.STRING,
-      defaultValue: 'carrito',
+      type: DataTypes.ENUM(['cart', 'deliveryPending', 'delivered']),
     },
     endTimestamp: { // generar al momento de cerrar compra .
       type: DataTypes.DATE,
