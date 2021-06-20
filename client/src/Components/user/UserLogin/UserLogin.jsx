@@ -5,7 +5,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState } from 'react';
 import './UserLogin.css';
 import { Link } from 'react-router-dom';
@@ -46,12 +45,16 @@ export default function UserLogin() {
       });
   };
 
+  const closeLogin = () => {
+    document.getElementById('login').style.display = 'none';
+  };
+
   return (
 
     <div id="login" className="loginModal">
       <form className="modalCtn animate" onSubmit={handleSubmit}>
         <div className="logoForm">
-          <span className="close" onClick={() => document.getElementById('login').style.display = 'none'}>&times;</span>
+          <span className="closeLogin" onClick={closeLogin}>&times;</span>
           <img src={logo} alt="Kmora" />
         </div>
 
@@ -67,10 +70,12 @@ export default function UserLogin() {
           <input className="loginInput" type="button" value="Iniciar con Facebook" name="facebook" onClick={facebookLogin} />
 
           <div className="footLogin">
-            <button className="btnCancel" onClick={() => document.getElementById('login').style.display = 'none'}>Cancelar</button>
+            <button className="btnCancel" onClick={closeLogin}>Cancelar</button>
             <Link to="#">¿Olvido su contraseña?</Link>
           </div>
         </div>
+        <p>¿No tienes una cuenta registrada?</p>
+        <Link to="/account/register"><button className="btnCancel" onClick={closeLogin}>Crear una cuenta</button></Link>
       </form>
     </div>
   );
