@@ -1,45 +1,25 @@
 const {
   User,
   Address,
-  Cart,
+  Order,
   Product,
 } = require('../models/index');
 
 const createUser = async (req, res) => {
   const {
-    id, email, name, lastname, address, genre, birthday, phone,
-    postalCode, description,
+    id, email, displayName, birthday, phone,
+
   } = req.body;
 
   try {
     const user = await User.create({
       id,
       email,
-      name,
-      lastname,
-      genre,
+      displayName,
       phone,
       birthday: new Date(birthday[2], birthday[1] - 1, birthday[0]),
     });
-    const newAddress = await Address.create({
-      address,
-      postalCode,
-      description,
-      name,
-    });
-    await user.addAddress(newAddress);
-    const search = await User.findOne({
-      where: {
-        id: user.id,
-      },
-    }, {
-      include: [
-        {
-          model: Address,
-        },
-      ],
-    });
-    return res.status(201).json(search);
+    return res.status(201).json(user);
   } catch (err) {
     return res.status(400).json({
       err,
@@ -56,7 +36,7 @@ const getUser = async (req, res) => {
             model: Address,
           },
           {
-            model: Cart,
+            model: Order,
             include: Product,
           },
         ],
@@ -73,7 +53,7 @@ const updateUser = async (req, res) => {
     idUser,
   } = req.params;
   const {
-    name, lastname, email, genre, birthday, phone, admin,
+    displayName, email, birthday, phone, admin,
   } = req.body;
   try {
     // capturo el usuario que se quiere cambiar
@@ -85,10 +65,8 @@ const updateUser = async (req, res) => {
       });
     }
     // identifico si se cambia algun espacio y si se cambia le asigno el nuevo valor
-    if (name) user.name = name;
-    if (lastname) user.lastname = lastname;
+    if (displayName) user.displayName = displayName;
     if (email) user.email = email;
-    if (genre) user.genre = genre;
     if (birthday) user.birthday = new Date(birthday[2], birthday[1] - 1, birthday[0]);
     if (phone) user.phone = phone;
     if (admin) user.admin = admin;
