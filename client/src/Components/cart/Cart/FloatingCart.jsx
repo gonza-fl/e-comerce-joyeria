@@ -20,7 +20,7 @@ function FloatingCart() {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  if (cartProducts.length !== 0) {
+  if (cartProducts && cartProducts.length !== 0) {
     return (
       <MainContainer
         style={{ display: showCart }}
