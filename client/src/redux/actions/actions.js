@@ -7,6 +7,7 @@ import {
   URL_CATEGORIES,
   URL_PRODUCTS_BY_CATEGORY,
   URL_PRODUCTS_BY_SEARCH,
+  URL_USERS,
 } from '../../constants';
 
 export const GET_PRODUCTS_BY_CATEGORY = 'GET_PRODUCTS_BY_CATEGORY';
@@ -21,6 +22,7 @@ export const GET_PRODUCT_DETAIL = 'GET_PRODUCT_DETAIL';
 export const TAKE_FROM_CART = 'TAKE_FROM_CART';
 export const SET_USER = 'SET_USER';
 export const SHOW_FLOATING_CART = 'SHOW_FLOATING_CART';
+export const GET_USER_ORDERS = 'GET_USER_ORDERS';
 
 export function getProducts() {
   return function (dispatch) {
@@ -105,6 +107,20 @@ export function setUser(user) {
 
 export function showFloatingCart(value) {
   return { type: SHOW_FLOATING_CART, payload: value };
+}
+
+export function getUserOrders(id) {
+  return function (dispatch) {
+    return (axios.get(`${URL_USERS}${id}/orders`)
+      .then((response) => {
+        dispatch({
+          type: GET_USER_ORDERS,
+          payload: response.data,
+        });
+      })
+      .catch((err) => alert(err))
+    );
+  };
 }
 
 // export function deleteProduct(id){

@@ -1,21 +1,28 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getUserOrders } from '../../../../redux/actions/actions';
 import './OrderListModal.css';
 
-const OrderListModal = ({ userOrders }) => {
+const OrderListModal = ({ id }) => {
   // eslint-disable-next-line func-names
-  const [ordenes, setOrdenes] = useState(userOrders);
-  const [orders, setOrders] = useState(ordenes);
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.userOrders);
+  const [filter, setFilter] = useState(orders);
+
   useEffect(() => {
-    setOrdenes(userOrders);
-  }, [orders]);
+    dispatch(getUserOrders(id));
+  }, []);
   function handleFilter(e) {
     e.preventDefault();
-    if (e.target.value.length > 1) {
-      setOrders(ordenes.filter((o) => o.status === e.target.value));
-    } else { setOrders(userOrders); }
+    if (e.target.value === 'Todas') {
+      setFilter(orders);
+    } else {
+      setFilter(orders.filter((f) => f.status === e.target.value));
+    }
   }
   function handleChange(e) {
     e.preventDefault();
@@ -28,11 +35,11 @@ const OrderListModal = ({ userOrders }) => {
       <div>
         <div className="modal-filter-container">
           <span className="modal-filter-title">Filtrar por estado de orden</span>
-          <select onChange={(e) => handleFilter(e)}>
-            <option value="">Todas las ordenes</option>
-            <option value="Carrito">Carrito</option>
-            <option value="Esperando entrega">Esperando entrega</option>
-            <option value="Finalizada">Finalizada</option>
+          <select onChange={handleFilter}>
+            <option value="Todas">Todas las ordenes</option>
+            <option value="cart">Carrito</option>
+            <option value="deliveryPending">Esperando entrega</option>
+            <option value="delivered">Finalizada</option>
           </select>
         </div>
         <table className="modal-table">
@@ -43,17 +50,18 @@ const OrderListModal = ({ userOrders }) => {
             <th>ESTADO</th>
             <th>DETALLE</th>
           </tr>
-          {orders.map((userOrder) => (
+          {filter.map((userOrder) => (
             <tr className="table-data">
               <td>{userOrder.orderNumber}</td>
               <td>{userOrder.endTimestamp}</td>
               <td>{userOrder.total}</td>
               <td>
+                <span>{userOrder.status === 'cart' ? 'Carrito' : userOrder.status === 'deliveryPending' ? 'Esperando entrega' : 'Finalizado'}</span>
+                <br />
                 <select onChange={(e) => { handleChange(e); }}>
-                  <option value={userOrder.status}>{userOrder.status}</option>
-                  <option value="Esperando entrega"> Esperando entrega </option>
-                  <option value="Finalizada">Finalizada</option>
-                  <option value="Carrito "> Carrito </option>
+                  <option disabled> Modificar estado </option>
+                  <option value="Esperando entrega" style={{ display: `${['cart', 'delivered'].includes(userOrder.status) ? 'inline' : 'none'}` }}> Esperando entrega </option>
+                  <option value="Finalizada" style={{ display: `${['cart', 'deliveryPending'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Finalizada</option>
                 </select>
               </td>
               <td>
