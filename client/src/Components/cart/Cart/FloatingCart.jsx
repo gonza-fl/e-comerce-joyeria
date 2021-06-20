@@ -9,7 +9,7 @@ function FloatingCart() {
   const [cartProducts, setCartProducts] = useState([]);
   useEffect(() => {
     setCartProducts(JSON.parse(localStorage.getItem('cart')));
-  }, [JSON.parse(localStorage.getItem('cart'))]);
+  }, []);
 
   function removeFromCart(id) {
     const updatedCart = cartProducts.filter((p) => p.id !== id);

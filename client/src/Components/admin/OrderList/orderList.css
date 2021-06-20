@@ -10,10 +10,10 @@
 .user-data{
 	background-color: #f0ddd8;
 	height: 50px;
+	transition: ease-in-out 300ms;
 }
 
 .user-data:hover{
 	cursor: pointer;
-	color: white;
 	transform: scale(1.01);
 }

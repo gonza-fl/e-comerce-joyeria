@@ -14,6 +14,8 @@ const createOrFindAndUpdateCart = async (req, res) => {
     id,
     products,
   } = req.body;
+  console.log(req.body);
+  if (!id) return res.status(404).json('ID no existe!');
   try {
     // Validación: existe ese usuario?
     const user = await User.findOne({
@@ -124,6 +126,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
     });
     return res.json(finalCart);
   } catch (err) {
+    console.log(err);
     return res.status(500).json('hay un error');
   }
 };

@@ -19,7 +19,7 @@ export default function EditProfile({ user, setEdit }) {
     gender: user.gender,
     birthday: user.birthday,
     phone: user.phone,
-    adress: user.adress,
+    adresse: user.adresse,
   });
 
   function onChangeInput(e) {
@@ -70,12 +70,12 @@ export default function EditProfile({ user, setEdit }) {
       >
         <b>Direcciones de envío: </b>
 
-        {input.adress.length > 0
-          ? input.adress.map((a) => (
+        {input.adresse.length > 0
+          ? input.adresse.map((a) => (
             <AdressDiv>
               <b>{a.name}</b>
               <br />
-              <span>{a.adress}</span>
+              <span>{a.adresse}</span>
               <br />
               <span>{a.region}</span>
               <br />

@@ -99,7 +99,7 @@ export function getCategoryId(id) {
 }
 
 export function setUser(user) {
-  const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName } : {};
+  const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
   return { type: SET_USER, payload: actualUser };
 }
 

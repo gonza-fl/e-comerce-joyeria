@@ -4,8 +4,8 @@
 import React, { useState } from 'react';
 // import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FcBusinesswoman, FcBusinessman } from 'react-icons/fc';
-import { GrUserManager } from 'react-icons/gr';
+import { FcBusinessman } from 'react-icons/fc';
+import { useSelector } from 'react-redux';
 import EditProfile from './EditProfile';
 import UserOrders from '../UserOrders/UserOrders';
 
@@ -16,10 +16,10 @@ const mockdata = {
   gender: 'Masculino',
   birthday: '02-28-1992',
   phone: 3152639144,
-  adress: [{
+  adresse: [{
     id: '1',
     name: 'Casa',
-    adress: 'Calle 65 #56-84',
+    adresse: 'Calle 65 #56-84',
     description: 'Mi casa',
     region: 'Antioquia',
     postalCode: '10500',
@@ -37,6 +37,7 @@ export default function Profile() {
   // const user = useSelector((state) => state.user);
   const [edit, setEdit] = useState(false);
   const [menu, setMenu] = useState(1);
+  const user = useSelector((state) => state.user);
 
   return (
     <MainDiv className="bg-color-three">
@@ -47,8 +48,8 @@ export default function Profile() {
         <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
       </Menu>
 
-      {menu === 1 ? !edit ? showProfile(setEdit)
-        : <EditProfile user={mockdata} setEdit={setEdit} />
+      {menu === 1 ? !edit ? showProfile(user, setEdit)
+        : <EditProfile user={{ ...user, adresse: mockdata.adresse }} setEdit={setEdit} />
         : menu === 2 ? <UserOrders />
           : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
             : <h1>CAMBIAR CONTRASEÑA</h1>}
@@ -56,18 +57,13 @@ export default function Profile() {
   );
 }
 
-function showProfile(setEdit) {
+function showProfile(user, setEdit) {
   return (
     <DivContainer>
       <UserIcon>
-        {mockdata.gender === 'Femenino'
-          ? <FcBusinesswoman style={{ fontSize: '150px' }} />
-          : mockdata.gender === 'Masculino' ? <FcBusinessman style={{ fontSize: '150px' }} />
-            : <GrUserManager style={{ fontSize: '150px' }} />}
+        <FcBusinessman style={{ fontSize: '150px' }} />
         <br />
-        <span style={{ fontSize: '20px' }}>{`${mockdata.name}`}</span>
-        <br />
-        <span style={{ fontSize: '20px' }}>{`${mockdata.lastname}`}</span>
+        <span style={{ fontSize: '20px' }}>{`${user.name}`}</span>
         <br />
         <br />
         <br />
@@ -76,28 +72,28 @@ function showProfile(setEdit) {
       <UserInfo>
         <b>Email: </b>
         <br />
-        <span>{mockdata.email}</span>
+        <span>{user.email}</span>
         <br />
         <br />
         <b>Teléfono de contacto: </b>
         <br />
-        <span>{mockdata.phone || 'Sin teléfono agregado'}</span>
+        <span>{user.phone || 'Sin teléfono agregado'}</span>
         <br />
         <br />
         <b>Fecha de nacimiento: </b>
         <br />
-        <span>{mockdata.birthday || 'Sin fecha de nacimiento'}</span>
+        <span>{user.birthday || 'Sin fecha de nacimiento'}</span>
       </UserInfo>
       <UserInfo style={{ flexGrow: '6', overflowY: 'scroll' }}>
         <b>Direcciones de envío: </b>
         <br />
         <br />
-        {mockdata.adress.length > 0
-          ? mockdata.adress.map((a) => (
+        {mockdata.adresse.length > 0
+          ? mockdata.adresse.map((a) => (
             <AdressDiv>
               <b>{a.name}</b>
               <br />
-              <span>{a.adress}</span>
+              <span>{a.adresse}</span>
               <br />
               <span>{a.region}</span>
               <br />
