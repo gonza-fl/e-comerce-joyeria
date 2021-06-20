@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 // import axios from 'axios';
 // import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
