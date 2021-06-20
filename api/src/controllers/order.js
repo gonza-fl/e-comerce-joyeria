@@ -285,9 +285,77 @@ const emptyCartOrProduct = async (req, res) => {
   return res.json('se vacio el carrito!');
 };
 
+const getOrders = async (req, res) => {
+  let {
+    status,
+  } = req.query;
+  if (!status) status = ['cart', 'deliveryPending', 'delivered'];
+  try {
+    const result = await Order.findAll({
+      where: {
+        status,
+      },
+    });
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Internal server error',
+      error: error.message,
+    });
+  }
+};
+
+const getCartByUser = async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  try {
+    const response = await Order.findAll({
+      include: Product,
+      where: {
+        userId: id,
+        status: 'cart',
+      },
+    });
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({
+      head: 'Internal server error', error,
+    });
+  }
+};
+
+const getOrderById = async (req, res) => {
+  const {
+    orderId,
+  } = req.params;
+
+  if (!orderId) return res.status(404).json('El id de la orden no puede ser vacío');
+  const id = parseInt(orderId, 10);
+  if (Number.isNaN(id)) return res.status(404).json('El id de la orden debe ser un numero');
+  try {
+    const singleOrder = await Order.findByPk(id, {
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: Product,
+        },
+      ],
+    });
+    if (!singleOrder) return res.status(404).json('La orden no existe');
+    return res.json(singleOrder);
+  } catch (err) {
+    return res.status(500).json('Internal server error');
+  }
+};
 module.exports = {
   createOrFindAndUpdateCart,
   modifyOrder,
   editCartAmount,
   emptyCartOrProduct,
+  getOrders,
+  getCartByUser,
+  getOrderById,
 };
