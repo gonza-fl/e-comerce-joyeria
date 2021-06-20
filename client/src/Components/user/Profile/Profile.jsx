@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { FcBusinesswoman, FcBusinessman } from 'react-icons/fc';
 import { GrUserManager } from 'react-icons/gr';
 import EditProfile from './EditProfile';
+import UserOrders from '../UserOrders/UserOrders';
 
 const mockdata = {
   name: 'Diego Fernando',
@@ -35,17 +36,22 @@ const mockdata = {
 export default function Profile() {
   // const user = useSelector((state) => state.user);
   const [edit, setEdit] = useState(false);
+  const [menu, setMenu] = useState(1);
 
   return (
     <MainDiv className="bg-color-three">
       <Menu>
-        <ItemMenu>DETALLES</ItemMenu>
-        <ItemMenu>ÓRDENES DE COMPRA</ItemMenu>
-        <ItemMenu>MÉTODOS DE PAGO</ItemMenu>
-        <ItemMenu>CAMBIAR CONTRASEÑA</ItemMenu>
+        <ItemMenu onClick={() => setMenu(1)} style={{ backgroundColor: `${menu === 1 ? '#CF988C' : 'white'}` }}>DETALLES</ItemMenu>
+        <ItemMenu onClick={() => setMenu(2)} style={{ backgroundColor: `${menu === 2 ? '#CF988C' : 'white'}` }}>ÓRDENES DE COMPRA</ItemMenu>
+        <ItemMenu onClick={() => setMenu(3)} style={{ backgroundColor: `${menu === 3 ? '#CF988C' : 'white'}` }}>MÉTODOS DE PAGO</ItemMenu>
+        <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
       </Menu>
-      {!edit ? showProfile(setEdit)
-        : <EditProfile user={mockdata} setEdit={setEdit} />}
+
+      {menu === 1 ? !edit ? showProfile(setEdit)
+        : <EditProfile user={mockdata} setEdit={setEdit} />
+        : menu === 2 ? <UserOrders />
+          : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
+            : <h1>CAMBIAR CONTRASEÑA</h1>}
     </MainDiv>
   );
 }

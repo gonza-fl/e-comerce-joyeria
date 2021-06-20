@@ -43,6 +43,7 @@
     .userIcon:hover .userOptions {
         display: block;
         position: absolute;
+        transform: translate(-100px, 0px);
     }
     
     .userOptions {

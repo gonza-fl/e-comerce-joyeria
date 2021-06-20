@@ -45,7 +45,6 @@ function AdminWindow() {
       <Link to="/">
         <button type="button">volver al home</button>
       </Link>
-      <img alt="quien sos?" width="800px" src="https://i.redd.it/snyzys02hro31.jpg" />
     </MainDiv>
   );
 }

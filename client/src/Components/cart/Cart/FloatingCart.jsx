@@ -55,7 +55,7 @@ function FloatingCart() {
           <b>
             SUBTOTAL:
             {' '}
-            {`$${numberWithCommas(cartProducts.map((product) => product.price).reduce((sum, p) => sum + p))}`}
+            {`$${numberWithCommas(cartProducts.map((product) => product.price * product.amount).reduce((sum, p) => sum + p))}`}
           </b>
         </SubTotal>
         <a href="/cart" className="link-without-styles">
@@ -90,7 +90,7 @@ function FloatingCart() {
 
 const MainContainer = styled.div`
     position: absolute;
-    top: 10vh;
+    top: 8vh;
     right: 3vw;
     padding: 5px 10px;
     box-shadow: -2px 3px 13px -2px #000000;

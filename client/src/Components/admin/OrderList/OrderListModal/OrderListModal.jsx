@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { useState, useEffect } from 'react';

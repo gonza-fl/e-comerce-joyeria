@@ -12,7 +12,7 @@ import AddAdressModal from './AddAdressModal';
 export default function EditProfile({ user, setEdit }) {
   // const user = useSelector((state) => state.user);
   const [addAdress, setAddAdress] = useState('none');
-  const [input] = useState({
+  const [input, setInput] = useState({
     name: user.name,
     lastname: user.lastname,
     email: user.email,
@@ -21,6 +21,13 @@ export default function EditProfile({ user, setEdit }) {
     phone: user.phone,
     adress: user.adress,
   });
+
+  function onChangeInput(e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  }
 
   return (
     <DivContainer>
@@ -32,11 +39,11 @@ export default function EditProfile({ user, setEdit }) {
         <br />
         <span style={{ fontSize: '20px' }}>Nombre</span>
         <br />
-        <input name="name" value={input.name} />
+        <input name="name" value={input.name} onChange={onChangeInput} />
         <br />
         <span style={{ fontSize: '20px' }}>Apellido</span>
         <br />
-        <input name="lastname" value={input.lastname} />
+        <input name="lastname" value={input.lastname} onChange={onChangeInput} />
         <br />
         <br />
         <br />
@@ -50,7 +57,7 @@ export default function EditProfile({ user, setEdit }) {
         <br />
         <b>Teléfono de contacto: </b>
         <br />
-        <input name="phone" value={input.phone} />
+        <input name="phone" value={input.phone} onChange={onChangeInput} />
         <br />
         <br />
         <b>Fecha de nacimiento: </b>
