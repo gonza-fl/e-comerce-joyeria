@@ -7,9 +7,12 @@ const {
 } = require('../controllers/user');
 const {
   editCartAmount,
+  getCartByUser,
 } = require('../controllers/order');
 
 const router = Router();
+
+router.get('/:id/cart', getCartByUser);
 router.put('/:idUser/cart', editCartAmount);
 router.use('/:idUser/address', address);
 router.put('/:idUser', updateUser);
