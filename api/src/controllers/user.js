@@ -78,8 +78,35 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  try {
+    const user = await User.findAll(
+      {
+        where: {
+          id: idUser,
+        },
+        include: [
+          {
+            model: Address,
+          },
+          {
+            model: Order,
+            include: Product,
+          },
+        ],
+      },
+    );
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(404).json(err);
+  }
+};
 module.exports = {
   createUser,
   getUser,
   updateUser,
+  getUserById,
 };
