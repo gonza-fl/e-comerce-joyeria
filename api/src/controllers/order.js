@@ -183,7 +183,68 @@ const modifyOrder = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+const editCartAmount = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const {
+    product,
+    action,
+  } = req.body;
+  try {
+    if (action !== 'sum' && action !== 'substract' && action !== 'set') return res.status(400).json('No existe esa acción');
+    const cart = await Order.findOne({
+      where: {
+        userId: idUser,
+        status: 'cart',
+      },
+      include: Product,
+    });
+    if (!cart) return res.status(404).json('no existe el user id');
+    const productSearch = cart.products.find((prod) => prod.id === product.id);
+    if (!productSearch) return res.status(404).json('ese producto no existe en la base de datos');
+    if ((action === 'sum' && productSearch.stockAmount < productSearch.orderline.amount + 1)
+      || (action === 'substract' && productSearch.orderline.amount - 1 < 0)
+      || (action === 'set' && (productSearch.stockAmount < product.amount || product.amount < 0))) { return res.sendStatus(400); }
+    let updatedAmount = 0;
+    switch (action) {
+      case 'sum':
+        updatedAmount = productSearch.orderline.amount + 1;
+        break;
+      case 'substract':
+        updatedAmount = productSearch.orderline.amount - 1;
+        break;
+      default:
+        updatedAmount = product.amount;
+        break;
+    }
+    if (updatedAmount === 0) {
+      await cart.removeProduct(productSearch);
+    } else {
+      await cart.addProduct(productSearch, {
+        through: {
+          amount: updatedAmount,
+          subtotal: updatedAmount * productSearch.price,
+        },
+      });
+    }
+    const updatedCart = await Order.findOne({
+      where: {
+        userId: idUser,
+        status: 'cart',
+      },
+      include: Product,
+    });
+    return res.json(updatedCart);
+  } catch (err) {
+    return res.status(400).json({
+      err,
+    });
+  }
+};
 module.exports = {
   createOrFindAndUpdateCart,
   modifyOrder,
+  editCartAmount,
 };

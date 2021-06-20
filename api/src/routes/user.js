@@ -5,8 +5,12 @@ const address = require('./address');
 const {
   createUser, getUser, updateUser,
 } = require('../controllers/user');
+const {
+  editCartAmount,
+} = require('../controllers/order');
 
 const router = Router();
+router.put('/:idUser/cart', editCartAmount);
 router.use('/:idUser/address', address);
 router.put('/:idUser', updateUser);
 router.post('/', createUser);
