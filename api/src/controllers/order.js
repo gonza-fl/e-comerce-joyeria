@@ -1,7 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable radix */
-/* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
+/* eslint-disable radix */
 
 const {
   Order,
@@ -40,13 +38,13 @@ const createOrFindAndUpdateCart = async (req, res) => {
       });
       await user.addOrder(cartNew);
       // Validación: ver si los productos a incorporar sí existen en la DB y si superan stock
-      for (let i = 0; i < products.length; i++) {
+      for (let i = 0; i < products.length; i += 1) {
         const prod = await Product.findOne({
           where: {
             id: products[i].id,
           },
         });
-        if (!prod) return res.status(404).json(`No se encontro el producto ${prod}`);
+        if (!prod) return res.status(404).json(`No se encontro el producto de id ${products[i].id}`);
         if (prod.stockAmount < parseInt(products.amount)) {
           return res.status(404).json('El producto supera el stock');
         }
@@ -68,12 +66,15 @@ const createOrFindAndUpdateCart = async (req, res) => {
       return res.json(cartNewFound);
     }
     // B) El usuario sí tiene carrito: recorrer sus productos cargados
-    for (let i = 0; i < cart.products.length; i++) {
-      const productIndex = products.findIndex((product) => parseInt(product.id) === cart.products[i].id);
+    for (let i = 0; i < cart.products.length; i += 1) {
+      const productIndex = products.findIndex(
+        (product) => parseInt(product.id) === cart.products[i].id,
+      );
       // Validación: se quiere incorporar un producto ya presente en el carrito?
       if (productIndex !== -1) {
         // Validación: Revisar si las cantidades de ese producto supera el stock
-        if (cart.products[i].stockAmount < cart.products[i].orderline.amount + parseInt(products[productIndex].amount)) {
+        if (cart.products[i].stockAmount
+          < cart.products[i].orderline.amount + parseInt(products[productIndex].amount)) {
           return res.status(404).json(`El producto ${cart.products[i].name} supera el stock`);
         }
         // Actualizar su cantidad
@@ -98,7 +99,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
       }
     }
     // Los productos ya presentes en el carrito fueron spliceados, recorrer los nuevos para agregar
-    for (let i = 0; i < products.length; i++) {
+    for (let i = 0; i < products.length; i += 1) {
       const prod = await Product.findOne({
         where: {
           id: products[i].id,
@@ -160,7 +161,9 @@ const modifyOrder = async (req, res) => {
           err: 'La orden no tiene productos.',
         });
       }
-      const totalOrder = order.products.reduce((total, current) => total + current.orderline.subtotal, 0);
+      const totalOrder = order.products.reduce(
+        (total, current) => total + current.orderline.subtotal, 0,
+      );
       order.status = status;
       order.total = totalOrder;
       order.endTimestamp = new Date();
@@ -206,7 +209,9 @@ const editCartAmount = async (req, res) => {
     if (!productSearch) return res.status(404).json('ese producto no existe en la base de datos');
     if ((action === 'sum' && productSearch.stockAmount < productSearch.orderline.amount + 1)
       || (action === 'substract' && productSearch.orderline.amount - 1 < 0)
-      || (action === 'set' && (productSearch.stockAmount < product.amount || product.amount < 0))) { return res.sendStatus(400); }
+      || (action === 'set' && (productSearch.stockAmount < product.amount || product.amount < 0))) {
+      return res.sendStatus(400);
+    }
     let updatedAmount = 0;
     switch (action) {
       case 'sum':
