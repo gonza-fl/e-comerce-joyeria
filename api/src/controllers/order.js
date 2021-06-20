@@ -5,7 +5,6 @@ const {
   Order,
   User,
   Product,
-  OrderLine,
 } = require('../models/index');
 
 const createOrFindAndUpdateCart = async (req, res) => {
@@ -246,60 +245,49 @@ const editCartAmount = async (req, res) => {
   }
 };
 
-const vaciarCarro = async (req, res) => {
+const emptyCartOrProduct = async (req, res) => {
   // primero busco el usuario en la base de datos
-  if (req.body.id == null || req.body.id === undefined) {
-    return res.json({
-      err: 'No hay id',
-    });
-  }
+  const {
+    id,
+    product,
+  } = req.body;
+  if (!id) return res.status(404).json('el id no existe!');
 
   const user = await User.findOne({
     where: {
-      id: req.body.id,
+      id,
     },
   });
 
   // si no lo encuentro mando un error
-  if (user == null) {
-    return res.json({
-      err: 'El usuario no existe',
-    });
-  }
+  if (!user) return res.status(404).json('el usuario no existe!');
   // busco el carrito activo del user
   const order = await Order.findOne({
     where: {
       status: 'cart',
       userId: user.id,
     },
+    include: Product,
   });
   // si no existe carrito activo mando error
-  if (order == null) {
-    return res.json({
-      err: 'No tiene carritos activos',
-    });
+  if (!order) return res.status(404).json('no hay ninguna orden');
+  // si llega un producto es para eliminar ese producto especifico del carrito
+  if (product) {
+    const productFound = order.products.find((prod) => prod.id === product.id);
+    if (!productFound) return res.status(404).json('el producto no existe');
+    await order.removeProduct(productFound);
+    return res.json('producto eliminado');
   }
-  // busco todas las orderlines asociadas al carro
-  const ordersArray = await OrderLine.findAll({
-    where: {
-      orderId: order.id,
-    },
-  });
-  // si existen las borro, si no hay carrito activo pero no hay orderlines no hago nada
-  if (ordersArray.length > 0) {
-    for (let i = 0; i < ordersArray.length; i += 1) {
-      await ordersArray[i].destroy();
-    }
+  // ahora se vacía el carrito
+  for (let i = 0; i < order.products.length; i += 1) {
+    await order.removeProduct(order.products[i]);
   }
-
-  return res.json({
-    success: 'carrito vaciado',
-  });
+  return res.json('se vacio el carrito!');
 };
 
 module.exports = {
   createOrFindAndUpdateCart,
   modifyOrder,
   editCartAmount,
-  vaciarCarro,
+  emptyCartOrProduct,
 };
