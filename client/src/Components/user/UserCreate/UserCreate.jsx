@@ -8,13 +8,14 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useEffect, useState } from 'react';
 import './UserCreate.css';
 import swal from 'sweetalert';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import axios from 'axios';
 import Button from '../../StyledComponents/Button';
+import { URL_USERS } from '../../../constants';
 
 export default function UserCreate() {
 
@@ -48,8 +49,13 @@ export default function UserCreate() {
 
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
-
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+      // agrego el nuevo usuario a db
+        .then((res) => axios.post(URL_USERS, {
+          id: res.user.uid,
+          email: res.user.email,
+          displayName: res.user.displayName,
+        }))
         .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
         .then(() => window.history.back())
         .catch((err) => (err.message.includes('another account')

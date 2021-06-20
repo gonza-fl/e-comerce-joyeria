@@ -8,11 +8,8 @@
 import React, { useState } from 'react';
 import './UserLogin.css';
 import { Link } from 'react-router-dom';
-import firebase from 'firebase/app';
-import swal from 'sweetalert';
-import 'firebase/auth';
-
 import logo from '../../../img/logo.png';
+import { loginWhitEmmail, loginWhitFacebook, loginWhitGoogle } from './utilsLogin/login';
 
 export default function UserLogin() {
   const [input, setInput] = useState({ email: '', password: '' });
@@ -21,28 +18,9 @@ export default function UserLogin() {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const googleLogin = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
-      .then(() => document.getElementById('login').style.display = 'none');
-  };
-
-  const facebookLogin = () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithPopup(provider)
-      .then(() => document.getElementById('login').style.display = 'none');
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    firebase.auth().signInWithEmailAndPassword(input.email, input.password)
-      .then(() => swal('Hola', 'Inicio de sesión exitoso', 'success'))
-      .then(() => document.getElementById('login').style.display = 'none')
-      .catch((error) => {
-        error.message.includes('user record') && swal('Email incorrecto', 'Por favor, verifique su e-mail', 'warning');
-        error.message.includes('password is invalid') && swal('Contraseña incorrecta', 'Por favor, verifique su contraseña', 'warning');
-      });
+    loginWhitEmmail(input.email, input.password);
   };
 
   const closeLogin = () => {
@@ -66,8 +44,8 @@ export default function UserLogin() {
           <input className="loginInput" type="password" placeholder="Ingrese su contraseña" name="password" required onChange={handleInputChange} />
 
           <input className="loginInput" type="submit" value="Iniciar Sesión" />
-          <input className="loginInput " type="button" value="Iniciar con Google" name="google" onClick={googleLogin} />
-          <input className="loginInput" type="button" value="Iniciar con Facebook" name="facebook" onClick={facebookLogin} />
+          <input className="loginInput " type="button" value="Iniciar con Google" name="google" onClick={loginWhitGoogle} />
+          <input className="loginInput" type="button" value="Iniciar con Facebook" name="facebook" onClick={loginWhitFacebook} />
 
           <div className="footLogin">
             <button className="btnCancel" onClick={closeLogin}>Cancelar</button>

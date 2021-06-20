@@ -4,6 +4,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-property-newline */
 /* eslint-disable no-unused-vars */
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 // import { useParams } from 'react-router-dom';
 // import axios from 'axios';
