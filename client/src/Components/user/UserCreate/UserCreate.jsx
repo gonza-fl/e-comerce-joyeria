@@ -49,8 +49,8 @@ export default function UserCreate() {
 
     if (errors.empty) {
       document.getElementById('formUserCreate').reset();
-
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+      // agrego el nuevo usuario a db
         .then((res) => axios.post(URL_USERS, {
           id: res.user.uid,
           email: res.user.email,
