@@ -8,10 +8,12 @@ const {
 const {
   editCartAmount,
   getCartByUser,
+  getAllOrdersByIdUser,
 } = require('../controllers/order');
 
 const router = Router();
 
+router.get('/:idUser/orders', getAllOrdersByIdUser);
 router.get('/:id/cart', getCartByUser);
 router.put('/:idUser/cart', editCartAmount);
 router.use('/:idUser/address', address);
