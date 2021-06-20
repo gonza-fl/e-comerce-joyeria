@@ -6,7 +6,7 @@ const getOrders = (req, res) => {
   let {
     status,
   } = req.query;
-  if (!status) status = ['Cart', 'DeliveryPending', 'Delivered'];
+  if (!status) status = ['cart', 'deliveryPending', 'delivered'];
   try {
     const result = Cart.findAll({
       where: {
