@@ -219,16 +219,12 @@ const editCartAmount = async (req, res) => {
         updatedAmount = product.amount;
         break;
     }
-    if (updatedAmount === 0) {
-      await cart.removeProduct(productSearch);
-    } else {
-      await cart.addProduct(productSearch, {
-        through: {
-          amount: updatedAmount,
-          subtotal: updatedAmount * productSearch.price,
-        },
-      });
-    }
+    await cart.addProduct(productSearch, {
+      through: {
+        amount: updatedAmount,
+        subtotal: updatedAmount * productSearch.price,
+      },
+    });
     const updatedCart = await Order.findOne({
       where: {
         userId: idUser,
