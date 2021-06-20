@@ -81,17 +81,6 @@ const updateAddress = async (req, res) => {
     return res.status(404).json(err);
   }
 };
-// const getAddresses = async (req, res) => {
-//   try {
-//     const response = await User.findAll({
-//       include: Address,
-//     });
-//     if (!response.length) return res.status(400).json('Users not founded');
-//     return res.status(201).json(response);
-//   } catch (error) {
-//     return res.status(500).json('Internal server error');
-//   }
-// };
 
 const getSingleAddress = async (req, res) => {
   const {
@@ -110,9 +99,38 @@ const getSingleAddress = async (req, res) => {
     return res.status(500).json('Internal server error');
   }
 };
-
+const deleteAddress = async (req, res) => {
+  const {
+    idUser,
+    idAddress,
+  } = req.params;
+  if (!idAddress) {
+    return res.status(404).json({
+      err: 'El campo ID esta vacío',
+    });
+  }
+  try {
+    const address = await Address.destroy({
+      where: {
+        userId: idUser,
+        id: parseInt(idAddress, 10),
+      },
+    });
+    if (!address) {
+      return res.status(404).json({
+        err: 'No se ha encontrado la dirección.',
+      });
+    }
+    return res.json(address);
+  } catch (err) {
+    return res.status(500).json({
+      err: 'Ocurrió un error al intentar borrar el domicilio.',
+    });
+  }
+};
 module.exports = {
   addAddressFunction,
   updateAddress,
   getSingleAddress,
+  deleteAddress,
 };

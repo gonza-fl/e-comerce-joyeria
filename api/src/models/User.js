@@ -9,11 +9,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastname: {
+    displayName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -24,9 +20,6 @@ module.exports = (sequelize) => {
       },
       allownull: false,
       unique: true,
-    },
-    genre: {
-      type: DataTypes.ENUM(['Masculino', 'Femenino', 'Otro']),
     },
     birthday: {
       type: DataTypes.DATE,
