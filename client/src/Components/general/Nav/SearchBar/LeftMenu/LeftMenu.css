@@ -11,6 +11,7 @@
 }
 
 .leftMenuCtn ul:hover {
+    transition: 0.3s;
     cursor: pointer;
     background-color: #f1eee3;
 }
@@ -41,10 +42,4 @@
 
 .optionLeftMenu {
     list-style: none;
-}
-
-@media (max-width: 450px) {
-    .leftMenuCtn {
-        display: none;
-    }
 }

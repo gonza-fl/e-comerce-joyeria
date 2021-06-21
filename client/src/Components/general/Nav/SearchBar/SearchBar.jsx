@@ -111,6 +111,7 @@ export default function SearchBar() {
 }
 
 const MovingInput = styled.input`
+            width: 85%;
             border: none;
             padding: 5px;
             border-bottom: black 1px solid;

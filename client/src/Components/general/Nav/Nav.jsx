@@ -57,9 +57,7 @@ export default function Nav() {
       <UserLogin />
       <div className="nav bg-color-three">
 
-        <div className="leftMenuNav">
-          <LeftMenu />
-        </div>
+        <div className="leftMenuNav"><LeftMenu /></div>
 
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
@@ -72,8 +70,7 @@ export default function Nav() {
           {user.email ? <h3>{user.name}</h3> : null}
 
           <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
-           &ensp;&ensp;
-            <FaUserAlt />
+            <div className="navIcon"><FaUserAlt /></div>
             {user.id
               ? (
                 <div className="userOptions">
@@ -87,14 +84,13 @@ export default function Nav() {
                   <Link to="/account/register"><p>Registrarme</p></Link>
                 </div>
               )}
-            &ensp;&ensp;
           </div>
-          <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
+          <div className="navIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
 
             <FaShoppingCart
               style={{ fontSize: '20px' }}
               onMouseEnter={() => dispatch(showFloatingCart('inline'))}
-            />&ensp;
+            />
           </div>
 
           <FloatingCart />
@@ -103,54 +99,3 @@ export default function Nav() {
     </div>
   );
 }
-
-function Menu({
-  data, display, x, y,
-}) {
-  return (
-    <OptionDiv
-      className="bg-color-six"
-      style={{ display, transform: `translate(${x}, ${y})` }}
-    >
-      {data.map((d) => (
-        <a href={`/products/${d.id}`} className="link-without-styles" key={d.id}>
-          <p style={{ padding: '10px 0px 10px 0px' }}>
-            {d.name.toUpperCase()}
-            <br />
-          </p>
-        </a>
-      ))}
-    </OptionDiv>
-  );
-}
-
-const MenuDiv = styled.div`
-            padding: 10px 10px 10px 10px;
-            
-
-            &:hover {
-                cursor: pointer;
-                background-color: #f1eee3;
-            }
-`;
-
-const OptionDiv = styled.div`
-            position: absolute;
-            padding: 0px 16px 0px 16px;
-            z-index: 99;
-
-            & p:hover{
-                color: white;
-            }
-`;
-
-{ /* <div className="leftMenu">
-<MenuDiv onMouseEnter={showMenu} onMouseLeave={hideMenu}>
-  CATEGORIAS <Menu data={categories} display={menu} x="-89px" y="28px" />
-</MenuDiv>
-<MenuDiv>TIPS</MenuDiv>
-<MenuDiv>ARTE</MenuDiv>
-<MenuDiv>NUEVO</MenuDiv>
-
-{ADMIN_IDS.includes(user.id) && <Link to="/admin"><MenuDiv>ADMINISTRADOR</MenuDiv></Link> }
-</div> */ }
