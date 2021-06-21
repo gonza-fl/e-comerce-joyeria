@@ -23,8 +23,8 @@ const Cart = () => {
   const [subTotal, setSubtotal] = useState(0);
   const shipping = 200;
   const tax = 50;
-
   const [total, setTotal] = useState(0);
+
   useEffect(() => {
     if (user.id) {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
@@ -34,9 +34,13 @@ const Cart = () => {
             setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
             setSubtotal(prod);
             setTotal(prod + shipping + tax);
+          } else {
+            setCartProducts([]);
+            setSubtotal(0);
+            setTotal(0 + shipping + tax);
           }
         });
-    } else {
+    } else if (JSON.parse(localStorage.getItem('cart'))) {
       const prod = JSON.parse(localStorage.getItem('cart'));
       if (prod.length > 0) {
         const sTotal = prod.map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
@@ -83,6 +87,7 @@ const Cart = () => {
       setTotal((prevState) => prevState - pricePerAmount);
       cartProducts.splice(index, 1);
       localStorage.setItem('cart', JSON.stringify(cartProducts));
+      setPivot(!pivot);
     }
   };
   if (cartProducts.length === 0) {
