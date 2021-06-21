@@ -4,14 +4,29 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import { URL_GET_CART } from '../../../constants';
 import Button from '../../StyledComponents/Button';
 import './Cart.css';
 
 const Cart = () => {
-  const cartProducts = JSON.parse(localStorage.getItem('cart'));
+  const user = useSelector((state) => state.user);
+  const [cartProducts, setCartProducts] = useState([]);
+
+  useEffect(() => {
+    if (user.id) {
+      return axios.get(`${URL_GET_CART}${user.id}/cart`)
+        .then((res) => { console.log(res.data); setCartProducts(res.data); })
+        .then(() => alert('se palica el axios'));
+    }
+    setCartProducts(JSON.parse(localStorage.getItem('cart')));
+    return '';
+  }, []);
+
   const shipping = 200;
   const tax = 50;
   let operation = 0;
