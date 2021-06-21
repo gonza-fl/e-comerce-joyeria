@@ -1,14 +1,15 @@
-// import axios from 'axios';
-// import { useSelector } from 'react-redux';
+import axios from 'axios';
 import swal from 'sweetalert';
+import { URL_CART } from '../constants';
 
-export function addToCart(product) {
+export function addToCart(product, userId) {
   // lo comentado aca arriba es lo que tendriamos que hacer
   // una vez funcione la ruta de carrito, cambiar url cart por la ruta correcta.
-  // const user = useSelector((state) => state.user);
   const prodAmount = { ...product, amount: 1 };
-  // const response = { id: user.id, products: [prodAmount] };
-  // if(user.id.length > 1){axios.post(URL_CART/cart/, response )}
+  const response = { id: userId, products: [prodAmount] };
+  if (userId && userId.length > 1) {
+    return axios.post(`${URL_CART}`, response);
+  }
   if (localStorage.getItem('cart')) {
     const sinJson = JSON.parse(localStorage.getItem('cart'));
     const equal = sinJson;
@@ -30,6 +31,7 @@ export function addToCart(product) {
     const array = arr.concat(prodAmount);
     localStorage.setItem('cart', JSON.stringify(array));
   }
+  return '';
 }
 
 export function takeFromCart(product) {

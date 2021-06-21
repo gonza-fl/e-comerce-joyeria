@@ -21,6 +21,7 @@ const createUser = async (req, res) => {
     });
     return res.status(201).json(user);
   } catch (err) {
+    console.log(err);
     return res.status(400).json({
       err,
     });
