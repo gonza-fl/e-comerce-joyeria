@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable max-len */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
@@ -5,7 +7,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
@@ -16,15 +18,16 @@ import './Cart.css';
 const Cart = () => {
   const user = useSelector((state) => state.user);
   const [cartProducts, setCartProducts] = useState([]);
+  const [pivot, setPivot] = useState(false);
 
   useEffect(() => {
     if (user.id) {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
-        .then((res) => { setCartProducts(res.data[0].products); });
+        .then((res) => { setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount }))); });
     } else {
       setCartProducts(JSON.parse(localStorage.getItem('cart')));
     }
-  }, [user]);
+  }, [user, pivot]);
 
   const shipping = 200;
   const tax = 50;
@@ -39,28 +42,33 @@ const Cart = () => {
   const [total, setTotal] = useState(subTotal + shipping + tax);
   const [showProduct, setShowProduct] = useState(false);
 
-  const sumAmount = (id) => {
-    const index = cartProducts.findIndex((product) => product.id === id);
-    cartProducts[index].amount += 1;
-    localStorage.setItem('cart', JSON.stringify(cartProducts));
-    setSubtotal((prevState) => prevState + cartProducts[index].price);
-    setTotal((prevState) => prevState + cartProducts[index].price);
-  };
-
-  const substractAmount = (id) => {
-    const index = cartProducts.findIndex((product) => product.id === id);
-    if (cartProducts[index].amount > 0) {
-      cartProducts[index].amount -= 1;
-      localStorage.setItem('cart', JSON.stringify(cartProducts));
-      setSubtotal((prevState) => prevState - cartProducts[index].price);
-      setTotal((prevState) => prevState - cartProducts[index].price);
+  function changeAmount(id, type, amount = 0) {
+    if (user.id) {
+      return axios.put(`${URL_GET_CART}${user.id}/cart`, { product: { id, amount }, action: type })
+        .then(() => setPivot(!pivot));
     }
-  };
+
+    const index = cartProducts.findIndex((product) => product.id === id);
+    if (cartProducts[index].amount > 1) {
+      cartProducts[index].amount += type === 'set' ? amount - cartProducts[index].amount : amount;
+      localStorage.setItem('cart', JSON.stringify(cartProducts));
+
+      if (type === 'sum') {
+        setSubtotal((prevState) => prevState + cartProducts[index].price);
+        setTotal((prevState) => prevState + cartProducts[index].price);
+      }
+
+      if (type === 'substract') {
+        setSubtotal((prevState) => prevState - cartProducts[index].price);
+        setTotal((prevState) => prevState - cartProducts[index].price);
+      }
+    }
+  }
 
   const deleteFromCart = (id) => {
     if (user.id) {
       axios.delete(`${URL_CART}empty`, { data: { id: user.id, product: { id } } })
-        .then(() => window.location.reload())
+        .then(() => { setPivot(!pivot); })
         .catch((err) => console.log(err));
     } else {
       const index = cartProducts.findIndex((product) => product.id === id);
@@ -101,11 +109,11 @@ const Cart = () => {
                   <span id="card-detail-amount-p">{product.amount}</span>
                   <div className="card-detail-amount-buttons">
                     <button onClick={
-                        () => (product.amount < product.stockAmount ? sumAmount(product.id) : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
+                        () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
 }
                     >+
                     </button>
-                    <button onClick={() => substractAmount(product.id)}>-</button>
+                    <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
                   </div>
                 </div>
                 <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
