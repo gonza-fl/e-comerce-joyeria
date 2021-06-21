@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -19,27 +20,33 @@ const Cart = () => {
   const user = useSelector((state) => state.user);
   const [cartProducts, setCartProducts] = useState([]);
   const [pivot, setPivot] = useState(false);
+  const [subTotal, setSubtotal] = useState(0);
+  const shipping = 200;
+  const tax = 50;
 
+  const [total, setTotal] = useState(0);
   useEffect(() => {
     if (user.id) {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
-        .then((res) => { setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount }))); });
+        .then((res) => {
+          if (res.data[0].products.length > 0) {
+            const prod = res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })).map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
+            setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
+            setSubtotal(prod);
+            setTotal(prod + shipping + tax);
+          }
+        });
     } else {
-      setCartProducts(JSON.parse(localStorage.getItem('cart')));
+      const prod = JSON.parse(localStorage.getItem('cart'));
+      if (prod.length > 0) {
+        const sTotal = prod.map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
+        setCartProducts(prod);
+        setSubtotal(sTotal);
+        setTotal(sTotal + shipping + tax);
+      }
     }
   }, [user, pivot]);
 
-  const shipping = 200;
-  const tax = 50;
-  let operation = 0;
-
-  for (let i = 0; i < cartProducts.length; i++) {
-    const productPrice = cartProducts.map((product) => product.price);
-    const productAmount = cartProducts.map((product) => product.amount);
-    operation += productPrice[i] * productAmount[i];
-  }
-  const [subTotal, setSubtotal] = useState(operation);
-  const [total, setTotal] = useState(subTotal + shipping + tax);
   const [showProduct, setShowProduct] = useState(false);
 
   function changeAmount(id, type, amount = 0) {
@@ -49,20 +56,19 @@ const Cart = () => {
     }
 
     const index = cartProducts.findIndex((product) => product.id === id);
-    if (cartProducts[index].amount > 1) {
-      cartProducts[index].amount += type === 'set' ? amount - cartProducts[index].amount : amount;
-      localStorage.setItem('cart', JSON.stringify(cartProducts));
-
-      if (type === 'sum') {
-        setSubtotal((prevState) => prevState + cartProducts[index].price);
-        setTotal((prevState) => prevState + cartProducts[index].price);
-      }
-
-      if (type === 'substract') {
-        setSubtotal((prevState) => prevState - cartProducts[index].price);
-        setTotal((prevState) => prevState - cartProducts[index].price);
-      }
+    if (type === 'sum') {
+      setSubtotal((prevState) => prevState + cartProducts[index].price);
+      setTotal((prevState) => prevState + cartProducts[index].price);
+      cartProducts[index].amount += 1;
     }
+
+    if (type === 'substract' && cartProducts[index].amount > 1) {
+      setSubtotal((prevState) => prevState - cartProducts[index].price);
+      setTotal((prevState) => prevState - cartProducts[index].price);
+      cartProducts[index].amount -= 1;
+    }
+    localStorage.setItem('cart', JSON.stringify(cartProducts));
+    setPivot(!pivot);
   }
 
   const deleteFromCart = (id) => {
@@ -106,7 +112,7 @@ const Cart = () => {
               </div>
               <div className="card-detail-map-right">
                 <div className="card-detail-amount">
-                  <span id="card-detail-amount-p">{product.amount}</span>
+                  <span id="card-detail-amount-p"> {product.amount} </span>
                   <div className="card-detail-amount-buttons">
                     <button onClick={
                         () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
