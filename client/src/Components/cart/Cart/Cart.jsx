@@ -38,7 +38,7 @@ const Cart = () => {
         });
     } else {
       const prod = JSON.parse(localStorage.getItem('cart'));
-      if (prod.length > 0) {
+      if (prod && prod.length > 0) {
         const sTotal = prod.map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
         setCartProducts(prod);
         setSubtotal(sTotal);
@@ -85,78 +85,79 @@ const Cart = () => {
       localStorage.setItem('cart', JSON.stringify(cartProducts));
     }
   };
-  if (cartProducts.length === 0) {
+  if (cartProducts && cartProducts.length < 1) {
     return (
       <div>
         <h5>Tu carrito de compras está vacío!!</h5>
       </div>
     );
   }
-
-  return (
-    <div className="cart-container">
-      <div className="cart-detail-container">
-        <h2>Carrito de Compras</h2>
-        <div className="card-detail-border">
-          {cartProducts.map((product) => (
-            <div className="card-detail-map">
-              <div className="card-detail-map-left">
-                <div className="card-detail-img-container">
-                  <img src={product.images.length && product.images[0].url} alt={product.name} />
-                </div>
-                <div className="card-detail-data">
-                  <h4>{product.name.toUpperCase()}</h4>
-                  <p>{product.description}</p>
-                  <h4>${product.price}</h4>
-                </div>
-              </div>
-              <div className="card-detail-map-right">
-                <div className="card-detail-amount">
-                  <span id="card-detail-amount-p"> {product.amount} </span>
-                  <div className="card-detail-amount-buttons">
-                    <button onClick={
-                        () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
-}
-                    >+
-                    </button>
-                    <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
+  if (cartProducts && cartProducts.length > 0) {
+    return (
+      <div className="cart-container">
+        <div className="cart-detail-container">
+          <h2>Carrito de Compras</h2>
+          <div className="card-detail-border">
+            {cartProducts.map((product) => (
+              <div className="card-detail-map">
+                <div className="card-detail-map-left">
+                  <div className="card-detail-img-container">
+                    <img src={product.images.length && product.images[0].url} alt={product.name} />
+                  </div>
+                  <div className="card-detail-data">
+                    <h4>{product.name.toUpperCase()}</h4>
+                    <p>{product.description}</p>
+                    <h4>${product.price}</h4>
                   </div>
                 </div>
-                <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
+                <div className="card-detail-map-right">
+                  <div className="card-detail-amount">
+                    <span id="card-detail-amount-p"> {product.amount} </span>
+                    <div className="card-detail-amount-buttons">
+                      <button onClick={
+                        () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
+}
+                      >+
+                      </button>
+                      <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
+                    </div>
+                  </div>
+                  <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
+                </div>
               </div>
+            ))}
+          </div>
+          <Link to="/cart/checkout">
+            <button id="next-btn">Siguiente</button>
+          </Link>
+          <Link to="/products">
+            <Button text="Volver al Catálogo" />
+          </Link>
+        </div>
+        <div className="cart-summary-container">
+          <h2>Resumen</h2>
+          <div className="cart-summary-border">
+            <div className="cart-summary-data">
+              <h4>Subtotal: </h4>
+              <h4>${subTotal}</h4>
             </div>
-          ))}
-        </div>
-        <Link to="/cart/checkout">
-          <button id="next-btn">Siguiente</button>
-        </Link>
-        <Link to="/products">
-          <Button text="Volver al Catálogo" />
-        </Link>
-      </div>
-      <div className="cart-summary-container">
-        <h2>Resumen</h2>
-        <div className="cart-summary-border">
-          <div className="cart-summary-data">
-            <h4>Subtotal: </h4>
-            <h4>${subTotal}</h4>
+            <div className="cart-summary-data">
+              <h4>Envío: </h4>
+              <h4>${shipping}</h4>
+            </div>
+            <div className="cart-summary-data">
+              <h4>Impuestos: </h4>
+              <h4>${tax}</h4>
+            </div>
           </div>
           <div className="cart-summary-data">
-            <h4>Envío: </h4>
-            <h4>${shipping}</h4>
+            <h2>TOTAL: </h2>
+            <h2>${total}</h2>
           </div>
-          <div className="cart-summary-data">
-            <h4>Impuestos: </h4>
-            <h4>${tax}</h4>
-          </div>
-        </div>
-        <div className="cart-summary-data">
-          <h2>TOTAL: </h2>
-          <h2>${total}</h2>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Cart;
