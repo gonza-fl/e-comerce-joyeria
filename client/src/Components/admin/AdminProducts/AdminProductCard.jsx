@@ -106,6 +106,21 @@ function ModifyProduct({
     });
   }
 
+  function onChangeCategories(e) {
+    if (input.categories.map((c) => c.id).includes(e.target.value)) {
+      setInput({
+        ...input,
+        categories: input.categories.filter((c) => c !== e.target.value),
+      });
+      e.target.checked = '';
+    } else {
+      setInput({
+        ...input,
+        categories: [...input.categories, e.target.value],
+      });
+    }
+  }
+
   return (
     <ProductDetail method="PUT" onSubmit={() => sendChanges(input)}>
       <div>
@@ -143,9 +158,10 @@ function ModifyProduct({
           {categories.map((c) => (
             <label>
               <input
-                onChange={(e) => onChangeInput(e)}
+                onChange={(e) => onChangeCategories(e)}
                 name="categories"
                 type="checkbox"
+                value={c.id}
                 checked={input.categories.map((pc) => pc.name).includes(c.name) ? 'checked' : ''}
               />
               {c.name}

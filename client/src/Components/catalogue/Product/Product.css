@@ -1,7 +1,8 @@
 .product-container{
   display: flex;
   justify-content: center;
-  margin: 5%;
+  margin: 2%;
+  width: 70%;
   /* border: 1px solid silver; */
 }
 
@@ -14,7 +15,7 @@
 }
 
 .product-img{
-  width: 40%;
+  width: 30%;
   border: 1px solid silver;
   padding: 2%;
   display: flex;
@@ -23,7 +24,7 @@
 }
 
 .bigimg-container{
-  height: 70%;
+  height: 400px;
   display: flex;
   align-items: center;
 }
@@ -62,7 +63,7 @@
 .product-info-description{
   border-top: 1px solid silver;
   border-bottom: 1px solid silver;
-  line-height: 30px;
+  line-height: 150px;
   margin: auto;
   padding: 2%;
 }
@@ -71,6 +72,7 @@
   display: flex;
   justify-content: space-between;
   padding: 4%;
+  transform: translate(0px, 100px);
 }
 
 .last-stock{

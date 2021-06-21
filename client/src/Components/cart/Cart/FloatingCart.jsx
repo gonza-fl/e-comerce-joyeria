@@ -1,19 +1,42 @@
+/* eslint-disable max-len */
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { URL_CART, URL_GET_CART } from '../../../constants';
 import { showFloatingCart } from '../../../redux/actions/actions';
 
 function FloatingCart() {
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const showCart = useSelector((state) => state.floatingCart);
   const [cartProducts, setCartProducts] = useState([]);
+  const [pivot, setPivot] = useState(false);
   useEffect(() => {
-    setCartProducts(JSON.parse(localStorage.getItem('cart')));
-  }, [JSON.parse(localStorage.getItem('cart'))]);
+    if (user.id) {
+      axios.get(`${URL_GET_CART}${user.id}/cart`)
+        .then((res) => {
+          if (res.data[0].products.length > 0) {
+            setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
+          } else {
+            setCartProducts([]);
+          }
+        });
+    } else if (JSON.parse(localStorage.getItem('cart'))) {
+      setCartProducts(JSON.parse(localStorage.getItem('cart')));
+    }
+  }, [showCart, pivot]);
 
   function removeFromCart(id) {
-    const updatedCart = cartProducts.filter((p) => p.id !== id);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    if (user.id) {
+      axios.delete(`${URL_CART}empty`, { data: { id: user.id, product: { id } } })
+        .then(() => { setPivot(!pivot); })
+        .catch((err) => console.log(err));
+    } else {
+      const updatedCart = cartProducts.filter((p) => p.id !== id);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      setPivot(!pivot);
+    }
   }
 
   function numberWithCommas(x) {
@@ -41,9 +64,9 @@ function FloatingCart() {
               <div style={{ flexGrow: 1, textAlign: 'right' }}>
 
                 <RemoveButton type="button" onClick={() => removeFromCart(p.id)}>
-                  <a href="/products" className="link-without-styles">
-                    x
-                  </a>
+
+                  x
+
                 </RemoveButton>
 
               </div>
@@ -54,7 +77,7 @@ function FloatingCart() {
           <b>
             SUBTOTAL:
             {' '}
-            {`$${numberWithCommas(cartProducts.map((product) => product.price).reduce((sum, p) => sum + p))}`}
+            {`$${numberWithCommas(cartProducts.map((product) => product.price * product.amount).reduce((sum, p) => sum + p))}`}
           </b>
         </SubTotal>
         <a href="/cart" className="link-without-styles">
@@ -89,7 +112,7 @@ function FloatingCart() {
 
 const MainContainer = styled.div`
     position: absolute;
-    top: 10vh;
+    top: 8vh;
     right: 3vw;
     padding: 5px 10px;
     box-shadow: -2px 3px 13px -2px #000000;
