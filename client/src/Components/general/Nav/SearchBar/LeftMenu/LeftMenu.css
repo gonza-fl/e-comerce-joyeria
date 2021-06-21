@@ -1,0 +1,50 @@
+.leftMenuCtn {
+    display: flex;
+    width: 100%;
+    justify-content: start;
+}
+
+.leftMenuCtn ul {
+    font-weight: bold;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.leftMenuCtn ul:hover {
+    cursor: pointer;
+    background-color: #f1eee3;
+}
+
+.leftMenuCtn ul div {
+    display: none;
+}
+
+.leftMenuCtn ul:hover div {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 99;
+    transform: translate(-10px, 10px);
+}
+
+.leftMenuCtn ul div a {
+    padding: 10px;
+    text-decoration: none;
+    display: flex;
+    color: black;
+}
+
+.leftMenuCtn ul div a:hover {
+    background-color: #f0ddd8;
+    transition: 0.2s;
+}
+
+.optionLeftMenu {
+    list-style: none;
+}
+
+@media (max-width: 450px) {
+    .leftMenuCtn {
+        display: none;
+    }
+}
