@@ -5,6 +5,7 @@ const {
   Order,
   User,
   Product,
+  Image,
 } = require('../models/index');
 
 const createOrFindAndUpdateCart = async (req, res) => {
@@ -14,6 +15,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
     id,
     products,
   } = req.body;
+  if (!id) return res.status(404).json('ID no existe!');
   try {
     // Validación: existe ese usuario?
     const user = await User.findOne({
@@ -124,6 +126,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
     });
     return res.json(finalCart);
   } catch (err) {
+    console.log(err);
     return res.status(500).json('hay un error');
   }
 };
@@ -251,38 +254,40 @@ const emptyCartOrProduct = async (req, res) => {
     id,
     product,
   } = req.body;
+  console.log(req.body);
   if (!id) return res.status(404).json('el id no existe!');
+  try {
+    const user = await User.findOne({
+      where: {
+        id,
+      },
+    });
 
-  const user = await User.findOne({
-    where: {
-      id,
-    },
-  });
-
-  // si no lo encuentro mando un error
-  if (!user) return res.status(404).json('el usuario no existe!');
-  // busco el carrito activo del user
-  const order = await Order.findOne({
-    where: {
-      status: 'cart',
-      userId: user.id,
-    },
-    include: Product,
-  });
-  // si no existe carrito activo mando error
-  if (!order) return res.status(404).json('no hay ninguna orden');
-  // si llega un producto es para eliminar ese producto especifico del carrito
-  if (product) {
-    const productFound = order.products.find((prod) => prod.id === product.id);
-    if (!productFound) return res.status(404).json('el producto no existe');
-    await order.removeProduct(productFound);
-    return res.json('producto eliminado');
-  }
-  // ahora se vacía el carrito
-  for (let i = 0; i < order.products.length; i += 1) {
-    await order.removeProduct(order.products[i]);
-  }
-  return res.json('se vacio el carrito!');
+    // si no lo encuentro mando un error
+    if (!user) return res.status(404).json('el usuario no existe!');
+    // busco el carrito activo del user
+    const order = await Order.findOne({
+      where: {
+        status: 'cart',
+        userId: user.id,
+      },
+      include: Product,
+    });
+    // si no existe carrito activo mando error
+    if (!order) return res.status(404).json('no hay ninguna orden');
+    // si llega un producto es para eliminar ese producto especifico del carrito
+    if (product) {
+      const productFound = order.products.find((prod) => prod.id === product.id);
+      if (!productFound) return res.status(404).json('el producto no existe');
+      await order.removeProduct(productFound);
+      return res.json('producto eliminado');
+    }
+    // ahora se vacía el carrito
+    for (let i = 0; i < order.products.length; i += 1) {
+      await order.removeProduct(order.products[i]);
+    }
+    return res.json('se vacio el carrito!');
+  } catch (err) { return res.status(500).json('internal error'); }
 };
 
 const getOrders = async (req, res) => {
@@ -311,7 +316,10 @@ const getCartByUser = async (req, res) => {
   } = req.params;
   try {
     const response = await Order.findAll({
-      include: Product,
+      include: [{
+        model: Product,
+        include: Image,
+      }],
       where: {
         userId: id,
         status: 'cart',

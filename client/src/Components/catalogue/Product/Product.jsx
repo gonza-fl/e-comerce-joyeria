@@ -2,17 +2,13 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint linebreak-style: ["error", "windows"] */
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import swal from 'sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { getProductDetail } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
-import ModalModifyProduct from '../../admin/ModifyProduct/ModalModifyProduct/ModalModifyProduct';
 import './Product.css';
-import { URL_PRODUCTS } from '../../../constants';
 import { addToCart } from '../../../utils/cartFunctions';
 
 const Product = () => {
@@ -40,27 +36,6 @@ const Product = () => {
   } else if (detail && detail.stockAmount < 5) {
     lowStock = true;
   }
-
-  const handleDelete = (e) => {
-    e.preventDefault();
-    swal({
-      title: 'Estas seguro?',
-      text: 'Al aceptar este producto desaparecera del catalogo!',
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    })
-      .then((willDelete) => {
-        if (willDelete) {
-          axios.delete(`${URL_PRODUCTS}${detail.id}`);
-          swal('Producto eliminado!', {
-            icon: 'success',
-          });
-        } else {
-          swal('cancel');
-        }
-      });
-  };
 
   const handleClickCart = () => {
     addToCart(detail);
@@ -115,9 +90,6 @@ const Product = () => {
           y para los invitados debería guardarlo en el local storage */}
           {detail.stockAmount < 1 ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
         </div>
-        <ModalModifyProduct id={detail.id} />
-        {' '}
-        <span><button onClick={(e) => handleDelete(e)}>Eliminar Producto</button></span>
       </div>
     </div>
   );

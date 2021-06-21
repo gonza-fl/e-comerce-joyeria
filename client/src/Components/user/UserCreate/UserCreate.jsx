@@ -54,7 +54,7 @@ export default function UserCreate() {
         .then((res) => axios.post(URL_USERS, {
           id: res.user.uid,
           email: res.user.email,
-          displayName: res.user.displayName,
+          displayName: `${form.name} ${form.lastname}`,
         }))
         .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
         .then(() => window.history.back())

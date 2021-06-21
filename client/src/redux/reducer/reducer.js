@@ -10,6 +10,7 @@ import {
   GET_PRODUCT_DETAIL,
   SET_USER,
   SHOW_FLOATING_CART,
+  GET_USER_ORDERS,
 } from '../actions/actions';
 
 const InitialState = {
@@ -25,6 +26,7 @@ const InitialState = {
   productsByCategory: [],
   user: {},
   floatingCart: 'none',
+  userOrders: [],
 };
 
 export default function rootReducer(state = InitialState, action) {
@@ -97,6 +99,12 @@ export default function rootReducer(state = InitialState, action) {
     return {
       ...state,
       floatingCart: action.payload,
+    };
+  }
+  if (action.type === GET_USER_ORDERS) {
+    return {
+      ...state,
+      userOrders: action.payload,
     };
   }
   return state;

@@ -1,8 +1,8 @@
 .ctnCardC {
     display: flex;
     flex-direction: column;
-    height: 20rem;
-    width: 30%;
+    height: 25rem;
+    width: 25rem;
     border-radius: 10px;
     margin-block: 1rem;
     opacity: 0.85;

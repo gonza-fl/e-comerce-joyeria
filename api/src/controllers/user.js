@@ -10,17 +10,18 @@ const createUser = async (req, res) => {
     id, email, displayName, birthday, phone,
 
   } = req.body;
-
+  const birthdayNew = birthday ? new Date(birthday[2], birthday[1] - 1, birthday[0]) : null;
   try {
     const user = await User.create({
       id,
       email,
       displayName,
       phone,
-      birthday: new Date(birthday[2], birthday[1] - 1, birthday[0]),
+      birthday: birthdayNew,
     });
     return res.status(201).json(user);
   } catch (err) {
+    console.log(err);
     return res.status(400).json({
       err,
     });

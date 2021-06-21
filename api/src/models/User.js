@@ -26,7 +26,6 @@ module.exports = (sequelize) => {
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     admin: {
       type: DataTypes.BOOLEAN,

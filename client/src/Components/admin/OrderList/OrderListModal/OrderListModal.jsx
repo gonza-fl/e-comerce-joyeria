@@ -1,38 +1,84 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
+import { URL_ORDERS_BY_ID } from '../../../../constants';
+import { getUserOrders } from '../../../../redux/actions/actions';
 import './OrderListModal.css';
 
-const OrderListModal = ({ userOrders }) => {
+const OrderListModal = ({ id }) => {
   // eslint-disable-next-line func-names
-  const [ordenes, setOrdenes] = useState(userOrders);
-  const [orders, setOrders] = useState(ordenes);
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.userOrders);
+  const [filter, setFilter] = useState([]);
+
   useEffect(() => {
-    setOrdenes(userOrders);
+    dispatch(getUserOrders(id));
+  }, []);
+
+  useEffect(() => {
+    setFilter(orders);
   }, [orders]);
+
   function handleFilter(e) {
     e.preventDefault();
-    if (e.target.value.length > 1) {
-      setOrders(ordenes.filter((o) => o.status === e.target.value));
-    } else { setOrders(userOrders); }
+    if (e.target.value === 'Todas') {
+      setFilter(orders);
+    } else {
+      setFilter(orders.filter((f) => f.status === e.target.value));
+    }
   }
-  function handleChange(e) {
+  function handleChange(e, orderId) {
     e.preventDefault();
     // enviarle el put necesario a la api para cambiar el valor en el back
-    // axios.put(API_URL/order?status=e.target.value)
+    if (e.target.value) {
+      axios.put(`${URL_ORDERS_BY_ID}${orderId}`, {
+        status: e.target.value,
+      })
+        .then(() => swal('Bien', 'Estado modificado con éxito', 'success'))
+        .catch(() => swal('Alerta!', 'No se pudo actualizar el estado', 'warning'));
+    }
   }
+  if (!orders[0]) {
+    return (
+      <div className="modal-container">
+        <div className="modal-filter-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span className="modal-filter-title">Filtrar por estado de orden</span>
+          <select onChange={handleFilter}>
+            <option value="Todas">Todas las ordenes</option>
+            <option value="cart">Carrito</option>
+            <option value="deliveryPending">Esperando entrega</option>
+            <option value="delivered">Finalizada</option>
+          </select>
 
+          <table className="modal-table">
+            <tr>
+              <th>N° ORDEN</th>
+              <th>FECHA</th>
+              <th>TOTAL</th>
+              <th>ESTADO</th>
+              <th>DETALLE</th>
+            </tr>
+          </table>
+          <h1>El usuario no tiene historial de órdenes de compra</h1>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="modal-container">
       <div>
         <div className="modal-filter-container">
           <span className="modal-filter-title">Filtrar por estado de orden</span>
-          <select onChange={(e) => handleFilter(e)}>
-            <option value="">Todas las ordenes</option>
-            <option value="Carrito">Carrito</option>
-            <option value="Esperando entrega">Esperando entrega</option>
-            <option value="Finalizada">Finalizada</option>
+          <select onChange={handleFilter}>
+            <option value="Todas">Todas las ordenes</option>
+            <option value="cart">Carrito</option>
+            <option value="deliveryPending">Esperando entrega</option>
+            <option value="delivered">Finalizada</option>
           </select>
         </div>
         <table className="modal-table">
@@ -43,17 +89,18 @@ const OrderListModal = ({ userOrders }) => {
             <th>ESTADO</th>
             <th>DETALLE</th>
           </tr>
-          {orders.map((userOrder) => (
+          {filter.map((userOrder) => (
             <tr className="table-data">
               <td>{userOrder.orderNumber}</td>
               <td>{userOrder.endTimestamp}</td>
               <td>{userOrder.total}</td>
               <td>
-                <select onChange={(e) => { handleChange(e); }}>
-                  <option value={userOrder.status}>{userOrder.status}</option>
-                  <option value="Esperando entrega"> Esperando entrega </option>
-                  <option value="Finalizada">Finalizada</option>
-                  <option value="Carrito "> Carrito </option>
+                <span>{userOrder.status === 'cart' ? 'Carrito' : userOrder.status === 'deliveryPending' ? 'Esperando entrega' : 'Finalizado'}</span>
+                <br />
+                <select onChange={(e) => { handleChange(e, userOrder.id); }}>
+                  <option value=""> Modificar estado </option>
+                  <option value="deliveryPending" style={{ display: `${['cart', 'delivered'].includes(userOrder.status) ? 'inline' : 'none'}` }}> Esperando entrega </option>
+                  <option value="delivered" style={{ display: `${['cart', 'deliveryPending'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Finalizada</option>
                 </select>
               </td>
               <td>
