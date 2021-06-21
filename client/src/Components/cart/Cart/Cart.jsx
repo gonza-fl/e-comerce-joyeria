@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
-import { URL_GET_CART } from '../../../constants';
+import { URL_CART, URL_GET_CART } from '../../../constants';
 import Button from '../../StyledComponents/Button';
 import './Cart.css';
 
@@ -19,13 +19,12 @@ const Cart = () => {
 
   useEffect(() => {
     if (user.id) {
-      return axios.get(`${URL_GET_CART}${user.id}/cart`)
-        .then((res) => { console.log(res.data); setCartProducts(res.data); })
-        .then(() => alert('se palica el axios'));
+      axios.get(`${URL_GET_CART}${user.id}/cart`)
+        .then((res) => { setCartProducts(res.data[0].products); });
+    } else {
+      setCartProducts(JSON.parse(localStorage.getItem('cart')));
     }
-    setCartProducts(JSON.parse(localStorage.getItem('cart')));
-    return '';
-  }, []);
+  }, [user]);
 
   const shipping = 200;
   const tax = 50;
@@ -59,84 +58,89 @@ const Cart = () => {
   };
 
   const deleteFromCart = (id) => {
-    const index = cartProducts.findIndex((product) => product.id === id);
-    const pricePerAmount = cartProducts[index].price * cartProducts[index].amount;
-    setSubtotal((prevState) => prevState - pricePerAmount);
-    setTotal((prevState) => prevState - pricePerAmount);
-    cartProducts.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cartProducts));
-    // setShowProduct(!showProduct);
+    if (user.id) {
+      axios.delete(`${URL_CART}empty`, { data: { id: user.id, product: { id } } })
+        .then(() => window.location.reload())
+        .catch((err) => console.log(err));
+    } else {
+      const index = cartProducts.findIndex((product) => product.id === id);
+      const pricePerAmount = cartProducts[index].price * cartProducts[index].amount;
+      setSubtotal((prevState) => prevState - pricePerAmount);
+      setTotal((prevState) => prevState - pricePerAmount);
+      cartProducts.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cartProducts));
+    }
   };
-
-  if (cartProducts) {
+  if (cartProducts.length === 0) {
     return (
-      <div className="cart-container">
-        <div className="cart-detail-container">
-          <h2>Carrito de Compras</h2>
-          <div className="card-detail-border">
-            {cartProducts.map((product) => (
-              <div className="card-detail-map">
-                <div className="card-detail-map-left">
-                  <div className="card-detail-img-container">
-                    <img src={product.images.length && product.images[0].url} alt={product.name} />
-                  </div>
-                  <div className="card-detail-data">
-                    <h4>{product.name.toUpperCase()}</h4>
-                    <p>{product.description}</p>
-                    <h4>${product.price}</h4>
-                  </div>
-                </div>
-                <div className="card-detail-map-right">
-                  <div className="card-detail-amount">
-                    <span id="card-detail-amount-p">{product.amount}</span>
-                    <div className="card-detail-amount-buttons">
-                      <button onClick={
-                        () => (product.amount < product.stockAmount ? sumAmount(product.id) : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
-}
-                      >+
-                      </button>
-                      <button onClick={() => substractAmount(product.id)}>-</button>
-                    </div>
-                  </div>
-                  <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
-                </div>
-              </div>
-            ))}
-          </div>
-          <Link to="/cart/checkout">
-            <button id="next-btn">Siguiente</button>
-          </Link>
-          <Link to="/products">
-            <Button text="Volver al Catálogo" />
-          </Link>
-        </div>
-        <div className="cart-summary-container">
-          <h2>Resumen</h2>
-          <div className="cart-summary-border">
-            <div className="cart-summary-data">
-              <h4>Subtotal: </h4>
-              <h4>${subTotal}</h4>
-            </div>
-            <div className="cart-summary-data">
-              <h4>Envío: </h4>
-              <h4>${shipping}</h4>
-            </div>
-            <div className="cart-summary-data">
-              <h4>Impuestos: </h4>
-              <h4>${tax}</h4>
-            </div>
-          </div>
-          <div className="cart-summary-data">
-            <h2>TOTAL: </h2>
-            <h2>${total}</h2>
-          </div>
-        </div>
+      <div>
+        <h5>Tu carrito de compras está vacío!!</h5>
       </div>
     );
   }
+
   return (
-    <div>
-      <h5>Tu carrito de compras está vacío!!</h5>
+    <div className="cart-container">
+      <div className="cart-detail-container">
+        <h2>Carrito de Compras</h2>
+        <div className="card-detail-border">
+          {cartProducts.map((product) => (
+            <div className="card-detail-map">
+              <div className="card-detail-map-left">
+                <div className="card-detail-img-container">
+                  <img src={product.images.length && product.images[0].url} alt={product.name} />
+                </div>
+                <div className="card-detail-data">
+                  <h4>{product.name.toUpperCase()}</h4>
+                  <p>{product.description}</p>
+                  <h4>${product.price}</h4>
+                </div>
+              </div>
+              <div className="card-detail-map-right">
+                <div className="card-detail-amount">
+                  <span id="card-detail-amount-p">{product.amount}</span>
+                  <div className="card-detail-amount-buttons">
+                    <button onClick={
+                        () => (product.amount < product.stockAmount ? sumAmount(product.id) : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
+}
+                    >+
+                    </button>
+                    <button onClick={() => substractAmount(product.id)}>-</button>
+                  </div>
+                </div>
+                <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <Link to="/cart/checkout">
+          <button id="next-btn">Siguiente</button>
+        </Link>
+        <Link to="/products">
+          <Button text="Volver al Catálogo" />
+        </Link>
+      </div>
+      <div className="cart-summary-container">
+        <h2>Resumen</h2>
+        <div className="cart-summary-border">
+          <div className="cart-summary-data">
+            <h4>Subtotal: </h4>
+            <h4>${subTotal}</h4>
+          </div>
+          <div className="cart-summary-data">
+            <h4>Envío: </h4>
+            <h4>${shipping}</h4>
+          </div>
+          <div className="cart-summary-data">
+            <h4>Impuestos: </h4>
+            <h4>${tax}</h4>
+          </div>
+        </div>
+        <div className="cart-summary-data">
+          <h2>TOTAL: </h2>
+          <h2>${total}</h2>
+        </div>
+      </div>
     </div>
   );
 };
