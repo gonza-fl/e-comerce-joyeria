@@ -46,9 +46,11 @@ function AddCategoryForm() {
           elemento.style.flexDirection = 'column';
           document.getElementById('categoria').value = '';
           document.getElementById('descripcion').value = '';
-          swal('Success', res.data.success, 'success');
-          setLoading(false);
-          window.location.href = '/admin/controlcategories';
+          swal('Success', res.data.success, 'success')
+            .then(() => {
+              setLoading(false);
+              window.location.href = '/admin/controlcategories';
+            });
         }
       }).catch(() => {
         swal('Error', 'Ocurrio un error inesperado', 'warning');
