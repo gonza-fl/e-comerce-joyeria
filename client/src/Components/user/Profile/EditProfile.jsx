@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState } from 'react';
 // import { useSelector } from 'react-redux';
 import styled from 'styled-components';
