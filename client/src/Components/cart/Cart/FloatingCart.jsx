@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { showFloatingCart } from '../../../redux/actions/actions';
 
 function FloatingCart() {
+  // const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const showCart = useSelector((state) => state.floatingCart);
   const [cartProducts, setCartProducts] = useState([]);
@@ -90,27 +91,6 @@ function FloatingCart() {
 const MainContainer = styled.div`
     position: absolute;
     top: 8vh;
-    right: 3vw;
-    padding: 5px 10px;
-    box-shadow: -2px 3px 13px -2px #000000;
-    animation: transitionIn 600ms;
-    z-index: 10;
-
-    @keyframes transitionIn {
-        from {
-            opacity: 0;
-            transform: rotateX(-10deg);
-        }
-    
-        to {
-            opacity: 1;
-            transform: rotateX(0);
-        }
-    }
-`;
-
-const SubTotal = styled.div`
-    padding: 10px 5px;
 `;
 
 const ProductCardCart = styled.div`
