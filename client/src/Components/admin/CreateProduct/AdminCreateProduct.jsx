@@ -139,7 +139,7 @@ function AdminCreateProduct() {
             <textarea name="description" style={{ height: '100px', width: '300px', fontFamily: 'inherit' }} onChange={onChangeInput} />
           </Detail>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <b>Agregar una imagen</b>
+            <b>{`Agregar una imagen   ${previewImg.length}/3`}</b>
             <br />
             <input
               type="file"
