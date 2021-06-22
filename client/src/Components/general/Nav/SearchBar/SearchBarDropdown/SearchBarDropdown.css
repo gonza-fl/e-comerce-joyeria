@@ -1,4 +1,4 @@
-.searchbar-dropdown{
+.searchbar-dropdown {
     background-color: #f0ddd8;
     position: absolute;
     top: 70%;
@@ -11,14 +11,14 @@
     padding: 0;
 }
 
-.dropdown-li{
+.dropdown-li {
     list-style: none;
     text-align: left;
     padding: 3% 4%;
     font-size: 18px;
 }
 
-.dropdown-li:hover{
+.dropdown-li:hover {
     cursor: pointer;
     background-color: #e6c7b7;
 }

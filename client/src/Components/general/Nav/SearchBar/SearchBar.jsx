@@ -111,13 +111,13 @@ export default function SearchBar() {
 }
 
 const MovingInput = styled.input`
+            width: 85%;
             border: none;
-            padding: 10px;
+            padding: 5px;
             border-bottom: black 1px solid;
             background: transparent;
             font-size: 20px;
-            margin-right: 10px;
-            animation: transitionInput 1000ms;
+            animation: transitionInput 2000ms;
 
             &:focus {
                 outline: none;
@@ -128,7 +128,7 @@ const MovingInput = styled.input`
                 }
     
                 to {
-                    width: 240px;
+                    width: 100%;
                 }
             }
 `;

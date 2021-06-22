@@ -18,8 +18,6 @@ export const loginWhitEmmail = (email, password) => {
       return swal('Hola', 'Inicio de sesión exitoso', 'success');
     })
     .then(() => document.getElementById('login').style.display = 'none')
-  // envio los productos cargados en el localStorage para que se agregen al cart
-  // del user que se logeo y vacio el localStorage
     .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
     .then(() => localStorage.setItem('cart', JSON.stringify([])))
     .catch((error) => {
@@ -34,15 +32,11 @@ const login = (provider) => {
   let users = [];
   let idUserLoged = '';
 
-  // busco los usuarios de la DB
   axios.get(URL_USERS)
     .then((usersDB) => users = usersDB.data)
-
-  // logueo con servicio externo
     .then(() => firebase.auth().signInWithPopup(provider))
     .then((res) => {
       idUserLoged = res.user.uid;
-      // si el logeado no esta en la db, lo agrega
       if (!users.find((user) => user.id == res.user.uid)) {
         return axios.post(URL_USERS, {
           id: res.user.uid,
@@ -51,10 +45,8 @@ const login = (provider) => {
         });
       }
     })
-    // cargo el carrito del id con lo que hay en el localstorage
     .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
     .then(() => document.getElementById('login').style.display = 'none')
-    // vacio el localstorage
     .then(() => localStorage.setItem('cart', JSON.stringify([])));
 };
 
