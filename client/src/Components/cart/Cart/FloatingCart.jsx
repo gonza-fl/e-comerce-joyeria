@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { URL_CART, URL_GET_CART } from '../../../constants';
@@ -56,12 +57,20 @@ function FloatingCart() {
           {cartProducts.map((p) => (
             <ProductCardCart key={p.name}>
               <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
-              <div style={{ textAlign: 'left', marginLeft: '15px', flexGrow: 2 }}>
-                <span>{p.name}</span>
-                <span>{`  x ${p.amount}`}</span>
-                <br />
-                <b>{numberWithCommas(p.price * p.amount)}</b>
-              </div>
+              <Link to={`/products/product/${p.id}`}>
+                <div
+                  style={{
+                    textAlign: 'left', marginLeft: '15px', flexGrow: 2, textDecoration: 'none',
+                  }}
+                  textDecoration="none"
+                >
+                  <span>{p.name}</span>
+                  <span>{`  x ${p.amount}`}</span>
+                  <br />
+                  <b>{numberWithCommas(p.price * p.amount)}</b>
+                </div>
+
+              </Link>
               <div style={{ flexGrow: 1, textAlign: 'right' }}>
 
                 <RemoveButton type="button" onClick={() => removeFromCart(p.id)}>

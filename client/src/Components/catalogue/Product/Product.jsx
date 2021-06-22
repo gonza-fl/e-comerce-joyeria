@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { getProductDetail } from '../../../redux/actions/actions';
+import { getProductDetail, showFloatingCart } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
 import './Product.css';
 import { addToCart } from '../../../utils/cartFunctions';
@@ -37,8 +37,11 @@ const Product = () => {
     lowStock = true;
   }
 
-  const handleClickCart = () => {
-    addToCart(detail, userId);
+  const handleClickCart = async () => {
+    await addToCart(detail, userId);
+    dispatch(showFloatingCart('inline'));
+    setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
+    window.scrollTo(0, 0);
   };
 
   return (
