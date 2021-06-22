@@ -4,6 +4,9 @@ const {
 const {
   cloudinary,
 } = require('../utils/cloudinary');
+const {
+  verifyNumber,
+} = require('../helpers/functionHelpers');
 
 const addCategory = async (req, res) => {
   const {
@@ -93,6 +96,7 @@ const updateCategory = async (req, res) => {
   const {
     newName, newDescription, newImg,
   } = req.body;
+  if (!verifyNumber(req.body.id)) return res.sendStatus(400);
   const id = parseInt(req.body.id, 10);
   try {
     const categoryFound = await Category.findByPk(id);
