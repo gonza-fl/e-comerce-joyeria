@@ -49,7 +49,7 @@ export default function Profile() {
 
       {menu === 1 ? !edit ? showProfile(user, setEdit)
         : <EditProfile user={{ ...user, adresse: mockdata.adresse }} setEdit={setEdit} />
-        : menu === 2 ? <UserOrders />
+        : menu === 2 ? <UserOrders id={user.id} />
           : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
             : <h1>CAMBIAR CONTRASEÑA</h1>}
     </MainDiv>

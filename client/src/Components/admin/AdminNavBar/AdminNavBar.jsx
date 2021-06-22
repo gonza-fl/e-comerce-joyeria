@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 const AdminNavBar = () => (
   <DivContainer className="bg-color-three">
     <ul style={{ listStyle: 'none', textAlign: 'left' }}>
+      <Link to="/" className="link-without-styles"><li>VOLVER A INICIO</li></Link>
+      <br />
       <Link to="/admin/products" className="link-without-styles"><li>VER PRODUCTOS</li></Link>
       <br />
       <Link to="/admin/controlcategories" className="link-without-styles"><li>CATEGORÍAS</li></Link>
