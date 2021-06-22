@@ -1,7 +1,7 @@
 .searchBar {
     display: flex;
     height: 50%;
-    width: 400px;
+    width: 350px;
     justify-content: center;
     position: relative;
 }
@@ -13,7 +13,7 @@
     align-items: flex-end;
 }
 
-.searchInput:focus{
+.searchInput:focus {
     outline: none;
 }
 
@@ -21,6 +21,7 @@
     background: transparent;
     border: none;
     font-size: 30px;
+    padding-right: 5px;
 }
 
 .searchBtn:hover {
