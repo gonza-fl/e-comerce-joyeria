@@ -13,11 +13,13 @@
 .leftMenuCtn ul:hover {
     transition: 0.3s;
     cursor: pointer;
+    z-index: 99;
     background-color: #f1eee3;
 }
 
 .leftMenuCtn ul div {
     display: none;
+    z-index: 99;
 }
 
 .leftMenuCtn ul:hover div {

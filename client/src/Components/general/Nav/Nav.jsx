@@ -1,14 +1,9 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-lone-blocks */
-/* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/jsx-curly-spacing */
-/* eslint-disable no-return-await */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable no-return-assign */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/jsx-curly-spacing */
+/* eslint-disable no-return-assign */
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -29,18 +24,7 @@ ADMIN_IDS.split(',');
 
 export default function Nav() {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.categories);
   const user = useSelector((state) => state.user);
-
-  const [menu, setMenu] = useState('none');
-
-  function showMenu() {
-    setMenu('inline');
-  }
-
-  function hideMenu() {
-    setMenu('none');
-  }
 
   useEffect(() => {
     dispatch(getCategories());
@@ -55,8 +39,8 @@ export default function Nav() {
   return (
     <div className="ctnNav bg-color-three">
       <UserLogin />
+      {ADMIN_IDS.includes(user.id) && <Link to="/admin"><div className="adminNav">PANEL DE ADMINISTRADOR </div> </Link>}
       <div className="nav bg-color-three">
-
         <div className="leftMenuNav"><LeftMenu /></div>
 
         <div className="logoNav">
