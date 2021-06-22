@@ -3,6 +3,7 @@ import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../../utils/cartFunctions';
@@ -43,10 +44,15 @@ export default function ProductCard({
             style={{ backgroundColor: '#f1eee3', marginTop: '10px' }}
             handleClick={
               async () => {
-                await addToCart(product, userId);
-                dispatch(showFloatingCart('inline'));
-                setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
-                window.scrollTo(0, 0);
+                try {
+                  dispatch(showFloatingCart('none'));
+                  await addToCart(product, userId);
+                  dispatch(showFloatingCart('inline'));
+                  setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
+                  window.scrollTo(0, 0);
+                } catch (err) {
+                  swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando');
+                }
               }
             }
             text="Agregar al carrito"
@@ -76,14 +82,14 @@ function Carousel({ image, id }) {
 
   return (
     <DivCarousel>
-      <MdNavigateBefore onClick={beforeCarousel} />
+      {img.length > 1 && <MdNavigateBefore onClick={beforeCarousel} /> }
       <div>
         <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
           {img.filter((imgEl, i) => i === imgIndex)
             .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="250px" height="250px" />)}
         </Link>
       </div>
-      <MdNavigateNext onClick={nextCarousel} />
+      {img.length > 1 && <MdNavigateNext onClick={nextCarousel} />}
     </DivCarousel>
   );
 }

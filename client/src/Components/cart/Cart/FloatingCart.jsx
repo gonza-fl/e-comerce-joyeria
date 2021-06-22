@@ -18,7 +18,7 @@ function FloatingCart() {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
         .then((res) => {
           console.log(res.data);
-          if (res.data && res.data[0].products.length > 0) {
+          if (res.data.length !== 0 && res.data[0].products.length > 0) {
             setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
           } else {
             setCartProducts([]);
