@@ -18,10 +18,10 @@ const createUser = async (req, res) => {
       displayName,
       phone,
       birthday: birthdayNew,
+      admin: 'user',
     });
     return res.status(201).json(user);
   } catch (err) {
-    console.log(err);
     return res.status(400).json({
       err,
     });
@@ -110,7 +110,7 @@ const getUserAdmin = async (req, res) => {
   const {
     idUser,
   } = req.params;
-  const user = User.findByPk(idUser);
+  const user = await User.findByPk(idUser);
   if (user && user.admin === 'admin') return res.sendStatus(200);
   return res.sendStatus(404);
 };
