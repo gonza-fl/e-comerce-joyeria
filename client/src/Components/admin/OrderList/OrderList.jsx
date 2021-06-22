@@ -54,7 +54,7 @@ function OrderList() {
           <th>E-MAIL</th>
         </tr>
         {users.map((user) => (
-          <tr className="user-data" onClick={() => handleClick(user.id)}>
+          <tr key={user.displayName} className="user-data" onClick={() => handleClick(user.id)}>
             <td>{user.displayName}</td>
             <td>{user.email}</td>
           </tr>

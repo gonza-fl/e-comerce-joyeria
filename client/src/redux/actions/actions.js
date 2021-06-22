@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable func-names */
 
 import axios from 'axios';
@@ -32,7 +33,7 @@ export function getProducts() {
         payload: response.data,
       });
     })
-      .catch((err) => { alert(err); });
+      .catch((err) => { console.log(err); });
   };
 }
 
@@ -61,7 +62,7 @@ export function getCategories() {
         payload: response.data,
       });
     })
-      .catch((err) => { alert(err); });
+      .catch((err) => { console.log(err); });
   };
 }
 
@@ -92,7 +93,7 @@ export function getProductDetail(id) {
           payload: response.data,
         });
       })
-      .catch((err) => { alert(err); });
+      .catch((err) => { console.log(err); });
   };
 }
 
@@ -118,24 +119,7 @@ export function getUserOrders(id) {
           payload: response.data,
         });
       })
-      .catch((err) => alert(err))
+      .catch((err) => console.log(err))
     );
   };
 }
-
-// export function deleteProduct(id){
-// QUE ONDA ACA? HAY QUE CAMBIAR LA RUTAAAAA, USATE EL CONSTANTS ;)
-// creo que habian quedado ambas rutas definidas y usadas en products, y no se necesita el estado
-//     // axios.delete(`http://localhost:3001/api/product/:${id}`)
-//     //const prods = axios.get("http://localhost:3001/api/product")
-//     return {
-//         type:DELETE_PRODUCT,
-//     }
-// }
-
-// export function modifyProduct(id){
-//     return {
-//         type:MODIFY_PRODUCT,
-//         payload: id,
-//     }
-// }

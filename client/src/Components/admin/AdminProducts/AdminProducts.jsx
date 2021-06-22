@@ -32,12 +32,12 @@ function AdminProducts() {
           </tr>
           {products.map((p) => (
 
-            <ProductContainer className="bg-color-three">
+            <ProductContainer className="bg-color-three" key={p.id}>
               <td>{p.id}</td>
               <td>{p.name}</td>
               <td>{p.price}</td>
               <td>{p.stockAmount}</td>
-              <td>{p.categories.map((c) => <li>{c.name}</li>)}</td>
+              <td>{p.categories.map((c) => <li key={c.name}>{c.name}</li>)}</td>
               <img src={p.images.filter((img, i) => i === 0)[0].url || loadingImg} alt="Not found" height="50px" width="50px" />
               <td>
                 <Link to={`/admin/products/${p.id}`} className="link-without-styles">
