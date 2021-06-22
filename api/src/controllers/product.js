@@ -10,7 +10,10 @@ const {
 const {
   cloudinary,
 } = require('../utils/cloudinary');
-
+const {
+  verifyNumber,
+  verifyArray,
+} = require('../helpers/functionHelpers');
 const {
   Product,
   Category,
@@ -27,7 +30,10 @@ const createProduct = async (req, res) => {
       image,
       categories,
     } = req.body;
-    if (!name.trim() || !description.trim() || !price || !stockAmount || !categories) return res.status(400).send('Error falta algún campo');
+    if (
+      !name.trim() || !description.trim() || !verifyNumber(price) || !verifyNumber(stockAmount)
+      || !verifyArray(categories) || !image
+    ) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
       name,
       description,
@@ -69,7 +75,6 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).json(resultado);
   } catch (err) {
-    console.log(err);
     return res.status(400).json(err);
   }
 };
@@ -191,8 +196,8 @@ const updateProduct = async (req, res) => {
         err: 'No se encontro el producto.',
       });
     }
-    const stock = (stockAmount && parseInt(stockAmount));
-    const priceVar = (price && parseFloat(price));
+    const stock = (verifyNumber(stockAmount) ? parseInt(stockAmount) : undefined);
+    const priceVar = (verifyNumber(price) ? parseFloat(price) : undefined);
     await Product.update({
       name,
       description,

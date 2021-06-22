@@ -126,7 +126,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
     });
     return res.json(finalCart);
   } catch (err) {
-    console.log(err);
     return res.status(500).json('hay un error');
   }
 };
@@ -254,7 +253,6 @@ const emptyCartOrProduct = async (req, res) => {
     id,
     product,
   } = req.body;
-  console.log(req.body);
   if (!id) return res.status(404).json('el id no existe!');
   try {
     const user = await User.findOne({
