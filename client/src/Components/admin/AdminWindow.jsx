@@ -10,6 +10,7 @@ import AdminProductCard from './AdminProducts/AdminProductCard';
 import OrderDetail from './OrderList/OrderDetail/OrderDetail';
 import AdminControlCategories from './AdminCategories/AdminControlCategories';
 import AdminCreateProduct from './CreateProduct/AdminCreateProduct';
+import Spiner from '../Spiner/Spiner';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 
@@ -41,7 +42,7 @@ function AdminWindow() {
 
   return (
     <MainDiv>
-      <h1> Debe iniciar secion para acceder al panel de administrador</h1>
+      <Spiner msg="Debe iniciar secion para acceder al panel de administrador" />
       <Link to="/">
         <button type="button">volver al home</button>
       </Link>

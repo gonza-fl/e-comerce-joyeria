@@ -18,10 +18,10 @@ const createUser = async (req, res) => {
       displayName,
       phone,
       birthday: birthdayNew,
+      admin: 'user',
     });
     return res.status(201).json(user);
   } catch (err) {
-    console.log(err);
     return res.status(400).json({
       err,
     });
@@ -79,8 +79,45 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  try {
+    const user = await User.findAll(
+      {
+        where: {
+          id: idUser,
+        },
+        include: [
+          {
+            model: Address,
+          },
+          {
+            model: Order,
+            include: Product,
+          },
+        ],
+      },
+    );
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(404).json(err);
+  }
+};
+
+const getUserAdmin = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const user = await User.findByPk(idUser);
+  if (user && user.admin === 'admin') return res.sendStatus(200);
+  return res.sendStatus(404);
+};
 module.exports = {
   createUser,
   getUser,
   updateUser,
+  getUserById,
+  getUserAdmin,
 };
