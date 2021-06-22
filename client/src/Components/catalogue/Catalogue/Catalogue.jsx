@@ -1,27 +1,31 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Catalogue.css';
 import { useLocation } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
-import { getProducts } from '../../../redux/actions/actions';
+import { getProducts, getProductsByName } from '../../../redux/actions/actions';
+import Spiner from '../../Spiner/Spiner';
 
 export default function catalogue() {
   const dispatch = useDispatch();
   const isQuery = useLocation().search.includes('search');
+  const [query, setQuery] = useState(useLocation().search.split('=')[1]);
 
   const products = useSelector((state) => (isQuery ? state.productsByQuery : state.products));
   const [productsDisplay, setProductsDisplay] = useState([...products]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getProducts());
+    isQuery ? dispatch(getProductsByName(query)) : dispatch(getProducts());
   }, []);
 
   useEffect(() => {
     if (productsDisplay.length === 0
       || (productsDisplay.length !== products.length
-      && productsDisplay[0] !== products[0])) {
+      || productsDisplay[0] !== products[0])) {
       setProductsDisplay([...products]);
     }
   }, [products]);
@@ -34,7 +38,7 @@ export default function catalogue() {
         productsGlobal={products}
       />
       <div className="catalogueMap">
-        {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
+        {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
         {productsDisplay.map((product) => (
           <ProductCard
             product={product}
