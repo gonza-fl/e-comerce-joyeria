@@ -12,7 +12,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import 'firebase/auth';
 import swal from 'sweetalert';
 import firebase from 'firebase/app';
@@ -23,6 +22,7 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
+import logo from '../../../img/logo2.png';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 ADMIN_IDS.split(',');
@@ -62,6 +62,7 @@ export default function Nav() {
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
+        <img className="logoResponsive" src={logo} alt="" />
 
         <div className="rigthMenuNav">
           <div className="SearchBarNav">
