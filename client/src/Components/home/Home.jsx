@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ShowCategories from './ShowCategories/ShowCategories';
 
-import { getCategories, getProducts } from '../../redux/actions/actions';
+import { restartProductsByCategory } from '../../redux/actions/actions';
 import NewsFlyer from './NewsFlyer/NewsFlyer';
 import './Home.css';
 
@@ -14,8 +14,7 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCategories());
-    dispatch(getProducts());
+    dispatch(restartProductsByCategory());
   }, []);
 
   return (

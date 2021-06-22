@@ -8,7 +8,7 @@ export default function Spiner({ msg }) {
   const [loading, setLoading] = useState(true);
 
   const load = () => {
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 3500);
   };
   useEffect(() => {
     load();

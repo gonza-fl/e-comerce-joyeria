@@ -6,7 +6,7 @@
     border-left: 5px solid #CF988C;
     border-right: 5px solid #CF988C;
     border-radius: 50%;
-    animation: spinIT 1s linear infinite;
+    animation: spinIT 1.4s linear infinite;
     filter: drop-shadow(0px 0px 8px gray);
 }
 
