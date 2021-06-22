@@ -25,8 +25,8 @@ export function createProduct(product, setLoading) {
         swal('error', 'No se pudo crear al producto', 'warning');
       } else {
         setLoading(false);
-        swal('Success', '¡Se creó el producto con éxito!');
-        window.location.href = '/admin/products';
+        swal('Success', '¡Se creó el producto con éxito!')
+          .then(() => { window.location.href = '/admin/products'; });
       }
     })
     .catch(() => {

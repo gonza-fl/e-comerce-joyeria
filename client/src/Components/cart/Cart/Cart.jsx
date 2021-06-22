@@ -55,12 +55,12 @@ const Cart = () => {
   const [showProduct, setShowProduct] = useState(false);
 
   function changeAmount(id, type, amount = 0) {
-    if (user.id) {
+    const index = cartProducts.findIndex((product) => product.id === id);
+    if (user.id && (type !== 'substract' || (type === 'substract' && cartProducts[index].amount > 1))) {
       return axios.put(`${URL_GET_CART}${user.id}/cart`, { product: { id, amount }, action: type })
         .then(() => setPivot(!pivot));
     }
 
-    const index = cartProducts.findIndex((product) => product.id === id);
     if (type === 'sum') {
       setSubtotal((prevState) => prevState + cartProducts[index].price);
       setTotal((prevState) => prevState + cartProducts[index].price);
@@ -98,23 +98,22 @@ const Cart = () => {
       </div>
     );
   }
-  if (cartProducts && cartProducts.length > 0) {
-    return (
-      <div className="cart-container">
-        <div className="cart-detail-container">
-          <h2>Carrito de Compras</h2>
-          <div className="card-detail-border">
-            {cartProducts.map((product) => (
-              <div className="card-detail-map">
-                <div className="card-detail-map-left">
-                  <div className="card-detail-img-container">
-                    <img src={product.images.length && product.images[0].url} alt={product.name} />
-                  </div>
-                  <div className="card-detail-data">
-                    <h4>{product.name.toUpperCase()}</h4>
-                    <p>{product.description}</p>
-                    <h4>${product.price}</h4>
-                  </div>
+
+  return (
+    <div className="cart-container">
+      <div className="cart-detail-container">
+        <h2>Carrito de Compras</h2>
+        <div className="card-detail-border">
+          {cartProducts.map((product) => (
+            <div className="card-detail-map" key={product.name}>
+              <div className="card-detail-map-left">
+                <div className="card-detail-img-container">
+                  <img src={product.images.length && product.images[0].url} alt={product.name} />
+                </div>
+                <div className="card-detail-data">
+                  <h4><Link to={`/products/product/${product.id}`}>{product.name.toUpperCase()}</Link></h4>
+                  <p>{product.description}</p>
+                  <h4>${product.price}</h4>
                 </div>
                 <div className="card-detail-map-right">
                   <div className="card-detail-amount">
@@ -131,39 +130,39 @@ const Cart = () => {
                   <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
                 </div>
               </div>
-            ))}
-          </div>
-          <Link to="/cart/checkout">
-            <button id="next-btn">Siguiente</button>
-          </Link>
-          <Link to="/products">
-            <Button text="Volver al Catálogo" />
-          </Link>
+            </div>
+          ))}
         </div>
-        <div className="cart-summary-container">
-          <h2>Resumen</h2>
-          <div className="cart-summary-border">
-            <div className="cart-summary-data">
-              <h4>Subtotal: </h4>
-              <h4>${subTotal}</h4>
-            </div>
-            <div className="cart-summary-data">
-              <h4>Envío: </h4>
-              <h4>${shipping}</h4>
-            </div>
-            <div className="cart-summary-data">
-              <h4>Impuestos: </h4>
-              <h4>${tax}</h4>
-            </div>
+        <Link to="/cart/checkout">
+          <button id="next-btn">Siguiente</button>
+        </Link>
+        <Link to="/products">
+          <Button text="Volver al Catálogo" />
+        </Link>
+      </div>
+      <div className="cart-summary-container">
+        <h2>Resumen</h2>
+        <div className="cart-summary-border">
+          <div className="cart-summary-data">
+            <h4>Subtotal: </h4>
+            <h4>${subTotal}</h4>
           </div>
           <div className="cart-summary-data">
-            <h2>TOTAL: </h2>
-            <h2>${total}</h2>
+            <h4>Envío: </h4>
+            <h4>${shipping}</h4>
+          </div>
+          <div className="cart-summary-data">
+            <h4>Impuestos: </h4>
+            <h4>${tax}</h4>
           </div>
         </div>
+        <div className="cart-summary-data">
+          <h2>TOTAL: </h2>
+          <h2>${total}</h2>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default Cart;

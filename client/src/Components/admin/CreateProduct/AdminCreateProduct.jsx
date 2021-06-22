@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,14 +47,16 @@ function AdminCreateProduct() {
 
   const previewFile = (file) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      if (previewImg.length < 3) {
-        setPreviewImg([...previewImg, reader.result]);
-      } else {
-        swal('No puedes agregar más de tres imágenes');
-      }
-    };
+    if (file.size) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        if (previewImg.length < 3) {
+          setPreviewImg([...previewImg, reader.result]);
+        } else {
+          swal('No puedes agregar más de tres imágenes');
+        }
+      };
+    }
   };
 
   const handleImgLoad = (e) => {
@@ -93,8 +96,12 @@ function AdminCreateProduct() {
     if (!input.name) { setLoading(false); return swal('Error', 'Debes completar el campo Nombre', 'warning'); }
 
     if (!input.price) { setLoading(false); return swal('Error', 'Debes completar el campo Precio', 'warning'); }
+    if (isNaN(input.price)) { setLoading(false); return swal('Error', 'El precio debe ser un número', 'warning'); }
+    if (input.price < 0) { setLoading(false); return swal('Error', 'El precio debe ser mayor a cero', 'warning'); }
 
-    if (!input.stockAmount) { setLoading(false); return swal('Error', 'Debes completar el campo Número de unidades', 'warning'); }
+    if (!input.stockAmount) { setLoading(false); return swal('Error', 'Debes completar el campo Número de stock', 'warning'); }
+    if (isNaN(input.stockAmount)) { setLoading(false); return swal('Error', 'El stock debe ser un número', 'warning'); }
+    if (input.stockAmount < 0) { setLoading(false); return swal('Error', 'El stock debe ser mayor a cero', 'warning'); }
 
     if (!input.description) { setLoading(false); return swal('Error', 'Debes completar el campo Descripción', 'warning'); }
 
@@ -163,7 +170,7 @@ function AdminCreateProduct() {
             <br />
             <DivCategories>
               {categories.map((c) => (
-                <label>
+                <label key={c.name}>
                   <input type="checkbox" name="categories" value={c.id} onClick={onChangeCategories} />
                   {c.name}
                 </label>

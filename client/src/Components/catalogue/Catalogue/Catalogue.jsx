@@ -44,6 +44,7 @@ export default function catalogue() {
             image={product.images}
             review={product.review}
             stockAmount={product.stockAmount}
+            key={product.id}
           />
         ))}
       </div>

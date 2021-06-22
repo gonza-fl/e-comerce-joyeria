@@ -15,6 +15,7 @@ function CategoryCatalogue() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setProductsDisplay([...products]);
   }, []);
 
   useEffect(() => {
@@ -22,11 +23,7 @@ function CategoryCatalogue() {
   }, [categoryId]);
 
   useEffect(() => {
-    if (productsDisplay.length === 0
-      || (productsDisplay.length !== products.length
-      && productsDisplay[0] !== products[0])) {
-      setProductsDisplay(products);
-    }
+    setProductsDisplay([...products]);
   }, [products]);
 
   return (
@@ -47,6 +44,7 @@ function CategoryCatalogue() {
             image={p.images}
             review={p.review}
             stockAmount={p.stockAmount}
+            key={p.id}
           />
         ))}
       </div>

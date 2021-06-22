@@ -14,6 +14,7 @@ const Product = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const detail = useSelector((state) => state.detail);
+  const userId = useSelector((state) => state.user.id);
 
   const [bigImage, setBigImage] = useState('');
 
@@ -37,7 +38,7 @@ const Product = () => {
   }
 
   const handleClickCart = () => {
-    addToCart(detail);
+    addToCart(detail, userId);
   };
 
   return (
@@ -49,7 +50,7 @@ const Product = () => {
 
         <div className="container-minpics">
           {
-            detail.images.map((image) => <img src={image.url} onClick={(e) => changeImage(e)} alt="" />)
+            detail.images.map((image) => <img key={image.url} src={image.url} onClick={(e) => changeImage(e)} alt="" />)
           }
         </div>
       </div>

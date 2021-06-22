@@ -25,7 +25,7 @@ function FloatingCart() {
     } else if (JSON.parse(localStorage.getItem('cart'))) {
       setCartProducts(JSON.parse(localStorage.getItem('cart')));
     }
-  }, [showCart, pivot]);
+  }, [showCart, pivot, user]);
 
   function removeFromCart(id) {
     if (user.id) {
@@ -53,7 +53,7 @@ function FloatingCart() {
       >
         <div>
           {cartProducts.map((p) => (
-            <ProductCardCart>
+            <ProductCardCart key={p.name}>
               <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
               <div style={{ textAlign: 'left', marginLeft: '15px', flexGrow: 2 }}>
                 <span>{p.name}</span>
