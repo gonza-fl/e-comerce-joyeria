@@ -44,6 +44,15 @@
   text-align: left;
 }
 
+.card-detail-data a{
+  text-decoration: none;
+  color: black;
+}
+
+.card-detail-data a:hover{
+  color: #e6c7b7;
+}
+
 .card-detail-map-right{
   display: flex;
   width: 20%;
@@ -54,23 +63,31 @@
   display: flex;
   align-items: center;
   margin-left: 20%;
+  width: 45%;
 }
 
 #card-detail-amount-p{
   border: 0.5px solid silver;
   margin: 0%;
-  padding: 30% 50%;
+  width: 100%;
+  height: 45%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-detail-amount-buttons{
   display: flex;
   flex-direction: column;
+  width: 50%;
 }
 
 .card-detail-amount-buttons button{
   border-radius: 0%;
-  border: 2px solid #f0ddd8;
+  border: none;
   background-color: #f0ddd8;
+  font-size: 1.1rem;
 }
 
 .card-detail-amount-buttons button:hover{
