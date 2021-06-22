@@ -5,6 +5,7 @@ import ProductCard from '../ProductCard/ProductCard';
 import { getProdutsByCategory } from '../../../redux/actions/actions';
 import FilterCatalogue from '../Catalogue/FilterCatalogue/FilterCatalogue';
 import './CategoryCatalogue.css';
+import Spiner from '../../Spiner/Spiner';
 
 function CategoryCatalogue() {
   const products = useSelector((state) => state.productsByCategory);
@@ -34,7 +35,7 @@ function CategoryCatalogue() {
         productsGlobal={products}
       />
       <div className="categoryDiv">
-        {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
+        {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
         {productsDisplay.map((p) => (
           <ProductCard
             product={p}
