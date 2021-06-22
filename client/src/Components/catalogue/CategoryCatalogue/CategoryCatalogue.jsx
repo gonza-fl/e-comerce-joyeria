@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
-import { getProdutsByCategory } from '../../../redux/actions/actions';
+import { getProdutsByCategory, restartProductsByCategory } from '../../../redux/actions/actions';
 import FilterCatalogue from '../Catalogue/FilterCatalogue/FilterCatalogue';
 import './CategoryCatalogue.css';
 import Spiner from '../../Spiner/Spiner';
@@ -17,6 +17,8 @@ function CategoryCatalogue() {
   useEffect(() => {
     window.scrollTo(0, 0);
     setProductsDisplay([...products]);
+
+    return () => { dispatch(restartProductsByCategory()); };
   }, []);
 
   useEffect(() => {
