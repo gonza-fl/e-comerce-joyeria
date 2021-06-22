@@ -105,9 +105,19 @@ const getUserById = async (req, res) => {
     return res.status(404).json(err);
   }
 };
+
+const getUserAdmin = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const user = User.findByPk(idUser);
+  if (user && user.admin === 'admin') return res.sendStatus(200);
+  return res.sendStatus(404);
+};
 module.exports = {
   createUser,
   getUser,
   updateUser,
   getUserById,
+  getUserAdmin,
 };
