@@ -27,6 +27,7 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   useEffect(() => {
     if (user.id) {
+      console.log('entre al if guachim');
       axios.get(`${URL_GET_CART}${user.id}/cart`)
         .then((res) => {
           if (res.data[0].products.length > 0) {
