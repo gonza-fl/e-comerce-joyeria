@@ -54,12 +54,12 @@ const Cart = () => {
   const [showProduct, setShowProduct] = useState(false);
 
   function changeAmount(id, type, amount = 0) {
-    if (user.id) {
+    const index = cartProducts.findIndex((product) => product.id === id);
+    if (user.id && (type !== 'substract' || (type === 'substract' && cartProducts[index].amount > 1))) {
       return axios.put(`${URL_GET_CART}${user.id}/cart`, { product: { id, amount }, action: type })
         .then(() => setPivot(!pivot));
     }
 
-    const index = cartProducts.findIndex((product) => product.id === id);
     if (type === 'sum') {
       setSubtotal((prevState) => prevState + cartProducts[index].price);
       setTotal((prevState) => prevState + cartProducts[index].price);
@@ -104,13 +104,13 @@ const Cart = () => {
         <h2>Carrito de Compras</h2>
         <div className="card-detail-border">
           {cartProducts.map((product) => (
-            <div className="card-detail-map">
+            <div className="card-detail-map" key={product.name}>
               <div className="card-detail-map-left">
                 <div className="card-detail-img-container">
                   <img src={product.images.length && product.images[0].url} alt={product.name} />
                 </div>
                 <div className="card-detail-data">
-                  <h4>{product.name.toUpperCase()}</h4>
+                  <h4><Link to={`/products/product/${product.id}`}>{product.name.toUpperCase()}</Link></h4>
                   <p>{product.description}</p>
                   <h4>${product.price}</h4>
                 </div>
