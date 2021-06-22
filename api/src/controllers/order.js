@@ -16,6 +16,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
     products,
   } = req.body;
   if (!id) return res.status(404).json('ID no existe!');
+  if (!products) return res.status(200).json('No existe cart en localStorage');
   try {
     // Validación: existe ese usuario?
     const user = await User.findOne({

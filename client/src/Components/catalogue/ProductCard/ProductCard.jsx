@@ -80,7 +80,7 @@ function Carousel({ image, id }) {
       <div>
         <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
           {img.filter((imgEl, i) => i === imgIndex)
-            .map((imgEl) => <img src={`${imgEl}`} alt="" width="250px" height="250px" />)}
+            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="250px" height="250px" />)}
         </Link>
       </div>
       <MdNavigateNext onClick={nextCarousel} />

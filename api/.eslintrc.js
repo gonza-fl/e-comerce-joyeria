@@ -13,6 +13,9 @@ module.exports = {
   rules: {
     semi: ['error', 'always'],
     'object-curly-newline': ['error', 'always'],
-    'linebreak-style': 0,
+    'linebreak-style': ['error', 'windows'],
+    'no-param-reassign': ['error', {
+      props: false,
+    }],
   },
 };
