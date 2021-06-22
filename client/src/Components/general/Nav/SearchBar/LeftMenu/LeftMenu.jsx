@@ -12,7 +12,7 @@ export default function LeftMenu() {
         CATEGORIAS
         <div className="bg-color-six">
           {categories.map((d) => (
-            <Link to={`/products/${d.id}`}>
+            <Link to={`/products/${d.id}`} key={d.name}>
               <li className="optionLeftMenu">{d.name.toUpperCase()}</li>
             </Link>
           ))}

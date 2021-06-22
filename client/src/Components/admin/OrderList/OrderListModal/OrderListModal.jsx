@@ -90,7 +90,7 @@ const OrderListModal = ({ id }) => {
             <th>DETALLE</th>
           </tr>
           {filter.map((userOrder) => (
-            <tr className="table-data">
+            <tr className="table-data" key={userOrder.orderNumber}>
               <td>{userOrder.orderNumber}</td>
               <td>{userOrder.endTimestamp}</td>
               <td>{userOrder.total}</td>

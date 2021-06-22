@@ -44,6 +44,7 @@ function CategoryCatalogue() {
             image={p.images}
             review={p.review}
             stockAmount={p.stockAmount}
+            key={p.id}
           />
         ))}
       </div>
