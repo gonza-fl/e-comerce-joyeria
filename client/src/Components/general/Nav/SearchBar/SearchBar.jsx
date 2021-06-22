@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { getProductsByName } from '../../../../redux/actions/actions';
+import { getProducts, getProductsByName } from '../../../../redux/actions/actions';
 import SearchBarDropdown from './SearchBarDropdown/SearchBarDropdown';
 import Button from '../../../StyledComponents/Button';
 
@@ -64,15 +64,14 @@ export default function SearchBar() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input.length > 0) {
-      dispatch(getProductsByName(input));
-    }
+
     setOpen(false);
     if (input) history.push(`/products?search=${input}`);
     setInput('');
   };
 
   function onClickSearch() {
+    dispatch(getProducts());
     setDisplayBar('inline');
     if (input.length > 0) {
       history.push(`/products?search=${input}`);

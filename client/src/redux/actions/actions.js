@@ -123,3 +123,7 @@ export function getUserOrders(id) {
     );
   };
 }
+
+export function restartProductsByCategory() {
+  return { type: GET_PRODUCTS_BY_CATEGORY, payload: [] };
+}

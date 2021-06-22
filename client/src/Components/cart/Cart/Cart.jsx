@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { URL_CART, URL_GET_CART } from '../../../constants';
+import Spiner from '../../Spiner/Spiner';
 import Button from '../../StyledComponents/Button';
 import './Cart.css';
 
@@ -91,13 +92,7 @@ const Cart = () => {
       setPivot(!pivot);
     }
   };
-  if (cartProducts && cartProducts.length < 1) {
-    return (
-      <div>
-        <h5>Tu carrito de compras está vacío!!</h5>
-      </div>
-    );
-  }
+  if (cartProducts && cartProducts.length < 1) return <Spiner msg="Tu carrito de compras está vacío" />;
 
   return (
     <div className="cart-container">
