@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
 import { getProducts } from '../../../redux/actions/actions';
+import Spiner from '../../Spiner/Spiner';
 
 export default function catalogue() {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function catalogue() {
         productsGlobal={products}
       />
       <div className="catalogueMap">
-        {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
+        {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
         {productsDisplay.map((product) => (
           <ProductCard
             product={product}
