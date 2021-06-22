@@ -28,6 +28,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (user.id) {
+      console.log('entre al if guachim');
       axios.get(`${URL_GET_CART}${user.id}/cart`)
         .then((res) => {
           if (res.data[0].products.length > 0) {
@@ -43,7 +44,7 @@ const Cart = () => {
         });
     } else if (JSON.parse(localStorage.getItem('cart'))) {
       const prod = JSON.parse(localStorage.getItem('cart'));
-      if (prod.length > 0) {
+      if (prod && prod.length > 0) {
         const sTotal = prod.map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
         setCartProducts(prod);
         setSubtotal(sTotal);
@@ -91,7 +92,7 @@ const Cart = () => {
       setPivot(!pivot);
     }
   };
-  if (cartProducts.length === 0) return <Spiner msg="Tu carrito de compras está vacío" />;
+  if (cartProducts && cartProducts.length < 1) return <Spiner msg="Tu carrito de compras está vacío" />;
 
   return (
     <div className="cart-container">
@@ -109,20 +110,20 @@ const Cart = () => {
                   <p>{product.description}</p>
                   <h4>${product.price}</h4>
                 </div>
-              </div>
-              <div className="card-detail-map-right">
-                <div className="card-detail-amount">
-                  <span id="card-detail-amount-p"> {product.amount} </span>
-                  <div className="card-detail-amount-buttons">
-                    <button onClick={
+                <div className="card-detail-map-right">
+                  <div className="card-detail-amount">
+                    <span id="card-detail-amount-p"> {product.amount} </span>
+                    <div className="card-detail-amount-buttons">
+                      <button onClick={
                         () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
 }
-                    >+
-                    </button>
-                    <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
+                      >+
+                      </button>
+                      <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
+                    </div>
                   </div>
+                  <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
                 </div>
-                <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
               </div>
             </div>
           ))}

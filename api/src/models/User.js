@@ -28,8 +28,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     admin: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      type: DataTypes.ENUM(['user', 'admin', 'banned']),
     },
   },
   {

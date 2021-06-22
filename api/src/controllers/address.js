@@ -2,6 +2,9 @@ const {
   User,
   Address,
 } = require('../models/index');
+const {
+  verifyNumber,
+} = require('../helpers/functionHelpers');
 
 const addAddressFunction = async (req, res) => {
   // Address __
@@ -15,6 +18,7 @@ const addAddressFunction = async (req, res) => {
     name,
   } = req.body;
   // identifico el usuario al cual se le van a revisar las address
+  if (postalCode && !verifyNumber(postalCode)) return res.sendStatus(400);
   const user = await User.findByPk(idUser);
   if (!user) {
     return res.status(404).json({
@@ -64,6 +68,7 @@ const updateAddress = async (req, res) => {
       });
     }
     // identifico el address al cual se la va a hacer el cambio
+    if (postalCode && !verifyNumber(postalCode)) return res.sendStatus(404);
     await Address.update({
       name,
       description,
@@ -77,7 +82,6 @@ const updateAddress = async (req, res) => {
     });
     return res.status(200).json('Direccion updeteada');
   } catch (err) {
-    console.log(err);
     return res.status(404).json(err);
   }
 };
@@ -104,7 +108,7 @@ const deleteAddress = async (req, res) => {
     idUser,
     idAddress,
   } = req.params;
-  if (!idAddress) {
+  if (!verifyNumber(idAddress)) {
     return res.status(404).json({
       err: 'El campo ID esta vacío',
     });
