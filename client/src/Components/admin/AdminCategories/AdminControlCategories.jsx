@@ -33,7 +33,7 @@ function AdminControlCategories() {
             <th>NOMBRE</th>
           </tr>
           {categories.map((c) => (
-            <tr className="bg-color-three">
+            <tr className="bg-color-three" key={c.id}>
               <td>{c.id}</td>
               <td>{c.name}</td>
               <button type="button" onClick={() => eraseCategory(c)}>X</button>
