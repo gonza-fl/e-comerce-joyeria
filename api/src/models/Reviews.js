@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize) => {
   const model = sequelize.define('review', {
     calification: {
-      type: DataTypes.ENUM(['like', 'dislike']),
+      type: DataTypes.INTEGER,
     },
     description: {
       type: DataTypes.TEXT,
