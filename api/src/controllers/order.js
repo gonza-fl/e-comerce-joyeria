@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
 
@@ -7,6 +8,9 @@ const {
   Product,
   Image,
 } = require('../models/index');
+const {
+  verifyNumber,
+} = require('../helpers/functionHelpers');
 
 const createOrFindAndUpdateCart = async (req, res) => {
   // REVISAR SI EL FRONT MANDA AMOUNTS HECHAS INTEGER Y NO STRING
@@ -39,22 +43,25 @@ const createOrFindAndUpdateCart = async (req, res) => {
       const cartNew = await Order.create({
         status: 'cart',
       });
+
       await user.addOrder(cartNew);
       // Validación: ver si los productos a incorporar sí existen en la DB y si superan stock
       for (let i = 0; i < products.length; i += 1) {
+        if (!verifyNumber(products[i].amount).veracity) { return res.status(400).send(verifyNumber(products[i].amount, 'monto').msg); }
+        let total = products[i].amount;
         const prod = await Product.findOne({
           where: {
             id: products[i].id,
           },
         });
         if (!prod) return res.status(404).json(`No se encontro el producto de id ${products[i].id}`);
-        if (prod.stockAmount < parseInt(products.amount)) {
-          return res.status(404).json('El producto supera el stock');
+        if (prod.stockAmount < parseInt(products[i].amount)) {
+          total = prod.stockAmount;
         }
         await cartNew.addProduct(prod, {
           through: {
-            amount: parseInt(products[i].amount),
-            subtotal: parseInt(products[i].amount) * prod.price,
+            amount: parseInt(total),
+            subtotal: parseInt(total) * prod.price,
           },
         });
       }
@@ -72,14 +79,18 @@ const createOrFindAndUpdateCart = async (req, res) => {
     for (let i = 0; i < cart.products.length; i += 1) {
       const productIndex = products.findIndex(
         (product) => parseInt(product.id) === cart.products[i].id,
+
       );
       // Validación: se quiere incorporar un producto ya presente en el carrito?
       if (productIndex !== -1) {
         // Validación: Revisar si las cantidades de ese producto supera el stock
+        if (!verifyNumber(products[productIndex].amount).veracity) return res.status(400).send(verifyNumber(products[productIndex].amount, 'monto').msg);
+
         if (cart.products[i].stockAmount
           < cart.products[i].orderline.amount + parseInt(products[productIndex].amount)) {
           return res.status(404).json(`El producto ${cart.products[i].name} supera el stock`);
         }
+
         // Actualizar su cantidad
         await cart.addProduct(cart.products[i], {
           through: {
@@ -103,19 +114,22 @@ const createOrFindAndUpdateCart = async (req, res) => {
     }
     // Los productos ya presentes en el carrito fueron spliceados, recorrer los nuevos para agregar
     for (let i = 0; i < products.length; i += 1) {
+      if (!verifyNumber(products[i].amount).veracity) return res.status(400).send(verifyNumber(products[i].amount, 'monto').msg);
+
+      let total = products[i].amount;
       const prod = await Product.findOne({
         where: {
           id: products[i].id,
         },
       });
       if (!prod) return res.status(404).json(`No se encontro el producto ${prod}`);
-      if (prod.stockAmount < parseInt(products.amount)) {
-        return res.status(404).json('El producto supera el stock');
+      if (prod.stockAmount < parseInt(products[i].amount)) {
+        total = prod.stockAmount;
       }
       await cart.addProduct(prod, {
         through: {
-          amount: parseInt(products[i].amount),
-          subtotal: parseInt(products[i].amount) * prod.price,
+          amount: parseInt(total),
+          subtotal: parseInt(total) * prod.price,
         },
       });
     }

@@ -13,7 +13,7 @@ module.exports = {
   rules: {
     semi: ['error', 'always'],
     'object-curly-newline': ['error', 'always'],
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': 0,
     'no-param-reassign': ['error', {
       props: false,
     }],
