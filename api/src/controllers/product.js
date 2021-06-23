@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 /* eslint radix: ["error", "as-needed"] */
@@ -31,7 +32,7 @@ const createProduct = async (req, res) => {
       categories,
     } = req.body;
     if (
-      !name.trim() || !description.trim() || !verifyNumber(price) || !verifyNumber(stockAmount)
+      !name.trim() || !description.trim() || !verifyNumber(price).veracity || !verifyNumber(stockAmount).veracity
       || !verifyArray(categories) || !image
     ) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
@@ -196,8 +197,8 @@ const updateProduct = async (req, res) => {
         err: 'No se encontro el producto.',
       });
     }
-    const stock = (verifyNumber(stockAmount) ? parseInt(stockAmount) : undefined);
-    const priceVar = (verifyNumber(price) ? parseFloat(price) : undefined);
+    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
+    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
     await Product.update({
       name,
       description,

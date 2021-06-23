@@ -3,13 +3,13 @@
 const verifyNumber = (params, type = 'numero') => {
   if (parseInt(params) === 'NaN' || isNaN(params)) {
     return {
-      veracity: false, msg: `el ${type} no es válido`,
+      veracity: false, msg: `${type} no es válido/a`,
     };
   }
   const number = parseInt(params);
   if (number < 0) {
     return {
-      veracity: false, msg: `el ${type} debe ser positivo`,
+      veracity: false, msg: `${type} debe ser positivo/a`,
     };
   }
   return {
