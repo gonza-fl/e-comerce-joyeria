@@ -177,10 +177,12 @@ const updateProduct = async (req, res) => {
   } = req.body;
 
   try {
+    if (!name) return res.status(404).send('No se puede dejar vacío el campo nombre.');
+    if (!description) return res.status(404).send('El campo descripción no se puede dejar vacío.');
     const searchProduct = await searchProductF(idProduct);
-    if (!searchProduct) return res.status(400).send('No se encontro el producto.');
-    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : null);
-    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : null);
+    if (!searchProduct) return res.status(404).send('No se encontro el producto.');
+    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
+    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
     await Product.update({
       name,
       description,
@@ -196,7 +198,8 @@ const updateProduct = async (req, res) => {
     await updateImages(searchProduct, image, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
-    return res.status(400).json(err);
+    console.log(err);
+    return res.status(500).json(err);
   }
 };
 
