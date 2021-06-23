@@ -34,7 +34,6 @@ const OrderListModal = ({ id }) => {
   }
   function handleChange(e, orderId) {
     e.preventDefault();
-    // enviarle el put necesario a la api para cambiar el valor en el back
     if (e.target.value) {
       axios.put(`${URL_ORDERS_BY_ID}${orderId}`, {
         status: e.target.value,

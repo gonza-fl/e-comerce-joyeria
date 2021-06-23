@@ -4,14 +4,9 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { URL_CATEGORIES, URL_PRODUCTS } from '../../../../constants';
 
-export function sendChanges(product) {
+export function updateProduct(product) {
   axios.put(`${URL_PRODUCTS}${product.id}`, product)
-    .then((res) => {
-      if (res.data.hasOwnProperty('err')) {
-        return swal('Error', res.data.err, 'warning');
-      }
-      return swal('Success', 'Producto modificado!');
-    })
+    .then(() => swal('Success', 'Producto modificado!'))
     .catch(() => {
       swal('Error', 'Ocurrió un error. No se modificó el producto. Intente nuevamente');
     });
