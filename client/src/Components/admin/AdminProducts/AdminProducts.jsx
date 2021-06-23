@@ -38,7 +38,9 @@ function AdminProducts() {
               <td>{p.price}</td>
               <td>{p.stockAmount}</td>
               <td>{p.categories.map((c) => <li key={c.name}>{c.name}</li>)}</td>
-              <img src={p.images.filter((img, i) => i === 0)[0].url || loadingImg} alt="Not found" height="50px" width="50px" />
+              <td>
+                <img src={p.images.filter((img, i) => i === 0)[0].url || loadingImg} alt="Not found" height="50px" width="50px" />
+              </td>
               <td>
                 <Link to={`/admin/products/edit/${p.id}`} className="link-without-styles">
                   <button type="button">Editar</button>
@@ -78,7 +80,7 @@ const ProductContainer = styled.tr`
         border-style: solid;
         border-radius: 5px;
         align-items: center;
-
+      
         &:hover {
 
         }

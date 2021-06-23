@@ -60,11 +60,7 @@ const updateUser = async (req, res) => {
     // capturo el usuario que se quiere cambiar
     const user = await User.findByPk(idUser);
     // agrego validacion
-    if (!user) {
-      return res.status(404).json({
-        err: 'No hay ningún cliente con esa ID.',
-      });
-    }
+    if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     // identifico si se cambia algun espacio y si se cambia le asigno el nuevo valor
     if (displayName) user.displayName = displayName;
     if (email) user.email = email;
@@ -110,10 +106,15 @@ const getUserAdmin = async (req, res) => {
   const {
     idUser,
   } = req.params;
-  const user = await User.findByPk(idUser);
-  if (user && user.admin === 'admin') return res.sendStatus(200);
-  return res.sendStatus(404);
+  try {
+    const user = await User.findByPk(idUser);
+    if (user && user.admin === 'admin') return res.sendStatus(200);
+    return res.status(404).send('Acceso denegado. El usuario no es admin');
+  } catch (err) {
+    return res.status(500).json(err);
+  }
 };
+
 module.exports = {
   createUser,
   getUser,

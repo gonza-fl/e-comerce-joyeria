@@ -4,7 +4,8 @@
 	height: 90%;
 	width: 90%;
 	border-style: solid;
-	padding: 10px 20px;
+	padding: 10px 20px;	
+  overflow-y: scroll;
 }
 
 .user-data{

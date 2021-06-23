@@ -55,18 +55,6 @@ function AdminUpdateProduct() {
 
   function onSubmit(e, productUpdated) {
     e.preventDefault();
-    if (!input.name) { return swal('Error', 'Debes completar el campo Nombre', 'warning'); }
-
-    if (!input.price) { return swal('Error', 'Debes completar el campo Precio', 'warning'); }
-    if (Number.isNaN(parseFloat(input.price))) { return swal('Error', 'El precio debe ser un número', 'warning'); }
-    if (input.price < 0) { return swal('Error', 'El precio debe ser mayor a cero', 'warning'); }
-
-    if (!input.stockAmount) { return swal('Error', 'Debes completar el campo Número de stock', 'warning'); }
-    if (Number.isNaN(parseFloat(input.stockAmount))) { return swal('Error', 'El stock debe ser un número', 'warning'); }
-    if (input.stockAmount < 0) { return swal('Error', 'El stock debe ser mayor a cero', 'warning'); }
-
-    if (!input.description) { return swal('Error', 'Debes completar el campo Descripción', 'warning'); }
-
     if (!input.categories.filter((c) => c.checked === 'checked')[0]) { return swal('Error', 'Debes asignar al menos una categoría', 'warning'); }
 
     updateProduct({
@@ -102,7 +90,12 @@ function AdminUpdateProduct() {
             name="description"
             value={input.description}
             style={{
-              fontFamily: 'inherit', width: '100%', borderStyle: 'none', fontSize: '15px',
+              fontFamily: 'inherit',
+              width: '100%',
+              borderStyle: 'none',
+              fontSize: '15px',
+              height: '20%',
+              resize: 'none',
             }}
             onChange={(e) => onChangeInput(e)}
           />

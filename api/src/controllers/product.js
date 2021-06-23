@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 /* eslint radix: ["error", "as-needed"] */
@@ -31,7 +32,7 @@ const createProduct = async (req, res) => {
       categories,
     } = req.body;
     if (
-      !name.trim() || !description.trim() || !verifyNumber(price) || !verifyNumber(stockAmount)
+      !name.trim() || !description.trim() || !verifyNumber(price).veracity || !verifyNumber(stockAmount).veracity
       || !verifyArray(categories) || !image
     ) return res.status(400).send('Error falta algún campo');
     const productCreated = await Product.create({
@@ -91,7 +92,7 @@ const getProducts = async (_req, res) => {
         },
       ],
     });
-    if (!response.length) return res.status(400).json('Products not founded');
+    if (!response.length) return res.status(400).send('Products not found');
     return res.status(201).json(response);
   } catch (error) {
     return res.status(500).json('Internal server error');
@@ -113,10 +114,8 @@ const getSinlgeProduct = async (req, res) => {
         },
       ],
     });
-    if (product === null) {
-      return res.status(400).json('Product not Found');
-    }
-    return res.send(product);
+    if (product === null) return res.status(400).send('Product not Found');
+    return res.json(product);
   } catch (err) {
     return res.status(400).json(err);
   }
@@ -133,9 +132,7 @@ const delProduct = async (req, res) => {
         id: idProduct,
       },
     });
-    if (!product) {
-      return res.status(400).json('Product not Found');
-    }
+    if (!product) return res.status(400).send('Product not Found');
 
     return res.status(200).json('Product deleted');
   } catch (err) {
@@ -147,11 +144,7 @@ const getProductsByQuery = async (req, res) => {
   const {
     name,
   } = req.query;
-  if (!name) {
-    return res.status(400).json({
-      err: 'There was no query sent',
-    });
-  }
+  if (!name) return res.status(400).send('There was no query sent');
   try {
     const productsFound = await Product.findAll({
       where: {
@@ -168,16 +161,10 @@ const getProductsByQuery = async (req, res) => {
         },
       ],
     });
-    if (productsFound.length === 0) {
-      return res.status(400).json({
-        err: 'There were no products found with that query name',
-      });
-    }
+    if (productsFound.length === 0) return res.status(400).send('No products found with that query name');
     return res.json(productsFound);
   } catch {
-    return res.status(500).json({
-      err: 'Internal server error',
-    });
+    return res.status(500).send('Internal server error');
   }
 };
 
@@ -191,13 +178,9 @@ const updateProduct = async (req, res) => {
 
   try {
     const searchProduct = await searchProductF(idProduct);
-    if (!searchProduct) {
-      return res.status(400).json({
-        err: 'No se encontro el producto.',
-      });
-    }
-    const stock = (verifyNumber(stockAmount) ? parseInt(stockAmount) : undefined);
-    const priceVar = (verifyNumber(price) ? parseFloat(price) : undefined);
+    if (!searchProduct) return res.status(400).send('No se encontro el producto.');
+    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : null);
+    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : null);
     await Product.update({
       name,
       description,
@@ -209,7 +192,7 @@ const updateProduct = async (req, res) => {
       },
     });
     const haveError = await updateCategories(searchProduct, categories);
-    if (!haveError) return res.status(400).json('Hay campos erroneos');
+    if (!haveError) return res.status(400).send('Hay campos erroneos');
     await updateImages(searchProduct, image, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
@@ -223,7 +206,7 @@ const getProductsByCategory = async (req, res) => {
   } = req.params;
   id = parseInt(id);
 
-  if (typeof id !== 'number') return res.status(500).json('El id no es de tipo númerico');
+  if (typeof id !== 'number') return res.status(404).send('El id no es de tipo númerico');
   try {
     const response = await Product.findAll({
       include: [{
@@ -235,12 +218,10 @@ const getProductsByCategory = async (req, res) => {
         model: Image,
       }],
     });
-    if (response.length === 0) return res.status(404).json('Producto no encontrado');
+    if (response.length === 0) return res.status(404).send('Producto no encontrado');
     return res.json(response);
   } catch (error) {
-    return res.send(500).json({
-      error: error.message, mensaje: 'Internal server error',
-    });
+    return res.send(500).send('Internal server error');
   }
 };
 

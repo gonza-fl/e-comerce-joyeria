@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
 
@@ -7,6 +8,9 @@ const {
   Product,
   Image,
 } = require('../models/index');
+const {
+  verifyNumber,
+} = require('../helpers/functionHelpers');
 
 const createOrFindAndUpdateCart = async (req, res) => {
   // REVISAR SI EL FRONT MANDA AMOUNTS HECHAS INTEGER Y NO STRING
@@ -15,8 +19,8 @@ const createOrFindAndUpdateCart = async (req, res) => {
     id,
     products,
   } = req.body;
-  if (!id) return res.status(404).json('ID no existe!');
-  if (!products) return res.status(200).json('No existe cart en localStorage');
+  if (!id) return res.status(404).send('ID no existe!');
+  if (!products) return res.status(200).send('No existe cart en localStorage');
   try {
     // Validación: existe ese usuario?
     const user = await User.findOne({
@@ -25,7 +29,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
       },
       include: Order,
     });
-    if (!user) return res.status(404).json(' no existe!');
+    if (!user) return res.status(404).send('El usuario no existe!');
     // Validación: ese usuario, tiene una orden de tipo carrito?
     const cart = await Order.findOne({
       where: {
@@ -39,22 +43,25 @@ const createOrFindAndUpdateCart = async (req, res) => {
       const cartNew = await Order.create({
         status: 'cart',
       });
+
       await user.addOrder(cartNew);
       // Validación: ver si los productos a incorporar sí existen en la DB y si superan stock
       for (let i = 0; i < products.length; i += 1) {
+        if (!verifyNumber(products[i].amount).veracity) { return res.status(400).send(verifyNumber(products[i].amount, 'monto').msg); }
+        let total = products[i].amount;
         const prod = await Product.findOne({
           where: {
             id: products[i].id,
           },
         });
-        if (!prod) return res.status(404).json(`No se encontro el producto de id ${products[i].id}`);
-        if (prod.stockAmount < parseInt(products.amount)) {
-          return res.status(404).json('El producto supera el stock');
+        if (!prod) return res.status(404).send(`No se encontro el producto de id ${products[i].id}`);
+        if (prod.stockAmount < parseInt(products[i].amount)) {
+          total = prod.stockAmount;
         }
         await cartNew.addProduct(prod, {
           through: {
-            amount: parseInt(products[i].amount),
-            subtotal: parseInt(products[i].amount) * prod.price,
+            amount: parseInt(total),
+            subtotal: parseInt(total) * prod.price,
           },
         });
       }
@@ -72,14 +79,18 @@ const createOrFindAndUpdateCart = async (req, res) => {
     for (let i = 0; i < cart.products.length; i += 1) {
       const productIndex = products.findIndex(
         (product) => parseInt(product.id) === cart.products[i].id,
+
       );
       // Validación: se quiere incorporar un producto ya presente en el carrito?
       if (productIndex !== -1) {
         // Validación: Revisar si las cantidades de ese producto supera el stock
+        if (!verifyNumber(products[productIndex].amount).veracity) return res.status(400).send(verifyNumber(products[productIndex].amount, 'monto').msg);
+
         if (cart.products[i].stockAmount
           < cart.products[i].orderline.amount + parseInt(products[productIndex].amount)) {
-          return res.status(404).json(`El producto ${cart.products[i].name} supera el stock`);
+          return res.status(404).send(`El producto ${cart.products[i].name} supera el stock`);
         }
+
         // Actualizar su cantidad
         await cart.addProduct(cart.products[i], {
           through: {
@@ -103,19 +114,22 @@ const createOrFindAndUpdateCart = async (req, res) => {
     }
     // Los productos ya presentes en el carrito fueron spliceados, recorrer los nuevos para agregar
     for (let i = 0; i < products.length; i += 1) {
+      if (!verifyNumber(products[i].amount).veracity) return res.status(400).send(verifyNumber(products[i].amount, 'monto').msg);
+
+      let total = products[i].amount;
       const prod = await Product.findOne({
         where: {
           id: products[i].id,
         },
       });
-      if (!prod) return res.status(404).json(`No se encontro el producto ${prod}`);
-      if (prod.stockAmount < parseInt(products.amount)) {
-        return res.status(404).json('El producto supera el stock');
+      if (!prod) return res.status(404).send(`No se encontro el producto ${prod}`);
+      if (prod.stockAmount < parseInt(products[i].amount)) {
+        total = prod.stockAmount;
       }
       await cart.addProduct(prod, {
         through: {
-          amount: parseInt(products[i].amount),
-          subtotal: parseInt(products[i].amount) * prod.price,
+          amount: parseInt(total),
+          subtotal: parseInt(total) * prod.price,
         },
       });
     }
@@ -127,7 +141,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
     });
     return res.json(finalCart);
   } catch (err) {
-    return res.status(500).json('hay un error');
+    return res.status(500).send('Internal server error');
   }
 };
 
@@ -140,9 +154,7 @@ const modifyOrder = async (req, res) => {
   } = req.body;
   try {
     if (status !== 'deliveryPending' && status !== 'delivered') {
-      return res.status(400).json({
-        err: 'No se puede implemetar ese status!',
-      });
+      return res.status(400).send('No se puede implemetar ese status!');
     }
     // Si el status es deliveryPending busca carrito, sino lo buscara como deliveryPending
     const statusSearch = status === 'deliveryPending' ? 'cart' : 'deliveryPending';
@@ -155,14 +167,10 @@ const modifyOrder = async (req, res) => {
     });
     if (status === 'deliveryPending') {
       if (!order) {
-        return res.status(404).json({
-          err: `La orden id ${id} no posee un carrito`,
-        });
+        return res.status(404).send(`La orden id ${id} no posee un carrito`);
       }
       if (order.products.length === 0) {
-        return res.status(400).json({
-          err: 'La orden no tiene productos.',
-        });
+        return res.status(400).send('La orden no tiene productos.');
       }
       const totalOrder = order.products.reduce(
         (total, current) => total + current.orderline.subtotal, 0,
@@ -174,17 +182,13 @@ const modifyOrder = async (req, res) => {
       return res.json(order);
     }
     if (status === 'delivered') {
-      if (!order) {
-        return res.status(404).json({
-          err: `La orden id ${id} no tiene una orden pendiente!`,
-        });
-      }
+      if (!order) return res.status(404).send(`La orden id ${id} no tiene una orden pendiente!`);
       order.status = status;
       order.endTimestamp = new Date();
       await order.save();
       return res.json(order);
     }
-    return res.sendStatus(404);
+    return res.status(404).send('Error');
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -199,7 +203,7 @@ const editCartAmount = async (req, res) => {
     action,
   } = req.body;
   try {
-    if (action !== 'sum' && action !== 'substract' && action !== 'set') return res.status(400).json('No existe esa acción');
+    if (action !== 'sum' && action !== 'substract' && action !== 'set') return res.status(404).send('No existe esa acción');
     const cart = await Order.findOne({
       where: {
         userId: idUser,
@@ -207,13 +211,13 @@ const editCartAmount = async (req, res) => {
       },
       include: Product,
     });
-    if (!cart) return res.status(404).json('no existe el user id');
+    if (!cart) return res.status(404).send('no existe el user id');
     const productSearch = cart.products.find((prod) => prod.id === product.id);
-    if (!productSearch) return res.status(404).json('ese producto no existe en la base de datos');
+    if (!productSearch) return res.status(404).send('ese producto no existe en la base de datos');
     if ((action === 'sum' && productSearch.stockAmount < productSearch.orderline.amount + 1)
       || (action === 'substract' && productSearch.orderline.amount - 1 < 0)
       || (action === 'set' && (productSearch.stockAmount < product.amount || product.amount < 0))) {
-      return res.sendStatus(400);
+      return res.status(400).send();
     }
     let updatedAmount = 0;
     switch (action) {
@@ -242,9 +246,7 @@ const editCartAmount = async (req, res) => {
     });
     return res.json(updatedCart);
   } catch (err) {
-    return res.status(400).json({
-      err,
-    });
+    return res.status(400).json(err);
   }
 };
 
@@ -254,7 +256,7 @@ const emptyCartOrProduct = async (req, res) => {
     id,
     product,
   } = req.body;
-  if (!id) return res.status(404).json('el id no existe!');
+  if (!id) return res.status(404).send('el id no existe!');
   try {
     const user = await User.findOne({
       where: {
@@ -263,7 +265,7 @@ const emptyCartOrProduct = async (req, res) => {
     });
 
     // si no lo encuentro mando un error
-    if (!user) return res.status(404).json('el usuario no existe!');
+    if (!user) return res.status(404).send('el usuario no existe!');
     // busco el carrito activo del user
     const order = await Order.findOne({
       where: {
@@ -273,20 +275,20 @@ const emptyCartOrProduct = async (req, res) => {
       include: Product,
     });
     // si no existe carrito activo mando error
-    if (!order) return res.status(404).json('no hay ninguna orden');
+    if (!order) return res.status(404).send('no hay ninguna orden');
     // si llega un producto es para eliminar ese producto especifico del carrito
     if (product) {
       const productFound = order.products.find((prod) => prod.id === product.id);
-      if (!productFound) return res.status(404).json('el producto no existe');
+      if (!productFound) return res.status(404).send('el producto no existe');
       await order.removeProduct(productFound);
-      return res.json('producto eliminado');
+      return res.status(200).send('producto eliminado');
     }
     // ahora se vacía el carrito
     for (let i = 0; i < order.products.length; i += 1) {
       await order.removeProduct(order.products[i]);
     }
     return res.json('se vacio el carrito!');
-  } catch (err) { return res.status(500).json('internal error'); }
+  } catch (err) { return res.status(500).send('internal error'); }
 };
 
 const getOrders = async (req, res) => {
@@ -302,10 +304,7 @@ const getOrders = async (req, res) => {
     });
     return res.status(200).json(result);
   } catch (error) {
-    return res.status(500).json({
-      message: 'Internal server error',
-      error: error.message,
-    });
+    return res.status(500).send('Internal server error');
   }
 };
 
@@ -326,9 +325,7 @@ const getCartByUser = async (req, res) => {
     });
     return res.status(200).json(response);
   } catch (error) {
-    return res.status(500).json({
-      head: 'Internal server error', error,
-    });
+    return res.status(500).json('Internal server error');
   }
 };
 
@@ -337,9 +334,9 @@ const getOrderById = async (req, res) => {
     orderId,
   } = req.params;
 
-  if (!orderId) return res.status(404).json('El id de la orden no puede ser vacío');
+  if (!orderId) return res.status(404).send('El id de la orden no puede ser vacío');
   const id = parseInt(orderId, 10);
-  if (Number.isNaN(id)) return res.status(404).json('El id de la orden debe ser un numero');
+  if (Number.isNaN(id)) return res.status(404).send('El id de la orden debe ser un numero');
   try {
     const singleOrder = await Order.findByPk(id, {
       include: [
@@ -351,10 +348,10 @@ const getOrderById = async (req, res) => {
         },
       ],
     });
-    if (!singleOrder) return res.status(404).json('La orden no existe');
+    if (!singleOrder) return res.status(404).send('La orden no existe');
     return res.json(singleOrder);
   } catch (err) {
-    return res.status(500).json('Internal server error');
+    return res.status(500).send('Internal server error');
   }
 };
 
@@ -370,10 +367,7 @@ const getAllOrdersByIdUser = async (req, res) => {
     });
     return res.status(200).json(result);
   } catch (error) {
-    return res.status(500).json({
-      message: 'Internal server error',
-      error: error.message,
-    });
+    return res.status(500).send('Internal server error');
   }
 };
 module.exports = {

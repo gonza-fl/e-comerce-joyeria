@@ -6,7 +6,8 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 2%;
-  font-size: 18px;
+  font-size: 18px;  
+  overflow-y: scroll;
 }
 
 .order-data{
