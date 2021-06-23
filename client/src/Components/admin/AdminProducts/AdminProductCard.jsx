@@ -7,7 +7,7 @@ import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getCategories, getProductDetail } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
-import { deleteProduct, sendChanges } from './utils/request';
+import { deleteProduct } from './utils/request';
 
 function AdminProductCard() {
   const dispatch = useDispatch();
@@ -122,7 +122,7 @@ function ModifyProduct({
   }
 
   return (
-    <ProductDetail method="PUT" onSubmit={() => sendChanges(input)}>
+    <ProductDetail method="PUT">
       <div>
         <img
           src={product.images.filter((img, i) => i === 0)[0].url}
