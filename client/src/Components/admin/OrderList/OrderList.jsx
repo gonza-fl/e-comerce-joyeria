@@ -11,14 +11,11 @@ import { URL_USERS } from '../../../constants';
 import { getUserOrders } from '../../../redux/actions/actions';
 
 function OrderList() {
-  // estados que hay que descomentar cuando se descomenten los useEffect
   const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
-  // const [userOrders, setUserOrders] = useState([]);
   const [userId, setUserId] = useState(0);
   const userOrders = useSelector((state) => state.userOrders);
 
-  // axios que traeria todos los usuarios, lo dejo comentado hasta que sea funcional, mientras uso objeto inventado
   useEffect(() => {
     axios.get(URL_USERS)
       .then((response) => {
@@ -26,11 +23,6 @@ function OrderList() {
       })
       .catch((err) => alert(err));
   }, []);
-
-  // axios que traeria todas las ordenes de un usuario, lo dejo comentado hasta que sea funcional, mientras uso objeto inventado
-  // useEffect(() => {
-  //   dispatch(getUserOrders(userId));
-  // }, [userId]);
 
   const modal = document.getElementById('myModal');
   window.onclick = (event) => {
