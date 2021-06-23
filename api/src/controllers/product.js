@@ -179,8 +179,8 @@ const updateProduct = async (req, res) => {
   try {
     const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) return res.status(400).send('No se encontro el producto.');
-    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
-    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
+    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : null);
+    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : null);
     await Product.update({
       name,
       description,
