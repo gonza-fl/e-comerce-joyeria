@@ -7,8 +7,8 @@ import { URL_CATEGORIES, URL_PRODUCTS } from '../../../../constants';
 export function updateProduct(product) {
   axios.put(`${URL_PRODUCTS}${product.id}`, product)
     .then(() => swal('Success', 'Producto modificado!'))
-    .catch(() => {
-      swal('Error', 'Ocurrió un error. No se modificó el producto. Intente nuevamente');
+    .catch((err) => {
+      swal('Error', err.response.data, 'warning');
     });
 }
 
@@ -24,9 +24,9 @@ export function createProduct(product, setLoading) {
           .then(() => { window.location.href = '/admin/products'; });
       }
     })
-    .catch(() => {
+    .catch((err) => {
       setLoading(false);
-      swal('Error', 'Ocurrió un error. No se creó el product, intenta nuevamente');
+      swal('Error', err.response.data, 'warning');
     });
 }
 

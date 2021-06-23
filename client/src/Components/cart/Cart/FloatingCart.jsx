@@ -57,17 +57,19 @@ function FloatingCart() {
           {cartProducts.map((p) => (
             <ProductCardCart key={p.name}>
               <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
-              <Link to={`/products/product/${p.id}`}>
+              <Link to={`/products/product/${p.id}`} className="link-without-styles">
                 <div
                   style={{
-                    textAlign: 'left', marginLeft: '15px', flexGrow: 2, textDecoration: 'none',
+                    textAlign: 'left', marginLeft: '15px', flexGrow: 2,
                   }}
-                  textDecoration="none"
                 >
                   <span>{p.name}</span>
                   <span>{`  x ${p.amount}`}</span>
                   <br />
-                  <b>{numberWithCommas(p.price * p.amount)}</b>
+                  <b>
+                    $
+                    {numberWithCommas(p.price * p.amount)}
+                  </b>
                 </div>
 
               </Link>
