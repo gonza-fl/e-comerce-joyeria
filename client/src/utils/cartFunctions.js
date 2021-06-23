@@ -1,6 +1,6 @@
 import axios from 'axios';
 import swal from 'sweetalert';
-import { URL_CART } from '../constants';
+import { URL_CART, URL_GET_CART } from '../constants';
 
 export function addToCart(product, userId) {
   // lo comentado aca arriba es lo que tendriamos que hacer
@@ -8,7 +8,13 @@ export function addToCart(product, userId) {
   const prodAmount = { ...product, amount: 1 };
   const response = { id: userId, products: [prodAmount] };
   if (userId && userId.length > 1) {
-    return axios.post(`${URL_CART}`, response);
+    return axios.get(`${URL_GET_CART}${userId}/cart`).then((res) => {
+      const productFound = res.data[0].products.find((prod) => prod.id === product.id);
+      if (productFound && productFound.orderline.amount === product.amount) {
+        return swal('Lo sentimos!', 'no hay stock suficiente de este producto para seguir sumando al carrito :(');
+      }
+      return axios.post(`${URL_CART}`, response);
+    }).catch((err) => swal('Lo sentimos!', err.response.data, 'warning'));
   }
   if (localStorage.getItem('cart')) {
     const sinJson = JSON.parse(localStorage.getItem('cart'));
