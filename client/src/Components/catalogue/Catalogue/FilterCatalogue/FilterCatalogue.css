@@ -1,7 +1,7 @@
 .ctnFiltersCat {
     display: flex;
     flex-direction: column;
-    width: 13%;
+    min-width: 190px;
     align-items: center;
 }
 
@@ -16,7 +16,8 @@
 
 .ctnFiltersCat input {
     margin-top: 7px;
-    max-width: 3rem;
+    max-width: 4rem;
+    outline: none;
 }
 
 .ctnFiltersCat h1 {
@@ -40,6 +41,12 @@
     flex-wrap: wrap;
     justify-content: center;
     cursor: pointer;
+}
+
+.stars {
+    display: flex;
+    flex-direction: column;
+    margin-block: 6px;
 }
 
 .ctnFiltersCat .undo {

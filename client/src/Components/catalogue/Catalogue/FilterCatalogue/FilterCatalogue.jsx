@@ -56,13 +56,13 @@ export default function FilterCatalogue({ products, setProducts, productsGlobal 
       </form>
 
       <h5>Estrellas</h5>
-      <div onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
+      <div className="stars" onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
         Mas Estrellas
         <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" />
 
       </div>
 
-      <div onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
+      <div className="stars" onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
         Menos Estrellas
         <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" />
 

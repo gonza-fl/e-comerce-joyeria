@@ -1,9 +1,10 @@
 .categoryDiv {
+    width: 84%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    margin-top: 5rem;
-    margin: 3rem;
+    align-items: center;
+    margin-top: 2rem;
 }
 
 .categoryDiv h1 {
