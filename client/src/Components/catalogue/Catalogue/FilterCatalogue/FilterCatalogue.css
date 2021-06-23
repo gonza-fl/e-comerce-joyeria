@@ -3,6 +3,7 @@
     flex-direction: column;
     min-width: 190px;
     align-items: center;
+    position: relative;
 }
 
 .ctnFiltersCat p {
@@ -51,16 +52,16 @@
 
 .ctnFiltersCat .undo {
     position: absolute;
-    left: 18%;
+    right: -100px;
     z-index: 99;
     animation: animationslide 1s;
 }
 
 @keyframes animationslide {
     0% {
-        left: 0;
+        left: -110%;
     }
     90% {
-        left: 280px;
+        left: 120%;
     }
 }
