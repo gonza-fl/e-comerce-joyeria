@@ -11,6 +11,8 @@ import OrderDetail from './OrderList/OrderDetail/OrderDetail';
 import AdminControlCategories from './AdminCategories/AdminControlCategories';
 import AdminCreateProduct from './CreateProduct/AdminCreateProduct';
 import Spiner from '../Spiner/Spiner';
+import AdminUpdateProduct from './AdminProducts/AdminUpdateProduct';
+import Logo from '../StyledComponents/Logo';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 
@@ -26,9 +28,11 @@ function AdminWindow() {
           <AdminNavBar />
           <WindowDiv className="bg-color-six">
             <Switch>
+              <Route exact path="/admin"><Logo height="800px" width="1000px" /></Route>
               <Route exact path="/admin/orders" component={OrderList} />
               <Route exact path="/admin/products" component={AdminProducts} />
               <Route exact path="/admin/products/:productId" component={AdminProductCard} />
+              <Route exact path="/admin/products/edit/:productId" component={AdminUpdateProduct} />
               <Route exact path="/admin/controlcategories" component={AdminControlCategories} />
               <Route exact path="/admin/createproduct" component={AdminCreateProduct} />
               <Route exact path="/admin/statistics" component={AdminStatistics} />
