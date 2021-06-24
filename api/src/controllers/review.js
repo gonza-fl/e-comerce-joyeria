@@ -16,6 +16,7 @@ const getReview = async (req, res) => {
       where: {
         productId: idProduct,
       },
+      attributes: ['id', 'calification', 'description'],
     });
     if (!response) return res.status(400).send('Product no disponible');
     return res.status(201).json(response);
