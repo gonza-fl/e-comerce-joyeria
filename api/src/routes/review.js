@@ -2,7 +2,7 @@ const {
   Router,
 } = require('express');
 const {
-  getReview, postReview,
+  getReview, postReview, deleteReview,
 } = require('../controllers/review');
 
 const router = Router({
@@ -12,5 +12,6 @@ const router = Router({
 
 router.get('/', getReview);
 router.post('/', postReview);
+router.delete('/:idReview', deleteReview);
 
 module.exports = router;

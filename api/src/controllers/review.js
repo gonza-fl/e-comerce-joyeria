@@ -52,7 +52,28 @@ const postReview = async (req, res) => {
   }
 };
 
+const deleteReview = async (req, res) => {
+  const {
+    idReview,
+  } = req.params;
+  try {
+    const review = await Review.destroy({
+      where: {
+        id: idReview,
+      },
+    });
+
+    if (!review) return res.status(400).send('Review not Found');
+
+    return res.status(200).json('Review deleted');
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send('Internal server error');
+  }
+};
+
 module.exports = {
   getReview,
   postReview,
+  deleteReview,
 };
