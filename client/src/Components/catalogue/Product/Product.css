@@ -1,5 +1,5 @@
 .big-container{
-  border: 1px solid silver;
+  /* border: 1px solid silver; */
   display: flex;
   width: 70%;
   justify-content: center;
