@@ -10,7 +10,6 @@ import ProductCard from '../ProductCard/ProductCard';
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
 import { getProducts, getProductsByName } from '../../../redux/actions/actions';
 import Spiner from '../../Spiner/Spiner';
-import StyledButton from '../../StyledComponents/Button';
 import { cataloguePag, getPageFromURL } from '../utils/paged';
 import Paged from './Paged';
 
