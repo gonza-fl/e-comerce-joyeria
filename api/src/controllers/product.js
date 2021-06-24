@@ -19,6 +19,7 @@ const {
   Product,
   Category,
   Image,
+  Review,
 } = require('../models/index');
 
 const createProduct = async (req, res) => {
@@ -83,18 +84,12 @@ const createProduct = async (req, res) => {
 const getProducts = async (_req, res) => {
   try {
     const response = await Product.findAll({
-      include: [
-        {
-          model: Category,
-        },
-        {
-          model: Image,
-        },
-      ],
+      include: [Category, Image, Review],
     });
     if (!response.length) return res.status(400).send('Products not found');
     return res.status(201).json(response);
   } catch (error) {
+    console.error(error);
     return res.status(500).json('Internal server error');
   }
 };
