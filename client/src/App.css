@@ -1,6 +1,5 @@
 .App {
     text-align: center;
-    
 }
 
 .link-without-styles {
@@ -14,7 +13,7 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    margin-top: 80px;
+    padding-top: 90px;
 }
 
 .botonEliminarImagenCategoria:hover {
