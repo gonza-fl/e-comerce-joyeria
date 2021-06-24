@@ -35,6 +35,7 @@
 .description-review{
   padding: 2%;
   margin: 2% 0;
+  border-bottom: 0.5px solid silver;
 }
 
 #description-review-description{
