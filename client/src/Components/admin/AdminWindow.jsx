@@ -9,7 +9,7 @@ import OrderList from './OrderList/OrderList';
 import AdminProductCard from './AdminProducts/AdminProductCard';
 import OrderDetail from './OrderList/OrderDetail/OrderDetail';
 import AdminControlCategories from './AdminCategories/AdminControlCategories';
-import AdminCreateProduct from './CreateProduct/AdminCreateProduct';
+import AdminCreateProduct from './AdminProducts/AdminCreateProduct';
 import Spiner from '../Spiner/Spiner';
 import AdminUpdateProduct from './AdminProducts/AdminUpdateProduct';
 import Logo from '../StyledComponents/Logo';
@@ -31,6 +31,7 @@ function AdminWindow() {
               <Route exact path="/admin"><Logo height="800px" width="1000px" /></Route>
               <Route exact path="/admin/orders" component={OrderList} />
               <Route exact path="/admin/products" component={AdminProducts} />
+              <Route exact path="/admin/products/create" component={AdminCreateProduct} />
               <Route exact path="/admin/products/:productId" component={AdminProductCard} />
               <Route exact path="/admin/products/edit/:productId" component={AdminUpdateProduct} />
               <Route exact path="/admin/controlcategories" component={AdminControlCategories} />

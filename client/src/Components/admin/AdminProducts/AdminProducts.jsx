@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { getProducts } from '../../../redux/actions/actions';
 import { deleteProduct } from './utils/request';
 import loadingImg from '../../../img/loading-img.jpg';
-import ModalCreateProducts from '../CreateProduct/modalCreateProducts/ModalCreateProducts';
+import Button from '../../StyledComponents/Button';
 
 function AdminProducts() {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ function AdminProducts() {
         </table>
 
       </DivContainer>
-      <ModalCreateProducts />
+      <Link to="/admin/products/create"><Button text="Agregar nuevo producto" /></Link>
     </WindowContainer>
   );
 }
