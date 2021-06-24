@@ -2,7 +2,7 @@ const {
   Router,
 } = require('express');
 const {
-  getReview, postReview, deleteReview,
+  getReviews, postReview, deleteReview,
 } = require('../controllers/review');
 
 const router = Router({
@@ -10,7 +10,7 @@ const router = Router({
   mergeParams: true,
 });
 
-router.get('/', getReview);
+router.get('/', getReviews);
 router.post('/', postReview);
 router.delete('/:idReview', deleteReview);
 
