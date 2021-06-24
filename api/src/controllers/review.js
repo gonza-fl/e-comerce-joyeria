@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
 const {
+  verifyNumber,
+} = require('../helpers/functionHelpers');
+const {
   Review,
+  User,
 } = require('../models/index');
-// const {
-//   verifyNumber,
-// } = require('../helpers/functionHelpers');
 
 const getReview = async (req, res) => {
   const {
@@ -16,6 +17,7 @@ const getReview = async (req, res) => {
         productId: idProduct,
       },
     });
+    if (!response) return res.status(400).send('Product no disponible');
     return res.status(201).json(response);
   } catch (error) {
     return res.status(500).send('Internal server error');
@@ -31,6 +33,10 @@ const postReview = async (req, res) => {
     description,
     userId,
   } = req.body;
+  const user = await User.findByPk(userId);
+  if (!user) return res.status(400).send('No existe User con ese ID');
+  if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
+  const calificationByFive = calification > 5 ? 5 : calification;
   try {
     const [review, created] = await Review.findOrCreate({
       where: {
@@ -38,7 +44,7 @@ const postReview = async (req, res) => {
         userId,
       },
       defaults: {
-        calification,
+        calification: calificationByFive,
         description,
       },
     });
@@ -47,7 +53,6 @@ const postReview = async (req, res) => {
     }
     return res.status(400).send('Ya existe un review por parte de este usuario en este producto');
   } catch (error) {
-    console.log(error);
     return res.status(500).send('Internal server error');
   }
 };
@@ -67,7 +72,6 @@ const deleteReview = async (req, res) => {
 
     return res.status(200).json('Review deleted');
   } catch (err) {
-    console.log(err);
     return res.status(500).send('Internal server error');
   }
 };
