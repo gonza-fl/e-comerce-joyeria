@@ -173,9 +173,8 @@ const updateProduct = async (req, res) => {
     idProduct,
   } = req.params;
   const {
-    name, description, stockAmount, price, categories, image,
+    name, description, stockAmount, price, categories, images,
   } = req.body;
-
   try {
     const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) return res.status(400).send('No se encontro el producto.');
@@ -193,7 +192,7 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).send('Hay campos erroneos');
-    await updateImages(searchProduct, image, idProduct);
+    await updateImages(searchProduct, images, idProduct);
     return res.status(200).json(await searchProductF(idProduct));
   } catch (err) {
     return res.status(400).json(err);

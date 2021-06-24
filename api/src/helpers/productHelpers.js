@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
@@ -53,17 +54,24 @@ const deleteImages = async (id) => Image.destroy({
 });
 const updateImages = async (searchProduct, image, idProduct) => {
   // if (images[0] === '') return;
+  console.log(image);
   if (!image) return;
   if (image.length === 0) return;
+
   try {
     await deleteImages(idProduct);
     const imagesSearch = [];
     const urlImages = [];
-    if (!image) return;
     for (let i = 0; i < image.length; i++) {
-      urlImages.push(await cloudinary.uploader.upload(image[i], {
-        upload_preset: 'henry',
-      }));
+      if (!image[i].hasOwnProperty('url')) {
+        urlImages.push(await cloudinary.uploader.upload(image[i], {
+          upload_preset: 'henry',
+        }));
+      } else {
+        urlImages.push({
+          secure_url: image[i].url,
+        });
+      }
     }
     Promise.all(urlImages).then(async () => {
       for (let i = 0; i < urlImages.length; i++) {
