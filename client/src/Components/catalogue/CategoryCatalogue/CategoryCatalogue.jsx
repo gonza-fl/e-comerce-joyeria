@@ -51,6 +51,7 @@ function CategoryCatalogue() {
         products={productsDisplay}
         setProducts={setProductsDisplay}
         productsGlobal={cataloguePag(products, page)}
+        total={products.length}
       />
       <div className="categoryDiv">
         {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}

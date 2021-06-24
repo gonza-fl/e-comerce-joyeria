@@ -56,6 +56,7 @@ export default function catalogue() {
         products={productsDisplay}
         setProducts={setProductsDisplay}
         productsGlobal={cataloguePag(products, page)}
+        total={products.length}
       />
       <div className="catalogueMap">
         {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
