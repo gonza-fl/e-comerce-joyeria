@@ -45,7 +45,7 @@ const login = (provider) => {
         });
       }
     })
-    .then(() => { console.log('PASO'); document.getElementById('login').style.display = 'none'; })
+    .then(() => { document.getElementById('login').style.display = 'none'; })
     .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
     .then(() => localStorage.setItem('cart', JSON.stringify([])));
 };

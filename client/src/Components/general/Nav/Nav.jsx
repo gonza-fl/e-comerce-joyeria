@@ -33,7 +33,7 @@ export default function Nav() {
   const handleSingOut = () => {
     firebase.auth().signOut()
       .then(() => swal('Adios', 'Cerro Sesión correctamente', 'success'))
-      .then(() => document.getElementById('login').style.display = 'none')
+      .then(() => window.location.href = window.location.origin)
       .then(() => localStorage.setItem('cart', '[]'));
   };
 
