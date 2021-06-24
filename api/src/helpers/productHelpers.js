@@ -54,11 +54,8 @@ const deleteImages = async (id) => Image.destroy({
 });
 
 const updateImages = async (searchProduct, image, idProduct) => {
-  // if (images[0] === '') return;
-  console.log(image);
   if (!image) return;
   if (image.length === 0) return;
-
   try {
     await deleteImages(idProduct);
     const imagesSearch = [];
