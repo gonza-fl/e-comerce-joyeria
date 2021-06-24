@@ -2,7 +2,7 @@ const {
   Router,
 } = require('express');
 const {
-  getReview,
+  getReview, postReview,
 } = require('../controllers/review');
 
 const router = Router({
@@ -11,5 +11,6 @@ const router = Router({
 });
 
 router.get('/', getReview);
+router.post('/', postReview);
 
 module.exports = router;
