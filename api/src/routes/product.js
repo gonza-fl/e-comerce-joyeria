@@ -10,9 +10,11 @@ const {
   updateProduct,
   getProductsByCategory,
 } = require('../controllers/product');
+const review = require('./review');
 
 const router = Router();
 
+router.use('/:idProduct/review', review);
 router.get('/category/:id', getProductsByCategory);
 router.get('/search', getProductsByQuery);
 router.get('/:idProduct', getSinlgeProduct);
