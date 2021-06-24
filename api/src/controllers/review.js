@@ -7,19 +7,18 @@ const {
   User,
 } = require('../models/index');
 
-const getReview = async (req, res) => {
+const getReviews = async (req, res) => {
   const {
     idProduct,
   } = req.params;
   try {
-    const response = await Review.findAll({
+    const reviews = await Review.findAll({
       where: {
         productId: idProduct,
       },
-      attributes: ['id', 'calification', 'description'],
+      attributes: ['id', 'calification', 'description', 'updatedAt'],
     });
-    if (!response) return res.status(400).send('Product no disponible');
-    return res.status(201).json(response);
+    return res.status(201).json(reviews);
   } catch (error) {
     return res.status(500).send('Internal server error');
   }
@@ -54,9 +53,7 @@ const postReview = async (req, res) => {
         description,
       },
     });
-    if (created) {
-      return res.status(200).send(review);
-    }
+    if (created) return res.status(200).send('Gracias por dejar tu review!');
     return res.status(400).send('Ya existe un review por parte de este usuario en este producto');
   } catch (error) {
     return res.status(500).send('Internal server error');
@@ -74,16 +71,16 @@ const deleteReview = async (req, res) => {
       },
     });
 
-    if (!review) return res.status(400).send('Review not Found');
+    if (!review) return res.status(400).send('No se encontró una review');
 
-    return res.status(200).json('Review deleted');
+    return res.status(200).json('Review eliminada correctamente!');
   } catch (err) {
     return res.status(500).send('Internal server error');
   }
 };
 
 module.exports = {
-  getReview,
+  getReviews,
   postReview,
   deleteReview,
 };
