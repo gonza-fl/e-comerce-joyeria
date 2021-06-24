@@ -49,7 +49,6 @@ export default function ProductCard({
                   await addToCart(product, userId);
                   dispatch(showFloatingCart('inline'));
                   setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
-                  window.scrollTo(0, 0);
                 } catch (err) {
                   swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando');
                 }
