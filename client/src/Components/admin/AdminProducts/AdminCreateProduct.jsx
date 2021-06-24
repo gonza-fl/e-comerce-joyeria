@@ -1,41 +1,48 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import swal from 'sweetalert';
-import { getCategories, getProductDetail } from '../../../redux/actions/actions';
-import { updateProduct } from './utils/request';
+import { getCategories } from '../../../redux/actions/actions';
+import { createProduct } from './utils/request';
 import Button from '../../StyledComponents/Button';
-import './AdminUpdateProduct.css';
+import './AdminCreateProduct.css';
 
-function AdminUpdateProduct() {
-  const { productId } = useParams();
+function AdminCreateProduct() {
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.detail);
   const categories = useSelector((state) => state.categories);
   const imgInput = useRef();
-
+  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
-    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }],
+    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '',
   });
 
-  const [imgSelected, setImgSelected] = useState([{ url: '' }]);
+  const [imgSelected, setImgSelected] = useState([]);
 
   useEffect(() => {
-    setInput({
-      ...product,
-      categories: categories.map((c) => ({ id: c.id, name: c.name, checked: product.categories.map((cat) => cat.id).includes(c.id) ? 'checked' : '' })),
-    });
-    setImgSelected(product.images);
-  }, [product]);
-
-  useEffect(() => {
-    dispatch(getProductDetail(productId));
     dispatch(getCategories());
   }, []);
+
+  function loadingIcon() {
+    return (
+      <div
+        className="lds-facebook"
+        style={{
+          display: `${loading ? 'block' : 'none'}`,
+          position: 'absolute',
+          top: 150,
+        }}
+      >
+        <div />
+        <div />
+        <div />
+      </div>
+    );
+  }
 
   function onChangeInput(e) {
     setInput({
@@ -45,28 +52,40 @@ function AdminUpdateProduct() {
   }
 
   function onChangeCategories(e) {
-    if (input.categories.find((c) => c.id === parseFloat(e.target.value)).checked === 'checked') {
+    if (input.categories.find((c) => c.id === parseFloat(e.target.value))) {
       setInput({
         ...input,
-        categories: input.categories.map((c) => ({ id: c.id, name: c.name, checked: c.id === parseFloat(e.target.value) ? '' : c.checked })),
+        categories: input.categories.filter((c) => c.id !== e.target.value),
       });
     } else {
       setInput({
         ...input,
-        categories: input.categories.map((c) => ({ id: c.id, name: c.name, checked: c.id === parseFloat(e.target.value) ? 'checked' : c.checked })),
+        categories: [...input.categories, e.target.value],
       });
     }
   }
 
-  function onSubmit(e, productUpdated) {
+  function onSubmit(e) {
+    setLoading(true);
     e.preventDefault();
-    if (!input.categories.filter((c) => c.checked === 'checked')[0]) { return swal('Error', 'Debes asignar al menos una categoría', 'warning'); }
 
-    updateProduct({
-      ...productUpdated,
-      categories: productUpdated.categories.filter((c) => c.checked === 'checked').map((i) => i.id),
-      images: imgSelected,
-    });
+    if (!input.name) { setLoading(false); return swal('Error', 'Debes completar el campo Nombre', 'warning'); }
+
+    if (!input.price) { setLoading(false); return swal('Error', 'Debes completar el campo Precio', 'warning'); }
+    if (Number.isNaN(input.price)) { setLoading(false); return swal('Error', 'El precio debe ser un número', 'warning'); }
+    if (input.price < 0) { setLoading(false); return swal('Error', 'El precio debe ser mayor a cero', 'warning'); }
+
+    if (!input.stockAmount) { setLoading(false); return swal('Error', 'Debes completar el campo Número de stock', 'warning'); }
+    if (Number.isNaN(input.stockAmount)) { setLoading(false); return swal('Error', 'El stock debe ser un número', 'warning'); }
+    if (input.stockAmount < 0) { setLoading(false); return swal('Error', 'El stock debe ser mayor a cero', 'warning'); }
+
+    if (!input.description) { setLoading(false); return swal('Error', 'Debes completar el campo Descripción', 'warning'); }
+
+    if (imgSelected.length === 0) { setLoading(false); return swal('Error', 'Debes agregar al menos una imagen', 'warning'); }
+
+    if (input.categories.length === 0) { setLoading(false); return swal('Error', 'Debes asignar al menos una categoría', 'warning'); }
+
+    return createProduct({ ...input, image: imgSelected }, setLoading);
   }
 
   const previewFile = (file) => {
@@ -98,17 +117,16 @@ function AdminUpdateProduct() {
 
   return (
     <Background>
-      <ProductDetail method="PUT" onSubmit={(e) => onSubmit(e, input)} className="bg-color-six">
+      <ProductDetail method="PUT" onSubmit={(e) => onSubmit(e)} className="bg-color-six" style={{ opacity: `${loading ? 0.7 : 1}` }}>
+        {loadingIcon()}
         <Detail>
           <div className="input-general-container ">
             <div className="input-name-container ">
-              <b>ID: </b>
               <b>NOMBRE: </b>
               <b>PRECIO: </b>
               <b>CANTIDAD: </b>
             </div>
             <div className="input-name-container ">
-              <span>{product.id}</span>
               <StyledInput name="name" value={input.name} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="stockAmount" value={input.stockAmount} onChange={(e) => onChangeInput(e)} />
@@ -126,14 +144,13 @@ function AdminUpdateProduct() {
           <div>
             <b>CATEGORÍAS: </b>
             <div>
-              {input.categories.map((c) => (
+              {categories.map((c) => (
                 <label>
                   <StyledInput
                     onChange={(e) => onChangeCategories(e)}
                     name="categories"
                     type="checkbox"
                     value={c.id}
-                    checked={c.checked}
                   />
                   {c.name}
                 </label>
@@ -166,7 +183,7 @@ function AdminUpdateProduct() {
         </div>
         <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button type="submit" text="Aplicar cambios" className="bg-color-three" />
+          <Button type="submit" text="Crear producto" className="bg-color-three" />
         &ensp;
           <Link to="/admin/products"><Button type="button" text="Cancelar" /></Link>
         </div>
@@ -211,4 +228,4 @@ const StyledInput = styled.input`
     padding: 5px 10px;
 `;
 
-export default AdminUpdateProduct;
+export default AdminCreateProduct;
