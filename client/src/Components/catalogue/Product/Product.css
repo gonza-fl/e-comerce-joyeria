@@ -22,7 +22,7 @@
 }
 
 .product-img{
-  width: 30%;
+  width: 40%;
   border: 1px solid silver;
   padding: 2%;
   display: flex;
@@ -47,6 +47,7 @@
   padding: 2%;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin-top: 2%;
 }
 
 .container-minpics img{
