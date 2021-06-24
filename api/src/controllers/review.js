@@ -37,7 +37,12 @@ const postReview = async (req, res) => {
   const user = await User.findByPk(userId);
   if (!user) return res.status(400).send('No existe User con ese ID');
   if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
-  const calificationByFive = calification > 5 ? 5 : calification;
+  let calificationByFive = 0;
+  if (calification === 0) {
+    calificationByFive = 1;
+  } else {
+    calificationByFive = calification % 5 === 0 ? 5 : calification % 5;
+  }
   try {
     const [review, created] = await Review.findOrCreate({
       where: {
