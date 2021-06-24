@@ -54,7 +54,7 @@ const updateUser = async (req, res) => {
     idUser,
   } = req.params;
   const {
-    displayName, email, birthday, phone, admin,
+    displayName, email, birthday, phone, role,
   } = req.body;
   try {
     // capturo el usuario que se quiere cambiar
@@ -66,7 +66,7 @@ const updateUser = async (req, res) => {
     if (email) user.email = email;
     if (birthday) user.birthday = new Date(birthday[2], birthday[1] - 1, birthday[0]);
     if (phone) user.phone = phone;
-    if (admin) user.admin = admin;
+    if (role) user.role = role;
     // Updeteo el user
     await user.save();
     return res.status(200).json(user);
