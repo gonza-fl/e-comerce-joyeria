@@ -2,12 +2,11 @@
   background-color: #f1eee3;
   width: 78%;
   display: flex;
-  /* justify-content: space-evenly; */
   margin-top: 50px;
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   border-radius: 20px;
   padding: 2%;
-  /* justify-content: flex-start; */
+  overflow-y: scroll;
 }
 
 .modal-table{

@@ -46,7 +46,7 @@ function App() {
               <Route path="/account/profile" component={Profile} />
               <Route path="/cart/checkout" component={CartCheckout} />
               <Route path="/user/:userId/orders" component={UserOrders} />
-              <Route path="/user/order/:id" component={UserOrderDetail} />
+              <Route path="/user/order/:orderId" component={UserOrderDetail} />
             </Switch>
           </div>
           <Footer />

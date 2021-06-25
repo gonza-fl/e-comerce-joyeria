@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
-/* eslint linebreak-style: ["error", "windows"] */
+
 import React, { useEffect, useState } from 'react';
 import './FilterCatalogue.css';
 import ReactStars from 'react-rating-stars-component';
@@ -11,7 +11,9 @@ import {
 } from './utils/sorts';
 import { findByPrice, findByStars } from './utils/finds';
 
-export default function FilterCatalogue({ products, setProducts, productsGlobal }) {
+export default function FilterCatalogue({
+  products, setProducts, productsGlobal, total,
+}) {
   const [input, setInput] = useState({ min: '', max: '' });
   const [undo, setUndo] = useState(false);
 
@@ -34,11 +36,7 @@ export default function FilterCatalogue({ products, setProducts, productsGlobal 
   return (
     <div className="ctnFiltersCat  bg-color-six">
       {undo && <div className="undo"><StyledButton text="Deshacer" handleClick={() => { setProducts([...productsGlobal]); setUndo(false); }} /></div>}
-      <h1>
-        {products.length}
-        {' '}
-        Resultados
-      </h1>
+      <h1>{`${total} Resultados`}</h1>
       <h3>Ver </h3>
       <h5>Alfabéticamente</h5>
       <p onClick={() => { setProducts([...sortNameAsc(products)]); setUndo(true); }}>A-Z</p>
@@ -56,13 +54,13 @@ export default function FilterCatalogue({ products, setProducts, productsGlobal 
       </form>
 
       <h5>Estrellas</h5>
-      <div onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
+      <div className="stars" onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
         Mas Estrellas
         <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" />
 
       </div>
 
-      <div onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
+      <div className="stars" onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
         Menos Estrellas
         <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" />
 

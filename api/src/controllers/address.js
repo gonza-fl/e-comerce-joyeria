@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const {
   User,
   Address,
@@ -7,7 +8,6 @@ const {
 } = require('../helpers/functionHelpers');
 
 const addAddressFunction = async (req, res) => {
-  // Address __
   const {
     idUser,
   } = req.params;
@@ -17,30 +17,20 @@ const addAddressFunction = async (req, res) => {
     description,
     name,
   } = req.body;
-  // identifico el usuario al cual se le van a revisar las address
-  if (postalCode && !verifyNumber(postalCode)) return res.sendStatus(400);
+  if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
   const user = await User.findByPk(idUser);
-  if (!user) {
-    return res.status(404).json({
-      err: 'No hay ningún cliente con esa ID.',
-    });
-  }
+  if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
   try {
-    //
     const isAddress = await Address.create({
       address,
       postalCode,
-      name,
-      description,
+      name: name.trim(),
+      description: description.trim(),
     });
     await user.addAddress(isAddress);
-    return res.json({
-      success: 'Domicilio creado con éxito!',
-    });
+    return res.send('Domicilio creado con éxito!');
   } catch (err) {
-    return res.json({
-      err: 'No se pudo crear el domicilio.',
-    });
+    return res.status(500).send('No se pudo crear el domicilio.');
   }
 };
 const updateAddress = async (req, res) => {
@@ -54,21 +44,13 @@ const updateAddress = async (req, res) => {
     name,
   } = req.body;
   try {
-    // capturo el usuario que se quiere cambiar la direccion
-    const user = await User.findOne({
-      where: {
-        id: idUser,
-      },
+    const user = await User.findByPk(idUser, {
       include: Address,
     });
-    // agrego validacion
-    if (!user) {
-      return res.status(404).json({
-        err: 'No hay ningún cliente con esa ID.',
-      });
-    }
-    // identifico el address al cual se la va a hacer el cambio
-    if (postalCode && !verifyNumber(postalCode)) return res.sendStatus(404);
+    // Soy Rodri: ¿SE ESTA USANDO ESTE INCLUDE? SI ES SOLO EL USER LO QUE QUIERO SABER
+    if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
+
+    if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
     await Address.update({
       name,
       description,
@@ -80,9 +62,9 @@ const updateAddress = async (req, res) => {
         userId: idUser,
       },
     });
-    return res.status(200).json('Direccion updeteada');
+    return res.status(200).send('Direccion actualizada correctamente!');
   } catch (err) {
-    return res.status(404).json(err);
+    return res.status(404).send('Internal server error. Dirección no actualizada');
   }
 };
 
@@ -91,16 +73,12 @@ const getSingleAddress = async (req, res) => {
     idUser,
   } = req.params;
   try {
-    const response = await User.findOne({
-      where: {
-        id: idUser,
-      },
+    const response = await User.findByPk(idUser, {
       include: Address,
     });
-    // if (!response.length) return res.status(400).json('User not founded');
     return res.status(201).json(response.addresses);
   } catch (error) {
-    return res.status(500).json('Internal server error');
+    return res.status(500).send('Internal server error. Dirección no encontrada');
   }
 };
 const deleteAddress = async (req, res) => {
@@ -108,11 +86,7 @@ const deleteAddress = async (req, res) => {
     idUser,
     idAddress,
   } = req.params;
-  if (!verifyNumber(idAddress)) {
-    return res.status(404).json({
-      err: 'El campo ID esta vacío',
-    });
-  }
+  if (!verifyNumber(idAddress).veracity) return res.status(404).send(verifyNumber(idAddress, 'id de dirección').msg);
   try {
     const address = await Address.destroy({
       where: {
@@ -120,16 +94,10 @@ const deleteAddress = async (req, res) => {
         id: parseInt(idAddress, 10),
       },
     });
-    if (!address) {
-      return res.status(404).json({
-        err: 'No se ha encontrado la dirección.',
-      });
-    }
-    return res.json(address);
+    if (!address) return res.status(404).send('No se ha encontrado la dirección.');
+    return res.send('Dirección eliminada correctamente!');
   } catch (err) {
-    return res.status(500).json({
-      err: 'Ocurrió un error al intentar borrar el domicilio.',
-    });
+    return res.status(500).send('Internal server error. Dirección no eliminada');
   }
 };
 module.exports = {

@@ -2,17 +2,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-// import { useParams } from 'react-router-dom';
-// import { URL_USERS } from '../../../constants';
 import { Link } from 'react-router-dom';
 import './UserOrders.css';
 import { URL_USERS } from '../../../constants';
 
 const UserOrders = (props) => {
-  // cuando se haga la conexion con la ruta del back, descomentar todo y borrar el array
-  // no olvidar importar useState y useEffect
   const { id } = props;
-  // const { userId } = useParams();
   const [userOrders, setUserOrders] = useState([]);
   useEffect(() => {
     axios.get(`${URL_USERS}${id}/orders`)
@@ -22,6 +17,8 @@ const UserOrders = (props) => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => { console.log(userOrders); }, [userOrders]);
 
   return (
     <div className="user-orders-container">

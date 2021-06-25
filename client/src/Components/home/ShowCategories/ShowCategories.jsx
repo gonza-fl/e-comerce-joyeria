@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -13,7 +12,7 @@ export default function ShowCategories() {
   return (
     <div className="ctnFilters">
       <div className="ctnCards">
-        <h1 className="bg-color-six" style={{ padding: '0px 10px' }}>Nuestras categorías</h1>
+        <h1 className="bg-color-six" style={{ padding: '10px 0px' }}>Nuestras categorías</h1>
         {categories.map((cat) => (
           <ShowCatCard
             key={cat.id}
@@ -23,9 +22,11 @@ export default function ShowCategories() {
           />
         ))}
       </div>
-      <Link className="link" to="/products">
-        <StyledButton text="Ver catalogo completo" />
-      </Link>
+      <div className="btnCtnFilters">
+        <Link className="link" to="/products">
+          <StyledButton text="Ver catalogo completo" />
+        </Link>
+      </div>
     </div>
   );
 }

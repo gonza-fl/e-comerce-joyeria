@@ -17,7 +17,7 @@ function FloatingCart() {
     if (user.id) {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
         .then((res) => {
-          if (res.data[0].products.length > 0) {
+          if (res.data.length !== 0 && res.data[0].products.length > 0) {
             setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
           } else {
             setCartProducts([]);
@@ -52,21 +52,23 @@ function FloatingCart() {
         onMouseEnter={() => dispatch(showFloatingCart('inline'))}
         onMouseLeave={() => dispatch(showFloatingCart('none'))}
       >
-        <div>
+        <div style={{ overflowY: 'scroll', maxHeight: '280px' }}>
           {cartProducts.map((p) => (
             <ProductCardCart key={p.name}>
               <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
-              <Link to={`/products/product/${p.id}`}>
+              <Link to={`/products/product/${p.id}`} className="link-without-styles">
                 <div
                   style={{
-                    textAlign: 'left', marginLeft: '15px', flexGrow: 2, textDecoration: 'none',
+                    textAlign: 'left', marginLeft: '15px', flexGrow: 2,
                   }}
-                  textDecoration="none"
                 >
                   <span>{p.name}</span>
                   <span>{`  x ${p.amount}`}</span>
                   <br />
-                  <b>{numberWithCommas(p.price * p.amount)}</b>
+                  <b>
+                    $
+                    {numberWithCommas(p.price * p.amount)}
+                  </b>
                 </div>
 
               </Link>

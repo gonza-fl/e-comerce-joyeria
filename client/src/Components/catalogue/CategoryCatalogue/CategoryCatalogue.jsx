@@ -1,40 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import { FaAlignJustify } from 'react-icons/fa';
 import ProductCard from '../ProductCard/ProductCard';
-import { getProdutsByCategory } from '../../../redux/actions/actions';
+import { getProdutsByCategory, restartProductsByCategory } from '../../../redux/actions/actions';
 import FilterCatalogue from '../Catalogue/FilterCatalogue/FilterCatalogue';
 import './CategoryCatalogue.css';
+import Spiner from '../../Spiner/Spiner';
+import { cataloguePag, getPageFromURL } from '../utils/paged';
+import Paged from '../Catalogue/Paged';
 
 function CategoryCatalogue() {
   const products = useSelector((state) => state.productsByCategory);
   const [productsDisplay, setProductsDisplay] = useState([...products]);
+  const history = useHistory();
+  const [page, setPage] = useState('');
+  const [pivote, setPivote] = useState(true);
 
   const dispatch = useDispatch();
   const { categoryId } = useParams();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setProductsDisplay([...products]);
+    setProductsDisplay([...cataloguePag(products, page)]);
+
+    return () => { dispatch(restartProductsByCategory()); };
   }, []);
+
+  useEffect(() => {
+    setPage(getPageFromURL());
+  }, [products, pivote]);
 
   useEffect(() => {
     dispatch(getProdutsByCategory(categoryId));
   }, [categoryId]);
 
   useEffect(() => {
-    setProductsDisplay([...products]);
-  }, [products]);
+    setProductsDisplay([...cataloguePag(products, page)]);
+  }, [products, pivote, page]);
 
+  const handlePage = (i) => {
+    history.push(`${window.location.pathname}?page=${Number(page) + i}`);
+    setPivote(!pivote);
+  };
   return (
     <div className="catalogue">
-      <FilterCatalogue
-        products={productsDisplay}
-        setProducts={setProductsDisplay}
-        productsGlobal={products}
-      />
-      <div className="categoryDiv">
-        {!productsDisplay.length ? <h1>Lo lamentamos, no se encontraron coincidencias</h1> : null}
+      <Paged products={products} page={page} onClick={handlePage} />
+      <div className="filterResponsive">
+        <div className="iconFilter"><FaAlignJustify /></div>
+        <FilterCatalogue
+          products={productsDisplay}
+          setProducts={setProductsDisplay}
+          productsGlobal={cataloguePag(products, page)}
+          total={products.length}
+        />
+      </div>
+
+      <div className="catalogueMap">
+        {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
         {productsDisplay.map((p) => (
           <ProductCard
             product={p}
@@ -47,8 +70,10 @@ function CategoryCatalogue() {
             key={p.id}
           />
         ))}
+        <div className="pagedBottom">
+          <Paged products={products} page={page} onClick={handlePage} />
+        </div>
       </div>
-
     </div>
   );
 }

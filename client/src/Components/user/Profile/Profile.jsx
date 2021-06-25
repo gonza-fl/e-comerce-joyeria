@@ -1,42 +1,31 @@
+/* eslint-disable max-len */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FcBusinessman } from 'react-icons/fc';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import swal from 'sweetalert';
 import EditProfile from './EditProfile';
 import UserOrders from '../UserOrders/UserOrders';
+import { getUserInfo } from '../../../redux/actions/actions';
+import { URL_USERS } from '../../../constants';
+import AddAdressModal from './AddAdressModal';
 
-const mockdata = {
-  name: 'Diego Fernando',
-  lastname: 'Vallejos Cifuentes',
-  email: 'dfvallejosc@gmail.com',
-  gender: 'Masculino',
-  birthday: '02-28-1992',
-  phone: 3152639144,
-  adresse: [{
-    id: '1',
-    name: 'Casa',
-    adresse: 'Calle 65 #56-84',
-    description: 'Mi casa',
-    region: 'Antioquia',
-    postalCode: '10500',
-  },
-  {
-    id: '2',
-    name: 'Oficina',
-    adress: 'Calle 56 #35-28',
-    description: 'Mi oficina',
-    region: 'Antioquia',
-    postalCode: '10300',
-  }],
-};
 export default function Profile() {
-  // const user = useSelector((state) => state.user);
   const [edit, setEdit] = useState(false);
   const [menu, setMenu] = useState(1);
-  const user = useSelector((state) => state.user);
+  const [pivot, setPivot] = useState(true);
+
+  const logged = useSelector((state) => state.user);
+  const user = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserInfo(logged.id));
+  }, [edit, pivot]);
 
   return (
     <MainDiv className="bg-color-three">
@@ -47,8 +36,8 @@ export default function Profile() {
         <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
       </Menu>
 
-      {menu === 1 ? !edit ? showProfile(user, setEdit)
-        : <EditProfile user={{ ...user, adresse: mockdata.adresse }} setEdit={setEdit} />
+      {menu === 1 ? !edit ? showProfile(user, setEdit, pivot, setPivot)
+        : <EditProfile user={user} setEdit={setEdit} pivot={pivot} setPivot={setPivot} />
         : menu === 2 ? <UserOrders id={user.id} />
           : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
             : <h1>CAMBIAR CONTRASEÑA</h1>}
@@ -56,7 +45,14 @@ export default function Profile() {
   );
 }
 
-function showProfile(user, setEdit) {
+function showProfile(user, setEdit, pivot, setPivot) {
+  const [addAdress, setAddAdress] = useState('none');
+  function deleteDirection(addressId) {
+    axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
+      .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
+      .then(() => setPivot(!pivot))
+      .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
+  }
   return (
     <DivContainer>
       <UserIcon>
@@ -83,30 +79,38 @@ function showProfile(user, setEdit) {
         <br />
         <span>{user.birthday || 'Sin fecha de nacimiento'}</span>
       </UserInfo>
-      <UserInfo style={{ flexGrow: '6', overflowY: 'scroll' }}>
-        <b>Direcciones de envío: </b>
-        <br />
-        <br />
-        {mockdata.adresse.length > 0
-          ? mockdata.adresse.map((a) => (
-            <AdressDiv>
-              <b>{a.name}</b>
-              <br />
-              <span>{a.adresse}</span>
-              <br />
-              <span>{a.region}</span>
-              <br />
-              <span>{a.postalCode}</span>
-              <br />
-            </AdressDiv>
-          ))
-          : (
-            <AdressDiv>
-              <h4>No tienes direcciones agregadas</h4>
-              <span>Agrega una dirección editando tu información</span>
-            </AdressDiv>
-          )}
-      </UserInfo>
+      <div style={{
+        display: 'flex', flexDirection: 'column', flexGrow: '6',
+      }}
+      >
+        <UserInfo style={{ overflowY: 'scroll' }}>
+          <b>Direcciones de envío: </b>
+
+          {user.addresses && user.addresses.length > 0
+            ? user.addresses.map((a) => (
+              <AdressDiv>
+                <b>{a.description}</b>
+                <br />
+                <span>{a.address}</span>
+                <br />
+                <span>{a.name}</span>
+                <br />
+                <span>{a.postalCode}</span>
+                <button type="button" style={{ transform: 'translate(220px, -40px)' }} onClick={() => deleteDirection(a.id)}>x</button>
+              </AdressDiv>
+            ))
+            : (
+              <AdressDiv>
+                <h4>No tienes direcciones agregadas</h4>
+                <span>Agrega una dirección</span>
+              </AdressDiv>
+            )}
+        </UserInfo>
+        <div className="bg-color-six">
+          <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
+        </div>
+      </div>
+      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
     </DivContainer>
   );
 }
@@ -173,6 +177,20 @@ const EditButton = styled.button`
     padding: 5px 30px;
     border-style: none;
     background-color: #f0ddd8;
+
+    &:hover{
+      cursor: pointer;
+    }
+`;
+
+const AcceptButton = styled.button`
+    font-size: 18px;
+    padding: 5px 30px;
+    border-style: none;
+    background-color: #f0ddd8;
+    float: bottom;
+    width: 60%;
+    align-self: center;
 
     &:hover{
       cursor: pointer;

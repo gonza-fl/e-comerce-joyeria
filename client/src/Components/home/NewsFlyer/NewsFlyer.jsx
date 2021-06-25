@@ -1,5 +1,5 @@
 /* eslint react/prop-types: 0 */
-/* eslint linebreak-style: ["error", "windows"] */
+
 import React from 'react';
 import styled from 'styled-components';
 import { GoPrimitiveDot } from 'react-icons/go';
@@ -68,6 +68,10 @@ const StyledImg = styled.img`
                 opacity: 0.8;
                 transform: rotateX(0);
             }
+        }
+        @media (max-width: 452px) {
+          width:95%;
+          height:270px;
         }
 `;
 export default NewsFlyer;

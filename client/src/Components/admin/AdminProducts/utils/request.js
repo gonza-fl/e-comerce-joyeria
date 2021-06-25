@@ -4,16 +4,12 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { URL_CATEGORIES, URL_PRODUCTS } from '../../../../constants';
 
-export function sendChanges(product) {
+export function updateProduct(product) {
   axios.put(`${URL_PRODUCTS}${product.id}`, product)
-    .then((res) => {
-      if (res.data.hasOwnProperty('err')) {
-        return swal('Error', res.data.err, 'warning');
-      }
-      return swal('Success', 'Producto modificado!');
-    })
-    .catch(() => {
-      swal('Error', 'Ocurrió un error. No se modificó el producto. Intente nuevamente');
+    .then(() => swal('Success', 'Producto modificado!'))
+    .then(() => { window.location.href = '/admin/products'; })
+    .catch((err) => {
+      swal('Error', err.response.data, 'warning');
     });
 }
 
@@ -25,13 +21,13 @@ export function createProduct(product, setLoading) {
         swal('error', 'No se pudo crear al producto', 'warning');
       } else {
         setLoading(false);
-        swal('Success', '¡Se creó el producto con éxito!')
+        swal('¡Genial!', '¡Se creó el producto con éxito!', 'success')
           .then(() => { window.location.href = '/admin/products'; });
       }
     })
-    .catch(() => {
+    .catch((err) => {
       setLoading(false);
-      swal('Error', 'Ocurrió un error. No se creó el product, intenta nuevamente');
+      swal('Error', err.response.data, 'warning');
     });
 }
 

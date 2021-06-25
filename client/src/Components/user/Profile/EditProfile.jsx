@@ -1,25 +1,29 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FcBusinesswoman, FcBusinessman } from 'react-icons/fc';
-import { GrUserManager } from 'react-icons/gr';
+import { FcBusinessman } from 'react-icons/fc';
+import axios from 'axios';
+import swal from 'sweetalert';
 import AddAdressModal from './AddAdressModal';
+import { URL_USERS } from '../../../constants';
 
-export default function EditProfile({ user, setEdit }) {
-  // const user = useSelector((state) => state.user);
+export default function EditProfile({
+  user, setEdit, pivot, setPivot,
+}) {
   const [addAdress, setAddAdress] = useState('none');
   const [input, setInput] = useState({
     name: user.name,
-    lastname: user.lastname,
     email: user.email,
-    gender: user.gender,
     birthday: user.birthday,
     phone: user.phone,
-    adresse: user.adresse,
+    addresses: user.addresses,
   });
+
+  useEffect(() => {}, [user, pivot]);
 
   function onChangeInput(e) {
     setInput({
@@ -28,30 +32,46 @@ export default function EditProfile({ user, setEdit }) {
     });
   }
 
+  function onSubmitChanges() {
+    axios.put(`${URL_USERS}${user.id}`, {
+      displayName: input.name,
+      birthday: input.birthday,
+      phone: input.phone,
+    })
+      .then(() => swal('¡Muy bien!', 'Los datos se actualizaron correctamente', 'success'))
+      .then(() => setEdit(false))
+      .catch(() => swal('Lo sentimos', 'No se puso actualizar la información', 'warning'));
+
+    // axios.put(`${URL_USERS}${user.id}/address`, {})
+  }
+
+  function deleteDirection(addressId) {
+    axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
+      .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
+      .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
+  }
+
   return (
     <DivContainer>
       <UserIcon>
-        {user.gender === 'Femenino'
-          ? <FcBusinesswoman style={{ fontSize: '150px' }} />
-          : user.gender === 'Masculino' ? <FcBusinessman style={{ fontSize: '150px' }} />
-            : <GrUserManager style={{ fontSize: '150px' }} />}
+        <FcBusinessman style={{ fontSize: '150px' }} />
         <br />
-        <span style={{ fontSize: '20px' }}>Nombre</span>
+        <span style={{ fontSize: '20px' }}>Nombre completo</span>
         <br />
         <input name="name" value={input.name} onChange={onChangeInput} />
         <br />
-        <span style={{ fontSize: '20px' }}>Apellido</span>
-        <br />
-        <input name="lastname" value={input.lastname} onChange={onChangeInput} />
         <br />
         <br />
         <br />
-        <AcceptButton onClick={() => setEdit(false)}>Aceptar</AcceptButton>
+        <AcceptButton type="button" onClick={onSubmitChanges}>Aceptar</AcceptButton>
+        <br />
+        <br />
+        <AcceptButton type="button" onClick={() => setEdit(false)}>Cancelar</AcceptButton>
       </UserIcon>
       <UserInfo>
         <b>Email: </b>
         <br />
-        <span>{user.email}</span>
+        <span>{input.email}</span>
         <br />
         <br />
         <b>Teléfono de contacto: </b>
@@ -69,28 +89,28 @@ export default function EditProfile({ user, setEdit }) {
       >
         <b>Direcciones de envío: </b>
 
-        {input.adresse.length > 0
-          ? input.adresse.map((a) => (
+        {input.addresses.length > 0
+          ? input.addresses.map((a) => (
             <AdressDiv>
-              <b>{a.name}</b>
+              <b>{a.description}</b>
               <br />
-              <span>{a.adresse}</span>
+              <span>{a.address}</span>
               <br />
-              <span>{a.region}</span>
+              <span>{a.name}</span>
               <br />
               <span>{a.postalCode}</span>
-              <button type="button" style={{ transform: 'translate(220px, -40px)' }}>x</button>
+              <button type="button" style={{ transform: 'translate(220px, -40px)' }} onClick={() => deleteDirection(a.id)}>x</button>
             </AdressDiv>
           ))
           : (
             <AdressDiv>
               <h4>No tienes direcciones agregadas</h4>
-              <span>Agrega una dirección editando tu información</span>
+              <span>Agrega una dirección</span>
             </AdressDiv>
           )}
         <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
       </UserInfo>
-      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} />
+      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
     </DivContainer>
   );
 }

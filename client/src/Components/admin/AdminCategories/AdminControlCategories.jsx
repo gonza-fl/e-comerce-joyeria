@@ -20,7 +20,7 @@ function AdminControlCategories() {
     if (!products.filter((p) => p.categories.filter((c) => c.id === category.id)[0])[0]) {
       return deleteCategory(category);
     }
-    return swal('Esta categoría tiene productos asociados.  Elimina estos productos primero si quieres eliminar la categoría');
+    return swal('Lo sentimos', 'Esta categoría tiene productos asociados.  Elimina estos productos primero si quieres eliminar la categoría', 'warning');
   }
 
   return (

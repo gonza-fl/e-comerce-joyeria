@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { URL_CART, URL_GET_CART } from '../../../constants';
+import Spiner from '../../Spiner/Spiner';
 import Button from '../../StyledComponents/Button';
 import './Cart.css';
 
@@ -91,13 +92,7 @@ const Cart = () => {
       setPivot(!pivot);
     }
   };
-  if (cartProducts && cartProducts.length < 1) {
-    return (
-      <div>
-        <h5>Tu carrito de compras está vacío!!</h5>
-      </div>
-    );
-  }
+  if (cartProducts && cartProducts.length < 1) return <Spiner msg="Tu carrito de compras está vacío" />;
 
   return (
     <div className="cart-container">
@@ -115,20 +110,20 @@ const Cart = () => {
                   <p>{product.description}</p>
                   <h4>${product.price}</h4>
                 </div>
-                <div className="card-detail-map-right">
-                  <div className="card-detail-amount">
-                    <span id="card-detail-amount-p"> {product.amount} </span>
-                    <div className="card-detail-amount-buttons">
-                      <button onClick={
-                        () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
-}
-                      >+
-                      </button>
-                      <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
-                    </div>
+              </div>
+              <div className="card-detail-map-right">
+                <div className="card-detail-amount">
+                  <p id="card-detail-amount-p"> {product.amount} </p>
+                  <div className="card-detail-amount-buttons">
+                    <button onClick={
+                      () => (product.amount < product.stockAmount ? changeAmount(product.id, 'sum') : swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando'))
+                    }
+                    >+
+                    </button>
+                    <button onClick={() => changeAmount(product.id, 'substract')}>-</button>
                   </div>
-                  <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
                 </div>
+                <button id="card-detail-delete-btn" onClick={() => deleteFromCart(product.id)}>✖</button>
               </div>
             </div>
           ))}
