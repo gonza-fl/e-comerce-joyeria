@@ -6,7 +6,7 @@ const {
 } = require('../models/index');
 
 const createUser = async (req, res) => {
-  const birthday = req.body.birthday.split('-');
+  const birthday = req.body.birthday && req.body.birthday.split('-');
   const {
     id, email, displayName, phone,
 
@@ -23,6 +23,7 @@ const createUser = async (req, res) => {
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
+    console.log(err);
     return res.status(500).send('Internal server error');
   }
 };
