@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -9,6 +10,7 @@ import { getProductDetail, showFloatingCart } from '../../../redux/actions/actio
 import Button from '../../StyledComponents/Button';
 import './Product.css';
 import { addToCart } from '../../../utils/cartFunctions';
+import ProductReview from './ProductReview/ProductReview';
 
 const Product = () => {
   const { productId } = useParams();
@@ -45,54 +47,56 @@ const Product = () => {
   };
 
   return (
-    <div className="product-container">
-      <div className="product-img">
-        <div className="bigimg-container">
-          <img src={bigImage} alt={detail.name} />
-        </div>
+    <div className="big-container">
+      <div className="product-container">
+        <div className="product-img">
+          <div className="bigimg-container">
+            <img src={bigImage} alt={detail.name} />
+          </div>
 
-        <div className="container-minpics">
-          {
+          <div className="container-minpics">
+            {
             detail.images.map((image) => <img key={image.url} src={image.url} onClick={(e) => changeImage(e)} alt="" />)
           }
+          </div>
+        </div>
+
+        <div className="product-info">
+          <h1>{detail.name}</h1>
+          <h4>
+            $
+            {detail.price}
+          </h4>
+          <p className="product-info-description">{detail.description}</p>
+          {/* <h4>Rating: {detail.rating || '5'}</h4>   */}
+          <div className="product-addCart">
+            {noStock && <h5 className="last-stock">Stock Agotado</h5>}
+            {lowStock && (
+            <h5 className="last-stock">
+              Ultimas
+              {' '}
+              {detail.stockAmount}
+              {' '}
+              unidades!!
+            </h5>
+            )}
+            {!lowStock && !noStock && (
+            <h5>
+              Stock:
+              {' '}
+              {detail.stockAmount}
+              {' '}
+              unidades
+            </h5>
+            )}
+            {detail.stockAmount < 1 ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
+          </div>
         </div>
       </div>
-
-      <div className="product-info">
-        <h1>{detail.name}</h1>
-        <h4>
-          $
-          {detail.price}
-        </h4>
-        <p className="product-info-description">{detail.description}</p>
-        {/* <h4>Rating: {detail.rating || '5'}</h4>   */}
-        <div className="product-addCart">
-          {noStock && <h5 className="last-stock">Stock Agotado</h5>}
-          {lowStock && (
-          <h5 className="last-stock">
-            Ultimas
-            {' '}
-            {detail.stockAmount}
-            {' '}
-            unidades!!
-          </h5>
-          )}
-          {!lowStock && !noStock && (
-          <h5>
-            Stock:
-            {' '}
-            {detail.stockAmount}
-            {' '}
-            unidades
-          </h5>
-          )}
-
-          {/* botón para agregar al carrito:
-          le falta la prop handleClick que le debería pasar la accion de agregar al carrito.
-          Para los usuarios debería guardarlo en la tabla de orden de compra,
-          y para los invitados debería guardarlo en el local storage */}
-          {detail.stockAmount < 1 ? null : <Button text="AGREGAR AL CARRITO" handleClick={handleClickCart} /> }
-        </div>
+      <div className="reviews-container">
+        <ProductReview
+          productId={productId}
+        />
       </div>
     </div>
   );
