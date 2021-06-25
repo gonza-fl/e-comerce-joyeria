@@ -9,6 +9,7 @@ module.exports = (sequelize) => {
     },
     description: {
       type: DataTypes.TEXT,
+      allownull: false,
     },
   });
   return model;
