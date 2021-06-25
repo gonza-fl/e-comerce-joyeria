@@ -104,6 +104,15 @@ const DivCard = styled.div`
             transform: Scale(1.05);
             transition: transform 300ms;
           }
+
+          @media (max-width: 452px) {
+            img {
+              width:130px;
+              height:130px
+            }
+            padding:0;
+            width: 40%;
+          }
 `;
 
 const DivCarousel = styled.div`

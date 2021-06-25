@@ -115,7 +115,7 @@
 
 @media (max-width: 452px) {
     .ctnNav {
-        height: 65px;
+        height: 60px;
         padding-block: 10px;
         z-index: 99;
     }

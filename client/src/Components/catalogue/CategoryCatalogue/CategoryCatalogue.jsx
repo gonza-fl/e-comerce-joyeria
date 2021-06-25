@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-
+import { FaAlignJustify } from 'react-icons/fa';
 import ProductCard from '../ProductCard/ProductCard';
 import { getProdutsByCategory, restartProductsByCategory } from '../../../redux/actions/actions';
 import FilterCatalogue from '../Catalogue/FilterCatalogue/FilterCatalogue';
@@ -46,14 +46,17 @@ function CategoryCatalogue() {
   return (
     <div className="catalogue">
       <Paged products={products} page={page} onClick={handlePage} />
+      <div className="filterResponsive">
+        <div className="iconFilter"><FaAlignJustify /></div>
+        <FilterCatalogue
+          products={productsDisplay}
+          setProducts={setProductsDisplay}
+          productsGlobal={cataloguePag(products, page)}
+          total={products.length}
+        />
+      </div>
 
-      <FilterCatalogue
-        products={productsDisplay}
-        setProducts={setProductsDisplay}
-        productsGlobal={cataloguePag(products, page)}
-        total={products.length}
-      />
-      <div className="categoryDiv">
+      <div className="catalogueMap">
         {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
         {productsDisplay.map((p) => (
           <ProductCard
