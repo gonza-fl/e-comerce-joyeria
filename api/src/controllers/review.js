@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 const {
   verifyNumber,
@@ -7,19 +8,18 @@ const {
   User,
 } = require('../models/index');
 
-const getReview = async (req, res) => {
+const getReviews = async (req, res) => {
   const {
     idProduct,
   } = req.params;
   try {
-    const response = await Review.findAll({
+    const reviews = await Review.findAll({
       where: {
         productId: idProduct,
       },
-      attributes: ['id', 'calification', 'description'],
+      attributes: ['id', 'calification', 'description', 'updatedAt'],
     });
-    if (!response) return res.status(400).send('Product no disponible');
-    return res.status(201).json(response);
+    return res.status(201).json(reviews);
   } catch (error) {
     return res.status(500).send('Internal server error');
   }
@@ -29,22 +29,20 @@ const postReview = async (req, res) => {
   const {
     idProduct,
   } = req.params;
-  const {
+  let {
     calification,
     description,
     userId,
   } = req.body;
-  if (typeof (userId) !== 'string') return res.status(400).send('ID de user no valido');
+  if (typeof userId !== 'string') return res.status(400).send('El ID de usuario es inválido');
+  userId = userId.trim();
   const user = await User.findByPk(userId);
   if (!user) return res.status(400).send('No existe User con ese ID');
   if (!calification || !description) return res.status(400).send('Falta llenar un campo');
   if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
-  let calificationByFive = 0;
-  if (calification === 0) {
-    calificationByFive = 1;
-  } else {
-    calificationByFive = calification % 5 === 0 ? 5 : calification % 5;
-  }
+  description = description.trim();
+  if (calification === 0) calification = 1;
+  else calification = calification % 5 === 0 ? 5 : calification % 5;
   try {
     const [review, created] = await Review.findOrCreate({
       where: {
@@ -52,13 +50,11 @@ const postReview = async (req, res) => {
         userId,
       },
       defaults: {
-        calification: calificationByFive,
+        calification,
         description,
       },
     });
-    if (created) {
-      return res.status(200).send(review);
-    }
+    if (created) return res.status(200).send('Gracias por dejar tu review!');
     return res.status(400).send('Ya existe un review por parte de este usuario en este producto');
   } catch (error) {
     return res.status(500).send('Internal server error');
@@ -75,17 +71,15 @@ const deleteReview = async (req, res) => {
         id: idReview,
       },
     });
-
-    if (!review) return res.status(400).send('Review not Found');
-
-    return res.status(200).json('Review deleted');
+    if (!review) return res.status(400).send('No se encontró una review');
+    return res.status(200).send('Review eliminada correctamente!');
   } catch (err) {
     return res.status(500).send('Internal server error');
   }
 };
 
 module.exports = {
-  getReview,
+  getReviews,
   postReview,
   deleteReview,
 };

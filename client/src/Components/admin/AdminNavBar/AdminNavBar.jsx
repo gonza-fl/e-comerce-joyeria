@@ -14,6 +14,8 @@ const AdminNavBar = () => (
       <Link to="/admin/statistics" className="link-without-styles"><li>VER ESTADÍSTICAS</li></Link>
       <br />
       <Link to="/admin/orders" className="link-without-styles"><li>VER VENTAS</li></Link>
+      <br />
+      <Link to="/admin/users" className="link-without-styles"><li>USUARIOS</li></Link>
     </ul>
   </DivContainer>
 );

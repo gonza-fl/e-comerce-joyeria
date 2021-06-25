@@ -20,6 +20,31 @@
     width: 100%;
     justify-content: center;
 }
-.ctnFilters .ctnCards button:hover{
+
+.ctnFilters .ctnCards button:hover {
     transform: scale(1);
+}
+
+@media (max-width:452px) {
+    .ctnFilters {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        position: relative;
+    }
+    .ctnCards {
+        width: 100%;
+    }
+    .ctnCards h1 {
+        width: 100%;
+        margin-bottom: 5rem;
+    }
+    .btnCtnFilters {
+        width: 100%;
+        position: absolute;
+        top: 120px;
+    }
+    .btnCtnFilters button {
+        width: 90%;
+    }
 }

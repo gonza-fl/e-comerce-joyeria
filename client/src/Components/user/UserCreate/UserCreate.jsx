@@ -21,7 +21,7 @@ export default function UserCreate() {
 
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
-    email: '', name: '', password: '', passwordConfirmation: '', date: '', address: '',
+    email: '', name: '', password: '', passwordConfirmation: '', birthday: '', address: '',
   });
   const [errors, setErrors] = useState({
     email: false, password: false, number: false, empty: false,
@@ -50,7 +50,6 @@ export default function UserCreate() {
     if (errors.empty) {
       let idUserLoged = '';
       document.getElementById('formUserCreate').reset();
-
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
         .then((res) => {
           idUserLoged = res.user.uid;
@@ -58,8 +57,10 @@ export default function UserCreate() {
             id: res.user.uid,
             email: res.user.email,
             displayName: `${form.name} ${form.lastname}`,
+            birthday: form.birthday,
           });
         })
+        .then(() => axios.post(`${URL_USERS}${idUserLoged}/address`, { address: form.address, name: form.name, postalCode: form.postalCod }))
         .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
         .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
         .then(() => localStorage.setItem('cart', JSON.stringify([])))
@@ -109,7 +110,7 @@ export default function UserCreate() {
 
           <div>
             <label>Fecha de Nacimiento<span className="require">*</span> </label>
-            <input name="date" type="date" required onChange={handleInputChange} />
+            <input name="birthday" type="date" required onChange={handleInputChange} />
           </div>
 
           <div>

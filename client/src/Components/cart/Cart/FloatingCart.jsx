@@ -17,7 +17,6 @@ function FloatingCart() {
     if (user.id) {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
         .then((res) => {
-          console.log(res.data);
           if (res.data.length !== 0 && res.data[0].products.length > 0) {
             setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
           } else {
@@ -53,7 +52,7 @@ function FloatingCart() {
         onMouseEnter={() => dispatch(showFloatingCart('inline'))}
         onMouseLeave={() => dispatch(showFloatingCart('none'))}
       >
-        <div>
+        <div style={{ overflowY: 'scroll', maxHeight: '280px' }}>
           {cartProducts.map((p) => (
             <ProductCardCart key={p.name}>
               <img src={p.images[0].url} alt="Not found" height="50px" width="50px" />
