@@ -25,6 +25,7 @@ export const TAKE_FROM_CART = 'TAKE_FROM_CART';
 export const SET_USER = 'SET_USER';
 export const SHOW_FLOATING_CART = 'SHOW_FLOATING_CART';
 export const GET_USER_ORDERS = 'GET_USER_ORDERS';
+export const GET_USER_INFO = 'GET_USER_INFO';
 
 export function getProducts() {
   return function (dispatch) {
@@ -103,17 +104,20 @@ export function getCategoryId(id) {
 }
 
 export function setUser(user) {
+  const actualUser = user.uid ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
+  return { type: SET_USER, payload: actualUser };
+}
+
+export function getUserInfo(userId) {
   return function (dispatch) {
-    return axios.get(`${URL_USERS}${user.uid}`)
+    return axios.get(`${URL_USERS}${userId}`)
       .then((res) => {
         dispatch({
-          type: SET_USER,
+          type: GET_USER_INFO,
           payload: { ...res.data[0], name: res.data[0].displayName },
         });
       });
   };
-
-  // const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
 }
 
 export function showFloatingCart(value) {
