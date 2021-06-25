@@ -1,17 +1,19 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FcBusinesswoman, FcBusinessman } from 'react-icons/fc';
-import { GrUserManager } from 'react-icons/gr';
+import { FcBusinessman } from 'react-icons/fc';
 import axios from 'axios';
 import swal from 'sweetalert';
 import AddAdressModal from './AddAdressModal';
 import { URL_USERS } from '../../../constants';
-import { setUser } from '../../../redux/actions/actions';
 
-export default function EditProfile({ user, setEdit }) {
+export default function EditProfile({
+  user, setEdit, pivot, setPivot,
+}) {
   const [addAdress, setAddAdress] = useState('none');
   const [input, setInput] = useState({
     name: user.name,
@@ -21,9 +23,7 @@ export default function EditProfile({ user, setEdit }) {
     addresses: user.addresses,
   });
 
-  useEffect(() => {
-
-  }, [user.addresses]);
+  useEffect(() => {}, [user, pivot]);
 
   function onChangeInput(e) {
     setInput({
@@ -39,7 +39,6 @@ export default function EditProfile({ user, setEdit }) {
       phone: input.phone,
     })
       .then(() => swal('¡Muy bien!', 'Los datos se actualizaron correctamente', 'success'))
-      .then(() => setUser({ uid: user.id }))
       .then(() => setEdit(false))
       .catch(() => swal('Lo sentimos', 'No se puso actualizar la información', 'warning'));
 
@@ -55,10 +54,7 @@ export default function EditProfile({ user, setEdit }) {
   return (
     <DivContainer>
       <UserIcon>
-        {user.gender === 'Femenino'
-          ? <FcBusinesswoman style={{ fontSize: '150px' }} />
-          : user.gender === 'Masculino' ? <FcBusinessman style={{ fontSize: '150px' }} />
-            : <GrUserManager style={{ fontSize: '150px' }} />}
+        <FcBusinessman style={{ fontSize: '150px' }} />
         <br />
         <span style={{ fontSize: '20px' }}>Nombre completo</span>
         <br />
@@ -75,7 +71,7 @@ export default function EditProfile({ user, setEdit }) {
       <UserInfo>
         <b>Email: </b>
         <br />
-        <span>{user.email}</span>
+        <span>{input.email}</span>
         <br />
         <br />
         <b>Teléfono de contacto: </b>
@@ -114,7 +110,7 @@ export default function EditProfile({ user, setEdit }) {
           )}
         <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
       </UserInfo>
-      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} />
+      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
     </DivContainer>
   );
 }
