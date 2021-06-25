@@ -103,17 +103,11 @@ export function getCategoryId(id) {
 }
 
 export function setUser(user) {
-  return function (dispatch) {
-    return axios.get(`${URL_USERS}${user.uid}`)
-      .then((res) => {
-        dispatch({
-          type: SET_USER,
-          payload: { ...res.data[0], name: res.data[0].displayName },
-        });
-      });
+  const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
+  return {
+    type: SET_USER,
+    payload: actualUser,
   };
-
-  // const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
 }
 
 export function showFloatingCart(value) {
