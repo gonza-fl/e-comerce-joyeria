@@ -69,5 +69,9 @@ const StyledImg = styled.img`
                 transform: rotateX(0);
             }
         }
+        @media (max-width: 452px) {
+          width:400px;
+          height:270px;
+        }
 `;
 export default NewsFlyer;

@@ -55,28 +55,27 @@ export default function Nav() {
           </div>
           {user.email ? <h3>{user.name}</h3> : null}
 
-          <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
-            <div className="navIcon"><FaUserAlt /></div>
-            {user.id
-              ? (
-                <div className="userOptions">
-                  <Link to="/account/profile"><p>Mi Cuenta</p></Link>
-                  <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesion</p> </Link>
-                </div>
-              )
-              : (
-                <div className="userOptions">
-                  <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesión</p></Link>
-                  <Link to="/account/register"><p>Registrarme</p></Link>
-                </div>
-              )}
-          </div>
-          <div className="navIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
-
-            <FaShoppingCart
-              style={{ fontSize: '20px' }}
-              onMouseEnter={() => dispatch(showFloatingCart('inline'))}
-            />
+          <div className="userIcon">
+            <div className="navIconUser"><FaUserAlt />
+              {user.id
+                ? (
+                  <div className="userOptions">
+                    <Link to="/account/profile"><p>Mi Cuenta</p></Link>
+                    <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesion</p> </Link>
+                  </div>
+                )
+                : (
+                  <div className="userOptions">
+                    <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesión</p></Link>
+                    <Link to="/account/register"><p>Registrarme</p></Link>
+                  </div>
+                )}
+            </div>
+            <div className="navIconCart">
+              <FaShoppingCart
+                onMouseEnter={() => dispatch(showFloatingCart('inline'))}
+              />
+            </div>
           </div>
 
           <FloatingCart />

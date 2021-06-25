@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      <h1 className="bg-color-six" style={{ width: '75%' }}>NEWS</h1>
+      <h1 className="bg-color-six">Novedades</h1>
       <NewsFlyer images={images} />
       <ShowCategories />
     </div>
