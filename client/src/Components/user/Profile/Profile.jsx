@@ -7,6 +7,7 @@ import { FcBusinessman } from 'react-icons/fc';
 import { useSelector } from 'react-redux';
 import EditProfile from './EditProfile';
 import UserOrders from '../UserOrders/UserOrders';
+import EditPassword from './EditPassword/EditPassword';
 
 export default function Profile() {
   const [edit, setEdit] = useState(false);
@@ -28,7 +29,7 @@ export default function Profile() {
         : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
           : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
-            : <h1>CAMBIAR CONTRASEÑA</h1>}
+            : <EditPassword />}
     </MainDiv>
   );
 }
