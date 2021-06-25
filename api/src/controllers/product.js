@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable max-len */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
@@ -140,15 +141,17 @@ const updateProduct = async (req, res) => {
   const {
     idProduct,
   } = req.params;
-  const {
-    name, description, stockAmount, price, categories, image,
+  let {
+    name, description, stockAmount, price, categories, images,
   } = req.body;
 
   try {
+    if (!name) name = undefined;
+    if (!description) description = undefined;
     const searchProduct = await searchProductF(idProduct);
-    if (!searchProduct) return res.status(400).send('No se encontro el producto.');
-    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : null);
-    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : null);
+    if (!searchProduct) return res.status(404).send('No se encontro el producto.');
+    const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
+    const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
     await Product.update({
       name,
       description,
@@ -161,7 +164,7 @@ const updateProduct = async (req, res) => {
     });
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).send('Hay campos erroneos');
-    await updateImages(searchProduct, image, idProduct);
+    await updateImages(searchProduct, images, idProduct);
     // return res.status(200).json(await searchProductF(idProduct));
     return res.send('Producto actualizado correctamente!');
   } catch (err) {
