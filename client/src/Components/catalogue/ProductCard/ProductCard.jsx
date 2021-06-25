@@ -49,7 +49,6 @@ export default function ProductCard({
                   await addToCart(product, userId);
                   dispatch(showFloatingCart('inline'));
                   setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
-                  window.scrollTo(0, 0);
                 } catch (err) {
                   swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando');
                 }
@@ -86,7 +85,7 @@ function Carousel({ image, id }) {
       <div>
         <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
           {img.filter((imgEl, i) => i === imgIndex)
-            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="250px" height="250px" />)}
+            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="230px" height="230px" />)}
         </Link>
       </div>
       {img.length > 1 && <MdNavigateNext onClick={nextCarousel} />}
@@ -98,7 +97,7 @@ const DivCard = styled.div`
           flex-direction: column;
           align-items: center;
           padding:5px;
-          width: 290px;
+          width: 30%;
           margin-bottom: 30px;
 
           &:hover {

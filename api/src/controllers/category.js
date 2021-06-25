@@ -11,7 +11,7 @@ const {
 const addCategory = async (req, res) => {
   const {
     name, description, img,
-  } = req.body; // Img por ahora es estatico.
+  } = req.body;
 
   if (!name || name.trim().length === 0) return res.status(400).send('El nombre de la categoria no puede ser vacia');
   if (!description || description.trim().length === 0) return res.status(400).send('La descripción de la categoria no puede ser vacia');
@@ -20,22 +20,6 @@ const addCategory = async (req, res) => {
     const uploadedResponse = (img !== 'test' && await cloudinary.uploader.upload(img, {
       upload_preset: 'henry',
     }));
-
-    if (!uploadedResponse) {
-      const [category, created] = await Category.findOrCreate({
-        where: {
-          name: name.trim(),
-        },
-        defaults: {
-          name: name.trim(),
-          description: description.trim(),
-          img: 'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg',
-        },
-      });
-      if (created) return res.send(`La categoria ha sido creada! con el nombre: ${category.dataValues.name}`);
-      return res.status(400).send('La categoria ya existe');
-    }
-
     const [category, created] = await Category.findOrCreate({
       where: {
         name: name.trim(),
@@ -43,13 +27,13 @@ const addCategory = async (req, res) => {
       defaults: {
         name: name.trim(),
         description: description.trim(),
-        img: uploadedResponse.secure_url,
+        img: uploadedResponse.secure_url || 'https://bodasyweddings.com/wp-content/uploads/2019/04/orden-de-los-anillos-de-boda-y-de-compromiso.jpg',
       },
     });
     if (created) return res.send(`La categoria ha sido creada! con el nombre: ${category.dataValues.name}`);
     return res.status(400).send('La categoria ya existe');
   } catch (err) {
-    return res.status(500).send('Error en la conexión con la base de datos. No se pudo crear la categoría');
+    return res.status(500).send('Internal server error. Categoría no fue creada');
   }
 };
 
@@ -78,7 +62,7 @@ const updateCategory = async (req, res) => {
       return res.send('La categoria ha sido modificada exitosamente!');
     } return res.status(400).send('Error en la conexión con la base de datos. Faltan imagenes.');
   } catch {
-    return res.status(500).send('Error en la conexión con la base de datos. No se pudo actualizar la categoría');
+    return res.status(500).send('Internal server error. Categoría no fue actualizada');
   }
 };
 
@@ -86,31 +70,32 @@ const delCategory = async (req, res) => {
   const {
     categoryId,
   } = req.params;
-  if (!categoryId) return res.status(400).send('El id de la categoria no puede ser vacia');
+  if (!verifyNumber(categoryId).veracity) return res.status(400).send(verifyNumber(categoryId, 'ID de categoría').msg);
+  const id = parseInt(categoryId, 10);
   try {
-    const cat = await Category.findByPk(Number(categoryId));
-    if (!cat) return res.status(400).send('La categoria no existe');
-    await cat.destroy();
+    const categoryById = await Category.findByPk(id);
+    if (!categoryById) return res.status(400).send('La categoria no existe');
+    await categoryById.destroy();
     return res.send('La categoria ha sido eliminada!');
   } catch {
-    return res.status(500).send('Algo ocurrio :( la categoria no ha sido creada');
+    return res.status(500).send('Internal server error. Categoría no fue eliminada');
   }
 };
 
-const getCategory = async (_req, res) => {
+const getCategories = async (_req, res) => {
   try {
     const categories = await Category.findAll({
       attributes: ['id', 'name', 'img', 'description'],
     });
     return res.status(201).json(categories);
   } catch (err) {
-    return res.status(404).send('Se ha producido un error');
+    return res.status(404).send('Internal server error. No se pudieron obtener las categorías');
   }
 };
 
 module.exports = {
   addCategory,
-  getCategory,
+  getCategories,
   updateCategory,
   delCategory,
 };
