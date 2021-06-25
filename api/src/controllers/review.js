@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 const {
   verifyNumber,
@@ -28,20 +29,19 @@ const postReview = async (req, res) => {
   const {
     idProduct,
   } = req.params;
-  const {
+  let {
     calification,
     description,
     userId,
   } = req.body;
+  if (typeof userId !== 'string') return res.status(400).send('El ID de usuario es inválido');
+  userId = userId.trim();
   const user = await User.findByPk(userId);
   if (!user) return res.status(400).send('No existe User con ese ID');
   if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
-  let calificationByFive = 0;
-  if (calification === 0) {
-    calificationByFive = 1;
-  } else {
-    calificationByFive = calification % 5 === 0 ? 5 : calification % 5;
-  }
+  description = description.trim();
+  if (calification === 0) calification = 1;
+  else calification = calification % 5 === 0 ? 5 : calification % 5;
   try {
     const [review, created] = await Review.findOrCreate({
       where: {
@@ -49,7 +49,7 @@ const postReview = async (req, res) => {
         userId,
       },
       defaults: {
-        calification: calificationByFive,
+        calification,
         description,
       },
     });
@@ -70,10 +70,8 @@ const deleteReview = async (req, res) => {
         id: idReview,
       },
     });
-
     if (!review) return res.status(400).send('No se encontró una review');
-
-    return res.status(200).json('Review eliminada correctamente!');
+    return res.status(200).send('Review eliminada correctamente!');
   } catch (err) {
     return res.status(500).send('Internal server error');
   }

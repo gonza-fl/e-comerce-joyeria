@@ -3,7 +3,7 @@ const {
 } = require('express');
 const address = require('./address');
 const {
-  createUser, getUser, updateUser, getUserById, getUserAdmin,
+  createUser, getUsers, updateUser, getUserById, getUserAdmin,
 } = require('../controllers/user');
 const {
   editCartAmount,
@@ -20,5 +20,5 @@ router.use('/:idUser/address', address);
 router.put('/:idUser', updateUser);
 router.get('/:idUser', getUserById);
 router.post('/', createUser);
-router.get('/', getUser);
+router.get('/', getUsers);
 module.exports = router;
