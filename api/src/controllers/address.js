@@ -37,7 +37,7 @@ const updateAddress = async (req, res) => {
   const {
     idUser, idAddress,
   } = req.params;
-  const {
+  let {
     address,
     postalCode,
     description,
@@ -49,7 +49,10 @@ const updateAddress = async (req, res) => {
     });
     // Soy Rodri: ¿SE ESTA USANDO ESTE INCLUDE? SI ES SOLO EL USER LO QUE QUIERO SABER
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
-
+    address = address !== '' ? address : undefined;
+    postalCode = postalCode !== '' ? postalCode : undefined;
+    description = description !== '' ? description : undefined;
+    name = name !== '' ? name : undefined;
     if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
     await Address.update({
       name,
