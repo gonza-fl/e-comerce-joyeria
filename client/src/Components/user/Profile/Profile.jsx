@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FcBusinessman } from 'react-icons/fc';
@@ -8,35 +8,12 @@ import { useSelector } from 'react-redux';
 import EditProfile from './EditProfile';
 import UserOrders from '../UserOrders/UserOrders';
 
-const mockdata = {
-  name: 'Diego Fernando',
-  lastname: 'Vallejos Cifuentes',
-  email: 'dfvallejosc@gmail.com',
-  gender: 'Masculino',
-  birthday: '02-28-1992',
-  phone: 3152639144,
-  adresse: [{
-    id: '1',
-    name: 'Casa',
-    adresse: 'Calle 65 #56-84',
-    description: 'Mi casa',
-    region: 'Antioquia',
-    postalCode: '10500',
-  },
-  {
-    id: '2',
-    name: 'Oficina',
-    adress: 'Calle 56 #35-28',
-    description: 'Mi oficina',
-    region: 'Antioquia',
-    postalCode: '10300',
-  }],
-};
 export default function Profile() {
-  // const user = useSelector((state) => state.user);
   const [edit, setEdit] = useState(false);
   const [menu, setMenu] = useState(1);
   const user = useSelector((state) => state.user);
+
+  useEffect(() => {}, [user]);
 
   return (
     <MainDiv className="bg-color-three">
@@ -48,7 +25,7 @@ export default function Profile() {
       </Menu>
 
       {menu === 1 ? !edit ? showProfile(user, setEdit)
-        : <EditProfile user={{ ...user, adresse: mockdata.adresse }} setEdit={setEdit} />
+        : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
           : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
             : <h1>CAMBIAR CONTRASEÑA</h1>}
@@ -87,14 +64,14 @@ function showProfile(user, setEdit) {
         <b>Direcciones de envío: </b>
         <br />
         <br />
-        {mockdata.adresse.length > 0
-          ? mockdata.adresse.map((a) => (
+        {user.addresses && user.addresses.length > 0
+          ? user.addresses.map((a) => (
             <AdressDiv>
-              <b>{a.name}</b>
+              <b>{a.description}</b>
               <br />
-              <span>{a.adresse}</span>
+              <span>{a.address}</span>
               <br />
-              <span>{a.region}</span>
+              <span>{a.name}</span>
               <br />
               <span>{a.postalCode}</span>
               <br />

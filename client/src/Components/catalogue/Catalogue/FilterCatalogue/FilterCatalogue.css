@@ -4,6 +4,7 @@
     min-width: 190px;
     align-items: center;
     position: relative;
+    height: 100%;
 }
 
 .ctnFiltersCat p {

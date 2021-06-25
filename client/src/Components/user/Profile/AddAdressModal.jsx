@@ -1,8 +1,34 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import swal from 'sweetalert';
+import { URL_USERS } from '../../../constants';
 
-function AddAdressModal({ show, setAddAdress }) {
+function AddAdressModal({ show, setAddAdress, userId }) {
+  const [input, setInput] = useState({
+    name: '',
+    address: '',
+    postalCode: '',
+    description: '',
+  });
+
+  function onChangeInput(e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function addDirection(e) {
+    e.preventDefault();
+    axios.post(`${URL_USERS}${userId}/address`, input)
+      .then((res) => swal('¡Muy bien!', res.data, 'success'))
+      .catch((err) => swal('Lo sentimos', err.response.data, 'warning'));
+    setAddAdress('none');
+  }
+
   return (
     <BackgroundModal style={{ display: show }}>
       <ModalDiv className="bg-color-six">
@@ -12,29 +38,37 @@ function AddAdressModal({ show, setAddAdress }) {
             <br />
             <b>Dirección</b>
             <br />
-            <b>Región</b>
+            <b>Descripción</b>
             <br />
             <b>Código postal</b>
           </div>
           <div>
-            <input name="name" />
+            <input name="name" onChange={onChangeInput} />
             <br />
-            <input name="adress" />
+            <input name="address" onChange={onChangeInput} />
             <br />
-            <input name="region" />
+            <input name="description" onChange={onChangeInput} />
             <br />
-            <input name="postalCode" />
+            <input name="postalCode" onChange={onChangeInput} />
           </div>
         </div>
         <br />
-        <AddButton
-          type="button"
-          className="bg-color-three"
-          onClick={() => setAddAdress('none')}
-        >
-          Agregar
-
-        </AddButton>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <AddButton
+            type="button"
+            className="bg-color-three"
+            onClick={addDirection}
+          >
+            Agregar
+          </AddButton>
+          <AddButton
+            type="button"
+            className="bg-color-three"
+            onClick={() => setAddAdress('none')}
+          >
+            Cancelar
+          </AddButton>
+        </div>
       </ModalDiv>
     </BackgroundModal>
   );
@@ -50,7 +84,7 @@ const BackgroundModal = styled.div`
         background-color: rgba(0,0,0,0.4); 
 `;
 
-const ModalDiv = styled.div`
+const ModalDiv = styled.form`
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -62,7 +96,7 @@ const ModalDiv = styled.div`
 `;
 
 const AddButton = styled.button`
-    padding: 5px 0px;
+    padding: 5px 10px;
     border-style: none;
     font-size: 15px;
     font-weight: bold;

@@ -17,7 +17,7 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
-import logo from '../../../img/logo2.png';
+import Button from '../../StyledComponents/Button';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 ADMIN_IDS.split(',');
@@ -44,19 +44,21 @@ export default function Nav() {
       <div className="nav bg-color-three">
         <div className="leftMenuNav"><LeftMenu /></div>
 
+        <div className="homeResponsive">
+          <Link to="/"><Button text="Inicio" /> </Link>
+        </div>
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
-        <img className="logoResponsive" src={logo} alt="" />
 
         <div className="rigthMenuNav">
           <div className="SearchBarNav">
             <SearchBar />
           </div>
-          {user.email ? <h3>{user.name}</h3> : null}
 
           <div className="userIcon">
             <div className="navIconUser"><FaUserAlt />
+              {user.email ? <b>{user.name.split(' ')[0]}</b> : null}
               {user.id
                 ? (
                   <div className="userOptions">
@@ -76,9 +78,8 @@ export default function Nav() {
                 onMouseEnter={() => dispatch(showFloatingCart('inline'))}
               />
             </div>
+            <FloatingCart />
           </div>
-
-          <FloatingCart />
         </div>
       </div>
     </div>

@@ -26,3 +26,12 @@
 .searchBtn:hover {
     cursor: pointer;
 }
+
+@media (max-width: 452px) {
+    #searchBar {
+        width: 90%;
+    }
+    .searchBtn {
+        padding: 30px;
+    }
+}

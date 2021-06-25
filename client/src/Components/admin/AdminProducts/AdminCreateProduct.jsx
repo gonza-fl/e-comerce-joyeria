@@ -145,7 +145,7 @@ function AdminCreateProduct() {
             <b>CATEGORÍAS: </b>
             <div>
               {categories.map((c) => (
-                <label>
+                <label style={{ marginRight: '10px' }}>
                   <StyledInput
                     onChange={(e) => onChangeCategories(e)}
                     name="categories"

@@ -70,7 +70,7 @@ const StyledImg = styled.img`
             }
         }
         @media (max-width: 452px) {
-          width:400px;
+          width:95%;
           height:270px;
         }
 `;

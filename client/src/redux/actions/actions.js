@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 /* eslint-disable func-names */
 
@@ -102,8 +103,17 @@ export function getCategoryId(id) {
 }
 
 export function setUser(user) {
-  const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
-  return { type: SET_USER, payload: actualUser };
+  return function (dispatch) {
+    return axios.get(`${URL_USERS}${user.uid}`)
+      .then((res) => {
+        dispatch({
+          type: SET_USER,
+          payload: { ...res.data[0], name: res.data[0].displayName },
+        });
+      });
+  };
+
+  // const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
 }
 
 export function showFloatingCart(value) {
