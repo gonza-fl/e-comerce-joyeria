@@ -114,7 +114,7 @@ export function getUserInfo(userId) {
       .then((res) => {
         dispatch({
           type: GET_USER_INFO,
-          payload: { ...res.data[0], name: res.data[0].displayName },
+          payload: { ...res.data, name: res.data.displayName },
         });
       });
   };
