@@ -34,8 +34,10 @@ const postReview = async (req, res) => {
     description,
     userId,
   } = req.body;
+  if (typeof (userId) !== 'string') return res.status(400).send('ID de user no valido');
   const user = await User.findByPk(userId);
   if (!user) return res.status(400).send('No existe User con ese ID');
+  if (!calification || !description) return res.status(400).send('Falta llenar un campo');
   if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
   let calificationByFive = 0;
   if (calification === 0) {
