@@ -1,8 +1,9 @@
 .ctnFiltersCat {
     display: flex;
     flex-direction: column;
-    width: 13%;
+    min-width: 190px;
     align-items: center;
+    position: relative;
 }
 
 .ctnFiltersCat p {
@@ -16,7 +17,8 @@
 
 .ctnFiltersCat input {
     margin-top: 7px;
-    max-width: 3rem;
+    max-width: 4rem;
+    outline: none;
 }
 
 .ctnFiltersCat h1 {
@@ -42,18 +44,24 @@
     cursor: pointer;
 }
 
+.stars {
+    display: flex;
+    flex-direction: column;
+    margin-block: 6px;
+}
+
 .ctnFiltersCat .undo {
     position: absolute;
-    left: 18%;
+    right: -100px;
     z-index: 99;
     animation: animationslide 1s;
 }
 
 @keyframes animationslide {
     0% {
-        left: 0;
+        left: -110%;
     }
     90% {
-        left: 280px;
+        left: 120%;
     }
 }

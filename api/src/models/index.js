@@ -16,6 +16,7 @@ const ImagesFactory = require('./Images');
 const OrderFactory = require('./Order');
 const UserFactory = require('./User');
 const OrderLineFactory = require('./OrderLine');
+const ReviewFactory = require('./Reviews');
 
 const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${dbName}`, {
   logging: false,
@@ -28,6 +29,7 @@ const Image = ImagesFactory(sequelize);
 const Order = OrderFactory(sequelize);
 const User = UserFactory(sequelize);
 const OrderLine = OrderLineFactory(sequelize);
+const Review = ReviewFactory(sequelize);
 
 Product.belongsToMany(Category, {
   through: 'product_category',
@@ -52,6 +54,12 @@ Order.belongsToMany(Product, {
   through: OrderLine,
 });
 
+Product.hasMany(Review);
+Review.belongsTo(Product);
+
+Review.belongsTo(User);
+User.hasMany(Review);
+
 module.exports = {
   conn: sequelize,
   Category,
@@ -61,4 +69,5 @@ module.exports = {
   OrderLine,
   User,
   Address,
+  Review,
 };

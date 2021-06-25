@@ -40,7 +40,7 @@ export default function Nav() {
   return (
     <div className="ctnNav bg-color-three">
       <UserLogin />
-      {ADMIN_IDS.includes(user.id) && <Link to="/admin"><div className="adminNav">PANEL DE ADMINISTRADOR </div> </Link>}
+      {ADMIN_IDS.includes(user.id) && <Link to="/admin" className="link-without-styles"><div className="adminNav">PANEL DE ADMINISTRADOR </div> </Link>}
       <div className="nav bg-color-three">
         <div className="leftMenuNav"><LeftMenu /></div>
 
