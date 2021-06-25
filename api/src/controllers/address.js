@@ -8,7 +8,6 @@ const {
 } = require('../helpers/functionHelpers');
 
 const addAddressFunction = async (req, res) => {
-  // Address __
   const {
     idUser,
   } = req.params;
@@ -18,7 +17,6 @@ const addAddressFunction = async (req, res) => {
     description,
     name,
   } = req.body;
-  // identifico el usuario al cual se le van a revisar las address
   if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
   const user = await User.findByPk(idUser);
   if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
@@ -26,8 +24,8 @@ const addAddressFunction = async (req, res) => {
     const isAddress = await Address.create({
       address,
       postalCode,
-      name,
-      description,
+      name: name.trim(),
+      description: description.trim(),
     });
     await user.addAddress(isAddress);
     return res.send('Domicilio creado con éxito!');
@@ -46,16 +44,12 @@ const updateAddress = async (req, res) => {
     name,
   } = req.body;
   try {
-    // capturo el usuario que se quiere cambiar la direccion
-    const user = await User.findOne({
-      where: {
-        id: idUser,
-      },
+    const user = await User.findByPk(idUser, {
       include: Address,
     });
-    // agrego validacion
+    // Soy Rodri: ¿SE ESTA USANDO ESTE INCLUDE? SI ES SOLO EL USER LO QUE QUIERO SABER
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
-    // identifico el address al cual se la va a hacer el cambio
+
     if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
     await Address.update({
       name,
@@ -68,9 +62,9 @@ const updateAddress = async (req, res) => {
         userId: idUser,
       },
     });
-    return res.status(200).send('Direccion updeteada');
+    return res.status(200).send('Direccion actualizada correctamente!');
   } catch (err) {
-    return res.status(404).send(err);
+    return res.status(404).send('Internal server error. Dirección no actualizada');
   }
 };
 
@@ -79,15 +73,12 @@ const getSingleAddress = async (req, res) => {
     idUser,
   } = req.params;
   try {
-    const response = await User.findOne({
-      where: {
-        id: idUser,
-      },
+    const response = await User.findByPk(idUser, {
       include: Address,
     });
     return res.status(201).json(response.addresses);
   } catch (error) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error. Dirección no encontrada');
   }
 };
 const deleteAddress = async (req, res) => {
@@ -104,9 +95,9 @@ const deleteAddress = async (req, res) => {
       },
     });
     if (!address) return res.status(404).send('No se ha encontrado la dirección.');
-    return res.json(address);
+    return res.send('Dirección eliminada correctamente!');
   } catch (err) {
-    return res.status(500).send('Ocurrió un error al intentar borrar el domicilio.');
+    return res.status(500).send('Internal server error. Dirección no eliminada');
   }
 };
 module.exports = {
