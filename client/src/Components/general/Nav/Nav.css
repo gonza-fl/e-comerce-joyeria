@@ -84,6 +84,7 @@
     width: 150px;
     cursor: pointer;
     padding-block: 10px;
+    transform: translate(-100px,0px);
 }
 
 .userOptions a {

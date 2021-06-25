@@ -53,10 +53,10 @@ export default function Nav() {
           <div className="SearchBarNav">
             <SearchBar />
           </div>
-          {user.email ? <h3>{user.name}</h3> : null}
 
           <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
             <div className="navIcon"><FaUserAlt /></div>
+            {user.email ? <b>{user.name.split(' ')[0]}</b> : null}
             {user.id
               ? (
                 <div className="userOptions">
@@ -71,15 +71,14 @@ export default function Nav() {
                 </div>
               )}
           </div>
-          <div className="navIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
-
+          <div style={{ flexGrow: 0.1, fontSize: '120%' }}>
             <FaShoppingCart
               style={{ fontSize: '20px' }}
               onMouseEnter={() => dispatch(showFloatingCart('inline'))}
             />
+            <br />
+            <FloatingCart />
           </div>
-
-          <FloatingCart />
         </div>
       </div>
     </div>
