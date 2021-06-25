@@ -34,6 +34,10 @@
     justify-content: center;
 }
 
+.homeResponsive {
+    display: none;
+}
+
 .leftMenuNav {
     display: flex;
     width: 40%;
@@ -60,21 +64,27 @@
     display: none;
 }
 
-.navIcon:hover {
-    transform: scale(1.2);
-    transition: 0.5s;
+.navIconCart,
+.navIconUser {
+    font-size: 120%;
 }
 
-.userIcon:hover .userOptions {
+.userIcon {
+    display: flex;
+    justify-content: space-evenly;
+    width: 33%;
+}
+
+.navIconUser:hover .userOptions {
     z-index: 11;
     display: block;
     position: absolute;
-    transform: translate(-50px, 0px);
+    transform: translate(-65px, 0px);
 }
 
 .SearchBarNav {
     display: flex;
-    width: 70%;
+    width: 67%;
 }
 
 .userOptions {
@@ -84,6 +94,7 @@
     width: 150px;
     cursor: pointer;
     padding-block: 10px;
+    transform: translate(-100px, 0px);
 }
 
 .userOptions a {
@@ -107,16 +118,15 @@
     right: 10px;
 }
 
-@media (max-width: 450px) {
+@media (max-width: 452px) {
     .ctnNav {
-        height: 55px;
-        padding-top: 10px;
-        position: fixed;
+        height: 60px;
+        padding-block: 10px;
         z-index: 99;
     }
     .nav {
-        width: 95%;
-        justify-content: space-between;
+        width: 100%;
+        justify-content: center;
         position: relative;
     }
     .leftMenuNav {
@@ -124,31 +134,70 @@
         width: 0;
     }
     .logoNav {
-        display: none;
-        width: 0;
+        position: absolute;
     }
-    .nav .logoResponsive {
-        display: flex;
-        height: 100%;
+    .homeResponsive {
+        position: absolute;
+        display: block;
+        left: 10px;
     }
     .rigthMenuNav {
-        width: 80%;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 25px;
+    }
+    .SearchBarNav {
+        width: 100%;
+        right: -50px;
+        position: absolute;
+        top: -5px;
     }
     .ctnNav .rigthMenuNav h3 {
         top: 25px;
         right: 0;
         font-size: 13px;
     }
-    .userIcon:hover .userOptions {
-        right: 0;
-        top: 45px;
+    .userIcon {
+        position: absolute;
+        justify-content: space-around;
+        top: 65px;
         width: 100%;
-        transform: scaleX(1.1);
-        font-size: 15px;
+        background-color: #f1eee3
+    }
+    .navIconUser,
+    .navIconCart {
+        border: #CF988C 1px solid;
+        padding-block: 5px;
+        width: 50%;
+    }
+    .navIconUser:hover,
+    .navIconCart:hover {
+        background-color: #f0ddd8
+    }
+    .navIconUser:hover .userOptions {
+        transform: translate(0px, 5px);
+        width: 50%;
+        animation: userMenu 1s;
     }
     .adminNav {
         width: 100%;
-        top: 65px;
+        top: 110px;
         left: 0;
+        background-color: #CF988C;
+    }
+    .ctnNav .rigthMenuNav h3 {
+        top: 33px;
+        margin-right: 10px;
+    }
+    @keyframes userMenu {
+        0% {
+            left: -200px;
+            width: 0;
+        }
+        100% {
+            left: 0px
+        }
     }
 }

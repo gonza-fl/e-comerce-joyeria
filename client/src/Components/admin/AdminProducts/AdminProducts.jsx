@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 import styled from 'styled-components';
-import { getProducts } from '../../../redux/actions/actions';
+import { getCategories, getProducts } from '../../../redux/actions/actions';
 import { deleteProduct } from './utils/request';
 import loadingImg from '../../../img/loading-img.jpg';
 import Button from '../../StyledComponents/Button';
@@ -13,13 +14,49 @@ import Button from '../../StyledComponents/Button';
 function AdminProducts() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+  const categories = useSelector((state) => state.categories);
+  const [productsDisplay, setProductsDisplay] = useState([]);
+
+  useEffect(() => {
+    setProductsDisplay(products);
+  }, [products]);
 
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getCategories());
   }, []);
+
+  // function onFilter(e) {
+  //   switch (e.target.value) {
+  //     case ''
+
+  //     default: 'none';
+  //   }
+  // }
 
   return (
     <WindowContainer>
+      <div>
+        <span>Por categoría</span>
+        <select>
+          {categories.map((c) => <option>{c.name}</option>)}
+        </select>
+
+        <span>Por cantidad</span>
+        <select>
+          <option>Por mayor cantidad</option>
+          <option>Por menor cantidad</option>
+        </select>
+
+        <span>Por precio</span>
+        <select>
+          <option>Por mayor precio</option>
+          <option>Por menor precio</option>
+        </select>
+
+        <input name="name" />
+        <FaSearch />
+      </div>
       <DivContainer style={{ overflowY: 'scroll' }}>
         <table>
           <tr>
@@ -30,7 +67,7 @@ function AdminProducts() {
             <th>CATEGORIAS</th>
             <th>IMAGEN</th>
           </tr>
-          {products.map((p) => (
+          {productsDisplay.map((p) => (
 
             <ProductContainer className="bg-color-three" key={p.id}>
               <td>{p.id}</td>

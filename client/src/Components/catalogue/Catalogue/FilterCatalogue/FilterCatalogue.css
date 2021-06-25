@@ -4,6 +4,7 @@
     min-width: 190px;
     align-items: center;
     position: relative;
+    height: 100%;
 }
 
 .ctnFiltersCat p {
@@ -63,5 +64,35 @@
     }
     90% {
         left: 120%;
+    }
+}
+
+@media (max-width: 452px) {
+    .ctnFiltersCat {
+        display: none;
+        height: 100%;
+        z-index: 100;
+        position: absolute;
+        transform: translate(-20px, -90px);
+        animation: filterSlide 0.8s;
+    }
+    @keyframes filterSlide {
+        0% {
+            left: -100px;
+            width: 0;
+        }
+        100% {
+            left: 20px;
+        }
+    }
+    .ctnFiltersCat .undo {
+        left: 0;
+        transform: translate(-45px, 500px);
+    }
+    @keyframes animationslide {
+        0% {
+            left: -110%;
+        }
+        90% {}
     }
 }

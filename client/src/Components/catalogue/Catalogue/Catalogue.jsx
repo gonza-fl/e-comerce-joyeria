@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Catalogue.css';
 import { useHistory, useLocation } from 'react-router-dom';
+import { FaAlignJustify } from 'react-icons/fa';
 import ProductCard from '../ProductCard/ProductCard';
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
 import { getProducts, getProductsByName } from '../../../redux/actions/actions';
@@ -52,12 +53,15 @@ export default function catalogue() {
   return (
     <div className="catalogue">
       <Paged products={products} page={page} onClick={handlePage} />
-      <FilterCatalogue
-        products={productsDisplay}
-        setProducts={setProductsDisplay}
-        productsGlobal={cataloguePag(products, page)}
-        total={products.length}
-      />
+      <div className="filterResponsive">
+        <div className="iconFilter"><FaAlignJustify /></div>
+        <FilterCatalogue
+          products={productsDisplay}
+          setProducts={setProductsDisplay}
+          productsGlobal={cataloguePag(products, page)}
+          total={products.length}
+        />
+      </div>
       <div className="catalogueMap">
         {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
         {productsDisplay.map((product) => (
