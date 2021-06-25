@@ -3,7 +3,7 @@ const {
 } = require('express');
 const {
   createOrFindAndUpdateCart, modifyOrder,
-  emptyCartOrProduct, getOrders, getOrderById,
+  emptyCartOrProduct, getOrders, getOrderById, testNodeMailer,
 } = require('../controllers/order');
 
 const router = Router();
@@ -12,5 +12,6 @@ router.get('/', getOrders);
 router.put('/:id', modifyOrder);
 router.delete('/empty', emptyCartOrProduct);
 router.post('/', createOrFindAndUpdateCart);
+router.post('/test', testNodeMailer);
 
 module.exports = router;

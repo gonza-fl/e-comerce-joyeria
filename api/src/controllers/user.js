@@ -114,6 +114,7 @@ const getUserAdmin = async (req, res) => {
   if (user && user.admin === 'admin') return res.sendStatus(200);
   return res.sendStatus(404);
 };
+
 module.exports = {
   createUser,
   getUser,
