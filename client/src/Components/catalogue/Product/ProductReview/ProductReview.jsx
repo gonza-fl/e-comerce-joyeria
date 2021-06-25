@@ -25,38 +25,41 @@ const ProductReview = ({ productId }) => {
   const average = review.map((rev) => rev.calification).reduce((a, b) => a + b, 0) / review.length;
   const roundAverage = average.toFixed(1);
 
-  return (
-    <div className="product-reviews-container">
-      <h2 id="product-reviews-container-title">Opiniones sobre el producto</h2>
-      <div className="average-review">
-        <p id="average-number">{roundAverage}</p>
-        <div className="average-review-stars">
-          <ReactStars
-            count={5}
-            size={24}
-            edit={false}
-            value={Math.round(average)}
-            activeColor="#ffd700"
-          />
-          <p id="average-declaration">Promedio entre {review.length} opiniones</p>
-        </div>
-      </div>
-      <div className="description-reviews-container">
-        {review.map((rev) => (
-          <div className="description-review">
+  if (review && review.length > 0) {
+    return (
+      <div className="product-reviews-container">
+        <h2 id="product-reviews-container-title">Opiniones sobre el producto</h2>
+        <div className="average-review">
+          <p id="average-number">{roundAverage}</p>
+          <div className="average-review-stars">
             <ReactStars
               count={5}
               size={24}
               edit={false}
-              value={rev.calification}
+              value={Math.round(average)}
               activeColor="#ffd700"
             />
-            <p id="description-review-description">{rev.description}</p>
+            <p id="average-declaration">Promedio entre {review.length} opiniones</p>
           </div>
-        ))}
+        </div>
+        <div className="description-reviews-container">
+          {review.map((rev) => (
+            <div className="description-review">
+              <ReactStars
+                count={5}
+                size={24}
+                edit={false}
+                value={rev.calification}
+                activeColor="#ffd700"
+              />
+              <p id="description-review-description">{rev.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return <div className="no-review-msg">No hay ninguna review de este producto</div>;
 };
 
 export default ProductReview;
