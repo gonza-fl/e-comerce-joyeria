@@ -1,7 +1,16 @@
 /* eslint-disable no-console */
 const express = require('express');
 const morgan = require('morgan');
+const admin = require('firebase-admin');
+
 const router = require('./src/routes/index');
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://pf-ecomerse.firebaseio.com',
+});
+
+// const auth = admin.auth();
 
 const {
   conn,
