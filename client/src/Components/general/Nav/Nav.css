@@ -200,4 +200,11 @@
             left: 0px
         }
     }
+    @media (max-width: 400px) {
+        .SearchBarNav {
+            width: 80%;
+            right: 0;
+            top: -5px;
+        }
+    }
 }
