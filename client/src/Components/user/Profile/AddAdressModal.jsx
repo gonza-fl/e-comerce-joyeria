@@ -2,11 +2,14 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import swal from 'sweetalert';
 import { URL_USERS } from '../../../constants';
 
-function AddAdressModal({ show, setAddAdress, userId }) {
+function AddAdressModal({
+  show, setAddAdress, userId, pivot, setPivot,
+}) {
   const [input, setInput] = useState({
     name: '',
     address: '',
@@ -24,8 +27,9 @@ function AddAdressModal({ show, setAddAdress, userId }) {
   function addDirection(e) {
     e.preventDefault();
     axios.post(`${URL_USERS}${userId}/address`, input)
-      .then((res) => swal('¡Muy bien!', res.data, 'success'))
-      .catch((err) => swal('Lo sentimos', err.response.data, 'warning'));
+      .then(() => swal('¡Muy bien!', 'La dirección se agregó con éxito', 'success'))
+      .then(() => setPivot(!pivot))
+      .catch(() => swal('Lo sentimos', 'No se pugo agregar la dirección', 'warning'));
     setAddAdress('none');
   }
 
@@ -76,7 +80,7 @@ function AddAdressModal({ show, setAddAdress, userId }) {
 
 const BackgroundModal = styled.div`
         position: absolute; 
-        z-index: 10; 
+        z-index: 300; 
         width: 99vw;
         height: 99vh; 
         overflow: auto;
@@ -93,6 +97,8 @@ const ModalDiv = styled.form`
     left: 40%;
     width: 20%;
     padding: 20px 20px;
+    border-radius: 10px;
+    z-index: 300; 
 `;
 
 const AddButton = styled.button`
