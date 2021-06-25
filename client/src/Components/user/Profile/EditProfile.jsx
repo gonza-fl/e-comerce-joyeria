@@ -3,18 +3,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FcBusinessman } from 'react-icons/fc';
 import axios from 'axios';
 import swal from 'sweetalert';
-import AddAdressModal from './AddAdressModal';
 import { URL_USERS } from '../../../constants';
 
 export default function EditProfile({
-  user, setEdit, pivot, setPivot,
+  user, setEdit,
 }) {
-  const [addAdress, setAddAdress] = useState('none');
   const [input, setInput] = useState({
     name: user.name,
     email: user.email,
@@ -22,8 +20,6 @@ export default function EditProfile({
     phone: user.phone,
     addresses: user.addresses,
   });
-
-  useEffect(() => {}, [user, pivot]);
 
   function onChangeInput(e) {
     setInput({
@@ -43,12 +39,6 @@ export default function EditProfile({
       .catch(() => swal('Lo sentimos', 'No se puso actualizar la información', 'warning'));
 
     // axios.put(`${URL_USERS}${user.id}/address`, {})
-  }
-
-  function deleteDirection(addressId) {
-    axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
-      .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
-      .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
   }
 
   return (
@@ -99,7 +89,6 @@ export default function EditProfile({
               <span>{a.name}</span>
               <br />
               <span>{a.postalCode}</span>
-              <button type="button" style={{ transform: 'translate(220px, -40px)' }} onClick={() => deleteDirection(a.id)}>x</button>
             </AdressDiv>
           ))
           : (
@@ -108,9 +97,7 @@ export default function EditProfile({
               <span>Agrega una dirección</span>
             </AdressDiv>
           )}
-        <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
       </UserInfo>
-      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
     </DivContainer>
   );
 }

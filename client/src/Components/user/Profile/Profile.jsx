@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
-// import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FcBusinessman } from 'react-icons/fc';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,15 +16,14 @@ import AddAdressModal from './AddAdressModal';
 export default function Profile() {
   const [edit, setEdit] = useState(false);
   const [menu, setMenu] = useState(1);
-  const [pivot, setPivot] = useState(true);
-
+  const [addAdress, setAddAdress] = useState('none');
   const logged = useSelector((state) => state.user);
   const user = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserInfo(logged.id));
-  }, [edit, pivot]);
+  }, [edit, logged]);
 
   return (
     <MainDiv className="bg-color-three">
@@ -36,21 +34,19 @@ export default function Profile() {
         <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
       </Menu>
 
-      {menu === 1 ? !edit ? showProfile(user, setEdit, pivot, setPivot)
-        : <EditProfile user={user} setEdit={setEdit} pivot={pivot} setPivot={setPivot} />
+      {menu === 1 ? !edit ? showProfile(user, setEdit, addAdress, setAddAdress)
+        : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
-          : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
-            : <h1>CAMBIAR CONTRASEÑA</h1>}
+          : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
+            : <div><h1>CAMBIAR CONTRASEÑA</h1></div>}
     </MainDiv>
   );
 }
 
-function showProfile(user, setEdit, pivot, setPivot) {
-  const [addAdress, setAddAdress] = useState('none');
+function showProfile(user, setEdit, addAdress, setAddAdress) {
   function deleteDirection(addressId) {
     axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
       .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
-      .then(() => setPivot(!pivot))
       .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
   }
   return (
@@ -110,7 +106,7 @@ function showProfile(user, setEdit, pivot, setPivot) {
           <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
         </div>
       </div>
-      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
+      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} />
     </DivContainer>
   );
 }
