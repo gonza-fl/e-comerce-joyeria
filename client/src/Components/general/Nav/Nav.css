@@ -16,14 +16,8 @@
     position: relative;
 }
 
-.adminNav {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    z-index: 1;
-    width: 90px;
-    top: 25px;
-    left: 30%
+.adminNavResponsive {
+    display: none;
 }
 
 .logoNav {
@@ -181,9 +175,14 @@
         width: 50%;
         animation: userMenu 1s;
     }
-    .adminNav {
+    .adminNavResponsive {
+        color: black;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        z-index: 1;
         width: 100%;
-        top: 110px;
+        top: 100px;
         left: 0;
         background-color: #CF988C;
     }
@@ -198,6 +197,13 @@
         }
         100% {
             left: 0px
+        }
+    }
+    @media (max-width: 400px) {
+        .SearchBarNav {
+            width: 80%;
+            right: 0;
+            top: -5px;
         }
     }
 }

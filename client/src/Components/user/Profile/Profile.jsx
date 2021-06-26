@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
-// import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FcBusinessman } from 'react-icons/fc';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,19 +12,20 @@ import UserOrders from '../UserOrders/UserOrders';
 import { getUserInfo } from '../../../redux/actions/actions';
 import { URL_USERS } from '../../../constants';
 import AddAdressModal from './AddAdressModal';
+import EditPassword from './EditPassword/EditPassword';
 
 export default function Profile() {
   const [edit, setEdit] = useState(false);
   const [menu, setMenu] = useState(1);
-  const [pivot, setPivot] = useState(true);
-
+  const [addAdress, setAddAdress] = useState('none');
+  const [pivot, setPivot] = useState(false);
   const logged = useSelector((state) => state.user);
   const user = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserInfo(logged.id));
-  }, [edit, pivot]);
+  }, [edit, logged, pivot]);
 
   return (
     <MainDiv className="bg-color-three">
@@ -36,22 +36,33 @@ export default function Profile() {
         <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
       </Menu>
 
-      {menu === 1 ? !edit ? showProfile(user, setEdit, pivot, setPivot)
-        : <EditProfile user={user} setEdit={setEdit} pivot={pivot} setPivot={setPivot} />
+      {menu === 1 ? !edit ? showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot)
+        : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
-          : menu === 3 ? <h1>MÉTODOS DE PAGO</h1>
-            : <h1>CAMBIAR CONTRASEÑA</h1>}
+          : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
+            : <EditPassword />}
     </MainDiv>
   );
 }
 
-function showProfile(user, setEdit, pivot, setPivot) {
-  const [addAdress, setAddAdress] = useState('none');
+function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
   function deleteDirection(addressId) {
-    axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
-      .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
-      .then(() => setPivot(!pivot))
-      .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
+    swal({
+      title: '¿Estás seguro que deseas eliminar esta dirección?',
+      text: '',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
+          .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
+          .then(() => setPivot(!pivot))
+          .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
+      } else {
+        swal('¡La dirección no fue eliminada!');
+      }
+    });
   }
   return (
     <DivContainer>
@@ -80,10 +91,10 @@ function showProfile(user, setEdit, pivot, setPivot) {
         <span>{user.birthday || 'Sin fecha de nacimiento'}</span>
       </UserInfo>
       <div style={{
-        display: 'flex', flexDirection: 'column', flexGrow: '6',
+        display: 'flex', flexDirection: 'column', flexGrow: '6', width: '50%', alignItems: 'center', padding: '5px 0px',
       }}
       >
-        <UserInfo style={{ overflowY: 'scroll' }}>
+        <UserInfo style={{ overflowY: 'scroll', width: '80%' }}>
           <b>Direcciones de envío: </b>
 
           {user.addresses && user.addresses.length > 0
@@ -106,7 +117,7 @@ function showProfile(user, setEdit, pivot, setPivot) {
               </AdressDiv>
             )}
         </UserInfo>
-        <div className="bg-color-six">
+        <div className="bg-color-six" style={{ width: '90%' }}>
           <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
         </div>
       </div>
