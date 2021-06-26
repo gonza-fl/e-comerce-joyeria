@@ -13,14 +13,12 @@ import firebase from 'firebase/app';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories, showFloatingCart } from '../../../redux/actions/actions';
+// eslint-disable-next-line import/no-cycle
 import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
 import Button from '../../StyledComponents/Button';
-
-const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-ADMIN_IDS.split(',');
 
 export default function Nav() {
   const dispatch = useDispatch();
@@ -40,9 +38,8 @@ export default function Nav() {
   return (
     <div className="ctnNav bg-color-three">
       <UserLogin />
-      {ADMIN_IDS.includes(user.id) && <Link to="/admin" className="link-without-styles"><div className="adminNav">PANEL DE ADMINISTRADOR </div> </Link>}
       <div className="nav bg-color-three">
-        <div className="leftMenuNav"><LeftMenu /></div>
+        <div className="leftMenuNav"><LeftMenu user={user} /></div>
 
         <div className="homeResponsive">
           <Link to="/"><Button text="Inicio" /> </Link>
@@ -58,6 +55,7 @@ export default function Nav() {
 
           <div className="userIcon">
             <div className="navIconUser"><FaUserAlt />
+              &nbsp; &nbsp;
               {user.email ? <b>{user.name.split(' ')[0]}</b> : null}
               {user.id
                 ? (
