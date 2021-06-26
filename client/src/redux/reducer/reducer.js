@@ -11,6 +11,7 @@ import {
   SHOW_FLOATING_CART,
   GET_USER_ORDERS,
   GET_USER_INFO,
+  GET_REVIEW_BY_USER,
 } from '../actions/actions';
 
 const InitialState = {
@@ -28,6 +29,7 @@ const InitialState = {
   userInfo: {},
   floatingCart: 'none',
   userOrders: [],
+  reviewByUser: {},
 };
 
 export default function rootReducer(state = InitialState, action) {
@@ -106,6 +108,13 @@ export default function rootReducer(state = InitialState, action) {
     return {
       ...state,
       userInfo: action.payload,
+    };
+  }
+
+  if (action.type === GET_REVIEW_BY_USER) {
+    return {
+      ...state,
+      reviewByUser: action.payload,
     };
   }
   return state;

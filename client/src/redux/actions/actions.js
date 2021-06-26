@@ -26,6 +26,7 @@ export const SET_USER = 'SET_USER';
 export const SHOW_FLOATING_CART = 'SHOW_FLOATING_CART';
 export const GET_USER_ORDERS = 'GET_USER_ORDERS';
 export const GET_USER_INFO = 'GET_USER_INFO';
+export const GET_REVIEW_BY_USER = 'GET_REVIEW_BY_USER';
 
 export function getProducts() {
   return function (dispatch) {
@@ -142,4 +143,18 @@ export function getUserOrders(id) {
 
 export function restartProductsByCategory() {
   return { type: GET_PRODUCTS_BY_CATEGORY, payload: [] };
+}
+
+export function getReviewByUser(productId, userId) {
+  return function (dispatch) {
+    return (axios.get(`${URL_PRODUCTS}${productId}/review/${userId}`)
+      .then((response) => {
+        dispatch({
+          type: GET_REVIEW_BY_USER,
+          payload: response.data,
+        });
+      })
+      .catch((err) => console.log(err))
+    );
+  };
 }

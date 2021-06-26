@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import ReactStars from 'react-rating-stars-component';
 import axios from 'axios';
-import { getProductDetail } from '../../../../../redux/actions/actions';
+import { getProductDetail, getReviewByUser } from '../../../../../redux/actions/actions';
 import { URL_PRODUCTS } from '../../../../../constants';
 import Spiner from '../../../../Spiner/Spiner';
 
@@ -17,24 +17,29 @@ const CreateUpdateReview = () => {
   const { productId, userId } = useParams();
   const [starsValue, setStarsValue] = useState(0);
   const [descriptionValue, setDescriptionValue] = useState('');
-  const [productReview, setProductReview] = useState({});
+  // const [productReview, setProductReview] = useState({});
 
   const detail = useSelector((state) => state.detail);
+  const productReview = useSelector((state) => state.reviewByUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductDetail(productId));
   }, []);
 
+  // useEffect(() => {
+  //   if (detail.id) {
+  //     axios.get(`${URL_PRODUCTS}${productId}/review/${userId}`)
+  //       .then((response) => {
+  //         setProductReview(response.data);
+  //       })
+  //       .catch((err) => swal('Error', err.response.data, 'warning'));
+  //   }
+  // }, [detail]);
+
   useEffect(() => {
-    if (detail.id) {
-      axios.get(`${URL_PRODUCTS}${productId}/review/${userId}`)
-        .then((response) => {
-          setProductReview(response.data);
-        })
-        .catch((err) => swal('Error', err.response.data, 'warning'));
-    }
-  }, [detail]);
+    dispatch(getReviewByUser(productId, userId));
+  }, []);
 
   useEffect(() => {
     if (Object.keys(productReview).length) {
