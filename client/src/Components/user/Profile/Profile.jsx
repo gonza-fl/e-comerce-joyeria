@@ -12,6 +12,7 @@ import UserOrders from '../UserOrders/UserOrders';
 import { getUserInfo } from '../../../redux/actions/actions';
 import { URL_USERS } from '../../../constants';
 import AddAdressModal from './AddAdressModal';
+import EditPassword from './EditPassword/EditPassword';
 
 export default function Profile() {
   const [edit, setEdit] = useState(false);
@@ -39,7 +40,7 @@ export default function Profile() {
         : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
           : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
-            : <div><h1>CAMBIAR CONTRASEÑA</h1></div>}
+            : <EditPassword />}
     </MainDiv>
   );
 }

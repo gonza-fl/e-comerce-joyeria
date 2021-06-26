@@ -17,10 +17,10 @@ import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
 import Profile from './Components/user/Profile/Profile';
 import 'firebase/auth';
-import { setUser } from './redux/actions/actions';
 import CartCheckout from './Components/cart/CartCheckout/CartCheckout';
 import UserOrders from './Components/user/UserOrders/UserOrders';
 import UserOrderDetail from './Components/user/UserOrders/UserOrderDetail/UserOrderDetail';
+import { setUser } from './redux/actions/actions';
 
 function App() {
   const dispatch = useDispatch();
