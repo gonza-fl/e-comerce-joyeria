@@ -31,6 +31,7 @@ const getUsers = async (req, res) => {
     const user = await User.findAll({
       include: [Address, {
         model: Order,
+        attributes: ['id', 'status', 'orderNumber'],
         include: Product,
       },
       ],
@@ -59,7 +60,6 @@ const updateUser = async (req, res) => {
 
     if (role) user.role = role;
     // Updeteo el user
-
 
     await user.save();
     return res.status(200).send('Datos de usuario actualizados!');
