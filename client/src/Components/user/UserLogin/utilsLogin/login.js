@@ -23,7 +23,6 @@ export const loginWhitEmmail = (email, password) => {
     .then((res) => idUserLoged = res.user.uid)
     .then(() => axios.get(`${URL_USERS}${idUserLoged}`))
     .then((res) => {
-      console.log(res.data);
       if (res.data.role === 'banned') {
         return handleSingOut();
       }
@@ -58,10 +57,15 @@ const login = (provider) => {
         });
       }
     })
-    .then(() => { document.getElementById('login').style.display = 'none'; })
-    .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
-    .then(() => localStorage.setItem('cart', JSON.stringify([])))
-    .catch((err) => console.log(err));
+    .then(() => axios.get(`${URL_USERS}${idUserLoged}`))
+    .then((res) => {
+      if (res.data.role === 'banned') {
+        return handleSingOut();
+      }
+      return axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) })
+        .then(() => { document.getElementById('login').style.display = 'none'; })
+        .then(() => localStorage.setItem('cart', JSON.stringify([])));
+    });
 };
 
 //-----------------
