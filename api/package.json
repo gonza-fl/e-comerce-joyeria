@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "npm run lint",
-    "start": "NODE_ENV=production index.js",
-    "test": "NODE_ENV= testjest --verbose"
+    "start": "cross-env NODE_ENV=production index.js",
+    "test": "cross-env NODE_ENV= testjest --verbose"
   },
   "keywords": [],
   "author": "",
