@@ -18,13 +18,14 @@ export default function Profile() {
   const [edit, setEdit] = useState(false);
   const [menu, setMenu] = useState(1);
   const [addAdress, setAddAdress] = useState('none');
+  const [pivot, setPivot] = useState(false);
   const logged = useSelector((state) => state.user);
   const user = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserInfo(logged.id));
-  }, [edit, logged]);
+  }, [edit, logged, pivot]);
 
   return (
     <MainDiv className="bg-color-three">
@@ -35,7 +36,7 @@ export default function Profile() {
         <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
       </Menu>
 
-      {menu === 1 ? !edit ? showProfile(user, setEdit, addAdress, setAddAdress)
+      {menu === 1 ? !edit ? showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot)
         : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
           : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
@@ -44,11 +45,24 @@ export default function Profile() {
   );
 }
 
-function showProfile(user, setEdit, addAdress, setAddAdress) {
+function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
   function deleteDirection(addressId) {
-    axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
-      .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
-      .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
+    swal({
+      title: '¿Estás seguro que deseas eliminar esta dirección?',
+      text: '',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axios.delete(`${URL_USERS}${user.id}/address/${addressId}`, { data: '' })
+          .then(() => swal('¡Muy bien!', 'Eliminaste la dirección con éxito', 'success'))
+          .then(() => setPivot(!pivot))
+          .catch(() => swal('Lo sentimos', 'Hubo un problema al eliminar la dirección', 'warning'));
+      } else {
+        swal('¡La dirección no fue eliminada!');
+      }
+    });
   }
   return (
     <DivContainer>
@@ -77,10 +91,10 @@ function showProfile(user, setEdit, addAdress, setAddAdress) {
         <span>{user.birthday || 'Sin fecha de nacimiento'}</span>
       </UserInfo>
       <div style={{
-        display: 'flex', flexDirection: 'column', flexGrow: '6',
+        display: 'flex', flexDirection: 'column', flexGrow: '6', width: '50%', alignItems: 'center', padding: '5px 0px',
       }}
       >
-        <UserInfo style={{ overflowY: 'scroll' }}>
+        <UserInfo style={{ overflowY: 'scroll', width: '80%' }}>
           <b>Direcciones de envío: </b>
 
           {user.addresses && user.addresses.length > 0
@@ -103,11 +117,11 @@ function showProfile(user, setEdit, addAdress, setAddAdress) {
               </AdressDiv>
             )}
         </UserInfo>
-        <div className="bg-color-six">
+        <div className="bg-color-six" style={{ width: '90%' }}>
           <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
         </div>
       </div>
-      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} />
+      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
     </DivContainer>
   );
 }
