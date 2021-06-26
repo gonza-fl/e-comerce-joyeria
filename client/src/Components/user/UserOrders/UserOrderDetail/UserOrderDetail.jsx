@@ -43,6 +43,7 @@ const UserOrderDetail = () => {
             <th>Cantidad</th>
             <th>Total</th>
             <th>Detalle</th>
+            <th>Reviews</th>
           </tr>
           {userOrderDetail.products.map((product) => (
             <tr className="user-order-detail-products-rows">
@@ -54,6 +55,12 @@ const UserOrderDetail = () => {
                 <Link className="user-order-detail-products-link"
                 to={`/products/product/${product.orderline.productId}`}
                 >Ver Producto
+                </Link>
+              </td>
+              <td>
+                <Link className="user-order-detail-products-link"
+                  to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
+                >Review
                 </Link>
               </td>
             </tr>
