@@ -4,7 +4,9 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
-import './RestorePassword.css';
+import './RestorePassword.css'; import firebase from 'firebase/app';
+import 'firebase/auth';
+import swal from 'sweetalert';
 
 export default function RestorePassword({ defaulEmail }) {
   const [email, setEmail] = useState('');
@@ -17,13 +19,17 @@ export default function RestorePassword({ defaulEmail }) {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const closeRestorePass = () => {
+    document.getElementById('restorePass').style.display = 'none';
   };
 
-  const closeRestorePass = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => closeRestorePass())
+      .then(() => swal('Recupeación de contraseña en curso', `Le enviamos un email a ${email}. Verifique su bandeja de entrada`, 'success'))
+      .catch(() => swal('Email Invalido', 'El email ingresado no se encuentra registrado. Por favor, verifiquelo e intente nuevamente', 'warning'));
   };
-  console.log(email);
 
   return (
     <div id="restorePass" className="restorePasswordModal animate">
