@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "npm run lint",
     "start": "cross-env NODE_ENV=production index.js",
-    "test": "cross-env NODE_ENV= testjest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose"
   },
   "keywords": [],
   "author": "",
