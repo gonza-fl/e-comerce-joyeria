@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-unused-vars */
@@ -26,11 +27,10 @@ function OrderList() {
           role: e.target.value,
         })
           .then((res) => {
-            // eslint-disable-next-line no-prototype-builtins
             if (res.data.hasOwnProperty('err')) {
               swal('Error', res.data.err, 'warning');
             } else {
-              swal(`¡El status de ${user.name} ha cambiado con éxito!`, {
+              swal(`¡El status de ${user.displayName} ha cambiado con éxito!`, {
                 icon: 'success',
               });
               window.location.href = '/admin/users';
