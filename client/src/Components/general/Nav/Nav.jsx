@@ -19,9 +19,6 @@ import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
 import Button from '../../StyledComponents/Button';
 
-const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-ADMIN_IDS.split(',');
-
 export default function Nav() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -40,13 +37,13 @@ export default function Nav() {
   return (
     <div className="ctnNav bg-color-three">
       <UserLogin />
-      {ADMIN_IDS.includes(user.id) && <Link to="/admin" className="link-without-styles"><div className="adminNav">PANEL DE ADMINISTRADOR </div> </Link>}
       <div className="nav bg-color-three">
-        <div className="leftMenuNav"><LeftMenu /></div>
+        <div className="leftMenuNav"><LeftMenu user={user} /></div>
 
         <div className="homeResponsive">
           <Link to="/"><Button text="Inicio" /> </Link>
         </div>
+        <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
@@ -55,9 +52,9 @@ export default function Nav() {
           <div className="SearchBarNav">
             <SearchBar />
           </div>
-
           <div className="userIcon">
             <div className="navIconUser"><FaUserAlt />
+              &nbsp; &nbsp;
               {user.email ? <b>{user.name.split(' ')[0]}</b> : null}
               {user.id
                 ? (

@@ -2,13 +2,12 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import swal from 'sweetalert';
 import { URL_USERS } from '../../../constants';
 
 function AddAdressModal({
-  show, setAddAdress, userId, pivot, setPivot,
+  show, setAddAdress, userId,
 }) {
   const [input, setInput] = useState({
     name: '',
@@ -28,7 +27,6 @@ function AddAdressModal({
     e.preventDefault();
     axios.post(`${URL_USERS}${userId}/address`, input)
       .then(() => swal('¡Muy bien!', 'La dirección se agregó con éxito', 'success'))
-      .then(() => setPivot(!pivot))
       .catch(() => swal('Lo sentimos', 'No se pugo agregar la dirección', 'warning'));
     setAddAdress('none');
   }
