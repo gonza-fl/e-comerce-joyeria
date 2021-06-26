@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
@@ -29,6 +30,8 @@ export default function EditProfile({
   }
 
   function onSubmitChanges() {
+    if (!input.name) { return swal('Lo sentimos', 'No puedes dejar el espacio Nombre vacío', 'warning'); }
+
     axios.put(`${URL_USERS}${user.id}`, {
       displayName: input.name,
       birthday: input.birthday,

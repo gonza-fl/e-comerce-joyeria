@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import axios from 'axios';
@@ -7,7 +8,7 @@ import swal from 'sweetalert';
 import { URL_USERS } from '../../../constants';
 
 function AddAdressModal({
-  show, setAddAdress, userId,
+  show, setAddAdress, userId, pivot, setPivot,
 }) {
   const [input, setInput] = useState({
     name: '',
@@ -25,10 +26,29 @@ function AddAdressModal({
 
   function addDirection(e) {
     e.preventDefault();
+
+    if (!input.name) { return swal('Lo sentimos', 'Debes completar el espacio Nombre', 'warning'); }
+    if (!input.address) { return swal('Lo sentimos', 'Debes completar el espacio Dirección', 'warning'); }
+    if (!input.description) { return swal('Lo sentimos', 'Debes completar el espacio Descripción', 'warning'); }
+    if (!input.postalCode) { return swal('Lo sentimos', 'Debes completar el espacio Código postal', 'warning'); }
+
     axios.post(`${URL_USERS}${userId}/address`, input)
       .then(() => swal('¡Muy bien!', 'La dirección se agregó con éxito', 'success'))
+      .then(() => {
+        document.getElementById('name').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('postalCode').value = '';
+        setInput({
+          name: '',
+          address: '',
+          postalCode: '',
+          description: '',
+        });
+        setAddAdress('none');
+      })
+      .then(() => setPivot(!pivot))
       .catch(() => swal('Lo sentimos', 'No se pugo agregar la dirección', 'warning'));
-    setAddAdress('none');
   }
 
   return (
@@ -45,13 +65,13 @@ function AddAdressModal({
             <b>Código postal</b>
           </div>
           <div>
-            <input name="name" onChange={onChangeInput} />
+            <input id="name" name="name" onChange={onChangeInput} />
             <br />
-            <input name="address" onChange={onChangeInput} />
+            <input id="address" name="address" onChange={onChangeInput} />
             <br />
-            <input name="description" onChange={onChangeInput} />
+            <input id="description" name="description" onChange={onChangeInput} />
             <br />
-            <input name="postalCode" onChange={onChangeInput} />
+            <input id="postalCode" name="postalCode" onChange={onChangeInput} />
           </div>
         </div>
         <br />
