@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "index.js",
-    "test": "jest --verbose"
+    "dev": "NODE_ENV=development nodemon index.js",
+    "lint":"npm run lint",
+    "start": "NODE_ENV=production index.js",
+    "test": "NODE_ENV= testjest --verbose"
   },
   "keywords": [],
   "author": "",
