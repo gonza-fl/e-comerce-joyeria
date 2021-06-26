@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 const {
+  searchReview,
+} = require('../helpers/reviewHelpers');
+const {
   verifyNumber,
 } = require('../helpers/functionHelpers');
 const {
@@ -59,7 +62,29 @@ const postReview = async (req, res) => {
     return res.status(500).send('Internal server error');
   }
 };
-
+const modifyReview = async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  const {
+    calification,
+    description,
+  } = req.body;
+  if (!id || !calification || !description) return res.status(400).send('Calification or description is undefined');
+  try {
+    const review = await searchReview(id);
+    if (!review) return res.status(404).send('Review not founded');
+    review.calification = calification;
+    review.description = description;
+    review.save();
+    return res.status(200).json(review);
+  } catch (error) {
+    return res.status(500).json({
+      mesage: 'Internal server error',
+      error: error.message,
+    });
+  }
+};
 const deleteReview = async (req, res) => {
   const {
     idReview,
@@ -98,6 +123,7 @@ const getReview = async (req, res) => {
 };
 
 module.exports = {
+  modifyReview,
   getReviews,
   postReview,
   deleteReview,
