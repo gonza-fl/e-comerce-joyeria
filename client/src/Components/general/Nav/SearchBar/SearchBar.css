@@ -21,9 +21,17 @@
     background: transparent;
     border: none;
     font-size: 30px;
-    padding-right: 5px;
 }
 
 .searchBtn:hover {
     cursor: pointer;
+}
+
+@media (max-width: 452px) {
+    #searchBar {
+        width: 90%;
+    }
+    .searchBtn {
+        padding: 30px;
+    }
 }

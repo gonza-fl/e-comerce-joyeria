@@ -48,10 +48,10 @@ export default function ProductCard({
                   dispatch(showFloatingCart('none'));
                   await addToCart(product, userId);
                   dispatch(showFloatingCart('inline'));
-                  setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
-                  window.scrollTo(0, 0);
+                  document.body.style.opacity = 0.7;
+                  setTimeout(() => { document.body.style.opacity = 1; dispatch(showFloatingCart('none')); }, 2000);
                 } catch (err) {
-                  swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando');
+                  swal('Lo sentimos!', 'no hay stock suficiente para seguir sumando', 'warning');
                 }
               }
             }
@@ -86,7 +86,7 @@ function Carousel({ image, id }) {
       <div>
         <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
           {img.filter((imgEl, i) => i === imgIndex)
-            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="250px" height="250px" />)}
+            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="230px" height="230px" />)}
         </Link>
       </div>
       {img.length > 1 && <MdNavigateNext onClick={nextCarousel} />}
@@ -98,12 +98,21 @@ const DivCard = styled.div`
           flex-direction: column;
           align-items: center;
           padding:5px;
-          width: 290px;
+          width: 30%;
           margin-bottom: 30px;
 
           &:hover {
             transform: Scale(1.05);
             transition: transform 300ms;
+          }
+
+          @media (max-width: 452px) {
+            img {
+              width:130px;
+              height:130px
+            }
+            padding:0;
+            width: 40%;
           }
 `;
 

@@ -1,9 +1,16 @@
+.big-container{
+  /* border: 1px solid silver; */
+  display: flex;
+  width: 70%;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .product-container{
   display: flex;
   justify-content: center;
-  margin: 2%;
-  width: 70%;
-  /* border: 1px solid silver; */
+  margin: 2% 0;
+  width: 100%;
 }
 
 .product-container h4{
@@ -15,7 +22,7 @@
 }
 
 .product-img{
-  width: 30%;
+  width: 40%;
   border: 1px solid silver;
   padding: 2%;
   display: flex;
@@ -40,6 +47,7 @@
   padding: 2%;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin-top: 2%;
 }
 
 .container-minpics img{
@@ -77,4 +85,9 @@
 
 .last-stock{
   color: red;
+}
+
+.reviews-container{
+  width: 85%;
+  margin: auto;
 }

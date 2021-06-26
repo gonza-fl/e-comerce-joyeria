@@ -5,12 +5,12 @@ import {
   GET_CATEGORIES,
   GET_PRODUCTS_BY_NAME,
   ADD_TO_CART,
-  DELETE_PRODUCT,
   MODIFY_PRODUCT,
   GET_PRODUCT_DETAIL,
   SET_USER,
   SHOW_FLOATING_CART,
   GET_USER_ORDERS,
+  GET_USER_INFO,
 } from '../actions/actions';
 
 const InitialState = {
@@ -25,6 +25,7 @@ const InitialState = {
   categorieId: null,
   productsByCategory: [],
   user: {},
+  userInfo: {},
   floatingCart: 'none',
   userOrders: [],
 };
@@ -70,17 +71,10 @@ export default function rootReducer(state = InitialState, action) {
       cart: state.cart.concat(action.payload),
     };
   }
-  if (action.type === DELETE_PRODUCT) {
-    return {
-      ...state,
-
-    };
-  }
   if (action.type === MODIFY_PRODUCT) {
     return {
       ...state,
       idToChange: action.payload,
-
     };
   }
   if (action.type === GET_PRODUCT_DETAIL) {
@@ -105,6 +99,13 @@ export default function rootReducer(state = InitialState, action) {
     return {
       ...state,
       userOrders: action.payload,
+    };
+  }
+
+  if (action.type === GET_USER_INFO) {
+    return {
+      ...state,
+      userInfo: action.payload,
     };
   }
   return state;

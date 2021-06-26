@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 /* eslint-disable func-names */
 
@@ -24,6 +25,7 @@ export const TAKE_FROM_CART = 'TAKE_FROM_CART';
 export const SET_USER = 'SET_USER';
 export const SHOW_FLOATING_CART = 'SHOW_FLOATING_CART';
 export const GET_USER_ORDERS = 'GET_USER_ORDERS';
+export const GET_USER_INFO = 'GET_USER_INFO';
 
 export function getProducts() {
   return function (dispatch) {
@@ -104,6 +106,20 @@ export function getCategoryId(id) {
 export function setUser(user) {
   const actualUser = user ? { id: user.uid, email: user.email, name: user.displayName || 'Usuario' } : {};
   return { type: SET_USER, payload: actualUser };
+}
+
+export function getUserInfo(userId) {
+  console.log(userId);
+  return function (dispatch) {
+    return userId ? axios.get(`${URL_USERS}${userId}`)
+      .then((res) => {
+        console.log(res);
+        dispatch({
+          type: GET_USER_INFO,
+          payload: { ...res.data, name: res.data.displayName },
+        });
+      }) : { type: GET_USER_INFO, payload: {} };
+  };
 }
 
 export function showFloatingCart(value) {
