@@ -12,12 +12,12 @@ import axios from 'axios';
 import { getProductDetail, getReviewByUser } from '../../../../../redux/actions/actions';
 import { URL_PRODUCTS } from '../../../../../constants';
 import Spiner from '../../../../Spiner/Spiner';
+import './CreateUpdateReview.css';
 
 const CreateUpdateReview = () => {
   const { productId, userId } = useParams();
   const [starsValue, setStarsValue] = useState(0);
   const [descriptionValue, setDescriptionValue] = useState('');
-  // const [productReview, setProductReview] = useState({});
 
   const detail = useSelector((state) => state.detail);
   const productReview = useSelector((state) => state.reviewByUser);
@@ -26,16 +26,6 @@ const CreateUpdateReview = () => {
   useEffect(() => {
     dispatch(getProductDetail(productId));
   }, []);
-
-  // useEffect(() => {
-  //   if (detail.id) {
-  //     axios.get(`${URL_PRODUCTS}${productId}/review/${userId}`)
-  //       .then((response) => {
-  //         setProductReview(response.data);
-  //       })
-  //       .catch((err) => swal('Error', err.response.data, 'warning'));
-  //   }
-  // }, [detail]);
 
   useEffect(() => {
     dispatch(getReviewByUser(productId, userId));
@@ -82,46 +72,37 @@ const CreateUpdateReview = () => {
 
   if (detail.id) {
     return (
-      <div>
-        <p>Dejanos tu review!</p>
-        <div>
-          <p>{detail.name}</p>
-          <div>
-            <img src={detail.images[0].url} alt={detail.name} width="100px" />
-            <form method="POST" onSubmit={(e) => handleSubmit(e)}>
-              <div>
-                <p>¿Cuántas estrellas le darías?</p>
-                {!Object.keys(productReview).length
-                  ? (
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={0}
-                      onChange={changeStars}
-                      activeColor="#ffd700"
-                    />
-                  )
-                  : (
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={starsValue}
-                      onChange={changeStars}
-                      activeColor="#ffd700"
-                    />
-                  )}
+      <div className="reviews-big-container">
+        <p className="reviews-big-container-title">Dejanos tu opinión!</p>
+        <div className="review-container">
+          <p className="review-container-title">{detail.name}</p>
+          <div className="review-container-flex">
+            <img className="review-container-img" src={detail.images[0].url} alt={detail.name} width="100px" />
+            <form className="review-form" method="POST" onSubmit={(e) => handleSubmit(e)}>
+              <div className="review-stars-container">
+                <p className="review-form-title">¿Cuántas estrellas le darías?</p>
+                <ReactStars
+                  count={5}
+                  size={24}
+                  value={starsValue}
+                  onChange={changeStars}
+                  activeColor="#ffd700"
+                />
               </div>
-              <div>
-                <p>Contanos cuál es tu opinión del producto</p>
+              <div className="review-description-container">
+                <p className="review-form-title">Contanos cuál es tu opinión del producto</p>
                 <textarea
+                  className="review-description"
+                  rows="5"
+                  cols="50"
                   value={descriptionValue}
                   onChange={changeDescription}
                 >
                 </textarea>
               </div>
-              <button type="submit">Enviar opinión</button>
+              <button className="send-review-btn" type="submit">Enviar opinión</button>
               {Object.keys(productReview).length
-                ? <button onClick={deleteReview}>Eliminar Review</button>
+                ? <button className="send-review-btn" onClick={deleteReview}>Eliminar opinión</button>
                 : null}
             </form>
           </div>
