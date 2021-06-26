@@ -13,6 +13,7 @@ import firebase from 'firebase/app';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories, showFloatingCart } from '../../../redux/actions/actions';
+// eslint-disable-next-line import/no-cycle
 import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
