@@ -13,14 +13,12 @@ import firebase from 'firebase/app';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories, showFloatingCart } from '../../../redux/actions/actions';
+// eslint-disable-next-line import/no-cycle
 import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
-import logo from '../../../img/logo2.png';
-
-const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-ADMIN_IDS.split(',');
+import Button from '../../StyledComponents/Button';
 
 export default function Nav() {
   const dispatch = useDispatch();
@@ -33,53 +31,53 @@ export default function Nav() {
   const handleSingOut = () => {
     firebase.auth().signOut()
       .then(() => swal('Adios', 'Cerro Sesión correctamente', 'success'))
-      .then(() => document.getElementById('login').style.display = 'none')
+      .then(() => window.location.href = window.location.origin)
       .then(() => localStorage.setItem('cart', '[]'));
   };
 
   return (
     <div className="ctnNav bg-color-three">
       <UserLogin />
-      {ADMIN_IDS.includes(user.id) && <Link to="/admin"><div className="adminNav">PANEL DE ADMINISTRADOR </div> </Link>}
       <div className="nav bg-color-three">
-        <div className="leftMenuNav"><LeftMenu /></div>
+        <div className="leftMenuNav"><LeftMenu user={user} /></div>
 
+        <div className="homeResponsive">
+          <Link to="/"><Button text="Inicio" /> </Link>
+        </div>
+        <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
-        <img className="logoResponsive" src={logo} alt="" />
 
         <div className="rigthMenuNav">
           <div className="SearchBarNav">
             <SearchBar />
           </div>
-          {user.email ? <h3>{user.name}</h3> : null}
-
-          <div className="userIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
-            <div className="navIcon"><FaUserAlt /></div>
-            {user.id
-              ? (
-                <div className="userOptions">
-                  <Link to="/account/profile"><p>Mi Cuenta</p></Link>
-                  <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesion</p> </Link>
-                </div>
-              )
-              : (
-                <div className="userOptions">
-                  <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesión</p></Link>
-                  <Link to="/account/register"><p>Registrarme</p></Link>
-                </div>
-              )}
+          <div className="userIcon">
+            <div className="navIconUser"><FaUserAlt />
+              &nbsp; &nbsp;
+              {user.email ? <b>{user.name.split(' ')[0]}</b> : null}
+              {user.id
+                ? (
+                  <div className="userOptions">
+                    <Link to="/account/profile"><p>Mi Cuenta</p></Link>
+                    <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesion</p> </Link>
+                  </div>
+                )
+                : (
+                  <div className="userOptions">
+                    <Link to="#login"><p onClick={() => document.getElementById('login').style.display = 'block'}>Iniciar Sesión</p></Link>
+                    <Link to="/account/register"><p>Registrarme</p></Link>
+                  </div>
+                )}
+            </div>
+            <div className="navIconCart">
+              <FaShoppingCart
+                onMouseEnter={() => dispatch(showFloatingCart('inline'))}
+              />
+            </div>
+            <FloatingCart />
           </div>
-          <div className="navIcon" style={{ flexGrow: 0.1, fontSize: '120%' }}>
-
-            <FaShoppingCart
-              style={{ fontSize: '20px' }}
-              onMouseEnter={() => dispatch(showFloatingCart('inline'))}
-            />
-          </div>
-
-          <FloatingCart />
         </div>
       </div>
     </div>

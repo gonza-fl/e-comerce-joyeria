@@ -27,8 +27,9 @@ module.exports = (sequelize) => {
     phone: {
       type: DataTypes.STRING,
     },
-    admin: {
+    role: {
       type: DataTypes.ENUM(['user', 'admin', 'banned']),
+      defaultValue: 'user',
     },
   },
   {

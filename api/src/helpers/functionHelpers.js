@@ -1,6 +1,11 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable radix */
 const verifyNumber = (params, type = 'numero') => {
+  if (!params) {
+    return {
+      veracity: false, msg: `${type} no encontrado/a`,
+    };
+  }
   if (parseInt(params) === 'NaN' || isNaN(params)) {
     return {
       veracity: false, msg: `${type} no es válido/a`,
