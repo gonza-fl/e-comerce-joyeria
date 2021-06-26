@@ -77,8 +77,29 @@ const deleteReview = async (req, res) => {
   }
 };
 
+const getReview = async (req, res) => {
+  const {
+    idProduct,
+    idUser,
+  } = req.params;
+
+  const review = await Review.findOne({
+    where: {
+      productId: idProduct,
+      userId: idUser,
+    },
+  });
+  if (!review) {
+    return res.status(400).json({
+      err: 'No se encontró una review',
+    });
+  }
+  return res.json(review);
+};
+
 module.exports = {
   getReviews,
   postReview,
   deleteReview,
+  getReview,
 };
