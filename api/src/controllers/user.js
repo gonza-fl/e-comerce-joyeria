@@ -115,13 +115,15 @@ const disableUser = async (req, res) => {
     // Falta validar que ningun admin pueda borrar al superadmin
     // ¿Como reconocer el idSuperAdmin? ¿De dónde viene este dato?
     // if (idUser === idSuperAdmin) return res.status(404).send('No se puede eliminar al dueño');
-    const user = User.destroy({
+    const user = User.update({
+      role: 'banned',
+    }, {
       where: {
         id: idUser,
       },
     });
     if (!user) return res.status(400).send('Error: el usuario a eliminar no existía');
-    return res.send('Usuario eliminado correctamente!');
+    return res.send('Usuario bloqueado correctamente!');
   } catch (err) {
     return res.status(500).send('Internal server error');
   }
