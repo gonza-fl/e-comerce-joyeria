@@ -19,6 +19,12 @@ const createUser = async (req, res) => {
   id = id.trim();
   const birthdayNew = birthday ? new Date(birthday[2], birthday[1] - 1, birthday[0]) : null;
   try {
+    const emailFound = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailFound) return res.status(400).send('Ese email ya está siendo utilizado');
     await User.create({
       id,
       email,
