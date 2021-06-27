@@ -113,6 +113,7 @@ const disableUser = async (req, res) => {
       },
     });
     if (!admin) return res.status(404).send('Acceso denegado. El usuario no es admin');
+    if (admin.id === idUser) return res.status(404).send('Error: no puede bloquearse a uno mismo');
     // Falta validar que ningun admin pueda borrar al superadmin
     // ¿Como reconocer el idSuperAdmin? ¿De dónde viene este dato?
     // if (idUser === idSuperAdmin) return res.status(404).send('No se puede eliminar al dueño');
