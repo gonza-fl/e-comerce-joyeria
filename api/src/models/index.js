@@ -19,7 +19,7 @@ const UserFactory = require('./User');
 const OrderLineFactory = require('./OrderLine');
 const ReviewFactory = require('./Reviews');
 
-const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${process.env.NODE_ENV === 'test' ? dbName : dbNameTest}`, {
+const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${process.env.NODE_ENV === 'test' ? dbNameTest : dbName}`, {
   logging: false,
 });
 

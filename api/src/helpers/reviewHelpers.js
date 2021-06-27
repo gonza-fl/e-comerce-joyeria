@@ -2,10 +2,11 @@ const {
   Review,
 } = require('../models/index');
 
-const searchReview = (reviewId) => {
+const searchReview = (reviewId, userId) => {
   const review = Review.findOne({
     where: {
       id: reviewId,
+      userId,
     },
   });
   return review;

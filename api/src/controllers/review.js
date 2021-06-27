@@ -9,6 +9,7 @@ const {
 const {
   Review,
   User,
+  Product,
 } = require('../models/index');
 
 const getReviews = async (req, res) => {
@@ -46,7 +47,7 @@ const postReview = async (req, res) => {
   if (calification === 0) calification = 1;
   else calification = calification % 5 === 0 ? 5 : calification % 5;
   try {
-    const [review, created] = await Review.findOrCreate({
+    const [_review, created] = await Review.findOrCreate({
       where: {
         productId: idProduct,
         userId,
@@ -64,18 +65,26 @@ const postReview = async (req, res) => {
 };
 const modifyReview = async (req, res) => {
   const {
-    id,
+    idReview,
   } = req.params;
   const {
-    calification,
     description,
+    userId,
   } = req.body;
-  if (!id || !calification || !description) return res.status(400).send('Calification or description is undefined');
+  let {
+    calification,
+  } = req.body;
+  if (!userId) return res.status(400).send('Usuario no definida');
+  if (!idReview) return res.status(400).send('Review no definida');
+  if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
+  if (!description || !description.trim()) return res.status(400).send('Descripción no definida');
+  if (calification === 0) calification = 1;
+  else calification = calification % 5 === 0 ? 5 : calification % 5;
   try {
-    const review = await searchReview(id);
-    if (!review) return res.status(404).send('Review not founded');
+    const review = await searchReview(idReview, userId);
+    if (!review) return res.status(404).send('Review no encontrada');
     review.calification = calification;
-    review.description = description;
+    review.description = description.trim();
     review.save();
     return res.status(200).json(review);
   } catch (error) {
