@@ -130,4 +130,9 @@ const MovingInput = styled.input`
                     width: 100%;
                 }
             }
+
+            @media (max-width: 452px) {
+              background: #f0ddd8;
+              padding-top:30px;
+          }
 `;

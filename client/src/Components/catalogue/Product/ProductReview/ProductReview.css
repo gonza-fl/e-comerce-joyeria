@@ -1,0 +1,51 @@
+.product-reviews-container{
+  padding: 2%;
+  color: gray;
+}
+
+#product-reviews-container-title{
+  margin-bottom: 5%;
+}
+
+.average-review{
+  display: flex;
+}
+
+#average-number{
+  font-size: 4rem;
+}
+
+.average-review-stars{
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2%;
+}
+
+#average-declaration{
+  font-size: 0.8rem;
+}
+
+.description-reviews-container{
+  padding: 2%;
+}
+
+.description-review{
+  padding: 2%;
+  margin: 2% 0;
+  border-bottom: 0.5px solid silver;
+}
+
+#description-review-description{
+  margin: 1.1% 0;
+}
+
+.no-review-msg{
+  background-color: #f0ddd8;
+  padding: 2%;
+  font-size: 1.2rem;
+  width: 50%;
+  margin: auto;
+}

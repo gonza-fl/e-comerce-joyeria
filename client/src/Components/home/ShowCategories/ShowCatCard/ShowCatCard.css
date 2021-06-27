@@ -41,3 +41,19 @@
     width: 100%;
     border-radius: 0 0 10px 10px;
 }
+
+@media (max-width:452px) {
+    .ctnCardC {
+        height: 12rem;
+        width: 40%;
+        border: #f0ddd8 1px solid;
+        border-radius: 0;
+    }
+    .headerCard {
+        height: 70%;
+    }
+    .ctnCardC button {
+        height: 30%;
+        border-radius: 0;
+    }
+}

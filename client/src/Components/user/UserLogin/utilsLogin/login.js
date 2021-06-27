@@ -9,20 +9,32 @@ import 'firebase/auth';
 import axios from 'axios';
 import { URL_USERS, URL_ORDERS_BY_ID } from '../../../../constants';
 
+const handleSingOut = () => {
+  firebase.auth().signOut()
+    .then(() => swal('USUARIO BLOQUEADO', 'este usuario esta baneado, no vuelva', 'warning'))
+    .then(() => window.location.href = window.location.origin)
+    .then(() => localStorage.setItem('cart', '[]'));
+};
+
 export const loginWhitEmmail = (email, password) => {
   let idUserLoged = '';
 
   firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((res) => idUserLoged = res.user.uid)
+    .then(() => axios.get(`${URL_USERS}${idUserLoged}`))
     .then((res) => {
-      idUserLoged = res.user.uid;
-      return swal('Hola', 'Inicio de sesión exitoso', 'success');
-    })
-    .then(() => document.getElementById('login').style.display = 'none')
-    .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
-    .then(() => localStorage.setItem('cart', JSON.stringify([])))
-    .catch((error) => {
-      error.message.includes('user record') && swal('Email incorrecto', 'Por favor, verifique su e-mail', 'warning');
-      error.message.includes('password is invalid') && swal('Contraseña incorrecta', 'Por favor, verifique su contraseña', 'warning');
+      if (res.data.role === 'banned') {
+        return handleSingOut();
+      }
+
+      return axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) })
+        .then(() => swal('Hola', 'Inicio de sesión exitoso', 'success'))
+        .then(() => document.getElementById('login').style.display = 'none')
+        .then(() => localStorage.setItem('cart', JSON.stringify([])))
+        .catch((error) => {
+          error.message.includes('user record') && swal('Email incorrecto', 'Por favor, verifique su e-mail', 'warning');
+          error.message.includes('password is invalid') && swal('Contraseña incorrecta', 'Por favor, verifique su contraseña', 'warning');
+        });
     });
 };
 
@@ -45,9 +57,15 @@ const login = (provider) => {
         });
       }
     })
-    .then(() => { console.log('PASO'); document.getElementById('login').style.display = 'none'; })
-    .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
-    .then(() => localStorage.setItem('cart', JSON.stringify([])));
+    .then(() => axios.get(`${URL_USERS}${idUserLoged}`))
+    .then((res) => {
+      if (res.data.role === 'banned') {
+        return handleSingOut();
+      }
+      return axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) })
+        .then(() => { document.getElementById('login').style.display = 'none'; })
+        .then(() => localStorage.setItem('cart', JSON.stringify([])));
+    });
 };
 
 //-----------------

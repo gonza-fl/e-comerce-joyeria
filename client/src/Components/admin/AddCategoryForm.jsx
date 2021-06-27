@@ -38,20 +38,18 @@ function AddCategoryForm() {
         if (res.data.hasOwnProperty('err')) {
           swal('Error', res.data.err, 'warning');
         }
-        if (res.data.hasOwnProperty('success')) {
-          setSelectedFile();
-          setPreviewSource('');
-          setFileInputState('');
-          const elemento = document.getElementById('flexQuery');
-          elemento.style.flexDirection = 'column';
-          document.getElementById('categoria').value = '';
-          document.getElementById('descripcion').value = '';
-          swal('Success', res.data.success, 'success')
-            .then(() => {
-              setLoading(false);
-              window.location.href = '/admin/controlcategories';
-            });
-        }
+        setSelectedFile();
+        setPreviewSource('');
+        setFileInputState('');
+        const elemento = document.getElementById('flexQuery');
+        elemento.style.flexDirection = 'column';
+        document.getElementById('categoria').value = '';
+        document.getElementById('descripcion').value = '';
+        setLoading(false);
+        swal('Success', 'La categoría se creó correctamente', 'success')
+          .then(() => {
+            window.location.href = '/admin/controlcategories';
+          });
       }).catch(() => {
         swal('Error', 'Ocurrio un error inesperado', 'warning');
       });

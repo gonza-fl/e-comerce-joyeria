@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,22 +9,27 @@ import swal from 'sweetalert';
 import { getCategories, getProductDetail } from '../../../redux/actions/actions';
 import { updateProduct } from './utils/request';
 import Button from '../../StyledComponents/Button';
+import './AdminUpdateProduct.css';
 
 function AdminUpdateProduct() {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.detail);
   const categories = useSelector((state) => state.categories);
+  const imgInput = useRef();
 
   const [input, setInput] = useState({
     id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }],
   });
+
+  const [imgSelected, setImgSelected] = useState([{ url: '' }]);
 
   useEffect(() => {
     setInput({
       ...product,
       categories: categories.map((c) => ({ id: c.id, name: c.name, checked: product.categories.map((cat) => cat.id).includes(c.id) ? 'checked' : '' })),
     });
+    setImgSelected(product.images);
   }, [product]);
 
   useEffect(() => {
@@ -60,71 +65,103 @@ function AdminUpdateProduct() {
     updateProduct({
       ...productUpdated,
       categories: productUpdated.categories.filter((c) => c.checked === 'checked').map((i) => i.id),
+      images: imgSelected,
     });
+  }
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    if (file.size) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        if (imgSelected.length < 3) {
+          setImgSelected([...imgSelected, reader.result]);
+        } else {
+          swal('Lo sentimos', 'No puedes agregar más de tres imágenes', 'warning');
+        }
+      };
+    }
+  };
+
+  const handleImgLoad = (e) => {
+    const img = e.target.files[0];
+    previewFile(img);
+  };
+
+  function loadImg() {
+    imgInput.current.click();
+  }
+
+  function closeImg(img) {
+    setImgSelected(imgSelected.filter((i) => i !== img || i.url !== img.url));
   }
 
   return (
     <Background>
       <ProductDetail method="PUT" onSubmit={(e) => onSubmit(e, input)} className="bg-color-six">
         <Detail>
-          <b>ID: </b>
-          <span>{product.id}</span>
-          <div style={{
-            display: 'flex', width: '100%', justifyContent: 'space-around',
-          }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', marginRight: '200px' }}>
+          <div className="input-general-container ">
+            <div className="input-name-container ">
+              <b>ID: </b>
               <b>NOMBRE: </b>
               <b>PRECIO: </b>
               <b>CANTIDAD: </b>
             </div>
-            <div style={{ justifyContent: 'right' }}>
+            <div className="input-name-container ">
+              <span>{product.id}</span>
               <StyledInput name="name" value={input.name} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="stockAmount" value={input.stockAmount} onChange={(e) => onChangeInput(e)} />
             </div>
+            <div className="description-container">
+              <b>DESCRIPCIÓN: </b>
+              <br />
+              <textarea
+                name="description"
+                value={input.description}
+                onChange={(e) => onChangeInput(e)}
+              />
+            </div>
           </div>
-          <b>DESCRIPCIÓN: </b>
-          <br />
-          <textarea
-            name="description"
-            value={input.description}
-            style={{
-              fontFamily: 'inherit',
-              width: '100%',
-              borderStyle: 'none',
-              fontSize: '15px',
-              height: '20%',
-              resize: 'none',
-            }}
-            onChange={(e) => onChangeInput(e)}
-          />
-          <br />
-          <b>CATEGORÍAS: </b>
           <div>
-            {input.categories.map((c) => (
-              <label>
-                <StyledInput
-                  onChange={(e) => onChangeCategories(e)}
-                  name="categories"
-                  type="checkbox"
-                  value={c.id}
-                  checked={c.checked}
-                />
-                {c.name}
-              </label>
-            ))}
+            <b>CATEGORÍAS: </b>
+            <div>
+              {input.categories.map((c) => (
+                <label>
+                  <StyledInput
+                    onChange={(e) => onChangeCategories(e)}
+                    name="categories"
+                    type="checkbox"
+                    value={c.id}
+                    checked={c.checked}
+                  />
+                  {c.name}
+                </label>
+              ))}
+            </div>
           </div>
-          <br />
         </Detail>
-        <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '95%' }}>
-          {product.images.map((image) => (
-            <img
-              src={image.url}
-              alt="Not found"
-              height="200px"
-            />
-          ))}
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          style={{ display: 'none' }}
+          ref={imgInput}
+          onChange={handleImgLoad}
+        />
+        <Button type="button" text="Carga una imagen" className="bg-color-three" handleClick={loadImg} />
+        <br />
+        <div className="input-images-container">
+          {imgSelected.length > 0 ? imgSelected.map((image) => (
+            <div>
+              <button type="button" className="close-image-button" onClick={() => closeImg(image)}>x</button>
+              <img
+                src={image.url || image}
+                alt="Not found"
+                height="150px"
+              />
+            </div>
+          )) : <div><h2>No tienes imágenes agregadas</h2></div>}
 
         </div>
         <br />
@@ -145,19 +182,19 @@ const Background = styled.div`
     background-color: rgba(0,0,0,0.4); 
     height: 100%;
     width: 100%;
-    font-size: 18px;
+    font-size: 16px;
 `;
 
 const ProductDetail = styled.form`
         position: absolute;
-        top: 15%;
+        top: 10%;
         left: 30%;
         display: flex;
         flex-direction: column;
         align-items: center;
         border-radius: 5px;
         padding: 10px;
-        width: 35%;
+        flex-wrap: nowrap;
 `;
 
 const Detail = styled.div`
@@ -170,7 +207,7 @@ const Detail = styled.div`
 const StyledInput = styled.input` 
     border-style: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px 10px;
 `;
 
