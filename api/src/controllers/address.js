@@ -44,17 +44,14 @@ const updateAddress = async (req, res) => {
     name,
   } = req.body;
   try {
-    const user = await User.findByPk(idUser, {
-      include: Address,
-    });
-    // Soy Rodri: ¿SE ESTA USANDO ESTE INCLUDE? SI ES SOLO EL USER LO QUE QUIERO SABER
+    const user = await User.findByPk(idUser);
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     address = address !== '' ? address : undefined;
     postalCode = postalCode !== '' ? postalCode : undefined;
     description = description !== '' ? description : undefined;
     name = name !== '' ? name : undefined;
     if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
-    await Address.update({
+    const updated = await Address.update({
       name,
       description,
       postalCode,
@@ -65,6 +62,7 @@ const updateAddress = async (req, res) => {
         userId: idUser,
       },
     });
+    if (!updated[0]) return res.status(404).send('La id puede que no le pertenezca a ese usuario.');
     return res.status(200).send('Direccion actualizada correctamente!');
   } catch (err) {
     return res.status(404).send('Internal server error. Dirección no actualizada');
