@@ -11,6 +11,9 @@ const {
   getProductsByCategory,
 } = require('../controllers/product');
 const review = require('./review');
+const {
+  modifyReview,
+} = require('../controllers/review');
 
 const router = Router();
 
@@ -20,6 +23,7 @@ router.get('/search', getProductsByQuery);
 router.get('/:idProduct', getProductById);
 router.get('/', getProducts);
 router.post('/', createProduct);
+router.put('/review/:idReview', modifyReview);
 router.put('/:idProduct', updateProduct);
 router.delete('/:idProduct', deleteProduct);
 
