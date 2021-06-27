@@ -13,7 +13,7 @@ const createUser = async (req, res) => {
   const {
     email, phone,
   } = req.body;
-  if (!id || !id.trim().length) return res.status(400).send('Id incorrecto');
+  if (!id || typeof id !== 'string' || !id.trim().length) return res.status(400).send('Id incorrecto');
   if (!displayName || !displayName.trim().length) return res.status(400).send('displayName incorrecto');
   displayName = displayName.trim();
   id = id.trim();
