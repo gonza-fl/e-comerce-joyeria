@@ -9,7 +9,6 @@ const {
 const {
   Review,
   User,
-  Product,
 } = require('../models/index');
 
 const getReviews = async (req, res) => {

@@ -1,1 +1,0 @@
-const getUser = require('../../routes');

@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "npm run lint",
     "start": "cross-env NODE_ENV=production index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --silent --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +36,6 @@
     "sequelize": "^6.6.2"
   },
   "jest": {
-    "testEnviroment": "node"
+    "testEnvironment": "node"
   }
 }

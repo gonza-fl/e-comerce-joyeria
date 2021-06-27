@@ -44,3 +44,7 @@ conn.sync({
     console.log(`Servidor escuchando en el puerto ${PORT}`);
   });
 });
+
+module.exports = {
+  server,
+};
