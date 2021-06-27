@@ -69,6 +69,10 @@ const StyledImg = styled.img`
                 transform: rotateX(0);
             }
         }
+        @media (max-width: 768px) {
+          width:95%;
+          height:auto;
+        }
         @media (max-width: 452px) {
           width:95%;
           height:270px;

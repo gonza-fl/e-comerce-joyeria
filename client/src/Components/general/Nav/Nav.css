@@ -112,98 +112,100 @@
     right: 10px;
 }
 
-@media (max-width: 452px) {
-    .ctnNav {
-        height: 60px;
-        padding-block: 10px;
-        z-index: 99;
-    }
-    .nav {
-        width: 100%;
-        justify-content: center;
-        position: relative;
-    }
-    .leftMenuNav {
-        display: none;
-        width: 0;
-    }
-    .logoNav {
-        position: absolute;
-    }
-    .homeResponsive {
-        position: absolute;
-        display: block;
-        left: 10px;
-    }
-    .rigthMenuNav {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-        width: 100%;
-        margin-top: 25px;
-    }
-    .SearchBarNav {
-        width: 100%;
-        right: -50px;
-        position: absolute;
-        top: -5px;
-    }
-    .ctnNav .rigthMenuNav h3 {
-        top: 25px;
-        right: 0;
-        font-size: 13px;
-    }
-    .userIcon {
-        position: absolute;
-        justify-content: space-around;
-        top: 65px;
-        width: 100%;
-        background-color: #f1eee3
-    }
-    .navIconUser,
-    .navIconCart {
-        border: #CF988C 1px solid;
-        padding-block: 5px;
-        width: 50%;
-    }
-    .navIconUser:hover,
-    .navIconCart:hover {
-        background-color: #f0ddd8
-    }
-    .navIconUser:hover .userOptions {
-        transform: translate(0px, 5px);
-        width: 50%;
-        animation: userMenu 1s;
-    }
-    .adminNavResponsive {
-        color: black;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        z-index: 1;
-        width: 100%;
-        top: 100px;
-        left: 0;
-        background-color: #CF988C;
-    }
-    .ctnNav .rigthMenuNav h3 {
-        top: 33px;
-        margin-right: 10px;
-    }
-    @keyframes userMenu {
-        0% {
-            left: -200px;
+@media (max-width: 768px) {
+    @media (max-width: 452px) {
+        .ctnNav {
+            height: 60px;
+            padding-block: 10px;
+            z-index: 99;
+        }
+        .nav {
+            width: 100%;
+            justify-content: center;
+            position: relative;
+        }
+        .leftMenuNav {
+            display: none;
             width: 0;
         }
-        100% {
-            left: 0px
+        .logoNav {
+            position: absolute;
         }
-    }
-    @media (max-width: 400px) {
+        .homeResponsive {
+            position: absolute;
+            display: block;
+            left: 10px;
+        }
+        .rigthMenuNav {
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 25px;
+        }
         .SearchBarNav {
-            width: 80%;
-            right: 0;
+            width: 100%;
+            right: -50px;
+            position: absolute;
             top: -5px;
+        }
+        .ctnNav .rigthMenuNav h3 {
+            top: 25px;
+            right: 0;
+            font-size: 13px;
+        }
+        .userIcon {
+            position: absolute;
+            justify-content: space-around;
+            top: 65px;
+            width: 100%;
+            background-color: #f1eee3
+        }
+        .navIconUser,
+        .navIconCart {
+            border: #CF988C 1px solid;
+            padding-block: 5px;
+            width: 50%;
+        }
+        .navIconUser:hover,
+        .navIconCart:hover {
+            background-color: #f0ddd8
+        }
+        .navIconUser:hover .userOptions {
+            transform: translate(0px, 5px);
+            width: 50%;
+            animation: userMenu 1s;
+        }
+        .adminNavResponsive {
+            color: black;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            z-index: 1;
+            width: 100%;
+            top: 100px;
+            left: 0;
+            background-color: #CF988C;
+        }
+        .ctnNav .rigthMenuNav h3 {
+            top: 33px;
+            margin-right: 10px;
+        }
+        @keyframes userMenu {
+            0% {
+                left: -200px;
+                width: 0;
+            }
+            100% {
+                left: 0px
+            }
+        }
+        @media (max-width: 400px) {
+            .SearchBarNav {
+                width: 80%;
+                right: 0;
+                top: -5px;
+            }
         }
     }
 }

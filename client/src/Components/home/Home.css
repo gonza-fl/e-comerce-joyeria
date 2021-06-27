@@ -10,12 +10,11 @@
     width: 78%;
 }
 
-@media (max-width:452px) {
+@media (max-width:768px) {
     .home h1 {
         margin-top: 35px;
         width: 100%;
         padding-block: 10px;
         font-family: cursive;
-        font-size: 35px;
     }
 }
