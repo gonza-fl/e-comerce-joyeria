@@ -14,5 +14,6 @@ router.get('/', getReviews);
 router.post('/', postReview);
 router.delete('/:idReview', deleteReview);
 router.get('/:idUser', getReview);
+router.put('/:idReview', modifyReview);
 
 module.exports = router;
