@@ -13,10 +13,16 @@
     display: flex;
     flex-direction: column;
     background-color: #fefefe;
-    margin: 5% auto 15% auto;
+    margin: 10% auto 15% auto;
     border: 1px solid #888;
     padding-bottom: 20px;
-    width: 50%;
+    width: 40%;
+}
+
+@media (max-height:700px) {
+    .modalCtn {
+        margin: 5% auto 15% auto;
+    }
 }
 
 .animate {
@@ -122,9 +128,11 @@
     align-items: center;
 }
 
-.footLogin a {
+.footLogin span {
     color: blue;
-    font-size: 13px;
+    text-decoration: underline;
+    font-size: 15px;
+    cursor: pointer;
 }
 
 .loginModal p {

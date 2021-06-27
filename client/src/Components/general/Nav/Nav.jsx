@@ -44,6 +44,7 @@ export default function Nav() {
         <div className="homeResponsive">
           <Link to="/"><Button text="Inicio" /> </Link>
         </div>
+        <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
@@ -52,7 +53,6 @@ export default function Nav() {
           <div className="SearchBarNav">
             <SearchBar />
           </div>
-
           <div className="userIcon">
             <div className="navIconUser"><FaUserAlt />
               &nbsp; &nbsp;
