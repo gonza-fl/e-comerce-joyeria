@@ -27,6 +27,7 @@ export const SHOW_FLOATING_CART = 'SHOW_FLOATING_CART';
 export const GET_USER_ORDERS = 'GET_USER_ORDERS';
 export const GET_USER_INFO = 'GET_USER_INFO';
 export const GET_REVIEW_BY_USER = 'GET_REVIEW_BY_USER';
+export const RESET_PRODUCT_DETAIL_AND_REVIEW = 'RESET_PRODUCT_DETAIL_AND_REVIEW';
 
 export function getProducts() {
   return function (dispatch) {
@@ -157,4 +158,8 @@ export function getReviewByUser(productId, userId) {
       .catch((err) => console.log(err))
     );
   };
+}
+
+export function resetProductDetailAndReview() {
+  return { type: RESET_PRODUCT_DETAIL_AND_REVIEW };
 }

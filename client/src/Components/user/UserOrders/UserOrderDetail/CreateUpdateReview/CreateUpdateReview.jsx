@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import ReactStars from 'react-rating-stars-component';
 import axios from 'axios';
-import { getProductDetail, getReviewByUser } from '../../../../../redux/actions/actions';
+import { getProductDetail, getReviewByUser, resetProductDetailAndReview } from '../../../../../redux/actions/actions';
 import { URL_PRODUCTS } from '../../../../../constants';
 import Spiner from '../../../../Spiner/Spiner';
 import './CreateUpdateReview.css';
@@ -24,15 +24,13 @@ const CreateUpdateReview = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductDetail(productId));
-  }, []);
-
-  useEffect(() => {
+    dispatch(resetProductDetailAndReview());
     dispatch(getReviewByUser(productId, userId));
-  }, []);
+    dispatch(getProductDetail(productId));
+  }, [dispatch]);
 
   useEffect(() => {
-    if (Object.keys(productReview).length) {
+    if (Object.keys(productReview).length && productReview.productId === parseInt(productId, 10)) {
       setStarsValue(productReview.calification);
       setDescriptionValue(productReview.description);
     }
