@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
       displayName,
       phone,
       birthday: birthdayNew,
-      admin: 'user',
+      role: 'user',
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (_req, res) => {
   try {
     const user = await User.findAll({
       include: [Address, {
@@ -98,10 +98,44 @@ const getUserAdmin = async (req, res) => {
   }
 };
 
+const disableUser = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const {
+    idAdmin,
+  } = req.body;
+  try {
+    const admin = await User.findOne({
+      where: {
+        id: idAdmin,
+        role: 'admin',
+      },
+    });
+    if (!admin) return res.status(404).send('Acceso denegado. El usuario no es admin');
+    if (admin.id === idUser) return res.status(404).send('Error: no puede bloquearse a uno mismo');
+    // Falta validar que ningun admin pueda borrar al superadmin
+    // ¿Como reconocer el idSuperAdmin? ¿De dónde viene este dato?
+    // if (idUser === idSuperAdmin) return res.status(404).send('No se puede eliminar al dueño');
+    const user = await User.update({
+      role: 'banned',
+    }, {
+      where: {
+        id: idUser,
+      },
+    });
+    if (!user) return res.status(400).send('Error: el usuario a eliminar no existía');
+    return res.send('Usuario bloqueado correctamente!');
+  } catch (err) {
+    return res.status(500).send('Internal server error');
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
   updateUser,
   getUserById,
   getUserAdmin,
+  disableUser,
 };

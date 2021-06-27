@@ -38,6 +38,8 @@ const postReview = async (req, res) => {
     description,
     userId,
   } = req.body;
+  const product = await Product.findByPk(idProduct);
+  if (!product) return res.status(400).send('No existe ese producto');
   if (typeof userId !== 'string') return res.status(400).send('El ID de usuario es inválido');
   userId = userId.trim();
   const user = await User.findByPk(userId);
