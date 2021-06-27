@@ -20,7 +20,7 @@ router.put('/:idUser/cart', editCartAmount);
 router.use('/:idUser/address', address);
 router.put('/:idUser', updateUser);
 router.get('/:idUser', getUserById);
-router.delete('/idUser', disableUser);
+router.delete('/:idUser', disableUser);
 router.post('/', createUser);
 router.get('/', getUsers);
 module.exports = router;
