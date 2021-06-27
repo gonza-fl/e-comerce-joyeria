@@ -7,12 +7,24 @@ const {
 
 const createUser = async (req, res) => {
   const birthday = req.body.birthday && req.body.birthday.split('-');
-  const {
-    id, email, displayName, phone,
-
+  let {
+    id, displayName,
   } = req.body;
+  const {
+    email, phone,
+  } = req.body;
+  if (!id || typeof id !== 'string' || !id.trim().length) return res.status(400).send('Id incorrecto');
+  if (!displayName || !displayName.trim().length) return res.status(400).send('displayName incorrecto');
+  displayName = displayName.trim();
+  id = id.trim();
   const birthdayNew = birthday ? new Date(birthday[2], birthday[1] - 1, birthday[0]) : null;
   try {
+    const emailFound = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailFound) return res.status(400).send('Ese email ya está siendo utilizado');
     await User.create({
       id,
       email,
@@ -23,7 +35,7 @@ const createUser = async (req, res) => {
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error. No se creó el usuario');
   }
 };
 
