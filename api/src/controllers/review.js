@@ -43,6 +43,7 @@ const postReview = async (req, res) => {
   const user = await User.findByPk(userId);
   if (!user) return res.status(400).send('No existe User con ese ID');
   if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
+  if (!description || !description.trim().length) return res.status(400).send('La descripción no puede ser vacía.');
   description = description.trim();
   if (calification === 0) calification = 1;
   else calification = calification % 5 === 0 ? 5 : calification % 5;
