@@ -25,7 +25,7 @@ const getReviews = async (req, res) => {
     });
     return res.status(201).json(reviews);
   } catch (error) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error: no se pudo obtener las reviews.');
   }
 };
 
@@ -60,7 +60,7 @@ const postReview = async (req, res) => {
     if (created) return res.status(200).send('Gracias por dejar tu review!');
     return res.status(400).send('Ya existe un review por parte de este usuario en este producto');
   } catch (error) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error: no se pudo crear la review.');
   }
 };
 
@@ -87,12 +87,9 @@ const modifyReview = async (req, res) => {
     review.calification = calification;
     review.description = description.trim();
     review.save();
-    return res.status(200).json(review);
+    return res.status(200).send('Review modificada correctamente!');
   } catch (error) {
-    return res.status(500).json({
-      mesage: 'Internal server error',
-      error: error.message,
-    });
+    return res.status(500).send('Internal server error: no se pudo modificar la review.');
   }
 };
 
@@ -109,7 +106,7 @@ const deleteReview = async (req, res) => {
     if (!review) return res.status(400).send('No se encontró una review');
     return res.status(200).send('Review eliminada correctamente!');
   } catch (err) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error: no se pudo borrar la review.');
   }
 };
 
@@ -119,18 +116,20 @@ const getReview = async (req, res) => {
     idUser,
   } = req.params;
 
-  const review = await Review.findOne({
-    where: {
-      productId: idProduct,
-      userId: idUser,
-    },
-  });
-  if (!review) {
-    return res.status(400).json({
-      err: 'No se encontró una review',
+  try {
+    const review = await Review.findOne({
+      where: {
+        productId: idProduct,
+        userId: idUser,
+      },
     });
+    if (!review) {
+      return res.status(400).send('No se encontró una review');
+    }
+    return res.json(review);
+  } catch (err) {
+    return res.status(500).send('Internal server error: no se pudo obtener la review.');
   }
-  return res.json(review);
 };
 
 module.exports = {
