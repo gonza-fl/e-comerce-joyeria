@@ -71,7 +71,7 @@
     .ctnFiltersCat {
         display: none;
         height: 100%;
-        z-index: 100;
+        z-index: 1000;
         position: absolute;
         transform: translate(-20px, -90px);
         animation: filterSlide 0.8s;

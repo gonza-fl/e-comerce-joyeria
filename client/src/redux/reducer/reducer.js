@@ -11,6 +11,8 @@ import {
   SHOW_FLOATING_CART,
   GET_USER_ORDERS,
   GET_USER_INFO,
+  GET_REVIEW_BY_USER,
+  RESET_PRODUCT_DETAIL_AND_REVIEW,
 } from '../actions/actions';
 
 const InitialState = {
@@ -28,6 +30,7 @@ const InitialState = {
   userInfo: {},
   floatingCart: 'none',
   userOrders: [],
+  reviewByUser: {},
 };
 
 export default function rootReducer(state = InitialState, action) {
@@ -106,6 +109,21 @@ export default function rootReducer(state = InitialState, action) {
     return {
       ...state,
       userInfo: action.payload,
+    };
+  }
+
+  if (action.type === GET_REVIEW_BY_USER) {
+    return {
+      ...state,
+      reviewByUser: action.payload,
+    };
+  }
+
+  if (action.type === RESET_PRODUCT_DETAIL_AND_REVIEW) {
+    return {
+      ...state,
+      detail: InitialState.detail,
+      reviewByUser: InitialState.reviewByUser,
     };
   }
   return state;
