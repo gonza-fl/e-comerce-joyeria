@@ -1,11 +1,15 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 const {
+  searchReview,
+} = require('../helpers/reviewHelpers');
+const {
   verifyNumber,
 } = require('../helpers/functionHelpers');
 const {
   Review,
   User,
+  Product,
 } = require('../models/index');
 
 const getReviews = async (req, res) => {
@@ -21,7 +25,7 @@ const getReviews = async (req, res) => {
     });
     return res.status(201).json(reviews);
   } catch (error) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error: no se pudo obtener las reviews.');
   }
 };
 
@@ -39,6 +43,7 @@ const postReview = async (req, res) => {
   const user = await User.findByPk(userId);
   if (!user) return res.status(400).send('No existe User con ese ID');
   if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
+  if (!description || !description.trim().length) return res.status(400).send('La descripción no puede ser vacía.');
   description = description.trim();
   if (calification === 0) calification = 1;
   else calification = calification % 5 === 0 ? 5 : calification % 5;
@@ -56,7 +61,36 @@ const postReview = async (req, res) => {
     if (created) return res.status(200).send('Gracias por dejar tu review!');
     return res.status(400).send('Ya existe un review por parte de este usuario en este producto');
   } catch (error) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error: no se pudo crear la review.');
+  }
+};
+
+const modifyReview = async (req, res) => {
+  const {
+    idReview,
+  } = req.params;
+  const {
+    description,
+    userId,
+  } = req.body;
+  let {
+    calification,
+  } = req.body;
+  if (!userId) return res.status(400).send('Usuario no definida');
+  if (!idReview) return res.status(400).send('Review no definida');
+  if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
+  if (!description || !description.trim()) return res.status(400).send('Descripción no definida');
+  if (calification === 0) calification = 1;
+  else calification = calification % 5 === 0 ? 5 : calification % 5;
+  try {
+    const review = await searchReview(idReview, userId);
+    if (!review) return res.status(404).send('Review no encontrada');
+    review.calification = calification;
+    review.description = description.trim();
+    review.save();
+    return res.status(200).send('Review modificada correctamente!');
+  } catch (error) {
+    return res.status(500).send('Internal server error: no se pudo modificar la review.');
   }
 };
 
@@ -73,7 +107,7 @@ const deleteReview = async (req, res) => {
     if (!review) return res.status(400).send('No se encontró una review');
     return res.status(200).send('Review eliminada correctamente!');
   } catch (err) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error: no se pudo borrar la review.');
   }
 };
 
@@ -83,18 +117,20 @@ const getReview = async (req, res) => {
     idUser,
   } = req.params;
 
-  const review = await Review.findOne({
-    where: {
-      productId: idProduct,
-      userId: idUser,
-    },
-  });
-  if (!review) {
-    return res.status(400).json({
-      err: 'No se encontró una review',
+  try {
+    const review = await Review.findOne({
+      where: {
+        productId: idProduct,
+        userId: idUser,
+      },
     });
+    if (!review) {
+      return res.status(400).send('No se encontró una review');
+    }
+    return res.json(review);
+  } catch (err) {
+    return res.status(500).send('Internal server error: no se pudo obtener la review.');
   }
-  return res.json(review);
 };
 
 module.exports = {
@@ -102,4 +138,5 @@ module.exports = {
   postReview,
   deleteReview,
   getReview,
+  modifyReview,
 };
