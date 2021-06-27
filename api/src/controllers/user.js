@@ -98,10 +98,21 @@ const getUserAdmin = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line arrow-body-style
+const testAdmin = async (_req, res) => {
+  return res.json({
+    data: {
+      username: 'test',
+      password: '123456',
+    },
+  });
+};
+
 module.exports = {
   createUser,
   getUsers,
   updateUser,
   getUserById,
   getUserAdmin,
+  testAdmin,
 };
