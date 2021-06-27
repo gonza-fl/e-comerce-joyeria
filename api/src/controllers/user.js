@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
       displayName,
       phone,
       birthday: birthdayNew,
-      admin: 'user',
+      role: 'user',
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (_req, res) => {
   try {
     const user = await User.findAll({
       include: [Address, {
@@ -106,8 +106,9 @@ const disableUser = async (req, res) => {
     idAdmin,
   } = req.body;
   try {
-    const admin = User.findByPk(idAdmin, {
+    const admin = await User.findOne({
       where: {
+        id: idAdmin,
         role: 'admin',
       },
     });
@@ -115,7 +116,7 @@ const disableUser = async (req, res) => {
     // Falta validar que ningun admin pueda borrar al superadmin
     // ¿Como reconocer el idSuperAdmin? ¿De dónde viene este dato?
     // if (idUser === idSuperAdmin) return res.status(404).send('No se puede eliminar al dueño');
-    const user = User.update({
+    const user = await User.update({
       role: 'banned',
     }, {
       where: {
