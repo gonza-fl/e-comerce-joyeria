@@ -66,6 +66,26 @@ const UserOrderDetail = () => {
             </tr>
           ))}
         </table>
+        <div className="user-order-detail-products-responsive">
+          {userOrderDetail.products.map((product) => (
+            <div className="user-order-detail-product-responsive-data">
+              <p>Nombre: {product.name}</p>
+              <p>Precio Unitario: ${product.price}</p>
+              <p>Cantidad: {product.orderline.amount}</p>
+              <p>Total: ${product.orderline.subtotal}</p>
+              <div className="user-order-detail-product-responsive-links">
+                <Link className="user-order-detail-products-link"
+                  to={`/products/product/${product.orderline.productId}`}
+                >Ver Producto
+                </Link>
+                <Link className="user-order-detail-products-link"
+                    to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
+                >Opiná!
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="user-order-detail-data">
         <div className="user-order-detail-data-order">
