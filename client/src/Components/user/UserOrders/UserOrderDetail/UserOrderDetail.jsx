@@ -60,7 +60,7 @@ const UserOrderDetail = () => {
               <td>
                 <Link className="user-order-detail-products-link"
                   to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
-                >Opiná sobre este producto!
+                >Opiná!
                 </Link>
               </td>
             </tr>

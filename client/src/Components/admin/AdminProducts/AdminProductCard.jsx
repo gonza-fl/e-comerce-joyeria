@@ -15,7 +15,7 @@ function AdminProductCard() {
   const categories = useSelector((state) => state.categories);
   const { productId } = useParams();
   const [modify, setModify] = useState(false);
-
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(getProductDetail(productId));
     dispatch(getCategories());
@@ -29,7 +29,7 @@ function AdminProductCard() {
         <Button text="Modificar producto" handleClick={() => setModify(!modify)} />
         &ensp;
         <a href="/admin/products" className="link-without-styles">
-          <Button text="Eliminar producto" handleClick={() => deleteProduct(product)} />
+          <Button text="Eliminar producto" handleClick={() => deleteProduct(product, user.id)} />
         </a>
       </div>
     );

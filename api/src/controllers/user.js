@@ -110,6 +110,16 @@ const getUserAdmin = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line arrow-body-style
+const testAdmin = async (_req, res) => {
+  return res.json({
+    data: {
+      username: 'test',
+      password: '123456',
+    },
+  });
+};
+
 const disableUser = async (req, res) => {
   const {
     idUser,
@@ -149,5 +159,6 @@ module.exports = {
   updateUser,
   getUserById,
   getUserAdmin,
+  testAdmin,
   disableUser,
 };

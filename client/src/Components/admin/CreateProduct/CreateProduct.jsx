@@ -21,7 +21,7 @@ function CreateProduct() {
     categories: [],
   });
   const [filled, setFilled] = useState('conEspacio');
-
+  const user = useSelector((state) => state.user);
   const categories = useSelector((state) => state.categories);
 
   useEffect(() => {
@@ -62,7 +62,11 @@ function CreateProduct() {
   };
 
   const uploadProduct = async () => {
-    axios.post(URL_PRODUCTS, newProduct)
+    axios.post(URL_PRODUCTS, newProduct, {
+      headers: {
+        'access-token': user.id,
+      },
+    })
       .then((res) => {
         if (res.data.hasOwnProperty('err')) {
           swal('error', 'No se pudo crear al producto', 'warning');

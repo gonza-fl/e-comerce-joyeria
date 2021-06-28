@@ -7,10 +7,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import './adminUsers.css';
+import { useSelector } from 'react-redux';
 import { URL_USERS } from '../../../constants';
 
 function OrderList() {
   const [users, setUsers] = useState([]);
+  const userState = useSelector((state) => state.user);
 
   const handleStatusChange = (e, user) => {
     e.preventDefault();
@@ -25,6 +27,10 @@ function OrderList() {
         axios.put(`${URL_USERS}${user.id}`, {
           ...user,
           role: e.target.value,
+        }, {
+          headers: {
+            'access-token': userState.id,
+          },
         })
           .then((res) => {
             if (res.data.hasOwnProperty('err')) {

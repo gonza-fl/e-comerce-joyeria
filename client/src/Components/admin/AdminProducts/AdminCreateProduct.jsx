@@ -20,7 +20,7 @@ function AdminCreateProduct() {
   const [input, setInput] = useState({
     id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '',
   });
-
+  const user = useSelector((state) => state.user);
   const [imgSelected, setImgSelected] = useState([]);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function AdminCreateProduct() {
 
     if (input.categories.length === 0) { setLoading(false); return swal('Error', 'Debes asignar al menos una categoría', 'warning'); }
 
-    return createProduct({ ...input, image: imgSelected }, setLoading);
+    return createProduct({ ...input, image: imgSelected }, setLoading, user.id);
   }
 
   const previewFile = (file) => {
