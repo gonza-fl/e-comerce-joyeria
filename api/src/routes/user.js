@@ -3,7 +3,7 @@ const {
 } = require('express');
 const address = require('./address');
 const {
-  createUser, getUsers, updateUser, getUserById, getUserAdmin, testAdmin, testAdmin2,
+  createUser, getUsers, updateUser, getUserById, getUserAdmin, testAdmin,
 } = require('../controllers/user');
 const {
   editCartAmount,
