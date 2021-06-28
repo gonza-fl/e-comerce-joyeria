@@ -6,14 +6,21 @@
     padding: 10px 10px;
     font-weight: bold;
     background-color: #CF988C;
-    height: 100%;
 }
  @media(max-width: 452px){
     .container{
+        display: flex;
         flex-wrap: wrap;
-        align-items:center;
-        padding: 10px 10px;
+        justify-content: space-between;
+        flex-direction: row;
+        padding: 0px;
         font-weight: bold;
         background-color: #CF988C;
+        align-self: center;
+        justify-self: center;
+    }
+    .linkedDiv{
+        margin: 10px;
+        padding: 0px;
     }
 }
