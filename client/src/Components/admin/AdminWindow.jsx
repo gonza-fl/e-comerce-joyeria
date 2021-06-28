@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import AdminNavBar from './AdminNavBar/AdminNavBar';
 import AdminProducts from './AdminProducts/AdminProducts';
@@ -14,6 +13,7 @@ import Spiner from '../Spiner/Spiner';
 import AdminUpdateProduct from './AdminProducts/AdminUpdateProduct';
 import AdminUsers from './AdminUsers/AdminUsers';
 import Logo from '../StyledComponents/Logo';
+import './adminWindow.css';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 
@@ -22,14 +22,18 @@ function AdminWindow() {
   const user = useSelector((state) => state.user);
   if (ADMIN_IDS.includes(user.id)) {
     return (
-      <MainDiv>
-        <h1>ADMINISTRADOR</h1>
+      <div className="mainDiv">
+        <h1 className="titulo">ADMINISTRADOR</h1>
 
-        <AdminPanel>
+        <div className="adminPanel">
           <AdminNavBar />
-          <WindowDiv className="bg-color-six">
+          <div className="windowDiv">
             <Switch>
-              <Route exact path="/admin"><Logo height="800px" width="1000px" /></Route>
+              <Route exact path="/admin">
+                <div className="loggo">
+                  <Logo height="800px" width="1000px" />
+                </div>
+              </Route>
               <Route exact path="/admin/orders" component={OrderList} />
               <Route exact path="/admin/products" component={AdminProducts} />
               <Route exact path="/admin/products/create" component={AdminCreateProduct} />
@@ -41,43 +45,20 @@ function AdminWindow() {
               <Route exact path="/admin/orders/:orderId" component={OrderDetail} />
               <Route exact path="/admin/users" component={AdminUsers} />
             </Switch>
-          </WindowDiv>
-        </AdminPanel>
-      </MainDiv>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <MainDiv>
+    <div className="mainDiv">
       <Spiner msg="Debe iniciar secion para acceder al panel de administrador" />
       <Link to="/">
         <button type="button">volver al home</button>
       </Link>
-    </MainDiv>
+    </div>
   );
 }
-
-const MainDiv = styled.div`
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      height: 97vh;
-`;
-
-const AdminPanel = styled.div`
-      display: flex;
-      flex-direction: row;
-      width: 98vw;
-      height: 100%;
-      padding 15px 15px;
-`;
-
-const WindowDiv = styled.div`
-      display: flex;
-      justify-content: center;
-      flex-grow: 8;
-      align-items: center;
-`;
 
 export default AdminWindow;
