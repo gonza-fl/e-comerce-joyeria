@@ -42,6 +42,33 @@ const UserOrders = (props) => {
           </tr>
         )) : <p>wait</p>}
       </table>
+      <div className="responsive-container">
+        {userOrders ? userOrders.map((order) => (
+          <div>
+            <div>
+              <p>Fecha: </p>
+              <p>{order.endTimestamp}</p>
+            </div>
+            <div>
+              <p>N° de Orden: </p>
+              <p>{order.orderNumber}</p>
+            </div>
+            <div>
+              <p>Estado: </p>
+              <p>{order.status}</p>
+            </div>
+            <div>
+              <p>Total: </p>
+              <p>{order.total}</p>
+            </div>
+            <div>
+              <p>Detalle: </p>
+              <Link className="user-order-link" to={`/user/order/${order.id}`}>Ver Detalle</Link>
+            </div>
+          </div>
+        )) : <p>wait</p>}
+
+      </div>
     </div>
   );
 };

@@ -27,3 +27,13 @@
 .user-order-link:hover{
   background-color: #e6c7b7;
 }
+
+.responsive-container{
+  display: none;
+}
+
+@media only screen and (max-width: 425px) {
+  .user-orders-container{
+    display: none;
+  }
+}
