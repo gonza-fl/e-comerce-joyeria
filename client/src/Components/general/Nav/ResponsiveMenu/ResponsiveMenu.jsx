@@ -32,7 +32,7 @@ export default function ResponsiveMenu() {
         ? <Link to="/profile" onClick={click}><FaUserAlt />&nbsp;Mi Cuenta</Link>
         : <Link to="#login" onClick={clickLogin}><FaUserAlt />&nbsp;Iniciar sesión</Link>}
       <Link to="/cart" onClick={click}><FaShoppingCart />&nbsp;Ver carrito</Link><hr />
-      <Link to="products" onClick={click}><FaWeightHanging />&nbsp;Todos los productos</Link><hr />
+      <Link to="/products" onClick={click}><FaWeightHanging />&nbsp;Todos los productos</Link><hr />
       {categories.map((cat) => <Link to={`/products/${cat.id}`} onClick={click} className="respCategories">{cat.name}</Link>)}<hr />
     </div>
   );

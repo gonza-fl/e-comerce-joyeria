@@ -45,7 +45,7 @@ export default function Nav() {
           <FaBars />
           <div className="respMenu">  <ResponsiveMenu /></div>
         </div>
-        <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>
+        {user.id && <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>}
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
