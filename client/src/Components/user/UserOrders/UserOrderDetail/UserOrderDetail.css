@@ -134,24 +134,10 @@
   }
 }
 
-/* 
-@media only screen and (max-width: 768px) {
-  .user-order-detail-container{
-    width: 90%;
-    margin-top: 10%;
-  }
-
-  .user-order-detail-products{
-    overflow-x:scroll;
-  }
-
-  .user-order-detail-products-link{
-    white-space: nowrap;
-  }
-
+@media only screen and (min-width: 768px) {
   .user-order-detail-data {
-    width: 60%;
+    width: 70%;
   }
-} */
+}
 
 
