@@ -4,7 +4,7 @@ const {
 const address = require('./address');
 const {
   createUser, getUsers, updateUser, getUserById, getUserAdmin,
-  disableUser, testAdmin, promoteUser,
+  disableUser, testAdmin, promoteUserDemoteAdmin,
 } = require('../controllers/user');
 const {
   editCartAmount,
@@ -18,7 +18,7 @@ const {
 
 const router = Router();
 router.get('/:idUser/admin', getUserAdmin);
-router.put('/:idUser/promote', promoteUser);
+router.put('/:idUser/promote', promoteUserDemoteAdmin);
 router.get('/:idUser/orders', getAllOrdersByIdUser);
 router.get('/:id/cart', getCartByUser);
 router.put('/:idUser/cart', editCartAmount);

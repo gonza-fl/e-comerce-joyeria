@@ -153,7 +153,7 @@ const disableUser = async (req, res) => {
     return res.status(500).send('Internal server error');
   }
 };
-const promoteUser = async (req, res) => {
+const promoteUserDemoteAdmin = async (req, res) => {
   const {
     idUser,
   } = req.params;
@@ -195,5 +195,5 @@ module.exports = {
   getUserAdmin,
   testAdmin,
   disableUser,
-  promoteUser,
+  promoteUserDemoteAdmin,
 };
