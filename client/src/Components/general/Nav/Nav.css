@@ -129,6 +129,11 @@
         justify-content: center;
         position: relative;
     }
+    .nameTablet {
+        position: absolute;
+        right: 25px;
+        top: 60px
+    }
     @media (max-width: 452px) {
         .ctnNav {
             height: 60px;
@@ -214,6 +219,9 @@
                 right: 0;
                 top: -5px;
             }
+        }
+        .nameTablet {
+            position: static;
         }
     }
 }
