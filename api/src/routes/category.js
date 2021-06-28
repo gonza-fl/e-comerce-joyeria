@@ -1,6 +1,11 @@
 const {
   Router,
 } = require('express');
+
+const {
+  corroborarAdmin,
+} = require('../helpers/middlewares');
+
 const {
   addCategory,
   getCategories,
@@ -9,9 +14,9 @@ const {
 } = require('../controllers/category');
 
 const router = Router();
-router.post('/', addCategory);
+router.post('/', corroborarAdmin, addCategory);
 router.get('/', getCategories);
-router.put('/', updateCategory);
-router.delete('/:categoryId', delCategory);
+router.put('/', corroborarAdmin, updateCategory);
+router.delete('/:categoryId', corroborarAdmin, delCategory);
 
 module.exports = router;
