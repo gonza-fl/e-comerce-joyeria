@@ -5,7 +5,7 @@
 /* eslint-disable no-return-assign */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaUserAlt, FaShoppingCart } from 'react-icons/fa';
+import { FaUserAlt, FaShoppingCart, FaBars } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import 'firebase/auth';
 import swal from 'sweetalert';
@@ -18,7 +18,7 @@ import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
-import Button from '../../StyledComponents/Button';
+import ResponsiveMenu from './ResponsiveMenu/ResponsiveMenu';
 
 export default function Nav() {
   const dispatch = useDispatch();
@@ -42,7 +42,8 @@ export default function Nav() {
         <div className="leftMenuNav"><LeftMenu user={user} /></div>
 
         <div className="homeResponsive">
-          <Link to="/"><Button text="Inicio" /> </Link>
+          <FaBars />
+          <div className="respMenu">  <ResponsiveMenu /></div>
         </div>
         <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>
         <div className="logoNav">

@@ -20,6 +20,10 @@
     display: none;
 }
 
+.respMenu {
+    display: none;
+}
+
 .logoNav {
     height: 100%;
     width: 17%;
@@ -155,7 +159,12 @@
         .homeResponsive {
             position: absolute;
             display: block;
-            left: 10px;
+            left: 20px;
+        }
+        .homeResponsive:hover .respMenu {
+            display: flex;
+            position: absolute;
+            z-index: 2000;
         }
         .rigthMenuNav {
             flex-direction: row;
