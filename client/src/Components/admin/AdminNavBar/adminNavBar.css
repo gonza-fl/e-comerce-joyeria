@@ -8,9 +8,8 @@
     background-color: #CF988C;
     height: 100%;
 }
-@media (max-width: 452px){
+ @media(max-width: 452px){
     .container{
-        width: 50%;
         flex-wrap: wrap;
         align-items:center;
         padding: 10px 10px;

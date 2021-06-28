@@ -22,13 +22,13 @@
 @media (max-width: 452px){
     .mainDiv{
         display: flex;
-        align-items: center;
-        text-align: center;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
     .adminPanel{
         display: flex;
-        flex-direction: row;
-        width: 98vw;
+        flex-direction: column;
+        width: 50%;
         height: 100%;
         padding: 15px 15px;
     }
