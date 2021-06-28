@@ -1,144 +1,106 @@
-@media only screen and (max-width: 425px) {
-  .user-order-detail-container{
-    width: 90%;
-    margin-top: 20%;
+.user-order-detail-container{
+  border: 3px solid black;
+  background-color: #f1eee3;
+  width: 70%;
+  height: 90%;
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+}
+
+.user-order-detail-products{
+  width: 80%;
+  padding: 2%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.user-order-detail-products-table{
+  width: 100%;
+}
+
+.user-order-detail-products-rows{
+  background-color: #f0ddd8;
+  height: 40px;
+}
+
+.user-order-detail-data{
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+}
+
+.user-order-detail-data-order, .user-order-detail-data-user{
+  border: 0.5px solid black;
+  padding: 2%;
+  width: 50%;
+  margin: 0 2%;
+}
+
+.user-order-detail-products-link{
+  text-decoration: none;
+  border: 0.5px solid black;
+  color: black;
+  padding: 1.2%;
+  white-space: nowrap;
+}
+
+.user-order-detail-products-link:hover{
+  background-color: #e6c7b7;
+}
+
+.user-order-detail-products-responsive{
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .user-order-detail-products-table {
+    display: none;
   }
 
-  .user-order-detail-products{
-    overflow-x: auto;
-  }
-
-  .user-order-detail-products-table{
-    margin-left: 70%;
-  }
-
-  .user-order-detail-products-rows {
-    height: 80px;
-  }
-
-  .user-order-detail-products-link{
-    white-space: nowrap;
-  }
-
-  .user-order-detail-data {
+  .user-order-detail-products-responsive {
+    display: flex;
     flex-direction: column;
-    width: 80%;
   }
 
-  .user-order-detail-data-order {
+  .user-order-detail-container {
+    width: 90%;
+    margin-top: 50px;
+  }
+
+  .user-order-detail-products {
+    width: 100%;
+    display: block;
+  }
+
+  .user-order-detail-product-responsive-data {
+    width: 70%;
+    padding: 3%;
+    margin: 3% auto;
+    border: 0.5px solid #e6c7b7;
+  }
+
+  .user-order-detail-product-responsive-links{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-order-detail-products-link {
+    background-color: #e6c7b7;
+    border: none;
     margin-bottom: 3%;
   }
-}
 
-@media only screen and (min-width: 375px) {
-  .user-order-detail-products-table{
-    margin-left: 45%;
-  }
-}
-
-@media only screen and (min-width: 425px) {
-  .user-order-detail-container{
-    width: 90%;
-    margin-top: 15%;
-  }
-
-  .user-order-detail-products{
-    overflow-x: auto;
-  }
-
-  .user-order-detail-products-table{
-    margin-left: 30%;
-  }
-
-  .user-order-detail-products-link{
-    white-space: nowrap;
-  }
-
-  .user-order-detail-data {
-    width: 90%;
-  }
-
-  .user-order-detail-data-order {
-    width: 50%;
-    margin-right: 2%;
-  }
-}
-
-@media only screen and (min-width: 490px) {
-  .user-order-detail-products-table{
-    margin-left: 10%;
-  }
-}
-
-@media only screen and (min-width: 550px) {
-  .user-order-detail-container{
-    margin-top: 5%;
-  }
-
-  .user-order-detail-products-table{
-    margin-left: 0%;
-  }
-
-  .user-order-detail-data-user {
-    width: 50%;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .user-order-detail-data {
-    width: 70%;
-  }
-}
-
-@media only screen and (min-width: 1024px) {
-  .user-order-detail-container{
-    border: 3px solid black;
-    background-color: #f1eee3;
-    width: 70%;
-    height: 90%;
-    margin-top: 2%;
-    display: flex;
+  .user-order-detail-data{
+    width: 100%;
     flex-direction: column;
     align-items: center;
-    padding: 2%;
   }
-  
-  .user-order-detail-products{
-    width: 80%;
-    padding: 2%;
-    display: flex;
-    justify-content: space-evenly;
-  }
-  
-  .user-order-detail-products-table{
-    width: 100%;
-  }
-  
-  .user-order-detail-products-rows{
-    background-color: #f0ddd8;
-    height: 40px;
-  }
-  
-  .user-order-detail-data{
-    display: flex;
-    width: 45%;
-    justify-content: space-between;
-  }
-  
-  .user-order-detail-data-order, .user-order-detail-data-user{
-    border: 0.5px solid black;
-    padding: 2%;
-  }
-  
-  .user-order-detail-products-link{
-    text-decoration: none;
-    border: 0.5px solid black;
-    color: black;
-    padding: 1.2%;
-  }
-  
-  .user-order-detail-products-link:hover{
-    background-color: #e6c7b7;
+
+  .user-order-detail-data-order{
+    margin-bottom: 3%;
   }
 }
 
