@@ -62,7 +62,7 @@ const updateAddress = async (req, res) => {
         userId: idUser,
       },
     });
-    if (!updated[0]) return res.status(404).send('La id puede que no le pertenezca a ese usuario.');
+    if (!updated[0]) return res.status(404).send('La id de dirección no pertenece a este usuario.');
     return res.status(200).send('Direccion actualizada correctamente!');
   } catch (err) {
     return res.status(404).send('Internal server error. Dirección no actualizada');
