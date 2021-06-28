@@ -113,6 +113,22 @@
 }
 
 @media (max-width: 768px) {
+    .adminNavResponsive {
+        color: black;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        z-index: 1;
+        width: 100%;
+        top: 90px;
+        left: 0;
+        background-color: #CF988C;
+    }
+    .nav {
+        width: 100%;
+        justify-content: center;
+        position: relative;
+    }
     @media (max-width: 452px) {
         .ctnNav {
             height: 60px;
@@ -177,15 +193,7 @@
             animation: userMenu 1s;
         }
         .adminNavResponsive {
-            color: black;
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            z-index: 1;
-            width: 100%;
             top: 100px;
-            left: 0;
-            background-color: #CF988C;
         }
         .ctnNav .rigthMenuNav h3 {
             top: 33px;

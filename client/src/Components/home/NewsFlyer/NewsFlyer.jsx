@@ -71,6 +71,7 @@ const StyledImg = styled.img`
         }
         @media (max-width: 768px) {
           width:95%;
+          max-heigth: 380px
           height:auto;
         }
         @media (max-width: 452px) {

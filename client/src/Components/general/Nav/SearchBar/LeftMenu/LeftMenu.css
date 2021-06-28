@@ -45,3 +45,14 @@
 .optionLeftMenu {
     list-style: none;
 }
+
+@media (max-width:768px) {
+    .ulTablet {
+        display: none;
+    }
+    .nameTablet {
+        position: absolute;
+        right: 25px;
+        top: 60px
+    }
+}

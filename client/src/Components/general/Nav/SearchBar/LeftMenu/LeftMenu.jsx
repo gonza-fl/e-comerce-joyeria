@@ -10,7 +10,7 @@ export default function LeftMenu({ user }) {
   ADMIN_IDS.split(',');
   return (
     <div className="leftMenuCtn">
-      <ul>
+      <ul className="categoryTablet">
         CATEGORIAS
         <div className="bg-color-six">
           {categories.map((d) => (
@@ -20,11 +20,11 @@ export default function LeftMenu({ user }) {
           ))}
         </div>
       </ul>
-      <ul>TIPS</ul>
-      <ul>ARTE</ul>
-      <ul>NUEVO</ul>
+      <ul className="ulTablet">TIPS</ul>
+      <ul className="ulTablet">ARTE</ul>
+      <ul className="ulTablet">NUEVO</ul>
       {ADMIN_IDS.includes(user.id) && (
-      <Link to="/admin" className="link-without-styles">
+      <Link to="/admin" className="link-without-styles ulTablet">
         <ul style={{ color: 'blue' }}>ADMINISTRADOR</ul>
         {' '}
       </Link>

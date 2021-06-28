@@ -56,7 +56,7 @@ export default function Nav() {
           <div className="userIcon">
             <div className="navIconUser"><FaUserAlt />
               &nbsp; &nbsp;
-              {user.email ? <b>{user.name.split(' ')[0]}</b> : null}
+              {user.email ? <b className="nameTablet">{user.name.split(' ')[0]}</b> : null}
               {user.id
                 ? (
                   <div className="userOptions">
