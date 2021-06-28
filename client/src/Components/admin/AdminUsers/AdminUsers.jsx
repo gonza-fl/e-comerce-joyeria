@@ -55,30 +55,59 @@ function OrderList() {
 
   return (
     <div className="containerDiv">
-      <table className="table">
-        <tr>
+      <div className="keysA">
+        <tr className="tr1">
           <th>NOMBRE</th>
           <th>E-MAIL</th>
           <th>ID</th>
-          <th>ESTATUS DE USUARIO</th>
+          <th>ESTATUS</th>
         </tr>
-        {users.map((user) => (
-          <tr key={user.displayName}>
-            <td>{user.displayName}</td>
-            <td>{user.email}</td>
-            <td>{user.id}</td>
-            <td>
-              {user.role}
-              <select onChange={(e) => { handleStatusChange(e, user); }}>
-                <option>Cambiar estatus</option>
-                <option value="user">usuario</option>
-                <option value="admin">admin</option>
-                <option value="banned">baneado</option>
-              </select>
-            </td>
-          </tr>
-        ))}
-      </table>
+      </div>
+      {users.map((user) => (
+        <table className="table">
+          <div className="keysB">
+            <tr className="tr">
+              <th>NOMBRE</th>
+              <th>E-MAIL</th>
+              <th>ID</th>
+              <th>ESTATUS</th>
+            </tr>
+          </div>
+          <div className="values">
+            <tr key={user.displayName} className="tr">
+              <td>{user.displayName}</td>
+              <td>{user.email}</td>
+              <td>{user.id}</td>
+              <td>
+                {user.role}
+                <select onChange={(e) => { handleStatusChange(e, user); }}>
+                  <option>Cambiar estatus</option>
+                  <option value="user">usuario</option>
+                  <option value="admin">admin</option>
+                  <option value="banned">baneado</option>
+                </select>
+              </td>
+            </tr>
+          </div>
+          <div className="valuesA">
+            <tr key={user.displayName} className="tr2">
+              <td>{user.displayName}</td>
+              <td>{user.email}</td>
+              <td>{user.id}</td>
+              <td>
+                {user.role}
+                <select onChange={(e) => { handleStatusChange(e, user); }}>
+                  <option>Cambiar estatus</option>
+                  <option value="user">usuario</option>
+                  <option value="admin">admin</option>
+                  <option value="banned">baneado</option>
+                </select>
+              </td>
+            </tr>
+          </div>
+        </table>
+      ))}
+
     </div>
   );
 }
