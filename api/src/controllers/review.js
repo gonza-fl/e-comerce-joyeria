@@ -42,14 +42,14 @@ const postReview = async (req, res) => {
   if (!product) return res.status(400).send('No existe ese producto');
   if (typeof userId !== 'string') return res.status(400).send('El ID de usuario es inválido');
   userId = userId.trim();
-  const user = await User.findByPk(userId);
-  if (!user) return res.status(400).send('No existe User con ese ID');
-  if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
-  if (!description || !description.trim().length) return res.status(400).send('La descripción no puede ser vacía.');
-  description = description.trim();
-  if (calification === 0) calification = 1;
-  else calification = calification % 5 === 0 ? 5 : calification % 5;
   try {
+    const user = await User.findByPk(userId);
+    if (!user) return res.status(400).send('No existe User con ese ID');
+    if (!verifyNumber(calification).veracity) return res.status(400).send(verifyNumber(calification, 'calificacion').msg);
+    if (!description || !description.trim().length) return res.status(400).send('La descripción no puede ser vacía.');
+    description = description.trim();
+    if (calification === 0) calification = 1;
+    else calification = calification % 5 === 0 ? 5 : calification % 5;
     const [review, created] = await Review.findOrCreate({
       where: {
         productId: idProduct,
