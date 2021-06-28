@@ -4,8 +4,12 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { URL_CATEGORIES, URL_PRODUCTS } from '../../../../constants';
 
-export function updateProduct(product) {
-  axios.put(`${URL_PRODUCTS}${product.id}`, product)
+export function updateProduct(product, id) {
+  axios.put(`${URL_PRODUCTS}${product.id}`, product, {
+    headers: {
+      'access-token': id,
+    },
+  })
     .then(() => swal('Success', 'Producto modificado!'))
     .then(() => { window.location.href = '/admin/products'; })
     .catch((err) => {
@@ -13,8 +17,12 @@ export function updateProduct(product) {
     });
 }
 
-export function createProduct(product, setLoading) {
-  axios.post(URL_PRODUCTS, product)
+export function createProduct(product, setLoading, id) {
+  axios.post(URL_PRODUCTS, product, {
+    headers: {
+      'access-token': id,
+    },
+  })
     .then((res) => {
       if (res.data.hasOwnProperty('err')) {
         setLoading(false);
@@ -31,7 +39,7 @@ export function createProduct(product, setLoading) {
     });
 }
 
-export function deleteProduct(product) {
+export function deleteProduct(product, id) {
   swal({
     title: '¿Estás seguro que deseas eliminar este producto?',
     text: '',
@@ -40,7 +48,11 @@ export function deleteProduct(product) {
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete(`${URL_PRODUCTS}${product.id}`, product)
+      axios.delete(`${URL_PRODUCTS}${product.id}`, product, {
+        headers: {
+          'access-token': id,
+        },
+      })
         .then((res) => {
           if (res.data.hasOwnProperty('err')) {
             swal('Error', res.data.err, 'warning');
@@ -60,7 +72,7 @@ export function deleteProduct(product) {
   });
 }
 
-export function deleteCategory(category) {
+export function deleteCategory(category, id) {
   swal({
     title: '¿Estás seguro que deseas eliminar esta categoría?',
     text: '',
@@ -69,7 +81,11 @@ export function deleteCategory(category) {
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete(`${URL_CATEGORIES}${category.id}`, category)
+      axios.delete(`${URL_CATEGORIES}${category.id}`, category, {
+        headers: {
+          'access-token': id,
+        },
+      })
         .then((res) => {
           if (res.data.hasOwnProperty('err')) {
             swal('Error', res.data.err, 'warning');

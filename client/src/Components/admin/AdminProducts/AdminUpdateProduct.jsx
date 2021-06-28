@@ -17,7 +17,7 @@ function AdminUpdateProduct() {
   const product = useSelector((state) => state.detail);
   const categories = useSelector((state) => state.categories);
   const imgInput = useRef();
-
+  const user = useSelector((state) => state.user);
   const [input, setInput] = useState({
     id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }],
   });
@@ -66,7 +66,7 @@ function AdminUpdateProduct() {
       ...productUpdated,
       categories: productUpdated.categories.filter((c) => c.checked === 'checked').map((i) => i.id),
       images: imgSelected,
-    });
+    }, user.id);
   }
 
   const previewFile = (file) => {
