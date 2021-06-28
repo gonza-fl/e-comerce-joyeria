@@ -51,7 +51,14 @@ const updateAddress = async (req, res) => {
     description = description !== '' ? description : undefined;
     name = name !== '' ? name : undefined;
     if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
-    const updated = await Address.update({
+    const verifyAddress = await Address.findOne({
+      where: {
+        id: idAddress,
+        userId: idUser,
+      },
+    });
+    if (!verifyAddress) return res.status(404).send('La id de dirección no pertenece a este usuario.');
+    await Address.update({
       name,
       description,
       postalCode,
@@ -62,7 +69,7 @@ const updateAddress = async (req, res) => {
         userId: idUser,
       },
     });
-    if (!updated[0]) return res.status(404).send('La id de dirección no pertenece a este usuario.');
+
     return res.status(200).send('Direccion actualizada correctamente!');
   } catch (err) {
     return res.status(404).send('Internal server error. Dirección no actualizada');
