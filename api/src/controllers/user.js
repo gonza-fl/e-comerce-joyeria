@@ -44,6 +44,7 @@ const getUsers = async (_req, res) => {
     const user = await User.findAll({
       include: [Address, {
         model: Order,
+        attributes: ['id', 'status', 'orderNumber'],
         include: Product,
       },
       ],
