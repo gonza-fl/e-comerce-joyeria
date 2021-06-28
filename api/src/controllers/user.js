@@ -7,27 +7,39 @@ const {
 
 const createUser = async (req, res) => {
   const birthday = req.body.birthday && req.body.birthday.split('-');
-  const {
-    id, email, displayName, phone,
-
+  let {
+    id, displayName,
   } = req.body;
+  const {
+    email, phone,
+  } = req.body;
+  if (!id || typeof id !== 'string' || !id.trim().length) return res.status(400).send('Id incorrecto');
+  if (!displayName || !displayName.trim().length) return res.status(400).send('displayName incorrecto');
+  displayName = displayName.trim();
+  id = id.trim();
   const birthdayNew = birthday ? new Date(birthday[2], birthday[1] - 1, birthday[0]) : null;
   try {
+    const emailFound = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailFound) return res.status(400).send('Ese email ya está siendo utilizado');
     await User.create({
       id,
       email,
       displayName,
       phone,
       birthday: birthdayNew,
-      admin: 'user',
+      role: 'user',
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
-    return res.status(500).send('Internal server error');
+    return res.status(500).send('Internal server error. No se creó el usuario');
   }
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (_req, res) => {
   try {
     const user = await User.findAll({
       include: [Address, {
@@ -108,6 +120,39 @@ const testAdmin = async (_req, res) => {
   });
 };
 
+const disableUser = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const {
+    idAdmin,
+  } = req.body;
+  try {
+    const admin = await User.findOne({
+      where: {
+        id: idAdmin,
+        role: 'admin',
+      },
+    });
+    if (!admin) return res.status(404).send('Acceso denegado. El usuario no es admin');
+    if (admin.id === idUser) return res.status(404).send('Error: no puede bloquearse a uno mismo');
+    // Falta validar que ningun admin pueda borrar al superadmin
+    // ¿Como reconocer el idSuperAdmin? ¿De dónde viene este dato?
+    // if (idUser === idSuperAdmin) return res.status(404).send('No se puede eliminar al dueño');
+    const user = await User.update({
+      role: 'banned',
+    }, {
+      where: {
+        id: idUser,
+      },
+    });
+    if (!user) return res.status(400).send('Error: el usuario a eliminar no existía');
+    return res.send('Usuario bloqueado correctamente!');
+  } catch (err) {
+    return res.status(500).send('Internal server error');
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
@@ -115,4 +160,5 @@ module.exports = {
   getUserById,
   getUserAdmin,
   testAdmin,
+  disableUser,
 };

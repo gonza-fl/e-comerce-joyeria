@@ -51,7 +51,7 @@ const Product = () => {
       <div className="product-container">
         <div className="product-img">
           <div className="bigimg-container">
-            <img src={bigImage} alt={detail.name} />
+            <img className="bigimg-container-img" src={bigImage} alt={detail.name} />
           </div>
 
           <div className="container-minpics">

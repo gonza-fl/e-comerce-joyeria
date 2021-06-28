@@ -3,7 +3,8 @@ const {
 } = require('express');
 const address = require('./address');
 const {
-  createUser, getUsers, updateUser, getUserById, getUserAdmin, testAdmin,
+  createUser, getUsers, updateUser, getUserById, getUserAdmin,
+  disableUser, testAdmin,
 } = require('../controllers/user');
 const {
   editCartAmount,
@@ -23,6 +24,7 @@ router.put('/:idUser/cart', editCartAmount);
 router.use('/:idUser/address', address);
 router.put('/:idUser', updateUser);
 router.get('/:idUser', getUserById);
+router.delete('/:idUser', corroborarAdmin, disableUser);
 router.post('/', createUser);
 router.get('/', getUsers);
 router.get('/testadmin/test', corroborarAdmin, testAdmin);
