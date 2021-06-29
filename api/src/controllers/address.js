@@ -14,16 +14,18 @@ const addAddressFunction = async (req, res) => {
   const {
     address,
     state,
-    departament,
+    city,
   } = req.body;
   try {
-    if (!state || !departament) return res.status(400).send('Falta un campo por rellenar.');
+    if (!state.trim().lenght) return res.status(400).send('Falta rellenar el campo departamento.');
+    if (!city.trim().lenght) return res.status(400).send('Falta rellenar el campo municipio.');
+
     const user = await User.findByPk(idUser);
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     const isAddress = await Address.create({
       address,
       state,
-      departament,
+      city,
     });
     await user.addAddress(isAddress);
     return res.send('Domicilio creado con éxito!');
@@ -39,14 +41,14 @@ const updateAddress = async (req, res) => {
   let {
     address,
     state,
-    departament,
+    city,
   } = req.body;
   try {
     const user = await User.findByPk(idUser);
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     address = address !== '' ? address : undefined;
     state = state !== '' ? state : undefined;
-    departament = departament !== '' ? departament : undefined;
+    city = city !== '' ? city : undefined;
     const verifyAddress = await Address.findOne({
       where: {
         id: idAddress,
@@ -56,7 +58,7 @@ const updateAddress = async (req, res) => {
     if (!verifyAddress) return res.status(404).send('La id de dirección no pertenece a este usuario.');
     await Address.update({
       state,
-      departament,
+      city,
       address,
     }, {
       where: {
