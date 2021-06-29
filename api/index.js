@@ -42,7 +42,7 @@ server.use((err, _req, res) => {
 
 const connect = async () => {
   await conn.sync({
-    force: true,
+    force: false,
   });
 };
 
