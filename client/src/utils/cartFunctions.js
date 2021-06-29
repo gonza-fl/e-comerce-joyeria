@@ -15,6 +15,7 @@ export function addToCart(product, userId) {
       }
       return axios.post(`${URL_CART}`, response);
     }).catch((err) => swal('Lo sentimos!', err.response.data, 'warning'));
+    
   }
   if (localStorage.getItem('cart')) {
     const sinJson = JSON.parse(localStorage.getItem('cart'));

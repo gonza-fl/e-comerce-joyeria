@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const {
   User,
   Address,
@@ -44,6 +45,7 @@ const getUsers = async (_req, res) => {
     const user = await User.findAll({
       include: [Address, {
         model: Order,
+        attributes: ['id', 'status', 'orderNumber'],
         include: Product,
       },
       ],
@@ -110,6 +112,16 @@ const getUserAdmin = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line arrow-body-style
+const testAdmin = async (_req, res) => {
+  return res.json({
+    data: {
+      username: 'test',
+      password: '123456',
+    },
+  });
+};
+
 const disableUser = async (req, res) => {
   const {
     idUser,
@@ -142,6 +154,39 @@ const disableUser = async (req, res) => {
     return res.status(500).send('Internal server error');
   }
 };
+const promoteUserDemoteAdmin = async (req, res) => {
+  const {
+    idUser,
+  } = req.params;
+  const {
+    idAdmin,
+    role,
+  } = req.body;
+  try {
+    if (!role || (role !== 'user' && role !== 'admin')) return res.status(400).send('No se envio ningún rol válido.');
+    if (!idUser) return res.status(400).send('No se recibe ninguna id de usuario.');
+    if (!idAdmin) return res.status(400).send('No se recibe ninguna id de admin.');
+    // if (idUser === env.superadmin) return res.status(400).send('No puedes modificar el rol al super dios.');
+    const admin = await User.findOne({
+      where: {
+        id: idAdmin,
+        role: 'admin',
+      },
+    });
+    if (!admin) return res.status(400).send('Acceso denegado.');
+    const user = await User.findOne({
+      where: {
+        id: idUser,
+      },
+    });
+    if (!user) return res.status(400).send('No hay ningún usuario con esa ID.');
+    user.role = role;
+    await user.save();
+    return res.send('El rol del usuario ha sido modificado exitosamente!');
+  } catch (err) {
+    return res.status(500).send('Internal server error');
+  }
+};
 
 module.exports = {
   createUser,
@@ -149,5 +194,7 @@ module.exports = {
   updateUser,
   getUserById,
   getUserAdmin,
+  testAdmin,
   disableUser,
+  promoteUserDemoteAdmin,
 };

@@ -73,7 +73,10 @@ const createProduct = async (req, res) => {
 const getProducts = async (_req, res) => {
   try {
     const response = await Product.findAll({
-      include: [Category, Image, Review],
+      include: [Category, Image, {
+        model: Review,
+        attributes: ['id', 'calification', 'description'],
+      }],
     });
     if (!response.length) return res.status(404).send('No existen productos');
     return res.status(201).json(response);

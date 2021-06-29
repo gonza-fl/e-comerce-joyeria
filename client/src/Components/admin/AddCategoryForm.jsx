@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { URL_CATEGORIES } from '../../constants';
 import './AddCategoryForms.css';
 
@@ -12,7 +13,7 @@ function AddCategoryForm() {
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const user = useSelector((state) => state.user);
   function loadingIcon() {
     return (
       <div
@@ -29,33 +30,33 @@ function AddCategoryForm() {
   }
 
   const uploadImage = async (base64EncodedImage, valor, description) => {
-    try {
-      axios.post(URL_CATEGORIES, {
-        name: valor,
-        description,
-        img: base64EncodedImage,
-      }).then((res) => {
-        if (res.data.hasOwnProperty('err')) {
-          swal('Error', res.data.err, 'warning');
-        }
-        setSelectedFile();
-        setPreviewSource('');
-        setFileInputState('');
-        const elemento = document.getElementById('flexQuery');
-        elemento.style.flexDirection = 'column';
-        document.getElementById('categoria').value = '';
-        document.getElementById('descripcion').value = '';
-        setLoading(false);
-        swal('Success', 'La categoría se creó correctamente', 'success')
-          .then(() => {
-            window.location.href = '/admin/controlcategories';
-          });
-      }).catch(() => {
-        swal('Error', 'Ocurrio un error inesperado', 'warning');
-      });
-    } catch (err) {
-      swal('Error', 'Ocurrio un error inesperado', 'warning');
-    }
+    axios.post(URL_CATEGORIES, {
+      name: valor,
+      description,
+      img: base64EncodedImage,
+    }, {
+      headers: {
+        'access-token': user.id,
+      },
+    }).then((res) => {
+      if (res.data.hasOwnProperty('err')) {
+        swal('Error', res.data.err, 'warning');
+      }
+      setSelectedFile();
+      setPreviewSource('');
+      setFileInputState('');
+      const elemento = document.getElementById('flexQuery');
+      elemento.style.flexDirection = 'column';
+      document.getElementById('categoria').value = '';
+      document.getElementById('descripcion').value = '';
+      setLoading(false);
+      swal('Success', 'La categoría se creó correctamente', 'success')
+        .then(() => {
+          window.location.href = '/admin/controlcategories';
+        });
+    }).catch((err) => {
+      swal('Error', err.response.data, 'warning');
+    });
   };
 
   function enviar(e) {

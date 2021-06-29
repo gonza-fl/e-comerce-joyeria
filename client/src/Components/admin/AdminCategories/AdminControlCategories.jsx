@@ -10,6 +10,7 @@ function AdminControlCategories() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const products = useSelector((state) => state.products);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -18,7 +19,7 @@ function AdminControlCategories() {
 
   function eraseCategory(category) {
     if (!products.filter((p) => p.categories.filter((c) => c.id === category.id)[0])[0]) {
-      return deleteCategory(category);
+      return deleteCategory(category, user.id);
     }
     return swal('Lo sentimos', 'Esta categoría tiene productos asociados.  Elimina estos productos primero si quieres eliminar la categoría', 'warning');
   }

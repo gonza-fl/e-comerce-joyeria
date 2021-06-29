@@ -403,7 +403,7 @@ const testNodeMailer = async (req, res) => {
   // se envia el mail
   transporter.sendMail({
     from: 'Kamora <adaclothes@hotmail.com>',
-    to: 'jonathanezequielsosa@hotmail.com',
+    to: data.email,
     subject: 'Compra realizada!',
     html: result,
   // eslint-disable-next-line consistent-return
