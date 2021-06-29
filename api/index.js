@@ -10,6 +10,8 @@ const {
   PORT,
 } = require('./src/utils/config/index');
 
+require('dotenv').config();
+
 const server = express();
 
 server.use(express.urlencoded({
@@ -40,7 +42,7 @@ conn.sync({
   force: false,
 }).then(() => {
   console.log('DB conectada');
-  server.listen(PORT, () => {
+  server.listen(process.env.PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
   });
 });
