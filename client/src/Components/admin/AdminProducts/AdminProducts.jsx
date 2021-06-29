@@ -20,7 +20,7 @@ function AdminProducts() {
   const products = useSelector((state) => state.products);
   const categories = useSelector((state) => state.categories);
   const [productsDisplay, setProductsDisplay] = useState([]);
-
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     setProductsDisplay(products);
   }, [products]);
@@ -129,7 +129,7 @@ function AdminProducts() {
                 </Link>
               </td>
               <td>
-                <button type="button" onClick={() => deleteProduct(p)}>X</button>
+                <button type="button" onClick={() => deleteProduct(p, user.id)}>X</button>
               </td>
             </ProductContainer>
 

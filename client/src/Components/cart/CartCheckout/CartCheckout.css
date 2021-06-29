@@ -1,0 +1,64 @@
+.main-box-cc {
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+    font-size: 15px;
+}
+
+.card-box-container {
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    border-style: solid;
+}
+
+.addresses-container-cc {
+    width: 90%;
+    padding: 10px 5px;
+}
+
+.card-box-title {
+    width: 90%;
+    padding: 5px 10px;
+}
+
+.address-container-cc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+
+.address-box-cc {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 10px;
+}
+
+.button-edit-cc {
+    border-style: none;
+    font-size: 15px;
+    padding: 5px 10px;
+}
+
+.button-edit-cc:hover {
+    cursor: pointer;
+}
+
+.button-pay-cc {
+    width: 100%;
+    margin-top: 10px;
+    border-style: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.button-pay-cc:hover {
+    cursor: pointer;
+    background-color: #CF988C;
+}

@@ -25,7 +25,18 @@ const verifyArray = (params) => {
   if (!params || !params.length || params[0] === '') return false;
   return true;
 };
+
+const verifyString = (param) => {
+  const string = param.trim();
+
+  if (string.length === 0) {
+    return false;
+  }
+  return true;
+};
+
 module.exports = {
   verifyNumber,
   verifyArray,
+  verifyString,
 };

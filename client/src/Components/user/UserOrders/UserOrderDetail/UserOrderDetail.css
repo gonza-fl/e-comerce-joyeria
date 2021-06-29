@@ -28,13 +28,15 @@
 
 .user-order-detail-data{
   display: flex;
-  width: 45%;
+  width: 70%;
   justify-content: space-between;
 }
 
 .user-order-detail-data-order, .user-order-detail-data-user{
   border: 0.5px solid black;
   padding: 2%;
+  width: 50%;
+  margin: 0 2%;
 }
 
 .user-order-detail-products-link{
@@ -42,8 +44,64 @@
   border: 0.5px solid black;
   color: black;
   padding: 1.2%;
+  white-space: nowrap;
 }
 
 .user-order-detail-products-link:hover{
   background-color: #e6c7b7;
 }
+
+.user-order-detail-products-responsive{
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .user-order-detail-products-table {
+    display: none;
+  }
+
+  .user-order-detail-products-responsive {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-order-detail-container {
+    width: 90%;
+    margin-top: 50px;
+  }
+
+  .user-order-detail-products {
+    width: 100%;
+    display: block;
+  }
+
+  .user-order-detail-product-responsive-data {
+    width: 70%;
+    padding: 3%;
+    margin: 3% auto;
+    border: 0.5px solid #e6c7b7;
+  }
+
+  .user-order-detail-product-responsive-links{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-order-detail-products-link {
+    background-color: #e6c7b7;
+    border: none;
+    margin-bottom: 3%;
+  }
+
+  .user-order-detail-data{
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-order-detail-data-order{
+    margin-bottom: 3%;
+  }
+}
+
+

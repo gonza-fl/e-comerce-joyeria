@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { URL_CATEGORIES } from '../../constants';
 import './AddCategoryForms.css';
 
@@ -12,50 +13,36 @@ function AddCategoryForm() {
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState('');
   const [loading, setLoading] = useState(false);
-
-  function loadingIcon() {
-    return (
-      <div
-        className="lds-facebook"
-        style={{
-          display: `${loading ? 'inline' : 'none'}`, position: 'absolute', top: '50', left: '50',
-        }}
-      >
-        <div />
-        <div />
-        <div />
-      </div>
-    );
-  }
+  const user = useSelector((state) => state.user);
 
   const uploadImage = async (base64EncodedImage, valor, description) => {
-    try {
-      axios.post(URL_CATEGORIES, {
-        name: valor,
-        description,
-        img: base64EncodedImage,
-      }).then((res) => {
-        if (res.data.hasOwnProperty('err')) {
-          swal('Error', res.data.err, 'warning');
-        }
-        setSelectedFile();
-        setPreviewSource('');
-        setFileInputState('');
-        const elemento = document.getElementById('flexQuery');
-        elemento.style.flexDirection = 'column';
-        document.getElementById('categoria').value = '';
-        document.getElementById('descripcion').value = '';
-        setLoading(false);
-        swal('Success', 'La categoría se creó correctamente', 'success')
-          .then(() => {
-            window.location.href = '/admin/controlcategories';
-          });
-      }).catch(() => {
-        swal('Error', 'Ocurrio un error inesperado', 'warning');
-      });
-    } catch (err) {
-      swal('Error', 'Ocurrio un error inesperado', 'warning');
-    }
+    axios.post(URL_CATEGORIES, {
+      name: valor,
+      description,
+      img: base64EncodedImage,
+    }, {
+      headers: {
+        'access-token': user.id,
+      },
+    }).then((res) => {
+      if (res.data.hasOwnProperty('err')) {
+        swal('Error', res.data.err, 'warning');
+      }
+      setSelectedFile();
+      setPreviewSource('');
+      setFileInputState('');
+      const elemento = document.getElementById('flexQuery');
+      elemento.style.flexDirection = 'column';
+      document.getElementById('categoria').value = '';
+      document.getElementById('descripcion').value = '';
+      setLoading(false);
+      swal('Success', 'La categoría se creó correctamente', 'success')
+        .then(() => {
+          window.location.href = '/admin/controlcategories';
+        });
+    }).catch((err) => {
+      swal('Error', err.response.data, 'warning');
+    });
   };
 
   function enviar(e) {
@@ -108,20 +95,8 @@ function AddCategoryForm() {
   };
 
   return (
-    <div style={{
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      display: 'flex',
-      padding: '10px 10px',
-      transform: 'translate(0px,-60px)',
-      width: '700px',
-    }}
-    >
-      <div style={{
-        width: '100%', margin: '15px 15px', borderRadius: '20px', border: '1px solid gray',
-      }}
-      >
+    <div className="divPrinsipal">
+      <div className="form">
         <form method="POST" onSubmit={enviar}>
           <div style={{ marginTop: '15px' }}>
             <span>Nombre</span>
@@ -181,7 +156,6 @@ function AddCategoryForm() {
           </div>
         </form>
       </div>
-      {loadingIcon()}
     </div>
   );
 }
