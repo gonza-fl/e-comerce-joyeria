@@ -21,10 +21,11 @@ module.exports = (sequelize) => {
     },
     state: {
       type: DataTypes.STRING,
-      defaultValue: 'Medellin',
+      defaultValue: 'Antioquia',
     },
     city: {
       type: DataTypes.STRING,
+      defaultValue: 'Medellin',
     },
   },
   {
