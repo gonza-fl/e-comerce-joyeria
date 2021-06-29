@@ -26,13 +26,16 @@ const createUser = async (req, res) => {
       },
     });
     if (emailFound) return res.status(400).send('Ese email ya está siendo utilizado');
+    const firstUser = await User.findAll();
+    let role = 'user';
+    if (!firstUser.length) role = 'superAdmin';
     await User.create({
       id,
       email,
       displayName,
       phone,
       birthday: birthdayNew,
-      role: 'user',
+      role,
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
@@ -105,7 +108,7 @@ const getUserAdmin = async (req, res) => {
   } = req.params;
   try {
     const user = await User.findByPk(idUser);
-    if (user && user.role === 'admin') return res.sendStatus(200);
+    if (user && (user.role === 'admin' || user.role === 'superAdmin')) return res.sendStatus(200);
     return res.status(404).send('Acceso denegado. El usuario no es admin');
   } catch (err) {
     return res.status(500).send('Internal server error');
@@ -130,17 +133,21 @@ const disableUser = async (req, res) => {
     idAdmin,
   } = req.body;
   try {
+    const adminTypes = ['admin', 'superAdmin'];
     const admin = await User.findOne({
       where: {
         id: idAdmin,
-        role: 'admin',
+        role: adminTypes,
       },
     });
     if (!admin) return res.status(404).send('Acceso denegado. El usuario no es admin');
     if (admin.id === idUser) return res.status(404).send('Error: no puede bloquearse a uno mismo');
-    // Falta validar que ningun admin pueda borrar al superadmin
-    // ¿Como reconocer el idSuperAdmin? ¿De dónde viene este dato?
-    // if (idUser === idSuperAdmin) return res.status(404).send('No se puede eliminar al dueño');
+    const isSuperAdmin = await User.findOne({
+      where: {
+        role: 'superAdmin',
+      },
+    });
+    if (isSuperAdmin.id === idUser) return res.status(404).send('No se puede eliminar al superAdmin');
     const user = await User.update({
       role: 'banned',
     }, {
@@ -163,17 +170,25 @@ const promoteUserDemoteAdmin = async (req, res) => {
     role,
   } = req.body;
   try {
-    if (!role || (role !== 'user' && role !== 'admin')) return res.status(400).send('No se envio ningún rol válido.');
+    if (!role || (role !== 'user' && role !== 'admin' && role !== 'superAdmin')) return res.status(400).send('No se envio ningún rol válido.');
+    if (role === 'superAdmin') return res.status(400).send('Acceso denegado. No se puede asignar rol superAdmin');
     if (!idUser) return res.status(400).send('No se recibe ninguna id de usuario.');
     if (!idAdmin) return res.status(400).send('No se recibe ninguna id de admin.');
-    // if (idUser === env.superadmin) return res.status(400).send('No puedes modificar el rol al super dios.');
+    const adminTypes = ['admin', 'superAdmin'];
     const admin = await User.findOne({
       where: {
         id: idAdmin,
-        role: 'admin',
+        role: adminTypes,
       },
     });
     if (!admin) return res.status(400).send('Acceso denegado.');
+    const superAdmin = await User.findOne({
+      where: {
+        role: 'superAdmin',
+      },
+    });
+    if (!superAdmin) return res.status(400).send('La DB está vacía.');
+    if (superAdmin.id === idUser) return res.status(400).send('No puedes modificar el rol al super dios.');
     const user = await User.findOne({
       where: {
         id: idUser,

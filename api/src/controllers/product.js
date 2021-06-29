@@ -34,7 +34,7 @@ const createProduct = async (req, res) => {
       categories,
     } = req.body;
     if (!name || name.trim().length === 0) return res.status(404).send('Campo faltante: nombre');
-    if (!description || description.trim().length === 0) return res.status(404).send('Campo faltante: nombre');
+    if (!description || description.trim().length === 0) return res.status(404).send('Campo faltante: descripción');
     if (!verifyNumber(price).veracity) return res.status(400).send(verifyNumber(price, 'Precio').msg);
     if (!verifyNumber(stockAmount).veracity) return res.status(400).send(verifyNumber(stockAmount, 'Stock').msg);
     if (!verifyArray(categories)) return res.status(400).send('No se seleccionó una categoría');
