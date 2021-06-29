@@ -19,9 +19,32 @@ const UserFactory = require('./User');
 const OrderLineFactory = require('./OrderLine');
 const ReviewFactory = require('./Reviews');
 
-const sequelize = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${process.env.NODE_ENV === 'test' ? dbNameTest : dbName}`, {
-  logging: false,
-});
+const sequelize = process.env.NODE_ENV === 'production'
+  ? new Sequelize({
+    database: dbName,
+    dialect: 'postgres',
+    hots: dbHost,
+    port: 5432,
+    username: dbUser,
+    password: dbPassword,
+    pool: {
+      max: 3,
+      min: 1,
+      idle: 10000,
+    },
+    dialectOpcions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+      keepAlive: true,
+    },
+    ssl: true,
+  })
+
+  : new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${process.env.NODE_ENV === 'test' ? dbNameTest : dbName}`, {
+    logging: false,
+  });
 
 const Category = CategoriesFactory(sequelize);
 const Product = ProductsFactory(sequelize);
