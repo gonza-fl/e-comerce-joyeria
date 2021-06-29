@@ -9,12 +9,14 @@ export function addToCart(product, userId) {
   const response = { id: userId, products: [prodAmount] };
   if (userId && userId.length > 1) {
     return axios.get(`${URL_GET_CART}${userId}/cart`).then((res) => {
+      console.log(res.data);
       const productFound = res.data[0].products.find((prod) => prod.id === product.id);
       if (productFound && productFound.orderline.amount === product.amount) {
         return swal('Lo sentimos!', 'no hay stock suficiente de este producto para seguir sumando al carrito :(');
       }
       return axios.post(`${URL_CART}`, response);
-    }).catch((err) => swal('Lo sentimos!', err.response.data, 'warning'));
+    // }).catch((err) => swal('Lo sentimos!', err, 'warning'));
+    }).catch((err) => console.log('error de mi ', err));
   }
   if (localStorage.getItem('cart')) {
     const sinJson = JSON.parse(localStorage.getItem('cart'));
