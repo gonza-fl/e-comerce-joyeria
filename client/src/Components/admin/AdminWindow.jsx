@@ -33,7 +33,7 @@ function AdminWindow() {
 
         <div className="adminPanel">
           <AdminNavBar />
-          <div className="windowDiv">
+          <div className="windowDiv bg-color-six">
             <Switch>
               <Route exact path="/admin">
                 <div className="loggo">
