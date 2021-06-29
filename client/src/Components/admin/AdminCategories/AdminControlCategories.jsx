@@ -35,8 +35,8 @@ function AdminControlCategories() {
         <h2>Categorías</h2>
         <table>
           <tr>
-            <th>NOMBRE</th>
             <th>ID</th>
+            <th>NOMBRE</th>
           </tr>
           {categories.map((c) => (
             <tr className="bg-color-three" key={c.id}>

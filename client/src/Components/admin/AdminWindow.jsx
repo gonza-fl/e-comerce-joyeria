@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import AdminNavBar from './AdminNavBar/AdminNavBar';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
@@ -20,7 +21,12 @@ const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 function AdminWindow() {
   ADMIN_IDS.split(',');
   const user = useSelector((state) => state.user);
-  if (ADMIN_IDS.includes(user.id)) {
+  const [userData, setUserData] = useState('');
+  useEffect(() => {
+    axios.get('http://localhost:3001/api/user/WwZdLgQ6n5Zew1QIIs7K8I0QjXs1')
+      .then((res) => setUserData(res.data));
+  }, []);
+  if (ADMIN_IDS.includes(user.id) || userData.role === 'admin' || userData.role === 'superAdmin') {
     return (
       <div className="mainDiv">
         <h1 className="titulo">ADMINISTRADOR</h1>

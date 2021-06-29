@@ -2,13 +2,14 @@
     display: flex;
 }
 .categories{
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
     background-color: #f0ddd8;
     margin-left: 5rem;
+    border-radius: 2rem;
 }
-.formulario{
-    justify-content: flex-start;
-}
+
 
 @media (max-width: 452px){
     .containner{
@@ -16,9 +17,11 @@
         flex-direction: column;
     }
     .categories{
+        width:98%;
         justify-content: center;
         margin-top: 5rem;
         margin-left: 0;
+        margin-bottom: 5rem;
         background-color: #f0ddd8;
     }
     .formulario{
