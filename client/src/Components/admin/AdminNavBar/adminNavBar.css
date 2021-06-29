@@ -1,0 +1,26 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+    padding: 10px 10px;
+    font-weight: bold;
+    background-color: #f0ddd8;
+}
+ @media(max-width: 452px){
+    .container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        flex-direction: row;
+        padding: 0px;
+        font-weight: bold;
+        background-color: #f0ddd8;
+        align-self: center;
+        justify-self: center;
+    }
+    .linkedDiv{
+        margin: 10px;
+        padding: 0px;
+    }
+}

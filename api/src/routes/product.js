@@ -11,6 +11,12 @@ const {
   getProductsByCategory,
 } = require('../controllers/product');
 const review = require('./review');
+const {
+  modifyReview,
+} = require('../controllers/review');
+const {
+  corroborarAdmin,
+} = require('../helpers/middlewares');
 
 const router = Router();
 
@@ -19,8 +25,9 @@ router.get('/category/:id', getProductsByCategory);
 router.get('/search', getProductsByQuery);
 router.get('/:idProduct', getProductById);
 router.get('/', getProducts);
-router.post('/', createProduct);
-router.put('/:idProduct', updateProduct);
-router.delete('/:idProduct', deleteProduct);
+router.post('/', corroborarAdmin, createProduct);
+router.put('/review/:idReview', modifyReview);
+router.put('/:idProduct', corroborarAdmin, updateProduct);
+router.delete('/:idProduct', corroborarAdmin, deleteProduct);
 
 module.exports = router;

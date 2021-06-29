@@ -17,11 +17,12 @@ import UserCreate from './Components/user/UserCreate/UserCreate';
 import Cart from './Components/cart/Cart/Cart';
 import Profile from './Components/user/Profile/Profile';
 import 'firebase/auth';
-import { setUser } from './redux/actions/actions';
 import CartCheckout from './Components/cart/CartCheckout/CartCheckout';
 import UserOrders from './Components/user/UserOrders/UserOrders';
 import UserOrderDetail from './Components/user/UserOrders/UserOrderDetail/UserOrderDetail';
 import PaymentResponse from './Components/cart/CartCheckout/PaymentResponse';
+import CreateUpdateReview from './Components/user/UserOrders/UserOrderDetail/CreateUpdateReview/CreateUpdateReview';
+import { setUser } from './redux/actions/actions';
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function App() {
               <Route path="/cart/checkout" component={CartCheckout} />
               <Route path="/user/:userId/orders" component={UserOrders} />
               <Route path="/user/order/:orderId" component={UserOrderDetail} />
+              <Route path="/user/review/product/:productId/:userId" component={CreateUpdateReview} />
             </Switch>
           </div>
           <Footer />

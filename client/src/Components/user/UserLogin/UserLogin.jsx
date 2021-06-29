@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import './UserLogin.css';
 import { Link } from 'react-router-dom';
 import logo from '../../../img/logo.png';
+import RestorePassword from './RestorePasswrod/RestorePassword';
 import { loginWhitEmmail, loginWhitFacebook, loginWhitGoogle } from './utilsLogin/login';
 
 export default function UserLogin() {
@@ -30,6 +31,7 @@ export default function UserLogin() {
   return (
 
     <div id="login" className="loginModal">
+      <RestorePassword defaulEmail={input.email} />
       <form className="modalCtn animate" onSubmit={handleSubmit}>
         <div className="logoForm">
           <span className="closeLogin" onClick={closeLogin}>&times;</span>
@@ -49,7 +51,7 @@ export default function UserLogin() {
 
           <div className="footLogin">
             <button className="btnCancel" onClick={closeLogin}>Cancelar</button>
-            <Link to="#">¿Olvido su contraseña?</Link>
+            <span onClick={() => document.getElementById('restorePass').style.display = 'block'}>¿Olvido su contraseña?</span>
           </div>
         </div>
         <p>¿No tienes una cuenta registrada?</p>

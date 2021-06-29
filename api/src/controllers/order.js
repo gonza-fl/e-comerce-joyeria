@@ -1,12 +1,17 @@
 /* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
+const {
+  transporter,
+  templateComprobantedepago,
+} = require('../helpers/nodeMailer');
 
 const {
   Order,
   User,
   Product,
   Image,
+  OrderLine,
 } = require('../models/index');
 const {
   verifyNumber,
@@ -17,10 +22,12 @@ const createOrFindAndUpdateCart = async (req, res) => {
   // SI ESO SUCEDE QUITAR LOS PARSEINT
   const {
     id,
+  } = req.body;
+  let {
     products,
   } = req.body;
   if (!id) return res.status(404).send('ID no existe!');
-  if (!products) return res.status(200).send('No existe cart en localStorage');
+  if (!products) products = [];
   try {
     // Validación: existe ese usuario?
     const user = await User.findByPk(id);
@@ -328,6 +335,91 @@ const getAllOrdersByIdUser = async (req, res) => {
     return res.status(500).send('Internal server error');
   }
 };
+
+const testNodeMailer = async (req, res) => {
+  // Endpoint con finalidad de testeo, emulando una compra realizada
+  // se debe tener un carro hardcodeado con estado deliveryPending
+
+  // busco el usuario correspondiente
+  const user = await User.findOne({
+    where: {
+      id: req.body.user.id,
+    },
+    include: Order,
+  });
+
+  const arrProducts = [];
+  let orden = '';
+  let total = '';
+  // busco el carro con estado deliveryPending y guardo sus datos
+
+  // pd: no hara falta buscar el carro en el endpoint checkout
+  // ya que al cerrar el carro en ese mismo momento se manda el mail
+  for (let i = 0; i < user.orders.length; i += 1) {
+    if (user.orders[i].status === 'deliveryPending') {
+      const carrito = await Order.findOne({
+        where: {
+          userId: req.body.user.id,
+          status: 'deliveryPending',
+        },
+      });
+
+      orden = carrito.orderNumber;
+      total = carrito.total;
+
+      const lines = await OrderLine.findAll({
+        where: {
+          orderId: carrito.id,
+        },
+      });
+
+      for (let j = 0; j < lines.length; j += 1) {
+        const prod = await Product.findOne({
+          where: {
+            id: lines[j].productId,
+          },
+        });
+
+        arrProducts.push({
+          nameProducto: prod.name,
+          cantidad: lines[j].amount,
+          precioUnitario: lines[j].subtotal,
+        });
+      }
+      break;
+    }
+  }
+  // se formatea la data para el template
+  const data = { // traer de redux usuario
+    // { id: user.uid, email: user.email, name: user.displayName || 'Usuario' }
+    name: req.body.user.name,
+    email: req.body.user.email,
+    orden,
+    productos: arrProducts,
+    total,
+  };
+  // se reemplaza en el template compilado los datos de usuario
+  const result = templateComprobantedepago(data);
+  // se envia el mail
+  transporter.sendMail({
+    from: 'Kamora <adaclothes@hotmail.com>',
+    to: data.email,
+    subject: 'Compra realizada!',
+    html: result,
+  // eslint-disable-next-line consistent-return
+  }, (err2, responseStatus) => {
+    if (err2) {
+      return res.json({
+        err: err2,
+      });
+    }
+    res.json({
+      response: 'mensaje enviado',
+      responseStatus,
+    });
+  });
+};
+
 module.exports = {
   createOrFindAndUpdateCart,
   modifyOrder,
@@ -337,4 +429,5 @@ module.exports = {
   getCartByUser,
   getOrderById,
   getAllOrdersByIdUser,
+  testNodeMailer,
 };

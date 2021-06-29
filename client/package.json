@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.6.0",
     "epayco-sdk-node": "^1.0.7",
     "firebase": "^8.6.8",
