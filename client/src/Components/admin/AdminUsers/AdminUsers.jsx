@@ -13,7 +13,8 @@ import { URL_USERS } from '../../../constants';
 function OrderList() {
   const [users, setUsers] = useState([]);
   const userState = useSelector((state) => state.user);
-
+  const [adminData, setAdminData] = useState('');
+  console.log(adminData);
   const handleStatusChange = (e, user) => {
     e.preventDefault();
     swal({
@@ -52,6 +53,8 @@ function OrderList() {
   };
 
   useEffect(() => {
+    axios.get('http://localhost:3001/api/user/WwZdLgQ6n5Zew1QIIs7K8I0QjXs1')
+      .then((res) => setAdminData(res.data));
     axios.get(URL_USERS)
       .then((response) => {
         setUsers(response.data);
@@ -86,12 +89,14 @@ function OrderList() {
               <td>{user.id}</td>
               <td>
                 {user.role}
-                <select onChange={(e) => { handleStatusChange(e, user); }}>
-                  <option>Cambiar estatus</option>
-                  <option value="user">usuario</option>
-                  <option value="admin">admin</option>
-                  <option value="banned">baneado</option>
-                </select>
+                { user.role === 'superAdmin' ? null : (
+                  <select onChange={(e) => { handleStatusChange(e, user); }}>
+                    <option>Cambiar estatus</option>
+                    <option value="user">usuario</option>
+                    {adminData.role === 'superAdmin' ? <option value="admin">admin</option> : null}
+                    <option value="banned">baneado</option>
+                  </select>
+                )}
               </td>
             </tr>
           </div>
@@ -102,12 +107,14 @@ function OrderList() {
               <td>{user.id}</td>
               <td>
                 {user.role}
-                <select onChange={(e) => { handleStatusChange(e, user); }}>
-                  <option>Cambiar estatus</option>
-                  <option value="user">usuario</option>
-                  <option value="admin">admin</option>
-                  <option value="banned">baneado</option>
-                </select>
+                { user.role === 'superAdmin' ? null : (
+                  <select onChange={(e) => { handleStatusChange(e, user); }}>
+                    <option>Cambiar estatus</option>
+                    <option value="user">usuario</option>
+                    {adminData.role === 'superAdmin' ? <option value="admin">admin</option> : null}
+                    <option value="banned">baneado</option>
+                  </select>
+                )}
               </td>
             </tr>
           </div>
