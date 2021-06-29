@@ -10,7 +10,7 @@ export function updateProduct(product, id) {
       'access-token': id,
     },
   })
-    .then(() => swal('Success', 'Producto modificado!'))
+    .then(() => swal('¡Muy bien!', 'Producto modificado!', 'success'))
     .then(() => { window.location.href = '/admin/products'; })
     .catch((err) => {
       swal('Error', err.response.data, 'warning');
