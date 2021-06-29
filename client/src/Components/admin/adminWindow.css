@@ -3,12 +3,12 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: 97vh;
+    height: 100vh;
 }
 .adminPanel{
     display: flex;
     flex-direction: row;
-    width: 98vw;
+    width: 100vw;
     height: 100%;
 }
 .windowDiv{
