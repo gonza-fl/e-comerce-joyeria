@@ -40,7 +40,7 @@ const Product = () => {
   }
 
   const handleClickCart = async () => {
-    await addToCart(detail, userId);
+    addToCart(detail, userId);
     dispatch(showFloatingCart('inline'));
     setTimeout(() => { dispatch(showFloatingCart('none')); }, 2000);
     window.scrollTo(0, 0);

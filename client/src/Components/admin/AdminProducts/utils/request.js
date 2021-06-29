@@ -63,8 +63,8 @@ export function deleteProduct(product, id) {
             window.location.href = '/admin/products';
           }
         })
-        .catch(() => {
-          swal('Error', 'Ocurrió un error. No se pudo eliminar el producto. Intente nuevamente');
+        .catch((err) => {
+          swal('Error', err.response.data);
         });
     } else {
       swal('¡El producto no se eliminó!');
@@ -81,11 +81,11 @@ export function deleteCategory(category, id) {
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete(`${URL_CATEGORIES}${category.id}`, category, {
+      axios.delete(`${URL_CATEGORIES}${category.id}`, {
         headers: {
           'access-token': id,
         },
-      })
+      }, category)
         .then((res) => {
           if (res.data.hasOwnProperty('err')) {
             swal('Error', res.data.err, 'warning');
@@ -96,8 +96,9 @@ export function deleteCategory(category, id) {
             window.location.href = '/admin/controlcategories';
           }
         })
-        .catch(() => {
-          swal('Error', 'Ocurrió un error. No se pudo eliminar la categoría. Intente nuevamente');
+        .catch((err) => {
+          console.log(err);
+          swal('Error', 'mi error');
         });
     } else {
       swal('¡La categoría no se eliminó!');
