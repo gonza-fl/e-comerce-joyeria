@@ -38,7 +38,7 @@ export default function CartCheckout() {
           if (res.data[0].products.length > 0) {
             setPaymentData({
               ...paymentData,
-              referenceCode: `${userStatus.id + res.data[0].id + Math.floor(Math.random() * 100)}`,
+              referenceCode: `PAYMENT-${res.data[0].id}`,
               amount: res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })).map((p) => parseFloat(p.orderline.subtotal)).reduce((sum, amount) => sum + amount),
             });
             // setPaymentData({ ...paymentData, signature: CryptoJS.MD5(`${paymentData.ApiKey}~${paymentData.merchantId}~${userStatus.id + res.data[0].id}~${paymentData.amount}~${paymentData.currency}`) });

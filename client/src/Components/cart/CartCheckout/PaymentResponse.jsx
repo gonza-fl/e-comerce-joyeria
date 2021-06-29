@@ -1,11 +1,17 @@
 /* eslint-disable max-len */
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { URL_ORDERS_BY_ID } from '../../../constants';
 import './PaymentResponse.css';
 
 function PaymentResponse() {
   const location = useLocation().search;
-
+  const paymentStatus = location.split('&').map((item) => item.split('=')).find((item) => item.includes('lapTransactionState'))[1];
+  const orderID = location.split('&').map((item) => item.split('=')).find((item) => item.includes('referenceCode'))[1].split('-')[1];
+  useEffect(() => {
+    axios.put(`${URL_ORDERS_BY_ID}${orderID}`, { status: `${paymentStatus === 'APPROVED' ? 'deliveryPending' : null}` });
+  }, []);
   //   const query = new URLSearchParams(location.search);
 
   //   function getValue(param) {
@@ -17,7 +23,7 @@ function PaymentResponse() {
         <h2>
           Transacción:
           {' '}
-          {location.split('&').map((item) => item.split('=')).find((item) => item.includes('lapTransactionState'))[1] === 'APPROVED' ? 'APROBADA'
+          {paymentStatus === 'APPROVED' ? 'APROBADA'
             : 'RECHAZADA'}
         </h2>
         <b>Código de transacción: </b>
