@@ -16,10 +16,10 @@ const addAddressFunction = async (req, res) => {
     state,
     departament,
   } = req.body;
-  if (!state || !departament) return res.status(400).send('Falta un campo por rellenar.');
-  const user = await User.findByPk(idUser);
-  if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
   try {
+    if (!state || !departament) return res.status(400).send('Falta un campo por rellenar.');
+    const user = await User.findByPk(idUser);
+    if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     const isAddress = await Address.create({
       address,
       state,
