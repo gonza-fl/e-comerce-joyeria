@@ -170,16 +170,24 @@ const promoteUserDemoteAdmin = async (req, res) => {
   } = req.body;
   try {
     if (!role || (role !== 'user' && role !== 'admin' && role !== 'superAdmin')) return res.status(400).send('No se envio ningún rol válido.');
+    if (role === 'superAdmin') return res.status(400).send('Acceso denegado. No se puede asignar rol superAdmin');
     if (!idUser) return res.status(400).send('No se recibe ninguna id de usuario.');
     if (!idAdmin) return res.status(400).send('No se recibe ninguna id de admin.');
-    // if (idUser === env.superadmin) return res.status(400).send('No puedes modificar el rol al super dios.');
+    const adminTypes = ['admin', 'superAdmin'];
     const admin = await User.findOne({
       where: {
         id: idAdmin,
-        role: 'admin' || 'superAdmin',
+        role: adminTypes,
       },
     });
     if (!admin) return res.status(400).send('Acceso denegado.');
+    const superAdmin = await User.findOne({
+      where: {
+        role: 'superAdmin',
+      },
+    });
+    if (!superAdmin) return res.status(400).send('La DB está vacía.');
+    if (superAdmin.id === idUser) return res.status(400).send('No puedes modificar el rol al super dios.');
     const user = await User.findOne({
       where: {
         id: idUser,
