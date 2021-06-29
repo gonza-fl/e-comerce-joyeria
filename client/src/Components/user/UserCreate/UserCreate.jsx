@@ -21,7 +21,7 @@ export default function UserCreate() {
 
   const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
-    email: '', name: '', password: '', passwordConfirmation: '', birthday: '', address: '',
+    email: '', name: '', password: '', passwordConfirmation: '', birthday: '',
   });
   const [errors, setErrors] = useState({
     email: false, password: false, number: false, empty: false,
@@ -60,7 +60,7 @@ export default function UserCreate() {
             birthday: form.birthday,
           });
         })
-        // .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
+        .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
         .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
         .then(() => localStorage.setItem('cart', JSON.stringify([])))
         .then(() => window.history.back())
@@ -110,12 +110,6 @@ export default function UserCreate() {
           <div>
             <label>Fecha de Nacimiento<span className="require">*</span> </label>
             <input name="birthday" type="date" required onChange={handleInputChange} />
-          </div>
-
-          <div>
-            <label>Dirección<span className="require">*</span> </label>
-            <input name="address" placeholder="Ingrese su dirección..." required onChange={handleInputChange} autocomplete="off" />
-            <input name="postalCod" placeholder="Código Postal" required onChange={handleInputChange} autocomplete="off" type="number" />
           </div>
 
           <div>
