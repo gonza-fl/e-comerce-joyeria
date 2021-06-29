@@ -11,7 +11,6 @@ module.exports = (sequelize) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     address: {
       type: DataTypes.STRING,
@@ -20,12 +19,13 @@ module.exports = (sequelize) => {
     description: {
       type: DataTypes.STRING,
     },
-    region: {
+    state: {
+      type: DataTypes.STRING,
+      defaultValue: 'Antioquia',
+    },
+    city: {
       type: DataTypes.STRING,
       defaultValue: 'Medellin',
-    },
-    postalCode: {
-      type: DataTypes.STRING,
     },
   },
   {
