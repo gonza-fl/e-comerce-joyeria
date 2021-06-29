@@ -13,23 +13,22 @@ const addAddressFunction = async (req, res) => {
   } = req.params;
   const {
     address,
-    postalCode,
-    description,
-    name,
+    state,
+    departament,
   } = req.body;
-  if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
+  if (!state || !departament) return res.status(400).send('Falta un campo por rellenar.');
   const user = await User.findByPk(idUser);
   if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
   try {
     const isAddress = await Address.create({
       address,
-      postalCode,
-      name: name.trim(),
-      description: description.trim(),
+      state,
+      departament,
     });
     await user.addAddress(isAddress);
     return res.send('Domicilio creado con éxito!');
   } catch (err) {
+    console.log(err);
     return res.status(500).send('No se pudo crear el domicilio.');
   }
 };
@@ -39,18 +38,15 @@ const updateAddress = async (req, res) => {
   } = req.params;
   let {
     address,
-    postalCode,
-    description,
-    name,
+    state,
+    departament,
   } = req.body;
   try {
     const user = await User.findByPk(idUser);
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     address = address !== '' ? address : undefined;
-    postalCode = postalCode !== '' ? postalCode : undefined;
-    description = description !== '' ? description : undefined;
-    name = name !== '' ? name : undefined;
-    if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
+    state = state !== '' ? state : undefined;
+    departament = departament !== '' ? departament : undefined;
     const verifyAddress = await Address.findOne({
       where: {
         id: idAddress,
@@ -59,9 +55,8 @@ const updateAddress = async (req, res) => {
     });
     if (!verifyAddress) return res.status(404).send('La id de dirección no pertenece a este usuario.');
     await Address.update({
-      name,
-      description,
-      postalCode,
+      state,
+      departament,
       address,
     }, {
       where: {
