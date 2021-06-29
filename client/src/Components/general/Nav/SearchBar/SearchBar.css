@@ -17,16 +17,6 @@
     outline: none;
 }
 
-.searchBtn {
-    background: transparent;
-    border: none;
-    font-size: 30px;
-}
-
-.searchBtn:hover {
-    cursor: pointer;
-}
-
 @media (max-width: 768px) {
     #searchBar {
         width: 70%;
@@ -34,9 +24,6 @@
     @media (max-width: 452px) {
         #searchBar {
             width: 90%;
-        }
-        .searchBtn {
-            padding: 30px;
         }
     }
 }

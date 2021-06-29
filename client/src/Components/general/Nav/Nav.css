@@ -174,10 +174,8 @@
             margin-top: 25px;
         }
         .SearchBarNav {
-            width: 100%;
-            right: -50px;
-            position: absolute;
-            top: -5px;
+            width: 80%;
+            margin-bottom: 40px;
         }
         .ctnNav .rigthMenuNav h3 {
             top: 25px;
@@ -226,7 +224,6 @@
             .SearchBarNav {
                 width: 80%;
                 right: 0;
-                top: -5px;
             }
         }
         .nameTablet {

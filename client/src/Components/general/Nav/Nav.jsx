@@ -20,6 +20,9 @@ import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
 import ResponsiveMenu from './ResponsiveMenu/ResponsiveMenu';
 
+const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
+ADMIN_IDS.split(',');
+
 export default function Nav() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -45,7 +48,7 @@ export default function Nav() {
           <FaBars />
           <div className="respMenu">  <ResponsiveMenu /></div>
         </div>
-        {user.id && <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>}
+        {ADMIN_IDS.includes(user.id) && <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>}
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
