@@ -17,7 +17,7 @@ async function corroborarAdmin(req, res, next) {
         });
 
         if (!user) return res.status(400).send('El usuario no existe');
-        if (user.role !== 'admin') return res.status(400).send('El usuario no es administrador');
+        if (user.role !== 'user') return res.status(400).send('El usuario no es administrador');
         return next();
       // eslint-disable-next-line arrow-body-style
   }
