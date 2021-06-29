@@ -133,10 +133,11 @@ const disableUser = async (req, res) => {
     idAdmin,
   } = req.body;
   try {
+    const adminTypes = ['admin', 'superAdmin'];
     const admin = await User.findOne({
       where: {
         id: idAdmin,
-        role: 'admin' || 'superAdmin',
+        role: adminTypes,
       },
     });
     if (!admin) return res.status(404).send('Acceso denegado. El usuario no es admin');
@@ -146,7 +147,7 @@ const disableUser = async (req, res) => {
         role: 'superAdmin',
       },
     });
-    if (isSuperAdmin) return res.status(404).send('No se puede eliminar al superAdmin');
+    if (isSuperAdmin.id === idUser) return res.status(404).send('No se puede eliminar al superAdmin');
     const user = await User.update({
       role: 'banned',
     }, {
