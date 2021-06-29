@@ -13,7 +13,7 @@ export default function LeftMenu({ user }) {
       axios.get(`http://localhost:3001/api/user/${user.id}`)
         .then((res) => setUserData(res.data));
     }
-  }, []);
+  }, [user]);
   const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
   ADMIN_IDS.split(',');
   return (
