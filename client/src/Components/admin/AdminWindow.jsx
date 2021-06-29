@@ -21,10 +21,13 @@ const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 function AdminWindow() {
   ADMIN_IDS.split(',');
   const user = useSelector((state) => state.user);
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState({ role: '' });
+
   useEffect(() => {
-    axios.get('http://localhost:3001/api/user/WwZdLgQ6n5Zew1QIIs7K8I0QjXs1')
-      .then((res) => setUserData(res.data));
+    if (user.id) {
+      axios.get(`http://localhost:3001/api/user/${user.id}`)
+        .then((res) => setUserData(res.data));
+    }
   }, []);
   if (ADMIN_IDS.includes(user.id) || userData.role === 'admin' || userData.role === 'superAdmin') {
     return (
