@@ -22,13 +22,13 @@ function AdminWindow() {
   ADMIN_IDS.split(',');
   const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState({ role: '' });
-
+  // maxi modifico esto, si hizo una cagada no es culpa de el...
   useEffect(() => {
-    if (user.id) {
+    if (user.id && userData.role === '') {
       axios.get(`http://localhost:3001/api/user/${user.id}`)
         .then((res) => setUserData(res.data));
     }
-  }, []);
+  }, [user]);
   if (ADMIN_IDS.includes(user.id) || userData.role === 'admin' || userData.role === 'superAdmin') {
     return (
       <div className="mainDiv">
@@ -62,7 +62,7 @@ function AdminWindow() {
 
   return (
     <div className="mainDiv">
-      <Spiner msg="Debe iniciar secion para acceder al panel de administrador" />
+      <Spiner msg="Debe iniciar sesión para acceder al panel de administrador" />
       <Link to="/">
         <button type="button">volver al home</button>
       </Link>
