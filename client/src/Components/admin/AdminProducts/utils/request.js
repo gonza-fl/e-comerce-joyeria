@@ -6,7 +6,7 @@ import { URL_CATEGORIES, URL_PRODUCTS } from '../../../../constants';
 
 export function updateProduct(product) {
   axios.put(`${URL_PRODUCTS}${product.id}`, product)
-    .then(() => swal('Success', 'Producto modificado!'))
+    .then(() => swal('¡Muy bien!', 'Producto modificado!', 'success'))
     .then(() => { window.location.href = '/admin/products'; })
     .catch((err) => {
       swal('Error', err.response.data, 'warning');
