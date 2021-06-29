@@ -60,7 +60,6 @@ export default function UserCreate() {
             birthday: form.birthday,
           });
         })
-        // .then(() => axios.post(`${URL_USERS}${idUserLoged}/address`, { address: form.address, name: form.name, postalCode: form.postalCod }))
         .then(() => swal('Exito', 'Usuario fue creado con exito', 'success'))
         .then(() => axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) }))
         .then(() => localStorage.setItem('cart', JSON.stringify([])))
