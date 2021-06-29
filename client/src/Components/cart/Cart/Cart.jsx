@@ -128,12 +128,14 @@ const Cart = () => {
             </div>
           ))}
         </div>
-        <Link to="/cart/checkout">
-          <button id="next-btn">Siguiente</button>
-        </Link>
-        <Link to="/products">
-          <Button text="Volver al Catálogo" />
-        </Link>
+        <div className="respCartBtns">
+          <Link to="/cart/checkout">
+            <button id="next-btn">Siguiente</button>
+          </Link>
+          <Link to="/products">
+            <Button text="Volver al Catálogo" />
+          </Link>
+        </div>
       </div>
       <div className="cart-summary-container">
         <h2>Resumen</h2>

@@ -144,4 +144,44 @@ p {
     justify-content: space-between;
 }
 
-@media (max-width:452px) {}
+@media (max-width:768px) {
+    .cart-container {
+        width: 95%;
+    }
+    .card-detail-img-container {
+        height: 70px;
+        width: 70px;
+        display: flex;
+        justify-content: center;
+    }
+    .card-detail-map-left {
+        align-items: center;
+        height: 70px;
+    }
+    .card-detail-data h4 {
+        font-size: 2vw;
+    }
+    .card-detail-data p {
+        font-size: 2vw;
+        height: 25px;
+        overflow: scroll;
+    }
+    .respCartBtns {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 4vw;
+    }
+    .respCartBtns button {
+        width: 100%;
+        margin-block: 1vw;
+    }
+    @media (max-width:590px) {
+        .respCartBtns {
+            right: 1vw;
+        }
+        .respCartBtns button {
+            width: 95%;
+        }
+    }
+}
