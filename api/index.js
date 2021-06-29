@@ -48,8 +48,8 @@ const connect = async () => {
 
 connect();
 
-server.listen(process.env.PORT, () => {
-  // console.log(`Servidor escuchando en el puerto ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
 module.exports = {
