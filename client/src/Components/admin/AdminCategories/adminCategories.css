@@ -1,0 +1,17 @@
+.containner{
+    display: flex;
+}
+
+@media (max-width: 452px){
+    .containner{
+        display: flex;
+        flex-direction: column;
+    }
+    .categories{
+        justify-content: center;
+        margin-top: 5rem;
+    }
+    .formulario{
+        justify-content: center;
+    }
+}

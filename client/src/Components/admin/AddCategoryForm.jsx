@@ -14,20 +14,6 @@ function AddCategoryForm() {
   const [previewSource, setPreviewSource] = useState('');
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user);
-  function loadingIcon() {
-    return (
-      <div
-        className="lds-facebook"
-        style={{
-          display: `${loading ? 'inline' : 'none'}`, position: 'absolute', top: '50', left: '50',
-        }}
-      >
-        <div />
-        <div />
-        <div />
-      </div>
-    );
-  }
 
   const uploadImage = async (base64EncodedImage, valor, description) => {
     try {
@@ -113,20 +99,8 @@ function AddCategoryForm() {
   };
 
   return (
-    <div style={{
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      display: 'flex',
-      padding: '10px 10px',
-      transform: 'translate(0px,-60px)',
-      width: '700px',
-    }}
-    >
-      <div style={{
-        width: '100%', margin: '15px 15px', borderRadius: '20px', border: '1px solid gray',
-      }}
-      >
+    <div className="divPrinsipal">
+      <div className="form">
         <form method="POST" onSubmit={enviar}>
           <div style={{ marginTop: '15px' }}>
             <span>Nombre</span>
@@ -186,7 +160,6 @@ function AddCategoryForm() {
           </div>
         </form>
       </div>
-      {loadingIcon()}
     </div>
   );
 }
