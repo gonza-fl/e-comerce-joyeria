@@ -42,7 +42,7 @@ conn.sync({
   force: false,
 }).then(() => {
   console.log('DB conectada');
-  server.listen(PORT, () => {
+  server.listen(process.env.PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
   });
 });
