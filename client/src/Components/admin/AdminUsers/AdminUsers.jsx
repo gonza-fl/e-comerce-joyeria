@@ -14,7 +14,6 @@ function OrderList() {
   const [users, setUsers] = useState([]);
   const userState = useSelector((state) => state.user);
   const [adminData, setAdminData] = useState('');
-  console.log(adminData);
   const handleStatusChange = (e, user) => {
     e.preventDefault();
     swal({
@@ -53,7 +52,7 @@ function OrderList() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/user/WwZdLgQ6n5Zew1QIIs7K8I0QjXs1')
+    axios.get(`http://localhost:3001/api/user/${userState.id}`)
       .then((res) => setAdminData(res.data));
     axios.get(URL_USERS)
       .then((response) => {
