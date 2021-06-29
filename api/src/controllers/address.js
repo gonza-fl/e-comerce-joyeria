@@ -17,8 +17,8 @@ const addAddressFunction = async (req, res) => {
     city,
   } = req.body;
   try {
-    if (!state.trim().lenght) return res.status(400).send('Falta rellenar el campo departamento.');
-    if (!city.trim().lenght) return res.status(400).send('Falta rellenar el campo municipio.');
+    if (!state.trim().length) return res.status(400).send('Falta rellenar el campo departamento.');
+    if (!city.trim().length) return res.status(400).send('Falta rellenar el campo municipio.');
 
     const user = await User.findByPk(idUser);
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
@@ -30,7 +30,6 @@ const addAddressFunction = async (req, res) => {
     await user.addAddress(isAddress);
     return res.send('Domicilio creado con éxito!');
   } catch (err) {
-    console.log(err);
     return res.status(500).send('No se pudo crear el domicilio.');
   }
 };
