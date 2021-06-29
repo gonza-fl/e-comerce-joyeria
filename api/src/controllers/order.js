@@ -22,10 +22,12 @@ const createOrFindAndUpdateCart = async (req, res) => {
   // SI ESO SUCEDE QUITAR LOS PARSEINT
   const {
     id,
+  } = req.body;
+  let {
     products,
   } = req.body;
   if (!id) return res.status(404).send('ID no existe!');
-  if (!products) return res.status(200).send('No existe cart en localStorage');
+  if (!products) products = [];
   try {
     // Validación: existe ese usuario?
     const user = await User.findByPk(id);
