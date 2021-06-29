@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const router = require('./src/routes/index');
 
 const {
@@ -19,6 +20,7 @@ server.use(express.json({
   limit: '50mb',
 }));
 server.use(morgan('dev'));
+server.use(cors());
 server.use((_req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Credentials', true);
