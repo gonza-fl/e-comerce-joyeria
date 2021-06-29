@@ -5,7 +5,7 @@
     align-items:center;
     padding: 10px 10px;
     font-weight: bold;
-    background-color: #CF988C;
+    background-color: #f0ddd8;
 }
  @media(max-width: 452px){
     .container{
@@ -15,7 +15,7 @@
         flex-direction: row;
         padding: 0px;
         font-weight: bold;
-        background-color: #CF988C;
+        background-color: #f0ddd8;
         align-self: center;
         justify-self: center;
     }

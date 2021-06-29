@@ -1,6 +1,14 @@
 .containner{
     display: flex;
 }
+.categories{
+    justify-content: center;
+    background-color: #f0ddd8;
+    margin-left: 5rem;
+}
+.formulario{
+    justify-content: flex-start;
+}
 
 @media (max-width: 452px){
     .containner{
@@ -10,6 +18,8 @@
     .categories{
         justify-content: center;
         margin-top: 5rem;
+        margin-left: 0;
+        background-color: #f0ddd8;
     }
     .formulario{
         justify-content: center;

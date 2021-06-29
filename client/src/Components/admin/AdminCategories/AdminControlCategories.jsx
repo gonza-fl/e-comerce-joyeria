@@ -33,7 +33,7 @@ function AdminControlCategories() {
 
       <div className="categories">
         <h2>Categorías</h2>
-        <table style={{ width: '300px' }}>
+        <table>
           <tr>
             <th>NOMBRE</th>
             <th>ID</th>
