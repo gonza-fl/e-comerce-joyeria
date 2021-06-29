@@ -38,13 +38,16 @@ server.use((err, _req, res) => {
   return res.status(status).send(message);
 });
 
-conn.sync({
-  force: false,
-}).then(() => {
-  // console.log('DB conectada');
-  server.listen(process.env.PORT, () => {
-    // console.log(`Servidor escuchando en el puerto ${PORT}`);
+const connect = async () => {
+  await conn.sync({
+    force: false,
   });
+};
+
+connect();
+
+server.listen(process.env.PORT, () => {
+  // console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
 module.exports = {
