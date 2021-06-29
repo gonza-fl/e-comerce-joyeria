@@ -26,13 +26,16 @@ const createUser = async (req, res) => {
       },
     });
     if (emailFound) return res.status(400).send('Ese email ya está siendo utilizado');
+    const firstUser = await User.findAll();
+    let role = 'user';
+    if (!firstUser.length) role = 'admin';
     await User.create({
       id,
       email,
       displayName,
       phone,
       birthday: birthdayNew,
-      role: 'user',
+      role,
     });
     return res.status(201).send('Usuario creado correctamente!');
   } catch (err) {
