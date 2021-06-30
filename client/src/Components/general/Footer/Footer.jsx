@@ -43,13 +43,14 @@ export default function Footer() {
         </StyledAnchor>
         <span>&ensp; Whatsapp</span>
         <br />
-
-        <ButtonMailto mailto="mailto:k-mora@gmail.com" />
-        <span>&ensp;Email</span>
+        <div className="ResEmailFooter">
+          <ButtonMailto mailto="mailto:k-mora@gmail.com" />
+          <span>&ensp;Email</span>
+        </div>
 
       </div>
 
-      <div className="footerHalf" style={{ flexGrow: '1' }}>
+      <div className="ResFooter" style={{ flexGrow: '1' }}>
         <h3>Acerca de nosotros</h3>
 
         <span>Términos y condiciones</span>
@@ -82,7 +83,7 @@ const StyledDiv = styled.div`
         margin-top: 30px;
         
         @media (max-width:452px){
-          height: 150px
+          height: 120px
         }
 `;
 
