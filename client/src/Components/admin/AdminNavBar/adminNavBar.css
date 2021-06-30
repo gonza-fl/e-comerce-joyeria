@@ -1,7 +1,6 @@
 .container{
     padding: 10px 10px;
     flex-grow: 1;
-    height: 95%;
     font-weight: bold;
 }
  @media(max-width: 452px){
