@@ -111,6 +111,7 @@ export function setUser(user) {
 }
 
 export function getUserInfo(userId) {
+  console.log(userId);
   return function (dispatch) {
     return userId ? axios.get(`${URL_USERS}${userId}`)
       .then((res) => {
@@ -119,7 +120,7 @@ export function getUserInfo(userId) {
           type: GET_USER_INFO,
           payload: { ...res.data, name: res.data.displayName },
         });
-      }) : { type: GET_USER_INFO, payload: {} };
+      }).catch((err) => console.log(err.response.data)) : { type: GET_USER_INFO, payload: {} };
   };
 }
 

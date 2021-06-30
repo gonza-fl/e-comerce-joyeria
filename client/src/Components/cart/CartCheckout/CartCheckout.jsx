@@ -39,7 +39,7 @@ export default function CartCheckout() {
           if (res.data[0].products.length > 0) {
             setPaymentData({
               ...paymentData,
-              referenceCode: `PAYMENT-${res.data[0].id}`,
+              referenceCode: `${userStatus.id}-${res.data[0].id}`,
               amount: res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })).map((p) => parseFloat(p.orderline.subtotal)).reduce((sum, amount) => sum + amount),
             });
             // setPaymentData({ ...paymentData, signature: CryptoJS.MD5(`${paymentData.ApiKey}~${paymentData.merchantId}~${userStatus.id + res.data[0].id}~${paymentData.amount}~${paymentData.currency}`) });
@@ -82,6 +82,7 @@ export default function CartCheckout() {
               </div>
             )) : <div><h3>No tienes direcciones agregadas</h3></div>}
         </div>
+        <button type="button" className="button-add-direction bg-color-three">Agregar dirección</button>
       </div>
       {/* <div className="card-box-container">
         <div className="bg-color-three card-box-title"><b>MÉTODOS DE PAGO</b></div>
