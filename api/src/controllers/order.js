@@ -4,6 +4,7 @@
 const {
   transporter,
   templateComprobantedepago,
+  templateOrdenDespachada,
 } = require('../helpers/nodeMailer');
 
 const {
@@ -128,6 +129,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line consistent-return
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -136,38 +138,118 @@ const modifyOrder = async (req, res) => {
     status,
   } = req.body;
   try {
-    if (status !== 'deliveryPending' && status !== 'delivered') {
+    const arr = ['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+    // si el status nuevo no se encuentra en el array no existe y devuelve error
+    if (!arr.includes(status)) {
       return res.status(400).send('No se puede implemetar ese status!');
     }
-    // Si el status es deliveryPending busca carrito, sino lo buscara como deliveryPending
-    const statusSearch = status === 'deliveryPending' ? 'cart' : 'deliveryPending';
+    // se buscar el carrito asociado al id que viene por parametro
     const order = await Order.findOne({
       where: {
         id,
-        status: statusSearch,
       },
       include: Product,
     });
-    if (status === 'deliveryPending') {
-      if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
+    // si no lo encuentra manda error
+    if (order === null) {
+      return res.status(404).send(`La orden id ${id} no posee un carrito`);
+    }
+
+    if (order.status === status) {
+      return res.status(404).send(`La orden ya tenia el estado ${status}`);
+    }
+
+    if (status === 'PaidPendingDispatch') {
       if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
       const totalOrder = order.products.reduce(
         (total, current) => total + current.orderline.subtotal, 0,
       );
-      order.status = status;
+      // formateo los productos para enviar el comprobante de venta
+      const arrProducts = [];
+
+      order.products.forEach((prod) => {
+        arrProducts.push({
+          nameProducto: prod.name,
+          cantidad: prod.orderline.amount,
+          precioUnitario: prod.price,
+        });
+      });
+      // actualizo el carro
+      // order.status = status;
       order.total = totalOrder;
       order.endTimestamp = new Date();
+      order.orderNumber = id;
       await order.save();
-      return res.send('La orden fue correctamente modificada!');
-    }
-    if (status === 'delivered') {
-      if (!order) return res.status(404).send(`La orden id ${id} no tiene una orden pendiente!`);
-      order.status = status;
+
+      // busco el user asociado al cart
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+
+      if (!user) return res.status(404).send('Usuario no encontraod');
+
+      // formateo la data para el template email
+      const data = {
+        name: user.name,
+        email: user.email,
+        orden: id,
+        productos: arrProducts,
+        total: totalOrder,
+      };
+      // se reemplaza en el template compilado los datos de usuario
+      const result = templateComprobantedepago(data);
+      // se envia el mail
+      transporter.sendMail({
+        from: 'Kamora <adaclothes@hotmail.com>',
+        to: data.email,
+        subject: 'Compra realizada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, (err, responseStatus) => {
+        if (err) {
+          return res.status(400).send('Hubo un error');
+        }
+        return res.send('La orden fue correctamente modificada!');
+      });
+      // return res.json(order);
+    } else if (status === 'deliveryInProgress') {
+      // order.status = status;
       order.endTimestamp = new Date();
       await order.save();
+
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+
+      const result = templateOrdenDespachada();
+      // se envia el mail
+      transporter.sendMail({
+        from: 'Kamora <adaclothes@hotmail.com>',
+        to: user.email,
+        subject: 'Su orden fue despachada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, (err, responseStatus) => {
+        if (err) {
+          return res.status(400).send('Hubo un error');
+        }
+        return res.send('La orden fue correctamente modificada!');
+      });
+    } else if (status === 'finished' || status === 'canceled') {
+      order.status = status;
+      // order.endTimestamp = new Date();
+      await order.save();
+
       return res.send('La orden fue correctamente modificada!');
+    } else {
+      return res.status(404).send('Error');
     }
-    return res.status(404).send('Error');
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
   }
@@ -267,7 +349,7 @@ const getOrders = async (req, res) => {
   let {
     status,
   } = req.query;
-  if (!status) status = ['cart', 'deliveryPending', 'delivered'];
+  if (!status) status = ['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     const result = await Order.findAll({
       where: {
@@ -338,7 +420,7 @@ const getAllOrdersByIdUser = async (req, res) => {
 
 const testNodeMailer = async (req, res) => {
   // Endpoint con finalidad de testeo, emulando una compra realizada
-  // se debe tener un carro hardcodeado con estado deliveryPending
+  // se debe tener un carro hardcodeado con estado PaidPendingDispatch
 
   // busco el usuario correspondiente
   const user = await User.findOne({
@@ -351,16 +433,16 @@ const testNodeMailer = async (req, res) => {
   const arrProducts = [];
   let orden = '';
   let total = '';
-  // busco el carro con estado deliveryPending y guardo sus datos
+  // busco el carro con estado PaidPendingDispatch y guardo sus datos
 
   // pd: no hara falta buscar el carro en el endpoint checkout
   // ya que al cerrar el carro en ese mismo momento se manda el mail
   for (let i = 0; i < user.orders.length; i += 1) {
-    if (user.orders[i].status === 'deliveryPending') {
+    if (user.orders[i].status === 'PaidPendingDispatch') {
       const carrito = await Order.findOne({
         where: {
           userId: req.body.user.id,
-          status: 'deliveryPending',
+          status: 'PaidPendingDispatch',
         },
       });
 
