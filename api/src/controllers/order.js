@@ -160,23 +160,15 @@ const modifyOrder = async (req, res) => {
     // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
     // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
     // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
-      const total = order.products.reduce(
-        (totalSum, product) => totalSum + product.orderline.subtotal, 0,
+      const totalOrder = order.products.reduce(
+        (total, current) => total + current.orderline.subtotal, 0,
       );
-      order.total = total;
+      order.status = status;
+      order.total = totalOrder;
       await order.save();
       return res.json(order);
       // return res.send('La compra fue exitosa!');
     }
-    // if (order.status === 'paidPendingDispatch'
-    // && (status === 'deliveryInProgress' || status === 'canceled')) {
-    // DEBERIA: ENVIAR EMAIL DE ENVÍO EN CAMINO EN CASO 'deliveryInProgress
-
-    // }
-    // if (order.status === 'deliveryInProgress' && status === 'finished') {
-
-    // }
-    return res.status(404).send(`Error: el status ${status} no puede cambiar el status ${order.status}`);
 
     // if (status === 'deliveryPending') {
     //   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
@@ -195,7 +187,7 @@ const modifyOrder = async (req, res) => {
     //   order.status = status;
     //   order.endTimestamp = new Date();
     //   await order.save();
-    //   return res.send('La orden fue correctamente modificada!');
+    return res.send('La orden fue correctamente modificada!');
     // }
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
@@ -296,7 +288,7 @@ const getAllOrdersNotCart = async (req, res) => {
   let {
     status,
   } = req.query;
-  if (!status) status = ['PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+  if (!status) status = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     const result = await Order.findAll({
       where: {
