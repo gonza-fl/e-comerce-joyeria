@@ -18,6 +18,11 @@
         "react"
     ],
     "rules": {
-        "linebreak-style": ["error", "unix"]
-    }
+        "semi": ["error", "always"],
+        "object-curly-newline": ["error", "always"],
+        "linebreak-style": 0,
+        "no-param-reassign": ["error", {
+          "props": false
+        }]
+      }
 }
