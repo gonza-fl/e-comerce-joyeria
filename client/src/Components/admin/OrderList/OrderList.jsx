@@ -54,7 +54,7 @@ function OrderList() {
       </table>
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <span className="close" onClick={() => { const modal2 = document.getElementById('myModal'); modal2.style.display = 'none'; }}>X</span>
+          <span className="close" onClick={() => { const modal2 = document.getElementById('myModal'); modal2.style.display = 'none'; }}>X </span>
           <OrderListModal
             id={userId}
           />
