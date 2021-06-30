@@ -107,6 +107,15 @@ const DivCard = styled.div`
             transition: transform 300ms;
           }
 
+
+            @media (max-width: 768px) {
+              img {
+                width:130px;
+                height:130px
+              }
+              padding:0;
+              width: 40%;
+              
           @keyframes transitionIn {
             from {
                 opacity: 0;
@@ -119,14 +128,7 @@ const DivCard = styled.div`
             }
         }
 
-          @media (max-width: 452px) {
-            img {
-              width:130px;
-              height:130px
-            }
-            padding:0;
-            width: 40%;
-          }
+      
 `;
 
 const DivCarousel = styled.div`

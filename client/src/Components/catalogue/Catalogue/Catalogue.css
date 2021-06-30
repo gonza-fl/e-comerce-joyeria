@@ -32,13 +32,23 @@
     display: none;
 }
 
-@media (max-width: 452px) {
+@media (max-width: 768px) {
     .catalogue {
-        width: 100%;
+        width: 90%;
         justify-content: center;
     }
     .catalogueMap {
         width: 90%;
+    }
+    .pagedBottom {
+        width: 100%;
+        bottom: 0;
+    }
+}
+
+@media (max-width: 452px) {
+    .catalogue {
+        width: 100%;
     }
     .nextBack button {
         font-size: 15px;
@@ -46,10 +56,6 @@
     }
     .nextBack {
         left: 20px;
-    }
-    .pagedBottom {
-        width: 100%;
-        bottom: 0;
     }
     .iconFilter {
         display: block;

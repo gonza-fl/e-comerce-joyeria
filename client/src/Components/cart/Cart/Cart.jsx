@@ -127,12 +127,14 @@ const Cart = () => {
             </div>
           ))}
         </div>
-        <Link to="/cart/checkout">
-          <button id="next-btn">Siguiente</button>
-        </Link>
-        <Link to="/products">
-          <Button text="Volver al Catálogo" />
-        </Link>
+        <div className="respCartBtns">
+          <Link to="/cart/checkout">
+            <button id="next-btn">Siguiente</button>
+          </Link>
+          <Link to="/products">
+            <Button text="Volver al Catálogo" />
+          </Link>
+        </div>
       </div>
       <div className="cart-summary-container">
         <h2>Resumen</h2>
@@ -153,6 +155,14 @@ const Cart = () => {
         <div className="cart-summary-data">
           <h2>TOTAL: </h2>
           <h2>${total}</h2>
+        </div>
+        <div className="respCartBtnsTablet">
+          <Link to="/cart/checkout">
+            <button id="next-btn">Siguiente</button>
+          </Link>
+          <Link to="/products">
+            <Button text="Volver al Catálogo" />
+          </Link>
         </div>
       </div>
     </div>

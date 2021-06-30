@@ -42,18 +42,29 @@
     border-radius: 0 0 10px 10px;
 }
 
-@media (max-width:452px) {
+@media (max-width:768px) {
     .ctnCardC {
         height: 12rem;
-        width: 40%;
+        width: 28%;
         border: #f0ddd8 1px solid;
         border-radius: 0;
     }
     .headerCard {
-        height: 70%;
+        height: 75%;
     }
     .ctnCardC button {
-        height: 30%;
+        height: 25%;
         border-radius: 0;
+    }
+    @media (max-width: 452px) {
+        .ctnCardC {
+            width: 40%;
+        }
+        .headerCard {
+            height: 80%;
+        }
+        .ctnCardC button {
+            height: 30%;
+        }
     }
 }
