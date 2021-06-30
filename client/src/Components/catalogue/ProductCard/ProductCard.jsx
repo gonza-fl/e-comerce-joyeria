@@ -100,12 +100,14 @@ const DivCard = styled.div`
           padding:5px;
           width: 30%;
           margin-bottom: 30px;
+          animation: transitionIn 600ms;
 
           &:hover {
             transform: Scale(1.05);
             transition: transform 300ms;
           }
 
+<<<<<<< HEAD
 
             @media (max-width: 768px) {
               img {
@@ -114,6 +116,24 @@ const DivCard = styled.div`
               }
               padding:0;
               width: 40%;
+=======
+          @keyframes transitionIn {
+            from {
+                opacity: 0;
+                transform: rotateX(-10deg);
+            }
+        
+            to {
+                opacity: 1;
+                transform: rotateX(0);
+            }
+        }
+
+          @media (max-width: 452px) {
+            img {
+              width:130px;
+              height:130px
+>>>>>>> 3d230de9fcd4c607c5658b4861f61954342af0ae
             }
 `;
 

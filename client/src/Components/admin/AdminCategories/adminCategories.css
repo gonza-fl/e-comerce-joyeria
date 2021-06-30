@@ -1,0 +1,30 @@
+.containner{
+    display: flex;
+}
+.categories{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    background-color: #f0ddd8;
+    margin-left: 5rem;
+    border-radius: 2rem;
+}
+
+
+@media (max-width: 452px){
+    .containner{
+        display: flex;
+        flex-direction: column;
+    }
+    .categories{
+        width:98%;
+        justify-content: center;
+        margin-top: 5rem;
+        margin-left: 0;
+        margin-bottom: 5rem;
+        background-color: #f0ddd8;
+    }
+    .formulario{
+        justify-content: center;
+    }
+}

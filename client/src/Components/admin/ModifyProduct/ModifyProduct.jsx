@@ -16,7 +16,7 @@ function ModifyProduct(props) {
     categories: [],
   });
   const [filled, setFilled] = useState('conEspacio');
-
+  const user = useSelector((state) => state.user);
   const categories = useSelector((state) => state.categories);
 
   const previewFile = (file) => {
@@ -57,7 +57,11 @@ function ModifyProduct(props) {
   };
 
   const uploadProduct = async () => {
-    axios.put(`${URL_PRODUCTS}${props.id}`, newProduct)
+    axios.put(`${URL_PRODUCTS}${props.id}`, newProduct, {
+      headers: {
+        'access-token': user.id,
+      },
+    })
       .then((res) => {
         if (res.data.hasOwnProperty('err')) {
           swal('Error', res.data.err, 'warning');

@@ -100,7 +100,7 @@ const CreateUpdateReview = () => {
               </div>
               <button className="send-review-btn" type="submit">Enviar opinión</button>
               {Object.keys(productReview).length
-                ? <button className="send-review-btn" onClick={deleteReview}>Eliminar opinión</button>
+                ? <button className="send-review-btn" onClick={() => deleteReview()}>Eliminar opinión</button>
                 : null}
             </form>
           </div>

@@ -13,19 +13,19 @@ const addAddressFunction = async (req, res) => {
   } = req.params;
   const {
     address,
-    postalCode,
-    description,
-    name,
+    state,
+    city,
   } = req.body;
-  if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
-  const user = await User.findByPk(idUser);
-  if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
   try {
+    if (!state.trim().length) return res.status(400).send('Falta rellenar el campo departamento.');
+    if (!city.trim().length) return res.status(400).send('Falta rellenar el campo municipio.');
+
+    const user = await User.findByPk(idUser);
+    if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     const isAddress = await Address.create({
       address,
-      postalCode,
-      name: name.trim(),
-      description: description.trim(),
+      state,
+      city,
     });
     await user.addAddress(isAddress);
     return res.send('Domicilio creado con éxito!');
@@ -39,25 +39,25 @@ const updateAddress = async (req, res) => {
   } = req.params;
   let {
     address,
-    postalCode,
-    description,
-    name,
+    state,
+    city,
   } = req.body;
   try {
-    const user = await User.findByPk(idUser, {
-      include: Address,
-    });
-    // Soy Rodri: ¿SE ESTA USANDO ESTE INCLUDE? SI ES SOLO EL USER LO QUE QUIERO SABER
+    const user = await User.findByPk(idUser);
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     address = address !== '' ? address : undefined;
-    postalCode = postalCode !== '' ? postalCode : undefined;
-    description = description !== '' ? description : undefined;
-    name = name !== '' ? name : undefined;
-    if (postalCode && !verifyNumber(postalCode).veracity) return res.status(400).send(verifyNumber(postalCode, 'Código postal').msg);
+    state = state !== '' ? state : undefined;
+    city = city !== '' ? city : undefined;
+    const verifyAddress = await Address.findOne({
+      where: {
+        id: idAddress,
+        userId: idUser,
+      },
+    });
+    if (!verifyAddress) return res.status(404).send('La id de dirección no pertenece a este usuario.');
     await Address.update({
-      name,
-      description,
-      postalCode,
+      state,
+      city,
       address,
     }, {
       where: {
@@ -65,6 +65,7 @@ const updateAddress = async (req, res) => {
         userId: idUser,
       },
     });
+
     return res.status(200).send('Direccion actualizada correctamente!');
   } catch (err) {
     return res.status(404).send('Internal server error. Dirección no actualizada');

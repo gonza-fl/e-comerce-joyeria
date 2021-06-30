@@ -1,0 +1,23 @@
+.container{
+    padding: 10px 10px;
+    flex-grow: 1;
+    height: 95%;
+    font-weight: bold;
+}
+ @media(max-width: 452px){
+    .container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        flex-direction: row;
+        padding: 0px;
+        font-weight: bold;
+        background-color: #f0ddd8;
+        align-self: center;
+        justify-self: center;
+    }
+    .linkedDiv{
+        margin: 10px;
+        padding: 0px;
+    }
+}

@@ -23,7 +23,6 @@ export default function ResponsiveMenu() {
     document.getElementById('login').style = 'display:block';
     click();
   };
-  if (!categories.length) return <div>a</div>;
   return (
     <div id="respMenu" className="responsiveMenu">
       <span onClick={click}><FaTimes /></span>
@@ -33,7 +32,7 @@ export default function ResponsiveMenu() {
         : <Link to="#login" onClick={clickLogin}><FaUserAlt />&nbsp;Iniciar sesión</Link>}
       <Link to="/cart" onClick={click}><FaShoppingCart />&nbsp;Ver carrito</Link><hr />
       <Link to="/products" onClick={click}><FaWeightHanging />&nbsp;Todos los productos</Link><hr />
-      {categories.map((cat) => <Link to={`/products/${cat.id}`} onClick={click} className="respCategories">{cat.name}</Link>)}<hr />
+      {categories.length && categories.map((cat) => <Link to={`/products/${cat.id}`} onClick={click} className="respCategories">{cat.name}</Link>)}<hr />
     </div>
   );
 }

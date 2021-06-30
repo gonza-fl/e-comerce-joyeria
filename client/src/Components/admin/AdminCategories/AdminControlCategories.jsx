@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import swal from 'sweetalert';
 import { getCategories, getProducts } from '../../../redux/actions/actions';
 import AddCategoryForm from '../AddCategoryForm';
 import { deleteCategory } from '../AdminProducts/utils/request';
+import './adminCategories.css';
 
 function AdminControlCategories() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const products = useSelector((state) => state.products);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -18,16 +19,21 @@ function AdminControlCategories() {
 
   function eraseCategory(category) {
     if (!products.filter((p) => p.categories.filter((c) => c.id === category.id)[0])[0]) {
-      return deleteCategory(category);
+      return deleteCategory(category, user.id);
     }
     return swal('Lo sentimos', 'Esta categoría tiene productos asociados.  Elimina estos productos primero si quieres eliminar la categoría', 'warning');
   }
 
   return (
-    <Container>
-      <div style={{ marginRight: '50px' }}>
+    <div className="containner">
+      <div className="formulario">
+        <h2>Agregar categoría</h2>
+        <AddCategoryForm />
+      </div>
+
+      <div className="categories">
         <h2>Categorías</h2>
-        <table style={{ width: '300px' }}>
+        <table>
           <tr>
             <th>ID</th>
             <th>NOMBRE</th>
@@ -41,16 +47,8 @@ function AdminControlCategories() {
           ))}
         </table>
       </div>
-      <div>
-        <h2>Agregar categoría</h2>
-        <AddCategoryForm />
-      </div>
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-    display: flex;
-`;
 
 export default AdminControlCategories;
