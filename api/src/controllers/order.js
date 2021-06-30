@@ -288,7 +288,7 @@ const getOrders = async (req, res) => {
   let {
     status,
   } = req.query;
-  if (!status) status = ['cart', 'deliveryPending', 'delivered'];
+  if (!status) status = ['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     const result = await Order.findAll({
       where: {
