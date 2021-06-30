@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import AdminNavBar from './AdminNavBar/AdminNavBar';
 import AdminProducts from './AdminProducts/AdminProducts';
 import AdminStatistics from './AdminStatistics/AdminStatistics';
@@ -20,14 +21,22 @@ const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 function AdminWindow() {
   ADMIN_IDS.split(',');
   const user = useSelector((state) => state.user);
-  if (ADMIN_IDS.includes(user.id)) {
+  const [userData, setUserData] = useState({ role: '' });
+  // maxi modifico esto, si hizo una cagada no es culpa de el...
+  useEffect(() => {
+    if (user.id && userData.role === '') {
+      axios.get(`http://localhost:3001/api/user/${user.id}`)
+        .then((res) => setUserData(res.data));
+    }
+  }, [user]);
+  if (ADMIN_IDS.includes(user.id) || userData.role === 'admin' || userData.role === 'superAdmin') {
     return (
       <div className="mainDiv">
         <h1 className="titulo">ADMINISTRADOR</h1>
 
         <div className="adminPanel">
           <AdminNavBar />
-          <div className="windowDiv">
+          <div className="windowDiv bg-color-six">
             <Switch>
               <Route exact path="/admin">
                 <div className="loggo">
@@ -53,7 +62,7 @@ function AdminWindow() {
 
   return (
     <div className="mainDiv">
-      <Spiner msg="Debe iniciar secion para acceder al panel de administrador" />
+      <Spiner msg="Debe iniciar sesión para acceder al panel de administrador" />
       <Link to="/">
         <button type="button">volver al home</button>
       </Link>

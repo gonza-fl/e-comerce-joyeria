@@ -4,13 +4,12 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './LeftMenu.css';
 
-export default function LeftMenu({ user }) {
+export default function LeftMenu({ userData }) {
   const categories = useSelector((state) => state.categories);
-  const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-  ADMIN_IDS.split(',');
+
   return (
     <div className="leftMenuCtn">
-      <ul>
+      <ul className="categoryTablet">
         CATEGORIAS
         <div className="bg-color-six">
           {categories.map((d) => (
@@ -20,15 +19,15 @@ export default function LeftMenu({ user }) {
           ))}
         </div>
       </ul>
-      <ul>TIPS</ul>
-      <ul>ARTE</ul>
-      <ul>NUEVO</ul>
-      {ADMIN_IDS.includes(user.id) && (
-      <Link to="/admin" className="link-without-styles">
-        <ul style={{ color: 'blue' }}>ADMINISTRADOR</ul>
-        {' '}
-      </Link>
-      )}
+      <ul className="ulTablet">TIPS</ul>
+      <ul className="ulTablet">ARTE</ul>
+      <ul className="ulTablet">NUEVO</ul>
+      {userData && (userData.role === 'admin' || userData.role === 'superAdmin' ? (
+        <Link to="/admin" className="link-without-styles">
+          <ul className="ulTablet" style={{ color: 'blue' }}>ADMINISTRADOR</ul>
+          {' '}
+        </Link>
+      ) : null)}
     </div>
   );
 }

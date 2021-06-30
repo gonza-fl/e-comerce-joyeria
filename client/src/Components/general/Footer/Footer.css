@@ -1,0 +1,14 @@
+.ResEmailFooter {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+@media (max-width:452px) {
+    .ResFooter {
+        display: none;
+    }
+    .ResEmailFooter {
+        display: none;
+    }
+}

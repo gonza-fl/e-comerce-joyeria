@@ -1,12 +1,11 @@
-.divPrinsipal{
+.divPrincipal{
   justify-Content: center;
   align-items: center;
   display: flex;
-  transform: translate(0px,60px);
   border: rgb(177, 164, 164);
   border-width: 2px;
   border-style: solid;
   border-radius: 2rem;
-  padding: 2rem;
+  padding: 10px;
   background-color: #f1eee3;
 }

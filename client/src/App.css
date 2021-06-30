@@ -19,9 +19,3 @@
 .botonEliminarImagenCategoria:hover {
     cursor: pointer;
 }
-
-@media(max-width: 452px){
-    .App{
-    width: 452px;
-    }
-}

@@ -14,7 +14,7 @@ export default function Spiner({ msg }) {
     load();
   }, []);
 
-  if (!loading) return <h1>{msg}</h1>;
+  if (!loading) return <h1 className="spinerMSG">{msg}</h1>;
   return (
     <div className="spinerCtn">
       <img className="spiner" src={logo} alt="" />

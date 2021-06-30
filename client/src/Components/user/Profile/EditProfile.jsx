@@ -82,7 +82,7 @@ export default function EditProfile({
       >
         <b>Direcciones de envío: </b>
 
-        {input.addresses.length > 0
+        {input.addresses && input.addresses.length > 0
           ? input.addresses.map((a) => (
             <AdressDiv>
               <b>{a.description}</b>

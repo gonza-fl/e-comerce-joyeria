@@ -25,7 +25,7 @@
     transform: scale(1);
 }
 
-@media (max-width:452px) {
+@media (max-width:768px) {
     .ctnFilters {
         width: 100%;
         padding: 0;

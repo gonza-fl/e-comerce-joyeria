@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
 const {
@@ -158,8 +157,19 @@ const modifyOrder = async (req, res) => {
     if (order.status === status) {
       return res.status(404).send(`La orden ya tenia el estado ${status}`);
     }
-
+    // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
+      // DEBERÍA:
+      // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
+      // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
+      // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
     if (status === 'PaidPendingDispatch') {
+      // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
+    // DEBERÍA:
+    // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
+    // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
+    // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
+    // D) ENVIAR MAIL CUANDO ORDEN CAMBIE DE paidPendingDispatch a deliveryInProgress
+    // para avisar que se envio
       if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
       const totalOrder = order.products.reduce(
         (total, current) => total + current.orderline.subtotal, 0,
@@ -253,7 +263,27 @@ const modifyOrder = async (req, res) => {
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
   }
+  return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
 };
+// LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
+// if (status === 'deliveryPending') {
+//   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
+//   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');
+//   const totalOrder = order.products.reduce(
+//     (total, current) => total + current.orderline.subtotal, 0,
+//   );
+//   order.status = status;
+//   order.total = totalOrder;
+//   order.endTimestamp = new Date();
+//   await order.save();
+//   return res.send('La orden fue correctamente modificada!');
+// }
+// if (status === 'delivered') {
+//   if (!order) return res.status(404).send(`La orden
+// id ${id} no tiene una orden pendiente!`);
+//   order.status = status;
+//   order.endTimestamp = new Date();
+//   await order.save();
 
 const editCartAmount = async (req, res) => {
   const {
@@ -345,11 +375,15 @@ const emptyCartOrProduct = async (req, res) => {
   } catch (err) { return res.status(500).send('Internal server error. Producto no eliminado'); }
 };
 
-const getOrders = async (req, res) => {
+const getAllOrdersNotCart = async (req, res) => {
   let {
     status,
   } = req.query;
+<<<<<<< HEAD
   if (!status) status = ['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+=======
+  if (!status) status = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+>>>>>>> 60556508890e26595eb7cc65a9a2a77c2e57e4a3
   try {
     const result = await Order.findAll({
       where: {
@@ -507,7 +541,7 @@ module.exports = {
   modifyOrder,
   editCartAmount,
   emptyCartOrProduct,
-  getOrders,
+  getAllOrdersNotCart,
   getCartByUser,
   getOrderById,
   getAllOrdersByIdUser,

@@ -48,11 +48,11 @@ export function deleteProduct(product, id) {
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      axios.delete(`${URL_PRODUCTS}${product.id}`, product, {
+      axios.delete(`${URL_PRODUCTS}${product.id}`, {
         headers: {
           'access-token': id,
         },
-      })
+      }, product)
         .then((res) => {
           if (res.data.hasOwnProperty('err')) {
             swal('Error', res.data.err, 'warning');
@@ -97,8 +97,7 @@ export function deleteCategory(category, id) {
           }
         })
         .catch((err) => {
-          console.log(err);
-          swal('Error', 'mi error');
+          swal('Error', err.response.data);
         });
     } else {
       swal('¡La categoría no se eliminó!');
