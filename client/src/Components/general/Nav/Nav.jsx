@@ -3,13 +3,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/jsx-curly-spacing */
 /* eslint-disable no-return-assign */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUserAlt, FaShoppingCart, FaBars } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import 'firebase/auth';
 import swal from 'sweetalert';
 import firebase from 'firebase/app';
+import axios from 'axios';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
 import { getCategories, showFloatingCart } from '../../../redux/actions/actions';
@@ -19,13 +20,19 @@ import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
 import LeftMenu from './SearchBar/LeftMenu/LeftMenu';
 import ResponsiveMenu from './ResponsiveMenu/ResponsiveMenu';
-
-const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-ADMIN_IDS.split(',');
+import { URL_USERS } from '../../../constants';
 
 export default function Nav() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [userData, setUserData] = useState({ role: '' });
+
+  useEffect(() => {
+    if (user.id) {
+      axios.get(`${URL_USERS}${user.id}`)
+        .then((res) => setUserData(res.data));
+    }
+  }, [user]);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -42,13 +49,13 @@ export default function Nav() {
     <div className="ctnNav bg-color-three">
       <UserLogin />
       <div className="nav bg-color-three">
-        <div className="leftMenuNav"><LeftMenu user={user} /></div>
+        <div className="leftMenuNav"><LeftMenu userData={userData} /></div>
 
         <div className="homeResponsive">
           <FaBars />
           <div className="respMenu">  <ResponsiveMenu /></div>
         </div>
-        {ADMIN_IDS.includes(user.id) && <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>}
+        {userData && ((userData.role === 'admin' || userData.role === 'superAdmin')) && <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>}
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
         </div>
