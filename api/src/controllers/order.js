@@ -127,6 +127,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line consistent-return
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -183,7 +184,7 @@ const modifyOrder = async (req, res) => {
     // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
     // D) ENVIAR MAIL CUANDO ORDEN CAMBIE DE paidPendingDispatch a deliveryInProgress
     // para avisar que se envio
-    if (order.status === 'paidPendingDispatch' && status !== 'cart') {
+    if (order.status !== 'cart' && status !== 'cart') {
       order.status = status;
       await order.save();
       return res.send('La orden fue correctamente modificada!');
@@ -191,7 +192,7 @@ const modifyOrder = async (req, res) => {
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
   }
-  return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
+  // eslint-disable-next-line consistent-return
 };
 // LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
 // if (status === 'deliveryPending') {
