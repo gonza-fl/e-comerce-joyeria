@@ -62,3 +62,16 @@
     cursor: pointer;
     background-color: #CF988C;
 }
+
+.button-add-direction {
+    margin-top: 10px;
+    border-style: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.button-add-direction:hover {
+    cursor: pointer;
+    background-color: #CF988C;
+}
