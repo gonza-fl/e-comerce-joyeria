@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { FaAlignJustify } from 'react-icons/fa';
+import { FaBars } from 'react-icons/fa';
 import ProductCard from '../ProductCard/ProductCard';
 import { getProdutsByCategory, restartProductsByCategory } from '../../../redux/actions/actions';
 import FilterCatalogue from '../Catalogue/FilterCatalogue/FilterCatalogue';
@@ -47,7 +47,7 @@ function CategoryCatalogue() {
     <div className="catalogue">
       <Paged products={products} page={page} onClick={handlePage} />
       <div className="filterResponsive">
-        <div className="iconFilter"><FaAlignJustify /></div>
+        <div className="iconFilter"><FaBars /></div>
         <FilterCatalogue
           products={productsDisplay}
           setProducts={setProductsDisplay}
