@@ -15,7 +15,7 @@ const {
 const router = Router();
 router.get('/analytics', corroborarAdmin, getOrdersForAnalytics);
 router.get('/:orderId', getOrderById);
-router.get('/', getAllOrdersNotCart);
+router.get('/', corroborarAdmin, getAllOrdersNotCart);
 router.put('/:id', corroborarAdmin, modifyOrder);
 router.delete('/empty', emptyCartOrProduct);
 router.post('/', createOrFindAndUpdateCart);
