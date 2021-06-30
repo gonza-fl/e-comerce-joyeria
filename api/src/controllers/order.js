@@ -161,10 +161,17 @@ const modifyOrder = async (req, res) => {
       const totalOrder = order.products.reduce(
         (total, current) => total + current.orderline.subtotal, 0,
       );
+      for (let i = 0; i < order.products.length; i += 1) {
+        const product = await Product.findByPk(order.products[i].id);
+        if (product) {
+          product.stockAmount = order.products[i].stockAmount - order.products[i].orderline.amount;
+          await product.save();
+        }
+      }
       order.status = status;
       order.total = totalOrder;
       order.endTimestamp = new Date();
-      // D) AGREGAR UUID a order.OrderNumber
+      // E) AGREGAR UUID a order.OrderNumber
       // order.orderNumber = ???
       await order.save();
       return res.send('La compra fue exitosa! Revisa tu email');
