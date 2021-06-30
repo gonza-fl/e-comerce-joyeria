@@ -13,9 +13,9 @@ const {
 } = require('../helpers/middlewares');
 
 const router = Router();
+router.get('/analytics', corroborarAdmin, getOrdersForAnalytics);
 router.get('/:orderId', getOrderById);
 router.get('/', getOrders);
-router.get('/analytics', getOrdersForAnalytics);
 router.put('/:id', corroborarAdmin, modifyOrder);
 router.delete('/empty', emptyCartOrProduct);
 router.post('/', createOrFindAndUpdateCart);
