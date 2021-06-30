@@ -457,5 +457,4 @@ module.exports = {
   getOrderById,
   getAllOrdersByIdUser,
   testNodeMailer,
-  Actualizame,
 };
