@@ -21,11 +21,14 @@ const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 function AdminWindow() {
   ADMIN_IDS.split(',');
   const user = useSelector((state) => state.user);
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState({ role: '' });
+  // maxi modifico esto, si hizo una cagada no es culpa de el...
   useEffect(() => {
-    axios.get('http://localhost:3001/api/user/WwZdLgQ6n5Zew1QIIs7K8I0QjXs1')
-      .then((res) => setUserData(res.data));
-  }, []);
+    if (user.id && userData.role === '') {
+      axios.get(`http://localhost:3001/api/user/${user.id}`)
+        .then((res) => setUserData(res.data));
+    }
+  }, [user]);
   if (ADMIN_IDS.includes(user.id) || userData.role === 'admin' || userData.role === 'superAdmin') {
     return (
       <div className="mainDiv">
@@ -33,7 +36,7 @@ function AdminWindow() {
 
         <div className="adminPanel">
           <AdminNavBar />
-          <div className="windowDiv">
+          <div className="windowDiv bg-color-six">
             <Switch>
               <Route exact path="/admin">
                 <div className="loggo">
@@ -59,7 +62,7 @@ function AdminWindow() {
 
   return (
     <div className="mainDiv">
-      <Spiner msg="Debe iniciar secion para acceder al panel de administrador" />
+      <Spiner msg="Debe iniciar sesión para acceder al panel de administrador" />
       <Link to="/">
         <button type="button">volver al home</button>
       </Link>
