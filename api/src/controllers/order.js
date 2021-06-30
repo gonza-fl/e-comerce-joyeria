@@ -284,11 +284,11 @@ const emptyCartOrProduct = async (req, res) => {
   } catch (err) { return res.status(500).send('Internal server error. Producto no eliminado'); }
 };
 
-const getOrders = async (req, res) => {
+const getAllOrdersNotCart = async (req, res) => {
   let {
     status,
   } = req.query;
-  if (!status) status = ['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+  if (!status) status = ['PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     const result = await Order.findAll({
       where: {
@@ -446,7 +446,7 @@ module.exports = {
   modifyOrder,
   editCartAmount,
   emptyCartOrProduct,
-  getOrders,
+  getAllOrdersNotCart,
   getCartByUser,
   getOrderById,
   getAllOrdersByIdUser,
