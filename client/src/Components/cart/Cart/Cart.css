@@ -231,6 +231,7 @@ p {
             display: flex;
             flex-direction: column;
             right: 4vw;
+            margin-block: 30px;
         }
         .respCartBtns button {
             width: 100%;
