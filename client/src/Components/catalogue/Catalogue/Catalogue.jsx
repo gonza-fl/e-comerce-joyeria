@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Catalogue.css';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FaAlignJustify } from 'react-icons/fa';
+import { FaBars } from 'react-icons/fa';
 import ProductCard from '../ProductCard/ProductCard';
 import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
 import { getProducts, getProductsByName } from '../../../redux/actions/actions';
@@ -54,7 +54,7 @@ export default function catalogue() {
     <div className="catalogue">
       <Paged products={products} page={page} onClick={handlePage} />
       <div className="filterResponsive">
-        <div className="iconFilter"><FaAlignJustify /></div>
+        <div className="iconFilter"><FaBars /></div>
         <FilterCatalogue
           products={productsDisplay}
           setProducts={setProductsDisplay}

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { getCategories, getProducts } from '../../../redux/actions/actions';
-import AddCategoryForm from '../AddCategoryForm';
+import AddCategory from './AddCategory';
 import { deleteCategory } from '../AdminProducts/utils/request';
 import './adminCategories.css';
 
@@ -26,26 +26,27 @@ function AdminControlCategories() {
 
   return (
     <div className="containner">
+      <div>
+        <h2>Categorías</h2>
+        <div className="categories">
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>NOMBRE</th>
+            </tr>
+            {categories.map((c) => (
+              <tr className="bg-color-three" key={c.id}>
+                <td>{c.id}</td>
+                <td>{c.name}</td>
+                <button type="button" onClick={() => eraseCategory(c)}>X</button>
+              </tr>
+            ))}
+          </table>
+        </div>
+      </div>
       <div className="formulario">
         <h2>Agregar categoría</h2>
-        <AddCategoryForm />
-      </div>
-
-      <div className="categories">
-        <h2>Categorías</h2>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>NOMBRE</th>
-          </tr>
-          {categories.map((c) => (
-            <tr className="bg-color-three" key={c.id}>
-              <td>{c.id}</td>
-              <td>{c.name}</td>
-              <button type="button" onClick={() => eraseCategory(c)}>X</button>
-            </tr>
-          ))}
-        </table>
+        <AddCategory />
       </div>
     </div>
   );

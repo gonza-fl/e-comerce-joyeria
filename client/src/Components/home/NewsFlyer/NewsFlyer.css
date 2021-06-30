@@ -1,0 +1,7 @@
+@media (max-width:768px) {
+    .newsFlyer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
