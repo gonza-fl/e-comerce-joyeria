@@ -55,6 +55,7 @@ const OrderListModal = ({ id }) => {
         },
       })
         .then(() => swal('Bien', 'Estado modificado con éxito', 'success'))
+        .then(() => { window.location.href = `${window.location.origin}/admin/orders`; })
         .catch(() => swal('Alerta!', 'No se pudo actualizar el estado', 'warning'));
     }
   }
