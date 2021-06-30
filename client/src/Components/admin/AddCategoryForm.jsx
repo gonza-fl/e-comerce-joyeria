@@ -95,7 +95,7 @@ function AddCategoryForm() {
   };
 
   return (
-    <div className="divPrinsipal">
+    <div className="divPrincipal">
       <div className="form">
         <form method="POST" onSubmit={enviar}>
           <div style={{ marginTop: '15px' }}>

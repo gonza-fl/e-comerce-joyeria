@@ -13,7 +13,7 @@ const {
 } = require('../helpers/middlewares');
 
 const router = Router();
-router.get('/analytics', corroborarAdmin, getOrdersForAnalytics);
+router.get('/analytics/:type', corroborarAdmin, getOrdersForAnalytics);
 router.get('/:orderId', getOrderById);
 router.get('/', corroborarAdmin, getAllOrdersNotCart);
 router.put('/:id', corroborarAdmin, modifyOrder);

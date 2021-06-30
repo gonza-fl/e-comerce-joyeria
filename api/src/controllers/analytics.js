@@ -7,7 +7,7 @@ const {
 const getOrdersForAnalytics = async (req, res) => {
   const {
     type,
-  } = req.body;
+  } = req.params;
   if (!type || !type.trim().length) return res.status(404).send('No se envió un tipo de estadística');
   if (type !== 'productAmountPerDate'
   && type !== 'totalsPerDateByUsers'

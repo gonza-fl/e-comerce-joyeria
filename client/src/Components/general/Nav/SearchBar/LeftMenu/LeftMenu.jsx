@@ -1,24 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './LeftMenu.css';
 
-export default function LeftMenu({ user }) {
+export default function LeftMenu({ userData }) {
   const categories = useSelector((state) => state.categories);
-  const [userData, setUserData] = useState({ role: '' });
-  useEffect(() => {
-    if (user.id) {
-      axios.get(`http://localhost:3001/api/user/${user.id}`)
-        .then((res) => setUserData(res.data));
-    }
-  }, [user]);
-  const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-  ADMIN_IDS.split(',');
+
   return (
     <div className="leftMenuCtn">
-      <ul>
+      <ul className="categoryTablet">
         CATEGORIAS
         <div className="bg-color-six">
           {categories.map((d) => (
@@ -28,12 +19,12 @@ export default function LeftMenu({ user }) {
           ))}
         </div>
       </ul>
-      <ul>TIPS</ul>
-      <ul>ARTE</ul>
-      <ul>NUEVO</ul>
+      <ul className="ulTablet">TIPS</ul>
+      <ul className="ulTablet">ARTE</ul>
+      <ul className="ulTablet">NUEVO</ul>
       {userData && (userData.role === 'admin' || userData.role === 'superAdmin' ? (
         <Link to="/admin" className="link-without-styles">
-          <ul style={{ color: 'blue' }}>ADMINISTRADOR</ul>
+          <ul className="ulTablet" style={{ color: 'blue' }}>ADMINISTRADOR</ul>
           {' '}
         </Link>
       ) : null)}

@@ -71,9 +71,10 @@
     .ctnFiltersCat {
         display: none;
         height: 100%;
+        min-height: 500px;
         z-index: 1000;
         position: absolute;
-        transform: translate(-20px, -90px);
+        transform: translate(-25px, -90px);
         animation: filterSlide 0.8s;
     }
     @keyframes filterSlide {

@@ -89,7 +89,7 @@ export default function SearchBar() {
           type="text"
           name="products"
           value={input}
-          placeholder="Search..."
+          placeholder="Buscar..."
           onChange={handleInputChange}
         />
         <Button

@@ -1,0 +1,43 @@
+
+.stats-container{
+  width: 98%;
+  height: 98%;
+}
+
+.stats-sales-btn{
+  margin-top: 1%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.sales-btn{
+  border: none;
+  background-color: #f0ddd8;
+  padding: 1.1%;
+  transition: 0.2s;
+}
+
+.sales-btn:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.stats-chart-container{
+  background-color: white;
+  margin: 2% auto 0;
+  width: 95%;
+  height: 85%;
+  border: 3px solid black;
+  display: flex;
+  align-items: center;
+}
+
+.stats-tooltip{
+  border-radius: 0.25rem;
+  border: 1px solid #f0ddd8;
+  background-color: white;
+  color: black;
+  padding: 1rem;
+  box-shadow: 4px 9px 18px 25px rgba(192, 192, 192, 0.5);
+  text-align: center;
+}

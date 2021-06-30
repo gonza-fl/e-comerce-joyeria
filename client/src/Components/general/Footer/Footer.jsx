@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
+import './Footer.css';
 
 export default function Footer() {
   const ButtonMailto = ({ mailto, label }) => (
@@ -27,7 +28,7 @@ export default function Footer() {
   );
 
   return (
-    <StyledDiv className="bg-color-six font-color-seven">
+    <StyledDiv className="footer bg-color-six font-color-seven">
       <div style={{ flexGrow: '1' }}>
         <h3>Contáctanos</h3>
 
@@ -42,11 +43,14 @@ export default function Footer() {
         </StyledAnchor>
         <span>&ensp; Whatsapp</span>
         <br />
+        <div className="ResEmailFooter">
+          <ButtonMailto mailto="mailto:k-mora@gmail.com" />
+          <span>&ensp;Email</span>
+        </div>
 
-        <ButtonMailto label="&ensp; E-mail" mailto="mailto:k-mora@gmail.com" />
       </div>
 
-      <div style={{ flexGrow: '1' }}>
+      <div className="ResFooter" style={{ flexGrow: '1' }}>
         <h3>Acerca de nosotros</h3>
 
         <span>Términos y condiciones</span>
@@ -77,6 +81,10 @@ const StyledDiv = styled.div`
         height: 200px;
         justify-content: center;
         margin-top: 30px;
+        
+        @media (max-width:452px){
+          height: 120px
+        }
 `;
 
 const StyledAnchor = styled.a`

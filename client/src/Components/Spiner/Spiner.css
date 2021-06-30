@@ -24,3 +24,19 @@
         transform: rotate(360deg);
     }
 }
+
+@media (max-width:768px) {
+    .spinerCtn {
+        left: 38%;
+    }
+    @media (max-width:452px) {
+        .spinerCtn {
+            left: 30%;
+        }
+        @media (max-width:370px) {
+            .spinerCtn {
+                left: 25%;
+            }
+        }
+    }
+}

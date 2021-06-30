@@ -6,3 +6,4 @@ export const URL_USERS = 'http://localhost:3001/api/user/';
 export const URL_ORDERS_BY_ID = 'http://localhost:3001/api/order/';
 export const URL_CART = 'http://localhost:3001/api/order/';
 export const URL_GET_CART = 'http://localhost:3001/api/user/';
+export const URL_GET_STATS = 'http://localhost:3001/api/order/analytics/';

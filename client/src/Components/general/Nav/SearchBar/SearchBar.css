@@ -17,21 +17,13 @@
     outline: none;
 }
 
-.searchBtn {
-    background: transparent;
-    border: none;
-    font-size: 30px;
-}
-
-.searchBtn:hover {
-    cursor: pointer;
-}
-
-@media (max-width: 452px) {
+@media (max-width: 768px) {
     #searchBar {
-        width: 90%;
+        width: 70%;
     }
-    .searchBtn {
-        padding: 30px;
+    @media (max-width: 452px) {
+        #searchBar {
+            width: 90%;
+        }
     }
 }

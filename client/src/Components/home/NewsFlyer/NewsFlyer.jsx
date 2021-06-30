@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { GoPrimitiveDot } from 'react-icons/go';
+import './NewsFlyer.css';
 
 function NewsFlyer({ images }) {
   const [flyer, setFlyer] = React.useState(0);
@@ -30,7 +31,7 @@ function NewsFlyer({ images }) {
   }
 
   return (
-    <div>
+    <div className="newsFlyer">
       {images.map((img, i) => (
         <GoPrimitiveDot
           key={img}
@@ -68,6 +69,12 @@ const StyledImg = styled.img`
                 opacity: 0.8;
                 transform: rotateX(0);
             }
+        }
+        @media (max-width: 768px) {
+          width:95%;
+          max-heigth: 380px
+          height:auto;
+         
         }
         @media (max-width: 452px) {
           width:95%;
