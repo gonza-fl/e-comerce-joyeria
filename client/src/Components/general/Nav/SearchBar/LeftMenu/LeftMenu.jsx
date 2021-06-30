@@ -31,12 +31,12 @@ export default function LeftMenu({ user }) {
       <ul>TIPS</ul>
       <ul>ARTE</ul>
       <ul>NUEVO</ul>
-      {userData.role === 'admin' || userData.role === 'superAdmin' ? (
+      {userData && (userData.role === 'admin' || userData.role === 'superAdmin' ? (
         <Link to="/admin" className="link-without-styles">
           <ul style={{ color: 'blue' }}>ADMINISTRADOR</ul>
           {' '}
         </Link>
-      ) : null}
+      ) : null)}
     </div>
   );
 }
