@@ -176,7 +176,7 @@ const modifyOrder = async (req, res) => {
       await order.save();
       return res.send('La compra fue exitosa! Revisa tu email');
     }
-
+    // LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
     // if (status === 'deliveryPending') {
     //   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
     //   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');

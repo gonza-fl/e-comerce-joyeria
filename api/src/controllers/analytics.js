@@ -12,7 +12,7 @@ const getOrdersForAnalytics = async (req, res) => {
   if (type !== 'productAmountPerDate'
   && type !== 'totalsPerDateByUsers'
   && type !== 'totalsPerDate') return res.status(404).send('Tipo de estadística incorrecto');
-  const statusTypes = ['PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+  const statusTypes = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     if (type === 'productAmountPerDate') {
       const orders = await Order.findAll({
