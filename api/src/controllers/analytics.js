@@ -8,6 +8,7 @@ const getOrdersForAnalytics = async (req, res) => {
   const {
     type,
   } = req.params;
+  console.log(req.params);
   if (!type || !type.trim().length) return res.status(404).send('No se envió un tipo de estadística');
   if (type !== 'productAmountPerDate'
   && type !== 'totalsPerDateByUsers'
@@ -39,6 +40,7 @@ const getOrdersForAnalytics = async (req, res) => {
         }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
+
       return res.json(orders);
     }
 
@@ -49,6 +51,14 @@ const getOrdersForAnalytics = async (req, res) => {
       attributes: ['total', 'endTimestamp'],
     });
     if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
+    // formatear las fechas para que indiquen el dia
+    const ordersWithFormattedDate = orders.map(
+      (order) => ({
+        ...order,
+        endTimestamp: order.endTimestamp.substr(0, 10),
+      }),
+    );
+    // ordenar productos por fecha:
 
     return res.json(orders);
   } catch (err) {
