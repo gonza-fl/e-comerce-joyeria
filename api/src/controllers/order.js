@@ -147,8 +147,6 @@ const modifyOrder = async (req, res) => {
     && status !== 'finished'
     && status !== 'canceled') return res.status(400).send('No se puede implemetar ese status!');
 
-    // Si el status es paidPendingDispatch busca carrito, sino lo buscara como deliveryPending
-    // const statusSearch = status === 'deliveryPending' ? 'cart' : 'deliveryPending';
     const order = await Order.findByPk(id, {
       include: Product,
     });
@@ -165,9 +163,11 @@ const modifyOrder = async (req, res) => {
       );
       order.status = status;
       order.total = totalOrder;
+      order.endTimestamp = new Date();
+      // D) AGREGAR UUID a order.OrderNumber
+      // order.orderNumber = ???
       await order.save();
-      return res.json(order);
-      // return res.send('La compra fue exitosa!');
+      return res.send('La compra fue exitosa! Revisa tu email');
     }
 
     // if (status === 'deliveryPending') {
