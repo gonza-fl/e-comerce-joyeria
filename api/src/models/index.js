@@ -32,6 +32,8 @@ const sequelize = process.env.NODE_ENV === 'production'
       min: 1,
       idle: 10000,
     },
+    native: true,
+    ssl: true,
     dialectOpcions: {
       ssl: {
         require: true,
@@ -39,7 +41,6 @@ const sequelize = process.env.NODE_ENV === 'production'
       },
       keepAlive: true,
     },
-    ssl: true,
   })
 
   : new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}/${process.env.NODE_ENV === 'test' ? dbNameTest : dbName}`, {
