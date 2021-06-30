@@ -20,23 +20,23 @@ const getOrdersForAnalytics = async (req, res) => {
           status: statusTypes,
         },
         attributes: ['total', 'endTimestamp'],
-        include: {
+        include: [{
           model: Product, attributes: ['name'],
-        },
+        }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
       return res.json(orders);
     }
 
-    if (type === 'TotalsPerDateByUsers') {
+    if (type === 'totalsPerDateByUsers') {
       const orders = await Order.findAll({
         where: {
           status: statusTypes,
         },
         attributes: ['total', 'endTimestamp'],
-        include: {
+        include: [{
           model: User, attributes: ['displayName'],
-        },
+        }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
       return res.json(orders);
