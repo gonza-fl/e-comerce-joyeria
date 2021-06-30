@@ -4,7 +4,7 @@ const {
   Product,
 } = require('../models/index');
 
-const getOrdersForStatistics = async (req, res) => {
+const getOrdersForAnalytics = async (req, res) => {
   const {
     type,
   } = req.body;
@@ -57,5 +57,5 @@ const getOrdersForStatistics = async (req, res) => {
 };
 
 module.exports = {
-  getOrdersForStatistics,
+  getOrdersForAnalytics,
 };
