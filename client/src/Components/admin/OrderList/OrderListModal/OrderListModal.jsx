@@ -76,8 +76,10 @@ const OrderListModal = ({ id }) => {
           <select onChange={handleFilter}>
             <option value="Todas">Todas las ordenes</option>
             <option value="cart">Carrito</option>
-            <option value="deliveryPending">Esperando entrega</option>
-            <option value="delivered">Finalizada</option>
+            <option value="PaidPendingDispatch">pagadas, esperando envio</option>
+            <option value="deliveryInProgress">En proceso de envio</option>
+            <option value="finished">Finalizada</option>
+            <option value="canceled">Cancelada</option>
           </select>
         </div>
         <table className="modal-table">
@@ -94,12 +96,15 @@ const OrderListModal = ({ id }) => {
               <td>{userOrder.endTimestamp}</td>
               <td>{userOrder.total}</td>
               <td>
-                <span>{userOrder.status === 'cart' ? 'Carrito' : userOrder.status === 'deliveryPending' ? 'Esperando entrega' : 'Finalizado'}</span>
+                <span>{userOrder.status === 'cart' ? 'Carrito' : userOrder.status === 'PaidPendingDispatch' ? 'Esperando entrega' : 'Finalizado'}</span>
                 <br />
                 <select onChange={(e) => { handleChange(e, userOrder.id); }}>
                   <option value=""> Modificar estado </option>
-                  <option value="deliveryPending" style={{ display: `${['cart', 'delivered'].includes(userOrder.status) ? 'inline' : 'none'}` }}> Esperando entrega </option>
-                  <option value="delivered" style={{ display: `${['cart', 'deliveryPending'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Finalizada</option>
+                  <option value="cart" style={{ display: `${['PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}> Carrito </option>
+                  <option value="PaidPendingDispatch" style={{ display: `${['cart', 'deliveryInProgress', 'finished', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Pagada, esperando entrega </option>
+                  <option value="deliveryInProgress" style={{ display: `${['cart', 'PaidPendingDispatch', 'finished', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}> En proceso de envio </option>
+                  <option value="finished" style={{ display: `${['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Orden Finalizada</option>
+                  <option value="canceled" style={{ display: `${['cart', 'PaidPendingDispatch', 'deliveryInProgress', 'finished'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Cancelada</option>
                 </select>
               </td>
               <td>
