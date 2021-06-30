@@ -154,16 +154,24 @@ const modifyOrder = async (req, res) => {
     });
     if (!order) return res.status(400).send('La orden no existe!');
 
-    // if (order.status === 'cart' && status === 'paidPendingDispatch') {
+    if (order.status === 'cart' && status === 'paidPendingDispatch') {
     // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
     // DEBERÍA:
     // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
     // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
     // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
-    // }
+      const total = order.products.reduce(
+        (totalSum, product) => totalSum + product.orderline.subtotal, 0,
+      );
+      order.total = total;
+      await order.save();
+      return res.json(order);
+      // return res.send('La compra fue exitosa!');
+    }
     // if (order.status === 'paidPendingDispatch'
     // && (status === 'deliveryInProgress' || status === 'canceled')) {
     // DEBERIA: ENVIAR EMAIL DE ENVÍO EN CAMINO EN CASO 'deliveryInProgress
+
     // }
     // if (order.status === 'deliveryInProgress' && status === 'finished') {
 
