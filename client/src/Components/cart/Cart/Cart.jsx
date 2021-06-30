@@ -156,6 +156,14 @@ const Cart = () => {
           <h2>TOTAL: </h2>
           <h2>${total}</h2>
         </div>
+        <div className="respCartBtnsTablet">
+          <Link to="/cart/checkout">
+            <button id="next-btn">Siguiente</button>
+          </Link>
+          <Link to="/products">
+            <Button text="Volver al Catálogo" />
+          </Link>
+        </div>
       </div>
     </div>
   );
