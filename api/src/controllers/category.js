@@ -93,6 +93,8 @@ const getCategories = async (_req, res) => {
   }
 };
 
+console.log('probando prownout error');
+
 module.exports = {
   addCategory,
   getCategories,
