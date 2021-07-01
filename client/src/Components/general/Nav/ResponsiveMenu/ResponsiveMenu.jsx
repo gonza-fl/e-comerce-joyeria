@@ -15,8 +15,8 @@ export default function ResponsiveMenu() {
   const user = useSelector((state) => state.user);
 
   const click = () => {
-    document.getElementById('respMenu').className = 'responsiveMenuClose';
-    setTimeout(() => document.getElementById('respMenu').className = 'responsiveMenu', 1000);
+    document.getElementById('respMenu').style = 'display:none';
+    setTimeout(() => document.getElementById('respMenu').style = 'display:flex', 1000);
   };
 
   const clickLogin = () => {
