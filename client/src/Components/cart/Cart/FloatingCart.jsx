@@ -88,7 +88,7 @@ function FloatingCart() {
           <b>
             SUBTOTAL:
             {' '}
-            {`$${numberWithCommas(cartProducts.map((product) => product.price * product.amount).reduce((sum, p) => sum + p))}`}
+            {`$${numberWithCommas(cartProducts.map((product) => (product.price - ((product.price * product.discount) / 100)) * product.amount).reduce((sum, p) => sum + p))}`}
           </b>
         </SubTotal>
         <a href="/cart" className="link-without-styles">

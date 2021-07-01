@@ -11,6 +11,9 @@ const {
   User,
   Product,
 } = require('../models/index');
+const {
+  verifyUserProduct,
+} = require('../helpers/orderHelpers');
 
 const getReviews = async (req, res) => {
   const {
@@ -39,6 +42,8 @@ const postReview = async (req, res) => {
     userId,
   } = req.body;
   try {
+    const verificationProduct = await verifyUserProduct(userId, idProduct);
+    if (!verificationProduct) return res.status(400).send('No ha comprado este producto');
     const product = await Product.findByPk(idProduct);
     if (!product) return res.status(400).send('No existe ese producto');
     if (typeof userId !== 'string') return res.status(400).send('El ID de usuario es inválido');

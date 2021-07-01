@@ -2,76 +2,91 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import swal from 'sweetalert';
 import { URL_USERS } from '../../../constants';
+import { getStates } from './utils/directions';
+import './AddAdressModal.css';
 
 function AddAdressModal({
   show, setAddAdress, userId, pivot, setPivot,
 }) {
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [input, setInput] = useState({
-    name: '',
-    address: '',
-    postalCode: '',
     description: '',
+    address: '',
+    state: '',
+    city: '',
   });
 
   function onChangeInput(e) {
+    if (e.target.name === 'state' && e.target.value === '1') {
+      setCities([]);
+    }
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
   }
 
+  useEffect(() => {
+    setStates(getStates());
+  }, []);
+
+  useEffect(() => {
+    axios.get(`https://www.datos.gov.co/resource/xdk5-pm3f.json?departamento=${input.state}`,
+      { data: { $limit: 5000, $$app_token: 'f44im5lls147xsi9og61tih5i' } })
+      .then((res) => setCities(res.data.map((d) => d.municipio)));
+  }, [input.state]);
+
   function addDirection(e) {
     e.preventDefault();
 
-    if (!input.name) { return swal('Lo sentimos', 'Debes completar el espacio Nombre', 'warning'); }
-    if (!input.address) { return swal('Lo sentimos', 'Debes completar el espacio Dirección', 'warning'); }
     if (!input.description) { return swal('Lo sentimos', 'Debes completar el espacio Descripción', 'warning'); }
-    if (!input.postalCode) { return swal('Lo sentimos', 'Debes completar el espacio Código postal', 'warning'); }
+    if (!input.address) { return swal('Lo sentimos', 'Debes completar el espacio Dirección', 'warning'); }
+    if (!input.state) { return swal('Lo sentimos', 'Debes seleccionar un departamento', 'warning'); }
+    if (!input.city) { return swal('Lo sentimos', 'Debes seleccionar una ciudad', 'warning'); }
 
     axios.post(`${URL_USERS}${userId}/address`, input)
       .then(() => swal('¡Muy bien!', 'La dirección se agregó con éxito', 'success'))
       .then(() => {
-        document.getElementById('name').value = '';
-        document.getElementById('address').value = '';
         document.getElementById('description').value = '';
-        document.getElementById('postalCode').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('state').value = '';
         setInput({
-          name: '',
           address: '',
-          postalCode: '',
+          city: '',
+          state: '',
           description: '',
         });
         setAddAdress('none');
       })
       .then(() => setPivot(!pivot))
-      .catch(() => swal('Lo sentimos', 'No se pugo agregar la dirección', 'warning'));
+      .catch((err) => swal('Lo sentimos', 'No se pugo agregar la dirección', 'warning'));
   }
 
   return (
     <BackgroundModal style={{ display: show }}>
       <ModalDiv className="bg-color-six">
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div style={{ textAlign: 'left' }}>
-            <b>Nombre</b>
-            <br />
-            <b>Dirección</b>
-            <br />
+          <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
             <b>Descripción</b>
-            <br />
-            <b>Código postal</b>
-          </div>
-          <div>
-            <input id="name" name="name" onChange={onChangeInput} />
-            <br />
-            <input id="address" name="address" onChange={onChangeInput} />
-            <br />
-            <input id="description" name="description" onChange={onChangeInput} />
-            <br />
-            <input id="postalCode" name="postalCode" onChange={onChangeInput} />
+            <input id="description" name="description" onChange={onChangeInput} className="input-styles" />
+            <b>Dirección</b>
+            <input id="address" name="address" onChange={onChangeInput} className="input-styles" />
+            <b>Departamento</b>
+            <select id="state" name="state" className="select-state-am" onChange={onChangeInput}>
+              <option name="city" value="1">Selecciona tu departamento</option>
+              {states.map((s) => <option name="state" value={s}>{s}</option>)}
+            </select>
+            <b>Ciudad</b>
+            <select id="city" name="city" className="select-state-am" onChange={onChangeInput}>
+              <option name="city" value="1">Selecciona tu cuidad</option>
+              {cities.map((c) => <option name="city" value={c}>{c}</option>)}
+            </select>
           </div>
         </div>
         <br />
@@ -102,7 +117,7 @@ const BackgroundModal = styled.div`
         width: 99vw;
         height: 99vh; 
         overflow: auto;
-        transform: translate(0px,-230px);
+        transform: translate(0px,-130px);
         background-color: rgba(0,0,0,0.4); 
 `;
 
@@ -111,7 +126,7 @@ const ModalDiv = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    top: 40%;
+    top: 35%;
     left: 40%;
     width: 20%;
     padding: 20px 20px;
