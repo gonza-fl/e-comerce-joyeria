@@ -61,7 +61,8 @@ function AdminUpdateProduct() {
   function onSubmit(e, productUpdated) {
     e.preventDefault();
     if (!input.categories.filter((c) => c.checked === 'checked')[0]) { return swal('Error', 'Debes asignar al menos una categoría', 'warning'); }
-
+    if (input.discount > 100 || input.discount < 0 || typeof parseInt(input.discount, 10) !== 'number') { return swal('Error', 'El descuento debe ser entre 0 y 100', 'warning'); }
+    if (input.price < 0 || typeof parseInt(input.price, 10) !== 'number') { return swal('Error', 'El precio no puede ser negativo y debe ser numerico', 'warning'); }
     updateProduct({
       ...productUpdated,
       categories: productUpdated.categories.filter((c) => c.checked === 'checked').map((i) => i.id),
@@ -111,9 +112,9 @@ function AdminUpdateProduct() {
             <div className="input-name-container ">
               <span>{product.id}</span>
               <StyledInput name="name" value={input.name} onChange={(e) => onChangeInput(e)} />
-              <StyledInput name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
+              <StyledInput type="number" name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="stockAmount" value={input.stockAmount} onChange={(e) => onChangeInput(e)} />
-              <StyledInput name="discount" value={input.discount} onChange={(e) => onChangeInput(e)} />
+              <StyledInput type="number" name="discount" value={input.discount} onChange={(e) => onChangeInput(e)} />
             </div>
             <div className="description-container">
               <b>DESCRIPCIÓN: </b>

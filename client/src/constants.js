@@ -8,4 +8,3 @@ export const URL_CART = 'http://localhost:3001/api/order/';
 export const URL_GET_CART = 'http://localhost:3001/api/user/';
 export const URL_BANNER = 'http://localhost:3001/api/banner/';
 export const URL_GET_STATS = 'http://localhost:3001/api/order/analytics';
-
