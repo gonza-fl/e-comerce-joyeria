@@ -19,7 +19,7 @@ function AdminUpdateProduct() {
   const imgInput = useRef();
   const user = useSelector((state) => state.user);
   const [input, setInput] = useState({
-    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }],
+    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }], discount: 0,
   });
 
   const [imgSelected, setImgSelected] = useState([{ url: '' }]);
@@ -106,12 +106,14 @@ function AdminUpdateProduct() {
               <b>NOMBRE: </b>
               <b>PRECIO: </b>
               <b>CANTIDAD: </b>
+              <b>DISCOUNT%:</b>
             </div>
             <div className="input-name-container ">
               <span>{product.id}</span>
               <StyledInput name="name" value={input.name} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="stockAmount" value={input.stockAmount} onChange={(e) => onChangeInput(e)} />
+              <StyledInput name="discount" value={input.discount} onChange={(e) => onChangeInput(e)} />
             </div>
             <div className="description-container">
               <b>DESCRIPCIÓN: </b>

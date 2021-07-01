@@ -63,9 +63,20 @@ const Product = () => {
 
         <div className="product-info">
           <h1>{detail.name}</h1>
+          <div className="divDescuento">
+            <h5 className="priceCrossed">
+              {detail.discount > 0 ? ` $ ${detail.price}` : null }
+            </h5>
+            {detail.discount > 0 ? (
+              <h2 className="disc">
+                {`DESCUENTO DEL %${detail.discount} `}
+              </h2>
+            ) : null }
+
+          </div>
           <h4>
             $
-            {detail.price}
+            {detail.discount > 0 ? (detail.price - (detail.price * detail.discount) / 100) : detail.price }
           </h4>
           <p className="product-info-description">{detail.description}</p>
           {/* <h4>Rating: {detail.rating || '5'}</h4>   */}

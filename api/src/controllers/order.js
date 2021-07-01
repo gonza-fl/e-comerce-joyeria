@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
 const {
@@ -126,10 +127,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
     return res.status(500).send('Internal server error. Carrito no encontrado ni creado');
   }
 };
-
-
-// eslint-disable-next-line consistent-return
-
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -173,48 +170,43 @@ const modifyOrder = async (req, res) => {
       }
       order.status = status;
       order.total = totalOrder;
-      order.endTimestamp = new Date();
+      const dateHardcoded = new Date();
+      dateHardcoded.setDate(3);
+      order.endTimestamp = dateHardcoded;
+      // order.endTimestamp = new Date();
       // E) AGREGAR UUID a order.OrderNumber
       // order.orderNumber = ???
       await order.save();
       return res.send('La compra fue exitosa! Revisa tu email');
     }
-    // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
-    // DEBERÍA:
-    // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
-    // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
-    // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
-    // D) ENVIAR MAIL CUANDO ORDEN CAMBIE DE paidPendingDispatch a deliveryInProgress
-    // para avisar que se envio
-    if (order.status !== 'cart' && status !== 'cart') {
+    if (order.status === 'paidPendingDispatch' && status === ('deliveryInProgress' || 'canceled')) {
+      if (status === 'canceled') {
+        for (let i = 0; i < order.products.length; i += 1) {
+          const product = await Product.findByPk(order.products[i].id);
+          if (product) {
+            product.stockAmount = order.products[i].stockAmount + order.products[i].orderline.amount;
+            await product.save();
+          }
+        }
+      }
       order.status = status;
+      order.endTimestamp = new Date();
       await order.save();
-      return res.send('La orden fue correctamente modificada!');
+      return res.send(`La orden modificó correctamente su estado a ${status} revisa tu email`);
     }
+    if (status === 'canceled') return res.status(400).send('La orden no se puede cancelar');
+    if (order.status === 'deliveryInProgress' && status === 'finished') {
+      order.status = status;
+      order.endTimestamp = new Date();
+      await order.save();
+      return res.send(`La orden modificó correctamente su estado a ${status} revisa tu email`);
+    }
+    return res.status(400).send(`El estado ${order.status} no puede pasar al estado ${status}`);
+    // }
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
   }
-  // eslint-disable-next-line consistent-return
 };
-// LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
-// if (status === 'deliveryPending') {
-//   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
-//   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');
-//   const totalOrder = order.products.reduce(
-//     (total, current) => total + current.orderline.subtotal, 0,
-//   );
-//   order.status = status;
-//   order.total = totalOrder;
-//   order.endTimestamp = new Date();
-//   await order.save();
-//   return res.send('La orden fue correctamente modificada!');
-// }
-// if (status === 'delivered') {
-//   if (!order) return res.status(404).send(`La orden
-// id ${id} no tiene una orden pendiente!`);
-//   order.status = status;
-//   order.endTimestamp = new Date();
-//   await order.save();
 
 const editCartAmount = async (req, res) => {
   const {
