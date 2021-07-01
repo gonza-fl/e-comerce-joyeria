@@ -147,7 +147,12 @@ p {
 .respCartBtnsTablet {
     display: none;
 }
-
+.discountt{
+    color: red;
+}
+.priceCrossed{
+    color: red;
+}
 @media (max-width:768px) {
     .cart-container {
         width: 95%;

@@ -11,7 +11,10 @@ const {
   getProductsByCategory,
 } = require('../controllers/product');
 const review = require('./review');
+<<<<<<< HEAD
 
+=======
+>>>>>>> c862bebb38bff019450da0008f5fd3d7ecaed5a9
 const {
   corroborarAdmin,
 } = require('../helpers/middlewares');
