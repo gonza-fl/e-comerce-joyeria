@@ -13,6 +13,7 @@ import { getUserInfo } from '../../../redux/actions/actions';
 import { URL_USERS } from '../../../constants';
 import AddAdressModal from './AddAdressModal';
 import EditPassword from './EditPassword/EditPassword';
+import './Profile.css';
 
 export default function Profile() {
   const [edit, setEdit] = useState(false);
@@ -30,17 +31,19 @@ export default function Profile() {
   return (
     <MainDiv className="bg-color-three">
       <Menu>
-        <ItemMenu onClick={() => setMenu(1)} style={{ backgroundColor: `${menu === 1 ? '#CF988C' : 'white'}` }}>DETALLES</ItemMenu>
-        <ItemMenu onClick={() => setMenu(2)} style={{ backgroundColor: `${menu === 2 ? '#CF988C' : 'white'}` }}>ÓRDENES DE COMPRA</ItemMenu>
-        <ItemMenu onClick={() => setMenu(3)} style={{ backgroundColor: `${menu === 3 ? '#CF988C' : 'white'}` }}>MÉTODOS DE PAGO</ItemMenu>
-        <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
+        <div className="profileRespDiv">
+          <ItemMenu onClick={() => setMenu(1)} style={{ backgroundColor: `${menu === 1 ? '#CF988C' : 'white'}` }}>DETALLES</ItemMenu>
+          <ItemMenu onClick={() => setMenu(2)} style={{ backgroundColor: `${menu === 2 ? '#CF988C' : 'white'}` }}>ÓRDENES DE COMPRA</ItemMenu>
+          {/* <ItemMenu onClick={() => setMenu(3)} style={{ backgroundColor: `${menu === 3 ? '#CF988C' : 'white'}` }}>MÉTODOS DE PAGO</ItemMenu> */}
+          <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
+        </div>
       </Menu>
 
       {menu === 1 ? !edit ? showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot)
         : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
-          : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
-            : <EditPassword />}
+          // : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
+          : <EditPassword />}
     </MainDiv>
   );
 }
@@ -69,7 +72,7 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
       <UserIcon>
         <FcBusinessman style={{ fontSize: '150px' }} />
         <br />
-        <span style={{ fontSize: '20px' }}>{`${user.name}`}</span>
+        <span className="spanUserIcon">{`${user.name}`}</span>
         <br />
         <br />
         <br />
@@ -78,7 +81,7 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
       <UserInfo>
         <b>Email: </b>
         <br />
-        <span>{user.email}</span>
+        <span className="emailUserInfo">{user.email}</span>
         <br />
         <br />
         <b>Teléfono de contacto: </b>
@@ -90,11 +93,8 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
         <br />
         <span>{user.birthday || 'Sin fecha de nacimiento'}</span>
       </UserInfo>
-      <div style={{
-        display: 'flex', flexDirection: 'column', flexGrow: '6', width: '50%', alignItems: 'center', padding: '5px 0px',
-      }}
-      >
-        <UserInfo style={{ overflowY: 'scroll', width: '80%' }}>
+      <UserInfo>
+        <div className="userInfoDiv">
           <b>Direcciones de envío: </b>
 
           {user.addresses && user.addresses.length > 0
@@ -116,12 +116,12 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
                 <span>Agrega una dirección</span>
               </AdressDiv>
             )}
-        </UserInfo>
-        <div className="bg-color-six" style={{ width: '90%' }}>
+        </div>
+        <div className="bg-color-six divAcceptBtn">
           <AcceptButton type="button" onClick={() => setAddAdress('inline')}>Agregar dirección</AcceptButton>
         </div>
-      </div>
-      <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
+        <AddAdressModal show={addAdress} setAddAdress={setAddAdress} userId={user.id} pivot={pivot} setPivot={setPivot} />
+      </UserInfo>
     </DivContainer>
   );
 }
@@ -133,25 +133,52 @@ const MainDiv = styled.div`
     height: 60vh;
     padding: 10px 30px;
     jusfity-content: center;
+    align-items:center;
     text-align: center;
+
+    @media (max-width:768px){
+      align-items:center;
+      width: 100%;
+      height: 80vh;
+      padding:0
+    }
 `;
 
 const DivContainer = styled.div`
       display: flex;
       background-color: white;
       transform: translate(0px, -16px);
-      height: 90%;
       justify-content: space-around;
       border-radius: 10px;
       padding: 20px 15px;
+      height: 70vh;
+
+
+    @media (max-width:768px){
+      justify-content:center;
+      padding-inline:0;
+      width:90%;
+      height: 60vh;
+
+    }
+
 `;
 
 const Menu = styled.ul`
     display: flex;
     list-style-type:none;
-    text-align: left;
+    text-align: center;
     width: 900px;
     font-weight: bold;
+    padding-inline:3px;
+    justify-content:center;
+
+    @media (max-width:768px){
+    width:60%;
+    flex-direction:column;
+    align-items:center
+    }
+
 `;
 
 const ItemMenu = styled.li`
@@ -162,25 +189,46 @@ const ItemMenu = styled.li`
       cursor: pointer;
       background-color: #CF988C;
     }
+    @media (max-width:768px){
+      padding:0;
+      padding-inline: 10px;
+      width:50%;
+      border-radius:  10px 10px 0 0;
+    }
 `;
 
 const UserInfo = styled.div`
     text-align: left;
     padding: 20px 30px;
-    margin-left: 20px;
     font-size: 18px;
     background-color: #f1eee3;
     flex-grow: 3;
+
+    @media (max-width:768px){
+      width:30%;
+      padding:5px 5px;
+    }
 `;
 
 const UserIcon = styled.div`
     background-color: #f1eee3;
     padding: 10px 20px;
     flex-grow: 2;
+
+    @media (max-width:768px){
+      widht:30%;
+      display:flex;
+      flex-direction:column;
+      padding:5px 5px;
+    }
+
 `;
 
 const AdressDiv = styled.div`
     padding: 10px 0px;
+
+    @media (max-width:768px){
+    }
 `;
 
 const EditButton = styled.button`
@@ -192,18 +240,29 @@ const EditButton = styled.button`
     &:hover{
       cursor: pointer;
     }
+
+    @media (max-width:768px){
+    font-size: 18px;
+      margin-top:10px;
+
+    }
+
 `;
 
 const AcceptButton = styled.button`
+    
+    margin-top:15px;
     font-size: 18px;
-    padding: 5px 30px;
+    padding: 15px 30px;
     border-style: none;
     background-color: #f0ddd8;
-    float: bottom;
-    width: 60%;
+    width: 100%;
     align-self: center;
 
     &:hover{
       cursor: pointer;
+    }
+    @media (max-width:768px){
+      width:100%
     }
 `;

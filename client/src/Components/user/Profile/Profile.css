@@ -1,0 +1,55 @@
+    .spanUserIcon {
+        font-size: 20px;
+    }
+    
+    .userInfoDiv {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        align-items: center;
+        padding: 5px 0px
+    }
+    
+    .divAcceptBtn {
+        width: 90%;
+    }
+    
+    .userInfoDiv {
+        width: 100%;
+    }
+    
+    .divAcceptBtn {
+        width: 100%
+    }
+    
+    .profileRespDiv {
+        display: flex;
+        justify-content: center;
+    }
+    
+    @media (max-width:768px) {
+        .spanUserIcon {
+            font-size: 18px;
+        }
+        .emailUserInfo {
+            font-size: 2.5vw;
+        }
+        .userInfoDiv {
+            width: 100%;
+        }
+        .editProfileInput {
+            width: 80%;
+            margin-top: 10px;
+        }
+        @media (max-width:452px) {
+            .userInfoDiv {
+                display: none;
+            }
+            .divAcceptBtn {
+                display: none;
+            }
+            .emailUserInfo {
+                font-size: 3vw;
+            }
+        }
+    }
