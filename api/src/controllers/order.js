@@ -193,6 +193,7 @@ const modifyOrder = async (req, res) => {
       // actualizo el carro
       // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
       order.status = status;
+
       order.total = totalOrder;
       order.endTimestamp = new Date();
       order.orderNumber = id;
@@ -256,7 +257,7 @@ const modifyOrder = async (req, res) => {
           || order.status === 'canceled') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
-      // order.status = status;
+      order.status = status;
       order.endTimestamp = new Date();
       await order.save();
 
