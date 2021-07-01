@@ -202,11 +202,13 @@ const UserInfo = styled.div`
     padding: 20px 30px;
     font-size: 18px;
     background-color: #f1eee3;
+    margin-left: 20px;
     flex-grow: 3;
 
     @media (max-width:768px){
       width:30%;
-      padding:5px 5px;
+    margin-left: 0px;
+    padding:5px 5px;
     }
 `;
 
