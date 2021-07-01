@@ -107,8 +107,10 @@ export default function CartCheckout() {
             ? userDetail.addresses.map((a) => (
               <div className="address-container-cc">
                 <div className="address-box-cc">
-                  <input type="radio" name="address" value={a.id} onChange={selectAddress} />
-                  <b>{a.description}</b>
+                  <div>
+                    <input type="radio" name="address" value={a.id} onChange={selectAddress} />
+                    <b>{a.description}</b>
+                  </div>
                   <span>{a.address}</span>
                   <span>{a.city}</span>
                   <span>{a.state}</span>
@@ -204,7 +206,7 @@ export default function CartCheckout() {
               <input name="shippingCountry" type="hidden" value="CO" />
               <input name="telephone" type="hidden" value={userDetail.phone} />
               <input name="responseUrl" type="hidden" value="http://localhost:3000/cart/payment/response" />
-              <input name="confirmationUrl" type="hidden" value="http://localhost:3000/cart/payment/confirmation" />
+              <input name="confirmationUrl" type="hidden" value="http://localhost:3001/api/order" />
               <input name="Submit" type="submit" className="button-pay-cc bg-color-three" value="PAGAR" disabled={payButton} />
             </form>
           </div>

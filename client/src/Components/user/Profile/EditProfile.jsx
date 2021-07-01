@@ -74,7 +74,7 @@ export default function EditProfile({
         <br />
         <b>Fecha de nacimiento: </b>
         <br />
-        <input name="birthday" value={input.birthday} />
+        <input name="birthday" type="date" value={input.birthday} />
       </UserInfo>
       <UserInfo style={{
         flexGrow: '6', display: 'flex', flexDirection: 'column', overflowY: 'scroll',
