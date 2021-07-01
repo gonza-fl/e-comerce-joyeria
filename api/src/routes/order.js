@@ -6,14 +6,14 @@ const {
   emptyCartOrProduct, getAllOrdersNotCart, getOrderById, testNodeMailer,
 } = require('../controllers/order');
 const {
-  getOrdersForAnalytics,
+  postOrdersForAnalytics,
 } = require('../controllers/analytics');
 const {
   corroborarAdmin,
 } = require('../helpers/middlewares');
 
 const router = Router();
-router.get('/analytics/:type', corroborarAdmin, getOrdersForAnalytics);
+router.post('/analytics', corroborarAdmin, postOrdersForAnalytics);
 router.get('/:orderId', getOrderById);
 router.get('/', corroborarAdmin, getAllOrdersNotCart);
 router.put('/:id', corroborarAdmin, modifyOrder);

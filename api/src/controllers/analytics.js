@@ -5,13 +5,14 @@ const {
 } = require('../models/index');
 const {
   sortOrdersForAnalytics,
-  sortOrdersByProductsForAnalytics,
 } = require('../helpers/functionHelpers');
 
-const getOrdersForAnalytics = async (req, res) => {
+const postOrdersForAnalytics = async (req, res) => {
   const {
     type,
-  } = req.params;
+    productId,
+    userId,
+  } = req.body;
   if (!type || !type.trim().length) return res.status(404).send('No se envió un tipo de estadística');
   if (type !== 'productAmountPerDate'
   && type !== 'totalsPerDateByUsers'
@@ -19,33 +20,36 @@ const getOrdersForAnalytics = async (req, res) => {
   const statusTypes = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     if (type === 'productAmountPerDate') {
+      if (!productId) return res.status(404).send('No se envió un producto');
       const orders = await Order.findAll({
         where: {
           status: statusTypes,
         },
         attributes: ['total', 'endTimestamp'],
         include: [{
-          model: Product, attributes: ['id', 'name'],
+          model: Product,
+          where: {
+            id: productId,
+          },
+          attributes: ['id', 'name'],
         }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
-
-      return res.json(sortOrdersByProductsForAnalytics(orders));
+      return res.json(sortOrdersForAnalytics(orders));
     }
 
     if (type === 'totalsPerDateByUsers') {
+      if (!userId || typeof userId !== 'string' || !userId.trim().length) return res.status(404).send('No se envió un usuario válido');
       const orders = await Order.findAll({
         where: {
           status: statusTypes,
+          userId,
         },
         attributes: ['total', 'endTimestamp'],
-        include: [{
-          model: User, attributes: ['displayName'],
-        }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
 
-      return res.json(orders);
+      return res.json(sortOrdersForAnalytics(orders));
     }
 
     const orders = await Order.findAll({
@@ -62,5 +66,5 @@ const getOrdersForAnalytics = async (req, res) => {
 };
 
 module.exports = {
-  getOrdersForAnalytics,
+  postOrdersForAnalytics,
 };
