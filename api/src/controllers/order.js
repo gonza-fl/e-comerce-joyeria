@@ -4,7 +4,6 @@
 const {
   transporter,
   templateComprobantedepago,
-  templateOrdenDespachada,
 } = require('../helpers/nodeMailer');
 
 const {
