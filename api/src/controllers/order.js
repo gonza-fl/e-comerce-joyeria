@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
 const {
@@ -57,7 +58,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
         await cartNew.addProduct(prod, {
           through: {
             amount: parseInt(total),
-            subtotal: parseInt(total) * prod.price,
+            subtotal: ((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total)),
           },
         });
       }
@@ -95,7 +96,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
         });
         await cart.addProduct(cart.products[i], {
           through: {
-            subtotal: updatedCart.products[i].orderline.amount * updatedCart.products[i].price,
+            subtotal: (updatedCart.products[i].orderline.amount * (updatedCart.products[i].price - ((updatedCart.products[i].discount * updatedCart.products[i].price) / 100))),
           },
         });
         products.splice(productIndex, 1);
@@ -114,7 +115,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
       await cart.addProduct(prod, {
         through: {
           amount: parseInt(total),
-          subtotal: parseInt(total) * prod.price,
+          subtotal: (prod.price - ((prod.price * prod.discount) / 100) * parseInt(total)),
         },
       });
     }
@@ -127,9 +128,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
-
 // eslint-disable-next-line consistent-return
-
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -256,7 +255,7 @@ const editCartAmount = async (req, res) => {
     await cart.addProduct(productSearch, {
       through: {
         amount: updatedAmount,
-        subtotal: updatedAmount * productSearch.price,
+        subtotal: updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100)),
       },
     });
     const updatedCart = await Order.findOne({
