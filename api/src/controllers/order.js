@@ -137,8 +137,8 @@ const modifyOrder = async (req, res) => {
   const {
     status,
   } = req.body;
-  try {// el estado cart no se usa, el admin no deberia poder crear carritos.
-    const arr = ['PaidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+  try { // el estado cart no se usa, el admin no deberia poder crear carritos.
+    const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
     // si el status nuevo no se encuentra en el array no existe y devuelve error
     if (!arr.includes(status)) {
       return res.status(400).send('No se puede implemetar ese status!');
@@ -150,6 +150,7 @@ const modifyOrder = async (req, res) => {
       },
       include: Product,
     });
+    // return res.status(200).send(':v');
     // si no lo encuentra manda error
     if (order === null) {
       return res.status(404).send(`La orden id ${id} no posee un carrito`);
@@ -159,12 +160,14 @@ const modifyOrder = async (req, res) => {
       return res.status(404).send(`La orden ya tenia el estado ${status}`);
     }
     // flujo carro: cart > PaidPendingDispatch > deliveryInProgress > finished > canceled
-    if (status === 'PaidPendingDispatch') {
+    if (status === 'paidPendingDispatch') {
+      // return res.status(200).send(':v');
       if (order.status === 'deliveryInProgress'
           || order.status === 'finished'
           || order.status === 'canceled') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
+      // return res.status(200).send(':v');
       // falta restar del stock y validaciones
       if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
       const totalOrder = order.products.reduce(
@@ -186,6 +189,15 @@ const modifyOrder = async (req, res) => {
           cantidad: prod.orderline.amount,
         });
       });
+
+      // actualizo el carro
+      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
+      order.status = status;
+      order.total = totalOrder;
+      order.endTimestamp = new Date();
+      order.orderNumber = id;
+      await order.save();
+
       // descuento del stock del producto la cantidad necesaria
       for (let i = 0; i < arrADescontar.length; i += 1) {
         const prod = await Product.findOne({
@@ -199,15 +211,8 @@ const modifyOrder = async (req, res) => {
         }
 
         prod.stockAmount -= arrADescontar[i].cantidad;
-        prod.save();
+        await prod.save();
       }
-
-      // actualizo el carro
-      // order.status = status;
-      order.total = totalOrder;
-      order.endTimestamp = new Date();
-      order.orderNumber = id;
-      await order.save();
 
       // resto los productos del stockamount
 
@@ -247,7 +252,7 @@ const modifyOrder = async (req, res) => {
       // return res.json(order);
     } else if (status === 'deliveryInProgress') {
       if (order.status === 'cart'
-          || order.status === 'PaidPendingDispatch'
+          || order.status === 'finished'
           || order.status === 'canceled') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
@@ -279,7 +284,7 @@ const modifyOrder = async (req, res) => {
     } else if (status === 'finished') {
       if (order.status === 'cart'
           || order.status === 'canceled'
-          || order.status === 'PaidPendingDispatch') {
+          || order.status === 'paidPendingDispatch') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
       order.status = status;
@@ -302,7 +307,10 @@ const modifyOrder = async (req, res) => {
       return res.status(404).send('Error');
     }
   } catch (err) {
-    return res.status(500).send('Internal server error. Orden no fue modificada');
+    // return res.status(500).send('Internal server error. Orden no fue modificada');
+    return res.json({
+      err,
+    });
   }
   return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
 };
