@@ -1,6 +1,5 @@
 const {
   Order,
-  User,
   Product,
 } = require('../models/index');
 const {
