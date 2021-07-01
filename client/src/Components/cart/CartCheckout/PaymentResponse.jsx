@@ -11,7 +11,7 @@ function PaymentResponse() {
   const orderID = location.split('&').map((item) => item.split('=')).find((item) => item.includes('referenceCode'))[1].split('-')[1];
   const userID = location.split('&').map((item) => item.split('=')).find((item) => item.includes('referenceCode'))[1].split('-')[1];
   useEffect(() => {
-    axios.put(`${URL_ORDERS_BY_ID}${orderID}`, { status: `${paymentStatus === 'APPROVED' ? 'paidPendingDispatch' : null}` }, { 'access-token': userID || null });
+    axios.post(`${URL_ORDERS_BY_ID}${orderID}`, { status: `${paymentStatus === 'APPROVED' ? 'paidPendingDispatch' : null}` }, { 'access-token': userID || null });
   }, []);
   //   const query = new URLSearchParams(location.search);
 
