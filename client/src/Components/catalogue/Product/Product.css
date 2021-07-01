@@ -85,9 +85,10 @@
     
     .product-addCart {
         display: flex;
-        justify-content: space-between;
-        padding: 4%;
+        align-items: center;
+        justify-content: space-around;
         transform: translate(0px, 100px);
+        margin-top: -5rem;
     }
     
     .last-stock {

@@ -34,47 +34,49 @@ export default function FilterCatalogue({
   };
 
   return (
-    <div className="ctnFiltersCat  bg-color-six">
-      {undo && <div className="undo"><StyledButton text="Deshacer" handleClick={() => { setProducts([...productsGlobal]); setUndo(false); }} /></div>}
-      <h1>{`${total} Resultados`}</h1>
-      <h3>Ver </h3>
-      <h5>Alfabéticamente</h5>
-      <p onClick={() => { setProducts([...sortNameAsc(products)]); setUndo(true); }}>A-Z</p>
-      <p onClick={() => { setProducts([...sortNameDesc(products)]); setUndo(true); }}>Z-A</p>
+    <div className="bouncer">
+      <div className="ctnFiltersCat">
+        {undo && <div className="undo"><StyledButton text="Deshacer" handleClick={() => { setProducts([...productsGlobal]); setUndo(false); }} /></div>}
+        <h1>{`${total} Resultados`}</h1>
+        <h3>Ver </h3>
+        <h5>Alfabéticamente</h5>
+        <p onClick={() => { setProducts([...sortNameAsc(products)]); setUndo(true); }}>A-Z</p>
+        <p onClick={() => { setProducts([...sortNameDesc(products)]); setUndo(true); }}>Z-A</p>
 
-      <h5>Precio</h5>
-      <p onClick={() => { setProducts([...sortDescending(products, 'price')]); setUndo(true); }}>Mayor</p>
-      <p onClick={() => { setProducts([...sortAscending(products, 'price')]); setUndo(true); }}>Menor</p>
+        <h5>Precio</h5>
+        <p onClick={() => { setProducts([...sortDescending(products, 'price')]); setUndo(true); }}>Mayor</p>
+        <p onClick={() => { setProducts([...sortAscending(products, 'price')]); setUndo(true); }}>Menor</p>
 
-      <form onSubmit={handleChoise}>
-        <input name="min" placeholder="Minimo.." onChange={handleInputChange} />
-        <span>-</span>
-        <input name="max" placeholder="Maximo.." onChange={handleInputChange} />
-        <input id="submit" type="submit" value=">" disabled />
-      </form>
+        <form onSubmit={handleChoise}>
+          <input name="min" placeholder="Minimo.." onChange={handleInputChange} />
+          <span>-</span>
+          <input name="max" placeholder="Maximo.." onChange={handleInputChange} />
+          <input id="submit" type="submit" value=">" disabled />
+        </form>
 
-      <h5>Estrellas</h5>
-      <div className="stars" onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
-        Mas Estrellas
-        <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" />
+        <h5>Estrellas</h5>
+        <div className="stars" onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
+          Mas Estrellas
+          <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" />
+
+        </div>
+
+        <div className="stars" onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
+          Menos Estrellas
+          <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" />
+
+        </div>
+
+        <span>Elegir</span>
+        <ReactStars
+          count={5}
+          size={20}
+          value={0}
+          activeColor="#ffd700"
+          onChange={handleChoise}
+        />
 
       </div>
-
-      <div className="stars" onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
-        Menos Estrellas
-        <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" />
-
-      </div>
-
-      <span>Elegir</span>
-      <ReactStars
-        count={5}
-        size={20}
-        value={0}
-        activeColor="#ffd700"
-        onChange={handleChoise}
-      />
-
     </div>
   );
 }

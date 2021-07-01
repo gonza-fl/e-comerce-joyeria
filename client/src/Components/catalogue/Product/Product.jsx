@@ -79,7 +79,6 @@ const Product = () => {
             {detail.discount > 0 ? (detail.price - (detail.price * detail.discount) / 100) : detail.price }
           </h4>
           <p className="product-info-description">{detail.description}</p>
-          {/* <h4>Rating: {detail.rating || '5'}</h4>   */}
           <div className="product-addCart">
             {noStock && <h5 className="last-stock">Stock Agotado</h5>}
             {lowStock && (

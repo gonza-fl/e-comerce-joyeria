@@ -124,8 +124,8 @@ const DivCard = styled.div`
 
             @media (max-width: 768px) {
               img {
-                width:130px;
-                height:130px
+                width:98%;
+                height:96%;
               }
               padding:0;
               width: 40%;
