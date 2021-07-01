@@ -130,7 +130,7 @@ const MainDiv = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 40px;
-    height: 60vh;
+    height: 60%;
     padding: 10px 30px;
     jusfity-content: center;
     text-align: center;
