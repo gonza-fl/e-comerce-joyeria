@@ -67,7 +67,7 @@ function FloatingCart() {
                   <br />
                   <b>
                     $
-                    {numberWithCommas(p.price * p.amount)}
+                    {p.discount > 0 ? numberWithCommas((p.price - (p.price * p.discount) / 100) * p.amount) : numberWithCommas((p.price * p.amount)) }
                   </b>
                 </div>
 

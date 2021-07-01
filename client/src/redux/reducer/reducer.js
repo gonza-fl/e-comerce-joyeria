@@ -22,7 +22,7 @@ const InitialState = {
   cart: [],
   idToChange: [],
   detail: {
-    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }],
+    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '', images: [{ url: '' }], discount: 0,
   },
   categorieId: null,
   productsByCategory: [],
