@@ -142,7 +142,7 @@ const modifyOrder = async (req, res) => {
     // si el status nuevo no se encuentra en el array no existe y devuelve error
     if (!arr.includes(status)) {
       return res.status(400).send('No se puede implemetar ese status!');
-    }
+}
     // se buscar el carrito asociado al id que viene por parametro
     const order = await Order.findOne({
       where: {
@@ -314,25 +314,6 @@ const modifyOrder = async (req, res) => {
   }
   return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
 };
-// LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
-// if (status === 'deliveryPending') {
-//   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
-//   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');
-//   const totalOrder = order.products.reduce(
-//     (total, current) => total + current.orderline.subtotal, 0,
-//   );
-//   order.status = status;
-//   order.total = totalOrder;
-//   order.endTimestamp = new Date();
-//   await order.save();
-//   return res.send('La orden fue correctamente modificada!');
-// }
-// if (status === 'delivered') {
-//   if (!order) return res.status(404).send(`La orden
-// id ${id} no tiene una orden pendiente!`);
-//   order.status = status;
-//   order.endTimestamp = new Date();
-//   await order.save();
 
 const editCartAmount = async (req, res) => {
   const {
@@ -359,227 +340,76 @@ const editCartAmount = async (req, res) => {
       || (action === 'set' && (productSearch.stockAmount < product.amount || product.amount < 0))) {
       return res.status(400).send();
     }
-    let updatedAmount = 0;
-    switch (action) {
-      case 'sum':
-        updatedAmount = productSearch.orderline.amount + 1;
-        break;
-      case 'substract':
-        updatedAmount = productSearch.orderline.amount - 1;
-        break;
-      default:
-        updatedAmount = product.amount;
-        break;
-    }
-    await cart.addProduct(productSearch, {
-      through: {
-        amount: updatedAmount,
-        subtotal: updatedAmount * productSearch.price,
-      },
-    });
-    const updatedCart = await Order.findOne({
-      where: {
-        userId: idUser,
-        status: 'cart',
-      },
-      include: Product,
-    });
-    return res.json(updatedCart);
-  } catch (err) {
-    return res.status(400).json(err);
-  }
-};
-
-const emptyCartOrProduct = async (req, res) => {
-  // primero busco el usuario en la base de datos
-  const {
-    id,
-    product,
-  } = req.body;
-  if (!id) return res.status(404).send('el id no existe!');
-  try {
-    const user = await User.findByPk(id);
-    if (!user) return res.status(404).send('El usuario no existe!');
+    // se buscar el carrito asociado al id que viene por parametro
     const order = await Order.findOne({
       where: {
-        status: 'cart',
-        userId: user.id,
+        id,
       },
       include: Product,
     });
-    // si no existe carrito activo mando error
-    if (!order) return res.status(404).send('No hay ninguna orden');
-    // si llega un producto es para eliminar ese producto especifico del carrito
-    if (product) {
-      const productFound = order.products.find((prod) => prod.id === product.id);
-      if (!productFound) return res.status(404).send('El producto no existe');
-      await order.removeProduct(productFound);
-      return res.send('Producto eliminado correctamente!');
+    // return res.status(200).send(':v');
+    // si no lo encuentra manda error
+    if (order === null) {
+      return res.status(404).send(`La orden id ${id} no posee un carrito`);
     }
-    // ahora se vacía el carrito
-    for (let i = 0; i < order.products.length; i += 1) {
-      await order.removeProduct(order.products[i]);
+    // no se puede poner en el carro un estado que ya tebia
+    if (order.status === status) {
+      return res.status(404).send(`La orden ya tenia el estado ${status}`);
     }
-    return res.send('se vacio el carrito!');
-  } catch (err) { return res.status(500).send('Internal server error. Producto no eliminado'); }
-};
+    // flujo carro: cart > PaidPendingDispatch > deliveryInProgress > finished > canceled
+    if (status === 'paidPendingDispatch') {
+      // return res.status(200).send(':v');
+      if (order.status === 'deliveryInProgress'
+          || order.status === 'finished'
+          || order.status === 'canceled') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      // return res.status(200).send(':v');
+      // falta restar del stock y validaciones
+      if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
+      const totalOrder = order.products.reduce(
+        (total, current) => total + current.orderline.subtotal, 0,
+      );
+      // formateo los productos para enviar el comprobante de venta
+      const arrProducts = [];
+      const arrADescontar = [];
 
-const getAllOrdersNotCart = async (req, res) => {
-  let {
-    status,
-  } = req.query;
-  if (!status) status = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
-  try {
-    const result = await Order.findAll({
-      where: {
-        status,
-      },
-    });
-    return res.status(200).json(result);
-  } catch (error) {
-    return res.status(500).send('Internal server error. Ordenes no obtenidas');
-  }
-};
-
-const getCartByUser = async (req, res) => {
-  const {
-    id,
-  } = req.params;
-  try {
-    const response = await Order.findAll({
-      include: [{
-        model: Product,
-        include: Image,
-      }],
-      where: {
-        userId: id,
-        status: 'cart',
-      },
-    });
-    return res.status(200).json(response);
-  } catch (error) {
-    return res.status(500).send('Internal server error. Carrito no obtenido');
-  }
-};
-
-const getOrderById = async (req, res) => {
-  const {
-    orderId,
-  } = req.params;
-
-  if (!orderId) return res.status(404).send('El id de la orden no puede ser vacío');
-  const id = parseInt(orderId, 10);
-  if (Number.isNaN(id)) return res.status(404).send('El id de la orden debe ser un numero');
-  try {
-    const singleOrder = await Order.findByPk(id, {
-      include: [User, Product],
-    });
-    if (!singleOrder) return res.status(404).send('La orden no existe');
-    return res.json(singleOrder);
-  } catch (err) {
-    return res.status(500).send('Internal server error. Orden no encontrada');
-  }
-};
-
-const getAllOrdersByIdUser = async (req, res) => {
-  const {
-    idUser,
-  } = req.params;
-  try {
-    const result = await Order.findAll({
-      where: {
-        userId: idUser,
-      },
-    });
-    return res.status(200).json(result);
-  } catch (error) {
-    return res.status(500).send('Internal server error');
-  }
-};
-
-const testNodeMailer = async (req, res) => {
-  // Endpoint con finalidad de testeo, emulando una compra realizada
-  // se debe tener un carro hardcodeado con estado deliveryPending
-
-  // busco el usuario correspondiente
-  const user = await User.findOne({
-    where: {
-      id: req.body.user.id,
-    },
-    include: Order,
-  });
-
-  const arrProducts = [];
-  let orden = '';
-  let total = '';
-  // busco el carro con estado deliveryPending y guardo sus datos
-
-  // pd: no hara falta buscar el carro en el endpoint checkout
-  // ya que al cerrar el carro en ese mismo momento se manda el mail
-  for (let i = 0; i < user.orders.length; i += 1) {
-    if (user.orders[i].status === 'deliveryPending') {
-      const carrito = await Order.findOne({
-        where: {
-          userId: req.body.user.id,
-          status: 'deliveryPending',
-        },
-      });
-
-      orden = carrito.orderNumber;
-      total = carrito.total;
-
-      const lines = await OrderLine.findAll({
-        where: {
-          orderId: carrito.id,
-        },
-      });
-
-      for (let j = 0; j < lines.length; j += 1) {
-        const prod = await Product.findOne({
-          where: {
-            id: lines[j].productId,
-          },
-        });
-
+      order.products.forEach((prod) => {
         arrProducts.push({
           nameProducto: prod.name,
-          cantidad: lines[j].amount,
-          precioUnitario: lines[j].subtotal,
+          cantidad: prod.orderline.amount,
+          precioUnitario: prod.price,
         });
-      }
-      break;
-    }
-  }
-  // se formatea la data para el template
-  const data = { // traer de redux usuario
-    // { id: user.uid, email: user.email, name: user.displayName || 'Usuario' }
-    name: req.body.user.name,
-    email: req.body.user.email,
-    orden,
-    productos: arrProducts,
-    total,
-  };
-  // se reemplaza en el template compilado los datos de usuario
-  const result = templateComprobantedepago(data);
-  // se envia el mail
-  transporter.sendMail({
-    from: 'Kamora <adaclothes@hotmail.com>',
-    to: data.email,
-    subject: 'Compra realizada!',
-    html: result,
-  // eslint-disable-next-line consistent-return
-  }, (err2, responseStatus) => {
-    if (err2) {
-      return res.json({
-        err: err2,
+
+        arrADescontar.push({
+          id: prod.id,
+          cantidad: prod.orderline.amount,
+        });
       });
-    }
-    res.json({
-      response: 'mensaje enviado',
-      responseStatus,
-    });
-  });
-};
+
+      // actualizo el carro
+      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
+      order.status = status;
+      order.total = totalOrder;
+      order.endTimestamp = new Date();
+      order.orderNumber = id;
+      await order.save();
+
+      // descuento del stock del producto la cantidad necesaria
+      for (let i = 0; i < arrADescontar.length; i += 1) {
+        const prod = await Product.findOne({
+          where: {
+            id: arrADescontar[i].id,
+          },
+        });
+        // si la cantidad supera el stock manda error
+        if (arrADescontar[i].cantidad > prod.stockAmount) {
+          return res.status(404).send(`La cantidad del producto ${prod.name} super el stock`);
+        }
+
+        prod.stockAmount -= arrADescontar[i].cantidad;
+        await prod.save();
+      }
 
 module.exports = {
   createOrFindAndUpdateCart,
