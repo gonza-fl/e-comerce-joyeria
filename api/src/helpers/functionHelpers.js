@@ -39,7 +39,7 @@ const verifyString = (param) => {
 };
 
 const sortOrdersForAnalytics = (dbArray) => {
-  const sortedArray = [];
+  const ordersGroupedByDate = [];
   for (let i = 0; i < dbArray.length; i += 1) {
     if (dbArray[i]) {
       const ordersOfSameDate = {
@@ -53,10 +53,15 @@ const sortOrdersForAnalytics = (dbArray) => {
           dbArray[j] = null;
         }
       }
-      sortedArray.push(ordersOfSameDate);
+      ordersGroupedByDate.push(ordersOfSameDate);
     }
   }
-  return sortedArray;
+  const ordersSortedByDate = ordersGroupedByDate.sort((x, y) => {
+    if (Number(x.endTimestamp.substr(8, 10)) > Number(y.endTimestamp.substr(8, 10))) return 1;
+    if (Number(x.endTimestamp.substr(8, 10)) < Number(y.endTimestamp.substr(8, 10))) return -1;
+    return 0;
+  });
+  return ordersSortedByDate;
 };
 
 module.exports = {
