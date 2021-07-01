@@ -38,7 +38,30 @@ const verifyString = (param) => {
   return true;
 };
 
-const sortOrdersForAnalytics = (dbArray) => {
+const verifyDate = (param) => {
+  const paramSplit = param.split('-');
+  const response = {
+    veracity: false,
+  };
+  if (!paramSplit.length || param.split.length > 2) {
+    response.msg = 'El formato fecha es inválido';
+    return response;
+  }
+  if (parseInt(paramSplit[0]) === 'NaN' || isNaN(paramSplit[0])
+  || parseInt(paramSplit[0]) < 2021 || paramSplit > 9999) {
+    response.msg = 'El formato año es inválido';
+    return response;
+  }
+  if (parseInt(paramSplit[1]) === 'NaN' || isNaN(paramSplit[1])
+  || parseInt(paramSplit[1]) < 1 || paramSplit > 12) {
+    response.msg = 'El formato año es inválido';
+    return response;
+  }
+  response.veracity = true;
+  return response;
+};
+
+const sortOrdersForAnalytics = (dbArray, date) => {
   const ordersGroupedByDate = [];
   for (let i = 0; i < dbArray.length; i += 1) {
     if (dbArray[i]) {
@@ -56,17 +79,22 @@ const sortOrdersForAnalytics = (dbArray) => {
       ordersGroupedByDate.push(ordersOfSameDate);
     }
   }
-  const ordersSortedByDate = ordersGroupedByDate.sort((x, y) => {
-    if (Number(x.endTimestamp.substr(8, 10)) > Number(y.endTimestamp.substr(8, 10))) return 1;
-    if (Number(x.endTimestamp.substr(8, 10)) < Number(y.endTimestamp.substr(8, 10))) return -1;
+
+  const ordersFilteredByDate = ordersGroupedByDate.filter(
+    (order) => order.endTimestamp.substr(0, 7) === date,
+  );
+  const ordersSortedByMinMaxDate = ordersFilteredByDate.sort((x, y) => {
+    if (Number(x.endTimestamp.substr(8, 2)) > Number(y.endTimestamp.substr(8, 2))) return 1;
+    if (Number(x.endTimestamp.substr(8, 2)) < Number(y.endTimestamp.substr(8, 2))) return -1;
     return 0;
   });
-  return ordersSortedByDate;
+  return ordersSortedByMinMaxDate;
 };
 
 module.exports = {
   verifyNumber,
   verifyArray,
   verifyString,
+  verifyDate,
   sortOrdersForAnalytics,
 };

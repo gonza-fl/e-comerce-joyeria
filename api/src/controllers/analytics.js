@@ -1,8 +1,11 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable radix */
 const {
   Order,
   Product,
 } = require('../models/index');
 const {
+  // verifyDate,
   sortOrdersForAnalytics,
 } = require('../helpers/functionHelpers');
 
@@ -11,11 +14,14 @@ const postOrdersForAnalytics = async (req, res) => {
     type,
     productId,
     userId,
+    date,
   } = req.body;
   if (!type || !type.trim().length) return res.status(404).send('No se envió un tipo de estadística');
   if (type !== 'productAmountPerDate'
   && type !== 'totalsPerDateByUsers'
   && type !== 'totalsPerDate') return res.status(404).send('Tipo de estadística incorrecto');
+  if (!date) return res.status(404).send('No se envió una fecha específica');
+  // if (verifyDate)
   const statusTypes = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     if (type === 'productAmountPerDate') {
@@ -34,7 +40,7 @@ const postOrdersForAnalytics = async (req, res) => {
         }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
-      return res.json(sortOrdersForAnalytics(orders));
+      return res.json(sortOrdersForAnalytics(orders, date));
     }
 
     if (type === 'totalsPerDateByUsers') {
@@ -48,7 +54,7 @@ const postOrdersForAnalytics = async (req, res) => {
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
 
-      return res.json(sortOrdersForAnalytics(orders));
+      return res.json(sortOrdersForAnalytics(orders, date));
     }
 
     const orders = await Order.findAll({
@@ -58,7 +64,7 @@ const postOrdersForAnalytics = async (req, res) => {
       attributes: ['total', 'endTimestamp'],
     });
     if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
-    return res.json(sortOrdersForAnalytics(orders));
+    return res.json(sortOrdersForAnalytics(orders, date));
   } catch (err) {
     return res.status(500).send('Internal server error');
   }
