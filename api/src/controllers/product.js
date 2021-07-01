@@ -7,7 +7,7 @@ const {
   Op,
 } = require('sequelize');
 const {
-  searchProductF, updateCategories, updateImages, deleteImages,
+  searchProductF, updateCategories, updateImages, deleteImages, updateSubtotalProduct,
 } = require('../helpers/productHelpers');
 const {
   cloudinary,
@@ -32,6 +32,7 @@ const createProduct = async (req, res) => {
       stockAmount,
       image,
       categories,
+      discount,
     } = req.body;
     if (!name || name.trim().length === 0) return res.status(404).send('Campo faltante: nombre');
     if (!description || description.trim().length === 0) return res.status(404).send('Campo faltante: descripción');
@@ -42,8 +43,9 @@ const createProduct = async (req, res) => {
     const productCreated = await Product.create({
       name: name.trim(),
       description: description.trim(),
-      price: parseFloat(price),
+      price: Math.ceil(parseFloat(price)),
       stockAmount: parseInt(stockAmount),
+      discount: parseInt(discount),
     });
     for (let c = 0; c < categories.length; c += 1) {
       const category = await Category.findByPk(parseInt(categories[c]));
@@ -66,7 +68,8 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).send('El producto fue creado con éxito!');
   } catch (err) {
-    return res.status(400).send('Internal server Error. Producto no fue creado');
+    console.log(err);
+    return res.status(500).send('Internal server Error. Producto no fue creado');
   }
 };
 
@@ -145,7 +148,7 @@ const updateProduct = async (req, res) => {
     idProduct,
   } = req.params;
   let {
-    name, description, stockAmount, price, categories, images,
+    name, description, stockAmount, price, categories, images, discount,
   } = req.body;
 
   try {
@@ -153,13 +156,16 @@ const updateProduct = async (req, res) => {
     if (!description) description = undefined;
     const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) return res.status(404).send('No se encontro el producto.');
+    const discountt = (verifyNumber(discount).veracity ? parseInt(discount) : undefined);
     const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
     const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
+    await updateSubtotalProduct(idProduct);
     await Product.update({
       name,
       description,
       stockAmount: stock,
-      price: priceVar,
+      price: Math.ceil(priceVar),
+      discount: discountt,
     }, {
       where: {
         id: idProduct,
@@ -193,7 +199,7 @@ const getProductsByCategory = async (req, res) => {
     if (!productsFound.length) return res.status(404).send('Productos no encontrados');
     return res.json(productsFound);
   } catch (error) {
-    return res.send(500).send('Internal server Error. Productos no fueron encontrados');
+    return res.status(500).send('Internal server Error. Productos no fueron encontrados');
   }
 };
 
