@@ -68,7 +68,8 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).send('El producto fue creado con éxito!');
   } catch (err) {
-    return res.status(400).send('Internal server Error. Producto no fue creado');
+    console.log(err);
+    return res.status(500).send('Internal server Error. Producto no fue creado');
   }
 };
 
@@ -198,7 +199,7 @@ const getProductsByCategory = async (req, res) => {
     if (!productsFound.length) return res.status(404).send('Productos no encontrados');
     return res.json(productsFound);
   } catch (error) {
-    return res.send(500).send('Internal server Error. Productos no fueron encontrados');
+    return res.status(500).send('Internal server Error. Productos no fueron encontrados');
   }
 };
 
