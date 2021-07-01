@@ -39,11 +39,14 @@ const createAndUpdateImagesBanner = async (req, res) => {
 
     for (let i = 0; i < images.length; i++) {
       if (images[i].hasOwnProperty('url')) {
-        banners = banners.filter((ban) => ban.url !== banners[i].url);
+        banners = banners.filter((ban) => ban.url !== images[i].url);
       } else {
         newImages.push(images[i]);
-        if (banners[i]) await banners[i].destroy();
       }
+    }
+    console.log(banners);
+    for (let i = 0; i < banners.length; i++) {
+      await banners[i].destroy();
     }
 
     for (let i = 0; i < newImages.length; i++) {

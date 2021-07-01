@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
@@ -86,7 +87,8 @@ function AddCategory() {
           'access-token': user.id,
         },
       })
-      .then(() => { setLoading(false); swal('¡Muy bien!', 'Categoría agregada', 'success'); window.location.href = '/admin/controlcategories'; })
+      .then(() => { setLoading(false); return swal('¡Muy bien!', 'Categoría agregada', 'success'); })
+      .then(() => window.location.href = '/admin/controlcategories')
       .catch(() => { swal('¡Lo sentimos!', 'No se pudo agregar la categoría', 'warning'); });
   }
 
