@@ -246,6 +246,7 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
+          console.log(err);
           return res.status(400).send('Hubo un error');
         }
         return res.send('La orden fue correctamente modificada!');
