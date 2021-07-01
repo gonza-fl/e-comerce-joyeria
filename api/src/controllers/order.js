@@ -238,7 +238,7 @@ const modifyOrder = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
+        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
@@ -271,7 +271,7 @@ const modifyOrder = async (req, res) => {
       const result = templateOrdenDespachada();
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
+        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
         to: user.email,
         subject: 'Su orden fue despachada!',
         html: result,
@@ -425,7 +425,7 @@ const modifyOrderFromCart = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
+        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
