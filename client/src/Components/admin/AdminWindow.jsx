@@ -15,6 +15,7 @@ import AdminUpdateProduct from './AdminProducts/AdminUpdateProduct';
 import AdminUsers from './AdminUsers/AdminUsers';
 import Logo from '../StyledComponents/Logo';
 import './adminWindow.css';
+import AdminFlyers from './AdminFlyers/AdminFlyers';
 
 const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
 
@@ -53,6 +54,7 @@ function AdminWindow() {
               <Route exact path="/admin/statistics" component={AdminStatistics} />
               <Route exact path="/admin/orders/:orderId" component={OrderDetail} />
               <Route exact path="/admin/users" component={AdminUsers} />
+              <Route exact path="/admin/flyers" component={AdminFlyers} />
             </Switch>
           </div>
         </div>

@@ -1,0 +1,25 @@
+.image-container-af {
+    display: flex;
+    margin-top: 20px;
+}
+
+.add-image-button-af {
+    border-style:dotted;
+    font-size: 40px;
+    padding: 20px 30px;
+    margin-top: 20px;
+}
+
+.add-image-button-af:hover {
+    cursor: pointer;
+}
+
+.button-delete-img {
+    position: absolute;
+    border-style: none;
+    font-size: 18px;
+}
+
+.button-delete-img:hover {
+    cursor: pointer;
+}

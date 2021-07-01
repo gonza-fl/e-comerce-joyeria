@@ -2,6 +2,7 @@
     padding: 10px 10px;
     flex-grow: 1;
     font-weight: bold;
+    background-color: #f0ddd8;
 }
  @media(max-width: 452px){
     .container{

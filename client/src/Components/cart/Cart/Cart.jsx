@@ -31,7 +31,7 @@ const Cart = () => {
       axios.get(`${URL_GET_CART}${user.id}/cart`)
         .then((res) => {
           if (res.data[0].products.length > 0) {
-            const prod = res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })).map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
+            const prod = res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })).map((p) => (p.discount > 0 ? (p.price - ((p.price * p.discount) / 100)) * p.amount : p.price * p.amount)).reduce((sum, i) => sum + i);
             setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
             setSubtotal(prod);
             setTotal(prod + shipping + tax);
@@ -44,7 +44,7 @@ const Cart = () => {
     } else if (JSON.parse(localStorage.getItem('cart'))) {
       const prod = JSON.parse(localStorage.getItem('cart'));
       if (prod && prod.length > 0) {
-        const sTotal = prod.map((p) => p.price * p.amount).reduce((sum, i) => sum + i);
+        const sTotal = prod.map((p) => (p.discount > 0 ? (p.price * p.amount * p.discount) / 100 : (p.price * p.amount))).reduce((sum, i) => sum + i);
         setCartProducts(prod);
         setSubtotal(sTotal);
         setTotal(sTotal + shipping + tax);
@@ -107,7 +107,7 @@ const Cart = () => {
                 <div className="card-detail-data">
                   <h4><Link to={`/products/product/${product.id}`}>{product.name.toUpperCase()}</Link></h4>
                   <p>{product.description}</p>
-                  <h4>${product.price}</h4>
+                  {product.discount > 0 ? <h4><span className="priceCrossed">${product.price}</span><span className="discountt"> Descuento del %{product.discount}!!</span> <br />${product.price - ((product.price * product.discount) / 100) } </h4> : <h4>${product.price}</h4>}
                 </div>
               </div>
               <div className="card-detail-map-right">

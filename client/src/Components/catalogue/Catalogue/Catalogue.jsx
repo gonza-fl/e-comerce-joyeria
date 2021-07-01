@@ -74,6 +74,7 @@ export default function catalogue() {
             review={product.review}
             stockAmount={product.stockAmount}
             key={product.id}
+            discount={product.discount}
           />
         ))}
         <div className="pagedBottom">

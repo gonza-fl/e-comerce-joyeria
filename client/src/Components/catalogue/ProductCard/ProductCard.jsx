@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import ReactStars from 'react-rating-stars-component';
@@ -9,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../../utils/cartFunctions';
 import Button from '../../StyledComponents/Button';
 import { showFloatingCart } from '../../../redux/actions/actions';
+import './productCard.css';
 
 export default function ProductCard({
   product, id, name, price, image, review, stockAmount,
@@ -21,14 +23,25 @@ export default function ProductCard({
   }
 
   return (
-    <DivCard style={{ display: 'flex' }}>
-
+    <DivCard className="contenedor" style={{ display: 'flex' }}>
       <Carousel image={image.map((i) => i.url)} id={id} />
+      {product.discount > 0 ? (
+        <div className="ribbon">
+          <p>
+            {`${product.discount}%`}
+            OFF!
+          </p>
+        </div>
+      ) : null}
       <h3>{name}</h3>
+      {product.discount ? (
+        <span className="priceCrossed">
+          {price}
+        </span>
+      ) : null }
       <span>
         $
-        {' '}
-        {numberWithCommas(price)}
+        {product.discount ? numberWithCommas(price - ((price * product.discount) / 100)) : numberWithCommas(price) }
       </span>
       <br />
       <ReactStars
@@ -86,7 +99,7 @@ function Carousel({ image, id }) {
       <div>
         <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
           {img.filter((imgEl, i) => i === imgIndex)
-            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="230px" height="230px" />)}
+            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="100%" height="100%" />)}
         </Link>
       </div>
       {img.length > 1 && <MdNavigateNext onClick={nextCarousel} />}
@@ -98,9 +111,10 @@ const DivCard = styled.div`
           flex-direction: column;
           align-items: center;
           padding:5px;
-          width: 30%;
+          width: 25%;
           margin-bottom: 30px;
           animation: transitionIn 600ms;
+          possition: relative;
 
           &:hover {
             transform: Scale(1.05);

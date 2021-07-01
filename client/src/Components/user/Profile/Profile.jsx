@@ -104,9 +104,9 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
                 <br />
                 <span>{a.address}</span>
                 <br />
-                <span>{a.name}</span>
+                <span>{a.city}</span>
                 <br />
-                <span>{a.postalCode}</span>
+                <span>{a.state}</span>
                 <button type="button" style={{ transform: 'translate(220px, -40px)' }} onClick={() => deleteDirection(a.id)}>x</button>
               </AdressDiv>
             ))
@@ -130,7 +130,7 @@ const MainDiv = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 40px;
-    height: 60vh;
+    height: 60%;
     padding: 10px 30px;
     jusfity-content: center;
     align-items:center;
