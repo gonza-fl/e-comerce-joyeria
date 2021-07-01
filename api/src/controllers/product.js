@@ -7,7 +7,7 @@ const {
   Op,
 } = require('sequelize');
 const {
-  searchProductF, updateCategories, updateImages, deleteImages,
+  searchProductF, updateCategories, updateImages, deleteImages, updateSubtotalProduct,
 } = require('../helpers/productHelpers');
 const {
   cloudinary,
@@ -158,6 +158,7 @@ const updateProduct = async (req, res) => {
     const discountt = (verifyNumber(discount).veracity ? parseInt(discount) : undefined);
     const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
     const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
+    await updateSubtotalProduct(idProduct);
     await Product.update({
       name,
       description,
