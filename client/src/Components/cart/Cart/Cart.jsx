@@ -22,8 +22,6 @@ const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [pivot, setPivot] = useState(false);
   const [subTotal, setSubtotal] = useState(0);
-  const shipping = 200;
-  const tax = 50;
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -34,11 +32,11 @@ const Cart = () => {
             const prod = res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })).map((p) => (p.discount > 0 ? (p.price - ((p.price * p.discount) / 100)) * p.amount : p.price * p.amount)).reduce((sum, i) => sum + i);
             setCartProducts(res.data[0].products.map((p) => ({ ...p, amount: p.orderline.amount })));
             setSubtotal(prod);
-            setTotal(prod + shipping + tax);
+            setTotal(prod);
           } else {
             setCartProducts([]);
             setSubtotal(0);
-            setTotal(0 + shipping + tax);
+            setTotal(0);
           }
         });
     } else if (JSON.parse(localStorage.getItem('cart'))) {
@@ -47,7 +45,7 @@ const Cart = () => {
         const sTotal = prod.map((p) => (p.discount > 0 ? (p.price * p.amount * p.discount) / 100 : (p.price * p.amount))).reduce((sum, i) => sum + i);
         setCartProducts(prod);
         setSubtotal(sTotal);
-        setTotal(sTotal + shipping + tax);
+        setTotal(sTotal);
       }
     }
   }, [user, pivot]);
@@ -139,18 +137,8 @@ const Cart = () => {
       <div className="cart-summary-container">
         <h2>Resumen</h2>
         <div className="cart-summary-border">
-          <div className="cart-summary-data">
-            <h4>Subtotal: </h4>
-            <h4>${subTotal}</h4>
-          </div>
-          <div className="cart-summary-data">
-            <h4>Envío: </h4>
-            <h4>${shipping}</h4>
-          </div>
-          <div className="cart-summary-data">
-            <h4>Impuestos: </h4>
-            <h4>${tax}</h4>
-          </div>
+          <div className="cart-summary-data" />
+          <div className="cart-summary-data" />
         </div>
         <div className="cart-summary-data">
           <h2>TOTAL: </h2>

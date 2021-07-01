@@ -1,23 +1,31 @@
 /* eslint react/prop-types: 0 */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GoPrimitiveDot } from 'react-icons/go';
 import './NewsFlyer.css';
+import axios from 'axios';
+import { URL_BANNER } from '../../../constants';
 
-function NewsFlyer({ images }) {
+function NewsFlyer() {
   const [flyer, setFlyer] = React.useState(0);
+  const [banners, setBanners] = useState([]);
 
   // eslint-disable-next-line
   function dots(index) {
     if (flyer === index) {
-      return { color: 'white' };
+      return { color: 'gray' };
     }
   }
 
+  useEffect(() => {
+    axios.get(URL_BANNER)
+      .then((res) => setBanners(res.data.map((img) => img.url)));
+  }, []);
+
   React.useEffect(() => {
     const timeoutHandle = setInterval(() => {
-      if (flyer === images.length - 1) {
+      if (flyer === banners.length - 1) {
         setFlyer(0);
       } else {
         setFlyer(flyer + 1);
@@ -32,16 +40,16 @@ function NewsFlyer({ images }) {
 
   return (
     <div className="newsFlyer">
-      {images.map((img, i) => (
+      {banners && banners.map((img, i) => (
         <GoPrimitiveDot
           key={img}
           style={dots(i)}
           onClick={() => onClickIndex(i)}
         />
       ))}
-      {images
+      {banners && banners
         .filter((img, i) => i === flyer)
-        .map((img) => <StyledImg key={img} src={img} alt="Image not found" width="900px" height="500px" />)}
+        .map((img) => <StyledImg key={img} src={img} alt="Image not found" width="900px" height="600px" />)}
     </div>
   );
 }

@@ -3,6 +3,9 @@ const Handlebars = require('handlebars');
 const {
   comprobantedepago,
 } = require('./templates/comprobantedepago');
+const {
+  ordendespachada,
+} = require('./templates/ordenDespachada');
 
 const transporter = nodemailer.createTransport({
 /*
@@ -25,8 +28,10 @@ const transporter = nodemailer.createTransport({
 });
 
 const templateComprobantedepago = Handlebars.compile(comprobantedepago);
+const templateOrdenDespachada = Handlebars.compile(ordendespachada);
 
 module.exports = {
   transporter,
   templateComprobantedepago,
+  templateOrdenDespachada,
 };

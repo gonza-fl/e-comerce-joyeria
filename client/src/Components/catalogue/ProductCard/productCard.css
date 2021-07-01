@@ -25,3 +25,20 @@
     z-index: 2;
 
   }
+  @media (max-width: 768px) {
+    .ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    position: absolute;
+    right: -2.04rem;
+    top: -0.2rem;
+    color: white;
+    border-style: inset;
+    border-width: 0 3rem 3rem 3rem;
+    border-color: transparent transparent red transparent;
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+    }
+    

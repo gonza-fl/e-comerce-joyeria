@@ -8,6 +8,7 @@ const {
   Product,
   Category,
   Image,
+  Order,
 } = require('../models/index');
 const {
   cloudinary,
@@ -91,10 +92,35 @@ const updateImages = async (searchProduct, image, idProduct) => {
     return console.log(err);
   }
 };
+/* eslint-disable*/
+const updateSubtotalProduct = async (idProduct, price = 0) => {
+  try {
+    const orders= await Order.findAll({
+      include: [{
+        model: Product,
+        where:{
+          id: idProduct,
+        }
+      }],
+      where:{
+        status:'cart',
+      }
+    })
+    for (let i = 0; i < orders.length; i++) {
+      console.log(orders[i].products);
+      
+    }
 
+    return;
+  } catch (err) {
+    console.log(err)
+    return console.log('err')
+  }
+};
 module.exports = {
   searchProductF,
   updateCategories,
   updateImages,
   deleteImages,
+  updateSubtotalProduct
 };
