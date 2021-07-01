@@ -39,7 +39,7 @@ const postOrdersForAnalytics = async (req, res) => {
           attributes: ['id', 'name'],
         }],
       });
-      if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
+      if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas para ese producto');
       return res.json(sortOrdersForAnalytics(orders, date));
     }
 
@@ -52,7 +52,7 @@ const postOrdersForAnalytics = async (req, res) => {
         },
         attributes: ['total', 'endTimestamp'],
       });
-      if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
+      if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas de ese usuario');
 
       return res.json(sortOrdersForAnalytics(orders, date));
     }

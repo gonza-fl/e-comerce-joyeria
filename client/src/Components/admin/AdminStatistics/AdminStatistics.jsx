@@ -16,7 +16,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { format, parseISO } from 'date-fns';
-import { URL_GET_STATS } from '../../../constants';
+import { URL_GET_STATS, URL_USERS } from '../../../constants';
 import './AdminStatistics.css';
 
 function AdminStatistics() {
@@ -24,90 +24,123 @@ function AdminStatistics() {
   const [type, setType] = useState('');
   const [statsInfo, setStatsInfo] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(0);
+  const [datePicked, setDatePicked] = useState('');
+  const [allUsers, setAllUsers] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState('');
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProducts());
+    axios.get(URL_USERS)
+    .then((response) => {
+      setAllUsers(response.data);
+    })
+    .catch((err) => swal('Error', err.response.data, 'warning'));
   }, []);
 
   useEffect(() => {
-    if (type === 'totalsPerDate') {
-      const request = {type};
-      axios.post(URL_GET_STATS, request, {
-        headers: {
-          'access-token': user.id,
-        },
-      })
+    if (datePicked) {
+      if (type === 'totalsPerDate') {
+        const request = {type, date: datePicked};
+        axios.post(URL_GET_STATS, request, {
+          headers: {
+            'access-token': user.id,
+          },
+        })
+          .then((response) => {
+            const ordersWithSlicedDates = response.data.map(
+              (order) => { return {...order, endTimestamp: order.endTimestamp.substr(0, 10)
+              }})
+            setStatsInfo(ordersWithSlicedDates);
+          })
+          .catch((err) => {setStatsInfo([]); 
+          return swal('Error', err.response.data, 'warning')});
+      }
+
+      if (type === 'productAmountPerDate' && selectedProductId) {
+        console.log('holis');
+        const request = {type, productId: selectedProductId, date: datePicked}
+        axios.post(URL_GET_STATS, request, {
+          headers: {
+            'access-token': user.id,
+          },
+        })
         .then((response) => {
           const ordersWithSlicedDates = response.data.map(
             (order) => { return {...order, endTimestamp: order.endTimestamp.substr(0, 10)
             }})
           setStatsInfo(ordersWithSlicedDates);
         })
-        .catch((err) => swal('Error', err.response.data, 'warning'));
-    }
+        .catch((err) => {setStatsInfo([]); 
+          return swal('Error', err.response.data, 'warning')});
+      }
 
-    if (type === 'productAmountPerDate' && selectedProductId) {
-      console.log('holis');
-      const request = {type, productId: selectedProductId}
-      axios.post(URL_GET_STATS, request, {
-        headers: {
-          'access-token': user.id,
-        },
-      })
-      .then((response) => {
-        const ordersWithSlicedDates = response.data.map(
-          (order) => { return {...order, endTimestamp: order.endTimestamp.substr(0, 10)
-          }})
-        setStatsInfo(ordersWithSlicedDates);
-      })
-      .catch((err) => swal('Error', err.response.data, 'warning'));
-    }
-
-    if (type === 'totalsPerDateByUsers') {
-      const request = {type, userId: user.id};
-      axios.post(URL_GET_STATS, request, {
-        headers: {
-          'access-token': user.id,
-        },
-      })
-        .then((response) => {
-          const ordersWithSlicedDates = response.data.map(
-            (order) => { return {...order, endTimestamp: order.endTimestamp.substr(0, 10)
-            }})
-          setStatsInfo(ordersWithSlicedDates);
+      if (type === 'totalsPerDateByUsers' && selectedUserId) {
+        const request = {type, userId: selectedUserId, date: datePicked};
+        axios.post(URL_GET_STATS, request, {
+          headers: {
+            'access-token': user.id,
+          },
         })
-        .catch((err) => swal('Error', err.response.data, 'warning'));
+          .then((response) => {
+            const ordersWithSlicedDates = response.data.map(
+              (order) => { return {...order, endTimestamp: order.endTimestamp.substr(0, 10)
+              }})
+            setStatsInfo(ordersWithSlicedDates);
+          })
+          .catch((err) => {setStatsInfo([]); 
+            return swal('Error', err.response.data, 'warning')});
+      }
     }
-  }, [type, selectedProductId]);
+  }, [type, selectedProductId, datePicked, selectedUserId]);
 
   const handleType = (e) => {
     setType(e.target.value);
   };
 
-  const handleSelectChange = (e) => {
+  const handleProductSelected = (e) => {
     setSelectedProductId(e.target.value);
+  };
+
+  const handleUserSelected = (e) => {
+    setSelectedUserId(e.target.value);
   };
 
   const handleReset = () => {
     setType('');
     setStatsInfo([]);
+    setSelectedProductId(0);
+    setSelectedUserId('');
+  };
+
+  const handleDate = (e) => {
+    setDatePicked(e.target.value);
   };
 
   return (
     <div className="stats-container">
       <div className="stats-sales-btn">
+        <input type="month" onChange={(e) => handleDate(e)} />
         <button className="sales-btn" value="totalsPerDate" onClick={(e) => handleType(e)}>Ventas por Mes</button>
         <button className="sales-btn" value="productAmountPerDate" onClick={(e) => handleType(e)}>Ventas según Productos</button>
         {type === 'productAmountPerDate' &&
-        <select onChange={handleSelectChange} >
+        <select onChange={handleProductSelected} >
+          <option value="">Selecciona un producto</option>
           {products.map((product) =>
             <option value={product.id}>{product.name}</option>
           )}
         </select>
       }
         <button className="sales-btn" value="totalsPerDateByUsers" onClick={(e) => handleType(e)}>Ventas según Usuarios</button>
+        {type === 'totalsPerDateByUsers' &&
+        <select onChange={handleUserSelected}>
+          <option value="">Selecciona un usuario</option>
+          {allUsers.map((usermapped) =>
+            <option value={usermapped.id}>{usermapped.displayName}</option>
+          )}
+        </select>
+        }
         <button className="sales-btn" onClick={() => handleReset()}>Limpiar</button>
       </div>
       
@@ -117,8 +150,8 @@ function AdminStatistics() {
             <AreaChart data={statsInfo}>
               <defs>
                 <linearGradient id="color" x1="0" y1="0" x2="0" y2="1" >
-                  <stop offset="0%" stopColor="#f0ddd8" stopOpacity={0.9} />
-                  <stop offset="75%" stopColor="#f0ddd8" stopOpacity={0.3} />
+                  <stop offset="5%" stopColor="#f0ddd8" stopOpacity={1} />
+                  <stop offset="95%" stopColor="#f0ddd8" stopOpacity={0.5} />
                 </linearGradient>
               </defs>
               <Area dataKey="total" stroke="#f0ddd8" fill="url(#color)" />
@@ -155,7 +188,7 @@ const CustomToolTip = ({active, payload, label}) => {
     return (
       <div className="stats-tooltip">
         <h5>{format(parseISO(label), 'eeee, d MMM, yyyy')}</h5>
-        <p>${payload[0].value}</p>
+        <p className="stats-tooltip-payload">Total: ${payload[0].value}</p>
       </div>
     )
   }
