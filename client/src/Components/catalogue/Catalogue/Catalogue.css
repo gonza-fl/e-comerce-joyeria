@@ -1,21 +1,19 @@
 .catalogue {
-    width: 100%;
+    width: 80%;
     display: flex;
-    margin-top: 0;
-    margin-bottom: 0rem;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
     position: relative;
     border-right: rgba(81, 73, 73, 0.515) 1px solid;
 }
 
-
 .catalogueMap {
-    width: 80%;
+    width: 84%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     margin-top: 4rem;
-    margin-left: 2rem;
 }
 
 .nextBack {

@@ -2,10 +2,10 @@
     background-color: #f1eee3;
     display: flex;
     flex-direction: column;
+    min-width: 190px;
     align-items: center;
     position: relative;
     height: 100%;
-    width: 100%;
 }
 
 .ctnFiltersCat p {
@@ -18,7 +18,7 @@
 }
 
 .ctnFiltersCat input {
-    margin-top: 3%;
+    margin-top: 5%;
     max-width: 4rem;
     outline: none;
 }
