@@ -15,7 +15,7 @@ const OrderListModal = ({ id }) => {
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.userOrders);
   const [filter, setFilter] = useState([]);
-
+  const user = useSelector((state) => state.user);
   // eslint-disable-next-line consistent-return
   function handleOrderStatus(oS) {
     switch (oS) {
@@ -49,8 +49,13 @@ const OrderListModal = ({ id }) => {
     if (e.target.value) {
       axios.put(`${URL_ORDERS_BY_ID}${orderId}`, {
         status: e.target.value,
+      }, {
+        headers: {
+          'access-token': user.id,
+        },
       })
         .then(() => swal('Bien', 'Estado modificado con éxito', 'success'))
+        .then(() => { window.location.href = `${window.location.origin}/admin/orders`; })
         .catch(() => swal('Alerta!', 'No se pudo actualizar el estado', 'warning'));
     }
   }

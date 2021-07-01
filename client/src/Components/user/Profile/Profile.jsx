@@ -104,9 +104,9 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
                 <br />
                 <span>{a.address}</span>
                 <br />
-                <span>{a.name}</span>
+                <span>{a.city}</span>
                 <br />
-                <span>{a.postalCode}</span>
+                <span>{a.state}</span>
                 <button type="button" style={{ transform: 'translate(220px, -40px)' }} onClick={() => deleteDirection(a.id)}>x</button>
               </AdressDiv>
             ))

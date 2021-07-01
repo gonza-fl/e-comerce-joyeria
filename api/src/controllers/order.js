@@ -129,6 +129,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
 };
 
 // eslint-disable-next-line consistent-return
+
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -440,7 +441,7 @@ const getAllOrdersByIdUser = async (req, res) => {
 
 const testNodeMailer = async (req, res) => {
   // Endpoint con finalidad de testeo, emulando una compra realizada
-  // se debe tener un carro hardcodeado con estado PaidPendingDispatch
+  // se debe tener un carro hardcodeado con estado deliveryPending
 
   // busco el usuario correspondiente
   const user = await User.findOne({
@@ -453,16 +454,16 @@ const testNodeMailer = async (req, res) => {
   const arrProducts = [];
   let orden = '';
   let total = '';
-  // busco el carro con estado PaidPendingDispatch y guardo sus datos
+  // busco el carro con estado deliveryPending y guardo sus datos
 
   // pd: no hara falta buscar el carro en el endpoint checkout
   // ya que al cerrar el carro en ese mismo momento se manda el mail
   for (let i = 0; i < user.orders.length; i += 1) {
-    if (user.orders[i].status === 'PaidPendingDispatch') {
+    if (user.orders[i].status === 'deliveryPending') {
       const carrito = await Order.findOne({
         where: {
           userId: req.body.user.id,
-          status: 'PaidPendingDispatch',
+          status: 'deliveryPending',
         },
       });
 
