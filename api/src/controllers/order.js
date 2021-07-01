@@ -207,7 +207,135 @@ const modifyOrder = async (req, res) => {
     return res.status(500).send('Internal server error. Orden no fue modificada');
   }
 };
+const modifyOrderFromCart = async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  const {
+    status,
+  } = req.body;
 
+  try { // el estado cart no se usa, el admin no deberia poder crear carritos.
+    const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+    // si el status nuevo no se encuentra en el array no existe y devuelve error
+    if (!arr.includes(status)) {
+      return res.status(400).send('No se puede implemetar ese status!');
+    }
+    // se buscar el carrito asociado al id que viene por parametro
+    const order = await Order.findOne({
+      where: {
+        id,
+      },
+      include: Product,
+    });
+    // return res.status(200).send(':v');
+    // si no lo encuentra manda error
+    if (order === null) {
+      return res.status(404).send(`La orden id ${id} no posee un carrito`);
+    }
+    // no se puede poner en el carro un estado que ya tebia
+    if (order.status === status) {
+      return res.status(404).send(`La orden ya tenia el estado ${status}`);
+    }
+
+    if (status === 'paidPendingDispatch') {
+      // return res.status(200).send(':v');
+      if (order.status === 'deliveryInProgress'
+          || order.status === 'finished'
+          || order.status === 'canceled') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      // return res.status(200).send(':v');
+      // falta restar del stock y validaciones
+      if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
+      const totalOrder = order.products.reduce(
+        (total, current) => total + current.orderline.subtotal, 0,
+      );
+      // formateo los productos para enviar el comprobante de venta
+      const arrProducts = [];
+      const arrADescontar = [];
+
+      order.products.forEach((prod) => {
+        arrProducts.push({
+          nameProducto: prod.name,
+          cantidad: prod.orderline.amount,
+          precioUnitario: prod.price,
+        });
+
+        arrADescontar.push({
+          id: prod.id,
+          cantidad: prod.orderline.amount,
+        });
+      });
+
+      // actualizo el carro
+      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
+      order.status = status;
+
+      order.total = totalOrder;
+      order.endTimestamp = new Date();
+      order.orderNumber = id;
+      await order.save();
+
+      // descuento del stock del producto la cantidad necesaria
+      for (let i = 0; i < arrADescontar.length; i += 1) {
+        const prod = await Product.findOne({
+          where: {
+            id: arrADescontar[i].id,
+          },
+        });
+        // si la cantidad supera el stock manda error
+        if (arrADescontar[i].cantidad > prod.stockAmount) {
+          return res.status(404).send(`La cantidad del producto ${prod.name} super el stock`);
+        }
+
+        prod.stockAmount -= arrADescontar[i].cantidad;
+        await prod.save();
+      }
+
+      // resto los productos del stockamount
+
+      // busco el user asociado al cart
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+
+      if (!user) return res.status(404).send('Usuario no encontraod');
+
+      // formateo la data para el template email
+      const data = {
+        name: user.name,
+        email: user.email,
+        orden: id,
+        productos: arrProducts,
+        total: totalOrder,
+      };
+      // se reemplaza en el template compilado los datos de usuario
+      const result = templateComprobantedepago(data);
+      // se envia el mail
+      transporter.sendMail({
+        from: 'Kamora <adaclothes@hotmail.com>',
+        to: data.email,
+        subject: 'Compra realizada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, (err, responseStatus) => {
+        if (err) {
+          return res.status(400).send('Hubo un error');
+        }
+        return res.send('La orden fue correctamente modificada!');
+      });
+      // return res.json(order);
+    } else {
+      return res.status(404).send('Error');
+    }
+  } catch (error) {
+    return res.status(404).send('No se pudo completar el cambio de estado de order.');
+  }
+};
 const editCartAmount = async (req, res) => {
   const {
     idUser,
@@ -465,4 +593,5 @@ module.exports = {
   getOrderById,
   getAllOrdersByIdUser,
   testNodeMailer,
+  modifyOrderFromCart,
 };
