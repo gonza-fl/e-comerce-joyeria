@@ -12,9 +12,6 @@ const {
 } = require('../controllers/product');
 const review = require('./review');
 const {
-  modifyReview,
-} = require('../controllers/review');
-const {
   corroborarAdmin,
 } = require('../helpers/middlewares');
 
@@ -26,7 +23,6 @@ router.get('/search', getProductsByQuery);
 router.get('/:idProduct', getProductById);
 router.get('/', getProducts);
 router.post('/', corroborarAdmin, createProduct);
-router.put('/review/:idReview', modifyReview);
 router.put('/:idProduct', corroborarAdmin, updateProduct);
 router.delete('/:idProduct', corroborarAdmin, deleteProduct);
 

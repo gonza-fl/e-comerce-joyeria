@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
 const {
@@ -175,25 +176,30 @@ const modifyOrder = async (req, res) => {
       await order.save();
       return res.send('La compra fue exitosa! Revisa tu email');
     }
-    // LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
-    // if (status === 'deliveryPending') {
-    //   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
-    //   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');
-    //   const totalOrder = order.products.reduce(
-    //     (total, current) => total + current.orderline.subtotal, 0,
-    //   );
-    //   order.status = status;
-    //   order.total = totalOrder;
-    //   order.endTimestamp = new Date();
-    //   await order.save();
-    //   return res.send('La orden fue correctamente modificada!');
-    // }
-    // if (status === 'delivered') {
-    //   if (!order) return res.status(404).send(`La orden id ${id} no tiene una orden pendiente!`);
-    //   order.status = status;
-    //   order.endTimestamp = new Date();
-    //   await order.save();
-    return res.send('La orden fue correctamente modificada!');
+    if (order.status === 'paidPendingDispatch' && status === ('deliveryInProgress' || 'canceled')) {
+      if (status === 'canceled') {
+        for (let i = 0; i < order.products.length; i += 1) {
+          const product = await Product.findByPk(order.products[i].id);
+          if (product) {
+            product.stockAmount = order.products[i].stockAmount + order.products[i].orderline.amount;
+            await product.save();
+          }
+        }
+        return res.send('La orden se cancelo correctamente revisa tu email');
+      }
+      order.status = status;
+      order.endTimestamp = new Date();
+      await order.save();
+      return res.send(`La orden modificó correctamente su estado a ${status} revisa tu email`);
+    }
+    if (status === 'canceled') return res.status(400).send('La orden no se puede cancelar');
+    if (order.status === 'deliveryInProgress' && status === 'finished') {
+      order.status = status;
+      order.endTimestamp = new Date();
+      await order.save();
+      return res.send(`La orden modificó correctamente su estado a ${status} revisa tu email`);
+    }
+    return res.status(400).send(`El estado ${order.status} no puede pasar al estado ${status}`);
     // }
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
