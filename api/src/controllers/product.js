@@ -32,6 +32,7 @@ const createProduct = async (req, res) => {
       stockAmount,
       image,
       categories,
+      discount,
     } = req.body;
     if (!name || name.trim().length === 0) return res.status(404).send('Campo faltante: nombre');
     if (!description || description.trim().length === 0) return res.status(404).send('Campo faltante: descripción');
@@ -44,6 +45,7 @@ const createProduct = async (req, res) => {
       description: description.trim(),
       price: parseFloat(price),
       stockAmount: parseInt(stockAmount),
+      discount: parseInt(discount),
     });
     for (let c = 0; c < categories.length; c += 1) {
       const category = await Category.findByPk(parseInt(categories[c]));
@@ -145,7 +147,7 @@ const updateProduct = async (req, res) => {
     idProduct,
   } = req.params;
   let {
-    name, description, stockAmount, price, categories, images,
+    name, description, stockAmount, price, categories, images, discount,
   } = req.body;
 
   try {
@@ -153,6 +155,7 @@ const updateProduct = async (req, res) => {
     if (!description) description = undefined;
     const searchProduct = await searchProductF(idProduct);
     if (!searchProduct) return res.status(404).send('No se encontro el producto.');
+    const discountt = (verifyNumber(discount).veracity ? parseInt(discount) : undefined);
     const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
     const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
     await Product.update({
@@ -160,6 +163,7 @@ const updateProduct = async (req, res) => {
       description,
       stockAmount: stock,
       price: priceVar,
+      discount: discountt,
     }, {
       where: {
         id: idProduct,

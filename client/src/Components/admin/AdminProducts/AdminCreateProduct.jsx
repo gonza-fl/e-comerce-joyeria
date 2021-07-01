@@ -18,7 +18,13 @@ function AdminCreateProduct() {
   const imgInput = useRef();
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
-    id: 0, name: '', price: 0, stockAmount: 0, categories: [], description: '',
+    id: 0,
+    name: '',
+    price: 0,
+    stockAmount: 0,
+    categories: [],
+    description: '',
+    discount: 0,
   });
   const user = useSelector((state) => state.user);
   const [imgSelected, setImgSelected] = useState([]);
@@ -74,6 +80,7 @@ function AdminCreateProduct() {
     if (!input.price) { setLoading(false); return swal('Error', 'Debes completar el campo Precio', 'warning'); }
     if (Number.isNaN(input.price)) { setLoading(false); return swal('Error', 'El precio debe ser un número', 'warning'); }
     if (input.price < 0) { setLoading(false); return swal('Error', 'El precio debe ser mayor a cero', 'warning'); }
+    if (input.discount < 0 || input.discount > 100) { setLoading(false); return swal('Error', 'El descuento puede ser de 0% a 100%', 'warning'); }
 
     if (!input.stockAmount) { setLoading(false); return swal('Error', 'Debes completar el campo Número de stock', 'warning'); }
     if (Number.isNaN(input.stockAmount)) { setLoading(false); return swal('Error', 'El stock debe ser un número', 'warning'); }
@@ -125,11 +132,13 @@ function AdminCreateProduct() {
               <b>NOMBRE: </b>
               <b>PRECIO: </b>
               <b>CANTIDAD: </b>
+              <b>DESCUENTO%:</b>
             </div>
             <div className="input-name-container ">
               <StyledInput name="name" value={input.name} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="price" value={input.price} onChange={(e) => onChangeInput(e)} />
               <StyledInput name="stockAmount" value={input.stockAmount} onChange={(e) => onChangeInput(e)} />
+              <StyledInput name="discount" value={input.discount} onChange={(e) => onChangeInput(e)} />
             </div>
             <div className="description-container">
               <b>DESCRIPCIÓN: </b>
