@@ -127,6 +127,9 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
+
+// eslint-disable-next-line consistent-return
+
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -153,11 +156,11 @@ const modifyOrder = async (req, res) => {
     if (!order) return res.status(400).send('La orden no existe!');
 
     if (order.status === 'cart' && status === 'paidPendingDispatch') {
-    // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
-    // DEBERÍA:
-    // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
-    // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
-    // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
+      // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
+      // DEBERÍA:
+      // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
+      // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
+      // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
       const totalOrder = order.products.reduce(
         (total, current) => total + current.orderline.subtotal, 0,
       );
@@ -176,30 +179,42 @@ const modifyOrder = async (req, res) => {
       await order.save();
       return res.send('La compra fue exitosa! Revisa tu email');
     }
-    // LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
-    // if (status === 'deliveryPending') {
-    //   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
-    //   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');
-    //   const totalOrder = order.products.reduce(
-    //     (total, current) => total + current.orderline.subtotal, 0,
-    //   );
-    //   order.status = status;
-    //   order.total = totalOrder;
-    //   order.endTimestamp = new Date();
-    //   await order.save();
-    //   return res.send('La orden fue correctamente modificada!');
-    // }
-    // if (status === 'delivered') {
-    //   if (!order) return res.status(404).send(`La orden id ${id} no tiene una orden pendiente!`);
-    //   order.status = status;
-    //   order.endTimestamp = new Date();
-    //   await order.save();
-    return res.send('La orden fue correctamente modificada!');
-    // }
+    // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
+    // DEBERÍA:
+    // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
+    // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
+    // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
+    // D) ENVIAR MAIL CUANDO ORDEN CAMBIE DE paidPendingDispatch a deliveryInProgress
+    // para avisar que se envio
+    if (order.status !== 'cart' && status !== 'cart') {
+      order.status = status;
+      await order.save();
+      return res.send('La orden fue correctamente modificada!');
+    }
   } catch (err) {
     return res.status(500).send('Internal server error. Orden no fue modificada');
   }
+  // eslint-disable-next-line consistent-return
 };
+// LO SIGUIENTE ES CÓDIGO DEL MODELO VIEJO: BORRAR/ACTUALIZAR
+// if (status === 'deliveryPending') {
+//   if (!order) return res.status(404).send(`La orden id ${id} no posee un carrito`);
+//   if (!order.products.length) return res.status(400).send('La orden no tiene productos.');
+//   const totalOrder = order.products.reduce(
+//     (total, current) => total + current.orderline.subtotal, 0,
+//   );
+//   order.status = status;
+//   order.total = totalOrder;
+//   order.endTimestamp = new Date();
+//   await order.save();
+//   return res.send('La orden fue correctamente modificada!');
+// }
+// if (status === 'delivered') {
+//   if (!order) return res.status(404).send(`La orden
+// id ${id} no tiene una orden pendiente!`);
+//   order.status = status;
+//   order.endTimestamp = new Date();
+//   await order.save();
 
 const editCartAmount = async (req, res) => {
   const {

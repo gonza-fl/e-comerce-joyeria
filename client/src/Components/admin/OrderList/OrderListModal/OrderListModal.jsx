@@ -15,6 +15,18 @@ const OrderListModal = ({ id }) => {
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.userOrders);
   const [filter, setFilter] = useState([]);
+  const user = useSelector((state) => state.user);
+  // eslint-disable-next-line consistent-return
+  function handleOrderStatus(oS) {
+    switch (oS) {
+      case 'cart': return 'carrito';
+      case 'paidPendingDispatch': return 'pagado, esperando envio';
+      case 'deliveryInProgress': return 'en proceso de envio';
+      case 'finished': return 'finalizada';
+      case 'canceled': return 'cancelada';
+      default: return 'cart';
+    }
+  }
 
   useEffect(() => {
     dispatch(getUserOrders(id));
@@ -37,8 +49,13 @@ const OrderListModal = ({ id }) => {
     if (e.target.value) {
       axios.put(`${URL_ORDERS_BY_ID}${orderId}`, {
         status: e.target.value,
+      }, {
+        headers: {
+          'access-token': user.id,
+        },
       })
         .then(() => swal('Bien', 'Estado modificado con éxito', 'success'))
+        .then(() => { window.location.href = `${window.location.origin}/admin/orders`; })
         .catch(() => swal('Alerta!', 'No se pudo actualizar el estado', 'warning'));
     }
   }
@@ -76,8 +93,10 @@ const OrderListModal = ({ id }) => {
           <select onChange={handleFilter}>
             <option value="Todas">Todas las ordenes</option>
             <option value="cart">Carrito</option>
-            <option value="deliveryPending">Esperando entrega</option>
-            <option value="delivered">Finalizada</option>
+            <option value="paidPendingDispatch">pagadas, esperando envio</option>
+            <option value="deliveryInProgress">En proceso de envio</option>
+            <option value="finished">Finalizada</option>
+            <option value="canceled">Cancelada</option>
           </select>
         </div>
         <table className="modal-table">
@@ -94,13 +113,18 @@ const OrderListModal = ({ id }) => {
               <td>{userOrder.endTimestamp}</td>
               <td>{userOrder.total}</td>
               <td>
-                <span>{userOrder.status === 'cart' ? 'Carrito' : userOrder.status === 'deliveryPending' ? 'Esperando entrega' : 'Finalizado'}</span>
+                <span>{handleOrderStatus(userOrder.status)}</span>
                 <br />
-                <select onChange={(e) => { handleChange(e, userOrder.id); }}>
-                  <option value=""> Modificar estado </option>
-                  <option value="deliveryPending" style={{ display: `${['cart', 'delivered'].includes(userOrder.status) ? 'inline' : 'none'}` }}> Esperando entrega </option>
-                  <option value="delivered" style={{ display: `${['cart', 'deliveryPending'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Finalizada</option>
-                </select>
+                {userOrder.status === 'cart' ? null
+                  : (
+                    <select onChange={(e) => { handleChange(e, userOrder.id); }}>
+                      <option value=""> Modificar estado </option>
+                      <option value="paidPendingDispatch" style={{ display: `${['cart', 'deliveryInProgress', 'finished', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Pagada, esperando entrega </option>
+                      <option value="deliveryInProgress" style={{ display: `${['cart', 'paidPendingDispatch', 'finished', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}> En proceso de envio </option>
+                      <option value="finished" style={{ display: `${['cart', 'paidPendingDispatch', 'deliveryInProgress', 'canceled'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Orden Finalizada</option>
+                      <option value="canceled" style={{ display: `${['cart', 'paidPendingDispatch', 'deliveryInProgress', 'finished'].includes(userOrder.status) ? 'inline' : 'none'}` }}>Cancelada</option>
+                    </select>
+                  )}
               </td>
               <td>
                 <Link className="table-detail" to={`/admin/orders/${userOrder.id}`}>Ver Detalle</Link>
