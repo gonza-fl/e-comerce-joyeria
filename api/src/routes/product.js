@@ -11,12 +11,12 @@ const {
   getProductsByCategory,
 } = require('../controllers/product');
 const review = require('./review');
+
 const {
   corroborarAdmin,
 } = require('../helpers/middlewares');
 
 const router = Router();
-
 router.use('/:idProduct/review', review);
 router.get('/category/:id', getProductsByCategory);
 router.get('/search', getProductsByQuery);

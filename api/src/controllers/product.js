@@ -43,7 +43,7 @@ const createProduct = async (req, res) => {
     const productCreated = await Product.create({
       name: name.trim(),
       description: description.trim(),
-      price: parseFloat(price),
+      price: Math.ceil(parseFloat(price)),
       stockAmount: parseInt(stockAmount),
       discount: parseInt(discount),
     });
@@ -162,7 +162,7 @@ const updateProduct = async (req, res) => {
       name,
       description,
       stockAmount: stock,
-      price: priceVar,
+      price: Math.ceil(priceVar),
       discount: discountt,
     }, {
       where: {
