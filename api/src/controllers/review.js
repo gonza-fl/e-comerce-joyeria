@@ -141,9 +141,9 @@ const getReview = async (req, res) => {
 };
 
 module.exports = {
+  modifyReview,
   getReviews,
   postReview,
   deleteReview,
   getReview,
-  modifyReview,
 };

@@ -9,9 +9,11 @@ function PaymentResponse() {
   const location = useLocation().search;
   const paymentStatus = location.split('&').map((item) => item.split('=')).find((item) => item.includes('lapTransactionState'))[1];
   const orderID = location.split('&').map((item) => item.split('=')).find((item) => item.includes('referenceCode'))[1].split('-')[1];
-  const userID = location.split('&').map((item) => item.split('=')).find((item) => item.includes('referenceCode'))[1].split('-')[1];
+
   useEffect(() => {
-    axios.put(`${URL_ORDERS_BY_ID}${orderID}`, { status: `${paymentStatus === 'APPROVED' ? 'paidPendingDispatch' : null}` }, { 'access-token': userID || null });
+    axios.put(`${URL_ORDERS_BY_ID}${orderID}`, { status: `${paymentStatus === 'APPROVED' ? 'paidPendingDispatch' : 'cart'}` }, { headers: { 'access-token': 'Prisijom4lZZdX2Xo5rRV3zX1GH2' } })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.response.data));
   }, []);
   //   const query = new URLSearchParams(location.search);
 
