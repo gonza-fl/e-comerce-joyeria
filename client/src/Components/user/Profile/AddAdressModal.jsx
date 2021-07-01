@@ -56,22 +56,22 @@ function AddAdressModal({
       <ModalDiv className="bg-color-six">
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <div style={{ textAlign: 'left' }}>
-            <b>Nombre</b>
+            <b className="editProfileb">Nombre</b>
             <br />
-            <b>Dirección</b>
+            <b className="editProfileb">Dirección</b>
             <br />
-            <b>Descripción</b>
+            <b className="editProfileb">Descripción</b>
             <br />
-            <b>Código postal</b>
+            <b className="editProfileb">Código postal</b>
           </div>
           <div>
-            <input id="name" name="name" onChange={onChangeInput} />
+            <input className="editProfileInput" id="name" name="name" onChange={onChangeInput} />
             <br />
-            <input id="address" name="address" onChange={onChangeInput} />
+            <input className="editProfileInput" id="address" name="address" onChange={onChangeInput} />
             <br />
-            <input id="description" name="description" onChange={onChangeInput} />
+            <input className="editProfileInput" id="description" name="description" onChange={onChangeInput} />
             <br />
-            <input id="postalCode" name="postalCode" onChange={onChangeInput} />
+            <input className="editProfileInput" id="postalCode" name="postalCode" onChange={onChangeInput} />
           </div>
         </div>
         <br />
@@ -97,13 +97,25 @@ function AddAdressModal({
 }
 
 const BackgroundModal = styled.div`
-        position: absolute; 
+        position: fixed; 
         z-index: 300; 
-        width: 99vw;
-        height: 99vh; 
+        width: 100%;
+        height: 100%; 
         overflow: auto;
         transform: translate(0px,-230px);
         background-color: rgba(0,0,0,0.4); 
+        left:0;
+      
+        @media (max-width:768px){
+          width:100%:
+           left:-35px;
+        transform: translate(0px,-300px);
+
+    }
+    @media (max-width:452px){
+      width:150%:
+
+    }
 `;
 
 const ModalDiv = styled.form`
@@ -113,10 +125,26 @@ const ModalDiv = styled.form`
     justify-content: space-around;
     top: 40%;
     left: 40%;
-    width: 20%;
+    width:70%;
+    
     padding: 20px 20px;
     border-radius: 10px;
     z-index: 300; 
+    left:10%;
+    top:20vh
+    
+    @media (max-width:768px){
+      width:70%;
+      left:10%;
+      top:20vh
+    }
+    @media (max-width:452px){
+      width:100%;
+      left:0;
+      top:30vh
+
+
+    }
 `;
 
 const AddButton = styled.button`
@@ -124,9 +152,15 @@ const AddButton = styled.button`
     border-style: none;
     font-size: 15px;
     font-weight: bold;
+    width:30%;
+    margin-top:20px;
 
     &:hover {
         cursor: pointer;
+    }
+    @media (max-width:768px){
+      width:30%;
+      margin-top:20px
     }
 `;
 
