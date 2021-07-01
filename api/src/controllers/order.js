@@ -170,7 +170,10 @@ const modifyOrder = async (req, res) => {
       }
       order.status = status;
       order.total = totalOrder;
-      order.endTimestamp = new Date();
+      const dateHardcoded = new Date();
+      dateHardcoded.setDate(3);
+      order.endTimestamp = dateHardcoded;
+      // order.endTimestamp = new Date();
       // E) AGREGAR UUID a order.OrderNumber
       // order.orderNumber = ???
       await order.save();

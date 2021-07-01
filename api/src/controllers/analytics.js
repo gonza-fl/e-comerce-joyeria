@@ -3,12 +3,15 @@ const {
   User,
   Product,
 } = require('../models/index');
+const {
+  sortOrdersForAnalytics,
+  sortOrdersByProductsForAnalytics,
+} = require('../helpers/functionHelpers');
 
 const getOrdersForAnalytics = async (req, res) => {
   const {
     type,
   } = req.params;
-  console.log(req.params);
   if (!type || !type.trim().length) return res.status(404).send('No se envió un tipo de estadística');
   if (type !== 'productAmountPerDate'
   && type !== 'totalsPerDateByUsers'
@@ -22,11 +25,12 @@ const getOrdersForAnalytics = async (req, res) => {
         },
         attributes: ['total', 'endTimestamp'],
         include: [{
-          model: Product, attributes: ['name'],
+          model: Product, attributes: ['id', 'name'],
         }],
       });
       if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
-      return res.json(orders);
+
+      return res.json(sortOrdersByProductsForAnalytics(orders));
     }
 
     if (type === 'totalsPerDateByUsers') {
@@ -51,16 +55,7 @@ const getOrdersForAnalytics = async (req, res) => {
       attributes: ['total', 'endTimestamp'],
     });
     if (!orders.length) return res.status(404).send('No se encontraron órdenes pagadas');
-    // formatear las fechas para que indiquen el dia
-    const ordersWithFormattedDate = orders.map(
-      (order) => ({
-        ...order,
-        endTimestamp: order.endTimestamp.substr(0, 10),
-      }),
-    );
-    // ordenar productos por fecha:
-
-    return res.json(orders);
+    return res.json(sortOrdersForAnalytics(orders));
   } catch (err) {
     return res.status(500).send('Internal server error');
   }
