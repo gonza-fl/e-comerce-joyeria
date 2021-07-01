@@ -153,11 +153,11 @@ const modifyOrder = async (req, res) => {
     if (!order) return res.status(400).send('La orden no existe!');
 
     if (order.status === 'cart' && status === 'paidPendingDispatch') {
-    // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
-    // DEBERÍA:
-    // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
-    // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
-    // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
+      // PREGUNTAR AL FRONT POR EL TOTAL SI VIENE O NO DEL PAGO REALIZADO
+      // DEBERÍA:
+      // A) SUMAR LOS SUBTOTALES Y GUARDARLO EN ATRIBUTO 'TOTAL'
+      // B) IR A C/PRODUCT Y CAMBIAR SU STOCK (RESTAR EL AMOUNT DEL ORDERLINE)
+      // C) ENVIAR EMAIL DE CONFIRMACION DE COMPRA
       const totalOrder = order.products.reduce(
         (total, current) => total + current.orderline.subtotal, 0,
       );
@@ -185,7 +185,6 @@ const modifyOrder = async (req, res) => {
             await product.save();
           }
         }
-        return res.send('La orden se cancelo correctamente revisa tu email');
       }
       order.status = status;
       order.endTimestamp = new Date();
