@@ -18,3 +18,18 @@
 	cursor: pointer;
 	transform: scale(1.01);
 }
+
+.modal{
+	display: none;
+	position: relative;
+}
+.close{
+	position: absolute;
+	right: 6rem;
+	top:2rem;
+	background-color: #f0ddd8;
+	border-color: black;
+	border-width: 2px;
+	border-style: solid;
+	width: 1.5rem;
+}
