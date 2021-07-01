@@ -5,7 +5,7 @@ const {
   Product,
 } = require('../models/index');
 const {
-  // verifyDate,
+  verifyDate,
   sortOrdersForAnalytics,
 } = require('../helpers/functionHelpers');
 
@@ -21,7 +21,7 @@ const postOrdersForAnalytics = async (req, res) => {
   && type !== 'totalsPerDateByUsers'
   && type !== 'totalsPerDate') return res.status(404).send('Tipo de estadística incorrecto');
   if (!date) return res.status(404).send('No se envió una fecha específica');
-  // if (verifyDate)
+  if (!verifyDate(date).veracity) return res.status(404).send(verifyDate(date).msg);
   const statusTypes = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
   try {
     if (type === 'productAmountPerDate') {

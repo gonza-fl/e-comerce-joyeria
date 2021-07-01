@@ -40,6 +40,8 @@ const verifyString = (param) => {
 
 const verifyDate = (param) => {
   const paramSplit = param.split('-');
+  console.log(param);
+  console.log(paramSplit);
   const response = {
     veracity: false,
   };
@@ -48,13 +50,15 @@ const verifyDate = (param) => {
     return response;
   }
   if (parseInt(paramSplit[0]) === 'NaN' || isNaN(paramSplit[0])
-  || parseInt(paramSplit[0]) < 2021 || paramSplit > 9999) {
+  || paramSplit[0].length !== 4
+  || parseInt(paramSplit[0]) < 2021 || parseInt(paramSplit[0]) > 9999) {
     response.msg = 'El formato año es inválido';
     return response;
   }
   if (parseInt(paramSplit[1]) === 'NaN' || isNaN(paramSplit[1])
-  || parseInt(paramSplit[1]) < 1 || paramSplit > 12) {
-    response.msg = 'El formato año es inválido';
+  || paramSplit[1].length !== 2
+  || parseInt(paramSplit[1]) < 1 || parseInt(paramSplit[1]) > 12) {
+    response.msg = 'El formato mes es inválido';
     return response;
   }
   response.veracity = true;
