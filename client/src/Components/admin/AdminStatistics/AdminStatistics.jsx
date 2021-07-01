@@ -59,7 +59,6 @@ function AdminStatistics() {
       }
 
       if (type === 'productAmountPerDate' && selectedProductId) {
-        console.log('holis');
         const request = {type, productId: selectedProductId, date: datePicked}
         axios.post(URL_GET_STATS, request, {
           headers: {
@@ -145,7 +144,9 @@ function AdminStatistics() {
       </div>
       
       <div className="stats-chart-container">
-        {!statsInfo.length ? null : 
+        {type !== '' && !statsInfo.length ? 
+        <p className="stats-chart-container-msg">No hay datos para mostrar</p> : null }
+        {statsInfo.length ?
           <ResponsiveContainer width="96%" height={500}>
             <AreaChart data={statsInfo}>
               <defs>
@@ -175,6 +176,7 @@ function AdminStatistics() {
               <CartesianGrid opacity={0.3} vertical={false} />
             </AreaChart>
           </ResponsiveContainer>
+          : null
         }
       </div>
     </div>
