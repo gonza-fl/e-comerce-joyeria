@@ -1,44 +1,55 @@
-.priceCrossed{
+.priceCrossed {
     text-decoration: line-through;
     font-size: 15px;
 }
-.contenedor{
+
+.contenedor {
     position: relative;
 }
+
 .ribbon {
     display: flex;
+    align-self: flex-end;
     align-items: center;
     justify-content: center;
-  position: absolute;
-  right: -2rem;
-  top: 0.14rem;
-  color: white;
-  border-style: inset;
-  border-width: 0 3rem 3rem 3rem;
-  border-color: transparent transparent red transparent;
-  transform: rotate(45deg);
-  z-index: 1;
-}
-.ribbon p {
     position: absolute;
-    bottom: -3rem;
-    z-index: 2;
-
-  }
-  @media (max-width: 768px) {
-    .ribbon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    position: absolute;
-    right: -2.04rem;
-    top: -0.2rem;
+    right: -18px;
+    top: -0.2vh;
     color: white;
     border-style: inset;
     border-width: 0 3rem 3rem 3rem;
     border-color: transparent transparent red transparent;
     transform: rotate(45deg);
     z-index: 1;
-  }
+    margin: 0;
+}
+
+.ribbon p {
+    position: absolute;
+    bottom: -3rem;
+    z-index: 2;
+}
+
+.productCardImg {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .ribbon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: -2.04rem;
+        top: -0.2rem;
+        color: white;
+        border-style: inset;
+        border-width: 0 3rem 3rem 3rem;
+        border-color: transparent transparent red transparent;
+        transform: rotate(45deg);
+        z-index: 1;
     }
-    
+}

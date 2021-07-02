@@ -163,8 +163,10 @@
         }
         .homeResponsive:hover .respMenu {
             display: flex;
-            position: absolute;
             z-index: 2000;
+        }
+        .homeResponsive .respMenu {
+            transition: linear;
         }
         .rigthMenuNav {
             flex-direction: row;

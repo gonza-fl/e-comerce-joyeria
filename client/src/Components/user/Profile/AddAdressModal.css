@@ -12,3 +12,21 @@
     padding: 5px;
     width: 210px;
 }
+
+.divDelModalDiv {
+    text-align: left;
+    display: flex;
+    flex-direction: column
+}
+
+@media (max-width:452px) {
+    .input-styles {
+        width: 68%;
+    }
+    .select-state-am {
+        width: 70%;
+    }
+    .divDelModalDiv {
+        width: 90%;
+    }
+}

@@ -51,7 +51,7 @@ export default function EditProfile({
         <br />
         <span style={{ fontSize: '20px' }}>Nombre completo</span>
         <br />
-        <input name="name" value={input.name} onChange={onChangeInput} />
+        <input className="editProfileInput" name="name" value={input.name} onChange={onChangeInput} />
         <br />
         <br />
         <br />
@@ -69,37 +69,40 @@ export default function EditProfile({
         <br />
         <b>Teléfono de contacto: </b>
         <br />
-        <input name="phone" value={input.phone} onChange={onChangeInput} />
+        <input className="editProfileInput" name="phone" value={input.phone} onChange={onChangeInput} />
         <br />
         <br />
         <b>Fecha de nacimiento: </b>
         <br />
-        <input name="birthday" type="date" value={input.birthday} />
+        <input className="editProfileInput" name="birthday" type="date" value={input.birthday} />
       </UserInfo>
       <UserInfo style={{
         flexGrow: '6', display: 'flex', flexDirection: 'column', overflowY: 'scroll',
       }}
       >
-        <b>Direcciones de envío: </b>
+        <div className="userInfoDiv">
+          <b>Direcciones de envío: </b>
 
-        {input.addresses && input.addresses.length > 0
-          ? input.addresses.map((a) => (
-            <AdressDiv>
-              <b>{a.description}</b>
-              <br />
-              <span>{a.address}</span>
-              <br />
-              <span>{a.name}</span>
-              <br />
-              <span>{a.postalCode}</span>
-            </AdressDiv>
-          ))
-          : (
-            <AdressDiv>
-              <h4>No tienes direcciones agregadas</h4>
-              <span>Agrega una dirección</span>
-            </AdressDiv>
-          )}
+          {input.addresses && input.addresses.length > 0
+            ? input.addresses.map((a) => (
+              <AdressDiv>
+                <b>{a.description}</b>
+                <br />
+                <span>{a.address}</span>
+                <br />
+                <span>{a.name}</span>
+                <br />
+                <span>{a.postalCode}</span>
+              </AdressDiv>
+            ))
+            : (
+              <AdressDiv>
+                <h4>No tienes direcciones agregadas</h4>
+                <span>Agrega una dirección</span>
+              </AdressDiv>
+            )}
+        </div>
+
       </UserInfo>
     </DivContainer>
   );
@@ -113,6 +116,14 @@ const DivContainer = styled.form`
       justify-content: space-around;
       border-radius: 10px;
       padding: 20px 15px;
+
+      @media (max-width:768px){
+        justify-content:center;
+        padding-inline:0;
+        width:90%;
+        height: 60vh;
+  
+      }
 `;
 
 const UserInfo = styled.div`
@@ -122,12 +133,29 @@ const UserInfo = styled.div`
     font-size: 18px;
     background-color: #f1eee3;
     flex-grow: 3;
+
+    @media (max-width:768px){
+      width:30%;
+      padding:5px 5px;
+      margin-left: 0;
+    font-size: 17px;
+
+
+    }
 `;
 
 const UserIcon = styled.div`
     background-color: #f1eee3;
     padding: 10px 20px;
     flex-grow: 2;
+
+    @media (max-width:768px){
+      widht:30%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:5px 5px;
+    }
 `;
 
 const AdressDiv = styled.div`
@@ -142,5 +170,10 @@ const AcceptButton = styled.button`
 
     &:hover{
       cursor: pointer;
+    }
+    @media (max-width:768px){
+      width:100%;
+      margin-block:10px;
+
     }
 `;

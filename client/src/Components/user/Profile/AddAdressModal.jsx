@@ -72,7 +72,7 @@ function AddAdressModal({
     <BackgroundModal style={{ display: show }}>
       <ModalDiv className="bg-color-six">
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
+          <div className="divDelModalDiv">
             <b>Descripción</b>
             <input id="description" name="description" onChange={onChangeInput} className="input-styles" />
             <b>Dirección</b>
@@ -112,13 +112,26 @@ function AddAdressModal({
 }
 
 const BackgroundModal = styled.div`
-        position: absolute; 
+        position: fixed; 
         z-index: 300; 
-        width: 99vw;
-        height: 99vh; 
+        width: 100%;
+        height: 100%; 
         overflow: auto;
         transform: translate(0px,-130px);
         background-color: rgba(0,0,0,0.4); 
+        left:0;
+      
+        @media (max-width:768px){
+          width:100%:
+           left:-35px;
+        transform: translate(0px,-300px);
+
+    }
+    @media (max-width:452px){
+      width:150%:
+      height:50vh
+
+    }
 `;
 
 const ModalDiv = styled.form`
@@ -128,10 +141,26 @@ const ModalDiv = styled.form`
     justify-content: space-around;
     top: 35%;
     left: 40%;
-    width: 20%;
+    width:70%;
+    
     padding: 20px 20px;
     border-radius: 10px;
     z-index: 300; 
+    left:10%;
+    top:20vh
+    
+    @media (max-width:768px){
+      width:70%;
+      left:10%;
+      top:20vh
+    }
+    @media (max-width:452px){
+      width:100%;
+      left:0;
+      top:30vh
+
+
+    }
 `;
 
 const AddButton = styled.button`
@@ -139,9 +168,15 @@ const AddButton = styled.button`
     border-style: none;
     font-size: 15px;
     font-weight: bold;
+    width:30%;
+    margin-top:20px;
 
     &:hover {
         cursor: pointer;
+    }
+    @media (max-width:768px){
+      width:30%;
+      margin-top:20px
     }
 `;
 

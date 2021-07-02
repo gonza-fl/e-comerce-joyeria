@@ -26,15 +26,17 @@ export default function ProductCard({
 
   return (
     <DivCard className="contenedor" style={{ display: 'flex' }}>
-      <Carousel image={image.map((i) => i.url)} id={id} />
-      {product.discount > 0 ? (
-        <div className="ribbon">
-          <p>
-            {`${product.discount}%`}
-            OFF!
-          </p>
-        </div>
-      ) : null}
+      <div className="productCardImg">
+        <Carousel image={image.map((i) => i.url)} id={id} />
+        {product.discount > 0 ? (
+          <div className="ribbon">
+            <p>
+              {`${product.discount}%`}
+              OFF!
+            </p>
+          </div>
+        ) : null}
+      </div>
       <h3>{name}</h3>
       {product.discount ? (
         <span className="priceCrossed">
@@ -101,7 +103,7 @@ function Carousel({ image, id }) {
       <div>
         <Link to={`/products/product/${id}`} style={{ textDecoration: 'inherit', color: 'inherit' }}>
           {img.filter((imgEl, i) => i === imgIndex)
-            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="100%" height="100%" />)}
+            .map((imgEl) => <img key={imgEl} src={`${imgEl}`} alt="" width="90%" height="90%" />)}
         </Link>
       </div>
       {img.length > 1 && <MdNavigateNext onClick={nextCarousel} />}
