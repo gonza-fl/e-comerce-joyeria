@@ -1,9 +1,12 @@
 <p align="center" style="background-color:#f0ddd8">
-	<a href="http://68.183.106.112" target="_blank" rel="noopener noreferrer" ><img width="200" src="http://68.183.106.112/static/media/logo.f3c6351a.png" alt="kmora logo"></a>
+	<a href="http://68.183.106.112" target="_blank" rel="noopener noreferrer" >
+	<img src="https://user-images.githubusercontent.com/58433889/124239825-7da67800-daf0-11eb-915d-18e56ee4c9cd.png" />
+</a>
 </p>
 <br>
 <br>
 <br>
+
 
 # Introducción:
 
