@@ -19,7 +19,9 @@ export default function LeftMenu({ userData }) {
           ))}
         </div>
       </ul>
-      <ul className="ulTablet">TIPS</ul>
+      <Link to="/justdiscounted" className="link-without-styles">
+        <ul className="ulTablet">OFERTAS</ul>
+      </Link>
       <ul className="ulTablet">ARTE</ul>
       <ul className="ulTablet">NUEVO</ul>
       {userData && (userData.role === 'admin' || userData.role === 'superAdmin' ? (
