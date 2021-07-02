@@ -26,6 +26,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
   let {
     products,
   } = req.body;
+  console.log('PRODUCTS', products);
   if (!id) return res.status(404).send('ID no existe!');
   if (!products) products = [];
   try {
@@ -58,7 +59,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
         await cartNew.addProduct(prod, {
           through: {
             amount: parseInt(total),
-            subtotal: Math.ceil(((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total))),
+            subtotal: ((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total)).toFixed(2),
           },
         });
       }
@@ -91,12 +92,18 @@ const createOrFindAndUpdateCart = async (req, res) => {
           },
         });
         // tomar la cantidad actualizada y actualizar el subtotal
+
         const updatedCart = await Order.findByPk(cart.id, {
-          include: Product,
+          include: [{
+            model: Product,
+            where: {
+              id: products[productIndex].id,
+            },
+          }],
         });
         await cart.addProduct(cart.products[i], {
           through: {
-            subtotal: Math.ceil((updatedCart.products[i].orderline.amount * (updatedCart.products[i].price - ((updatedCart.products[i].discount * updatedCart.products[i].price) / 100)))),
+            subtotal: (updatedCart.products[0].orderline.amount * (updatedCart.products[0].price - ((updatedCart.products[0].discount * updatedCart.products[0].price) / 100))).toFixed(2),
           },
         });
         products.splice(productIndex, 1);
@@ -112,10 +119,11 @@ const createOrFindAndUpdateCart = async (req, res) => {
       if (prod.stockAmount < parseInt(products[i].amount)) {
         total = prod.stockAmount;
       }
+      console.log('otro', prod.price);
       await cart.addProduct(prod, {
         through: {
           amount: parseInt(total),
-          subtotal: Math.ceil((prod.price - ((prod.price * prod.discount) / 100) * parseInt(total))),
+          subtotal: (prod.price - ((prod.price * prod.discount) / 100) * parseInt(total)).toFixed(2),
         },
       });
     }
@@ -238,7 +246,7 @@ const modifyOrder = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
+        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
@@ -271,7 +279,7 @@ const modifyOrder = async (req, res) => {
       const result = templateOrdenDespachada();
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
+        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
         to: user.email,
         subject: 'Su orden fue despachada!',
         html: result,
@@ -316,7 +324,137 @@ const modifyOrder = async (req, res) => {
   }
   return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
 };
+const modifyOrderFromCart = async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  const {
+    status,
+  } = req.body;
 
+  try { // el estado cart no se usa, el admin no deberia poder crear carritos.
+    const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+    // si el status nuevo no se encuentra en el array no existe y devuelve error
+    if (!arr.includes(status)) {
+      return res.status(400).send('No se puede implemetar ese status!');
+    }
+    // se buscar el carrito asociado al id que viene por parametro
+    const order = await Order.findOne({
+      where: {
+        id,
+      },
+      include: Product,
+    });
+    // return res.status(200).send(':v');
+    // si no lo encuentra manda error
+    if (order === null) {
+      return res.status(404).send(`La orden id ${id} no posee un carrito`);
+    }
+    // no se puede poner en el carro un estado que ya tebia
+    if (order.status === status) {
+      return res.status(404).send(`La orden ya tenia el estado ${status}`);
+    }
+
+    if (status === 'paidPendingDispatch') {
+      // return res.status(200).send(':v');
+      if (order.status === 'deliveryInProgress'
+          || order.status === 'finished'
+          || order.status === 'canceled') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      // return res.status(200).send(':v');
+      // falta restar del stock y validaciones
+      if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
+      const totalOrder = order.products.reduce(
+        (total, current) => total + current.orderline.subtotal, 0,
+      );
+      // formateo los productos para enviar el comprobante de venta
+      const arrProducts = [];
+      const arrADescontar = [];
+
+      order.products.forEach((prod) => {
+        arrProducts.push({
+          nameProducto: prod.name,
+          cantidad: prod.orderline.amount,
+          precioUnitario: prod.price,
+        });
+
+        arrADescontar.push({
+          id: prod.id,
+          cantidad: prod.orderline.amount,
+        });
+      });
+
+      // actualizo el carro
+      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
+      order.status = status;
+
+      order.total = totalOrder;
+      order.endTimestamp = new Date();
+      order.orderNumber = id;
+      await order.save();
+
+      // descuento del stock del producto la cantidad necesaria
+      for (let i = 0; i < arrADescontar.length; i += 1) {
+        const prod = await Product.findOne({
+          where: {
+            id: arrADescontar[i].id,
+          },
+        });
+        // si la cantidad supera el stock manda error
+        if (arrADescontar[i].cantidad > prod.stockAmount) {
+          return res.status(404).send(`La cantidad del producto ${prod.name} super el stock`);
+        }
+
+        prod.stockAmount -= arrADescontar[i].cantidad;
+        await prod.save();
+      }
+
+      // resto los productos del stockamount
+
+      // busco el user asociado al cart
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+
+      if (!user) return res.status(404).send('Usuario no encontraod');
+
+      // formateo la data para el template email
+      const data = {
+        name: user.name,
+        email: user.email,
+        orden: id,
+        productos: arrProducts,
+        total: totalOrder,
+      };
+      // se reemplaza en el template compilado los datos de usuario
+      const result = templateComprobantedepago(data);
+      // se envia el mail
+      transporter.sendMail({
+        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        to: data.email,
+        subject: 'Compra realizada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, (err, responseStatus) => {
+        if (err) {
+          console.log('Esta cosita no funciona');
+          return res.status(400).send('Hubo un error');
+        }
+        return res.send('La orden fue correctamente modificada!');
+      });
+      // return res.json(order);
+    } else {
+      return res.status(404).send('Error');
+    }
+  } catch (error) {
+    console.log('tu err', error);
+    return res.status(404).send('No se pudo completar el cambio de estado de order.');
+  }
+};
 const editCartAmount = async (req, res) => {
   const {
     idUser,
@@ -357,7 +495,7 @@ const editCartAmount = async (req, res) => {
     await cart.addProduct(productSearch, {
       through: {
         amount: updatedAmount,
-        subtotal: Math.ceil(updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100))),
+        subtotal: (updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100))).toFixed(2),
       },
     });
     const updatedCart = await Order.findOne({
@@ -574,4 +712,5 @@ module.exports = {
   getOrderById,
   getAllOrdersByIdUser,
   testNodeMailer,
+  modifyOrderFromCart,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 import React from 'react';
@@ -19,6 +20,7 @@ export default function ProductCard({
   const userId = useSelector((state) => state.user.id);
 
   function numberWithCommas(x) {
+    x = x.toFixed(2);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 

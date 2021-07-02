@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
 /* eslint-disable react/no-this-in-sfc */
@@ -44,6 +45,7 @@ export default function CartCheckout() {
   });
 
   function numberWithCommas(x) {
+    x = x.toFixed(2);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
