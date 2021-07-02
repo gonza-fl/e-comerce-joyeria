@@ -22,6 +22,10 @@ const OrderDetail = () => {
       .catch((err) => swal('Error', err.response.data, 'warning'));
   }, []);
 
+  useEffect(() => {
+    console.log(orderDetail);
+  }, [orderDetail]);
+
   if (!orderDetail.products || orderDetail.products.length === 0) {
     return (
       <div>
