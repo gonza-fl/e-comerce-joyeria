@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -41,6 +42,7 @@ function FloatingCart() {
   }
 
   function numberWithCommas(x) {
+    x = x.toFixed(2);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 

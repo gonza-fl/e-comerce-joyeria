@@ -43,7 +43,7 @@ const createProduct = async (req, res) => {
     const productCreated = await Product.create({
       name: name.trim(),
       description: description.trim(),
-      price: Math.ceil(parseFloat(price)),
+      price: parseFloat(price),
       stockAmount: parseInt(stockAmount),
       discount: parseInt(discount),
     });
