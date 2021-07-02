@@ -137,8 +137,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
-// eslint-disable-next-line consistent-return
-
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -149,9 +147,8 @@ const modifyOrder = async (req, res) => {
   try { // el estado cart no se usa, el admin no deberia poder crear carritos.
     const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
     // si el status nuevo no se encuentra en el array no existe y devuelve error
-    if (!arr.includes(status)) {
-      return res.status(400).send('No se puede implemetar ese status!');
-    }
+    if (!arr.includes(status)) return res.status(400).send('No se puede implemetar ese status!');
+
     // se buscar el carrito asociado al id que viene por parametro
     const order = await Order.findOne({
       where: {
@@ -159,15 +156,12 @@ const modifyOrder = async (req, res) => {
       },
       include: Product,
     });
-    // return res.status(200).send(':v');
     // si no lo encuentra manda error
-    if (order === null) {
-      return res.status(404).send(`La orden id ${id} no posee un carrito`);
-    }
+    if (order === null) return res.status(404).send(`La orden id ${id} no posee un carrito`);
+
     // no se puede poner en el carro un estado que ya tebia
-    if (order.status === status) {
-      return res.status(404).send(`La orden ya tenia el estado ${status}`);
-    }
+    if (order.status === status) return res.status(404).send(`La orden ya tenia el estado ${status}`);
+
     // flujo carro: cart > PaidPendingDispatch > deliveryInProgress > finished > canceled
     if (status === 'paidPendingDispatch') {
       // return res.status(200).send(':v');
@@ -176,7 +170,6 @@ const modifyOrder = async (req, res) => {
           || order.status === 'canceled') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
-      // return res.status(200).send(':v');
       // falta restar del stock y validaciones
       if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
       const totalOrder = order.products.reduce(
@@ -200,7 +193,6 @@ const modifyOrder = async (req, res) => {
       });
 
       // actualizo el carro
-      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
       order.status = status;
 
       order.total = totalOrder.toFixed(2);
@@ -347,6 +339,7 @@ const modifyOrder = async (req, res) => {
   }
   return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
 };
+// eslint-disable-next-line consistent-return
 const modifyOrderFromCart = async (req, res) => {
   const {
     id,
@@ -358,9 +351,7 @@ const modifyOrderFromCart = async (req, res) => {
   try { // el estado cart no se usa, el admin no deberia poder crear carritos.
     const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
     // si el status nuevo no se encuentra en el array no existe y devuelve error
-    if (!arr.includes(status)) {
-      return res.status(400).send('No se puede implemetar ese status!');
-    }
+    if (!arr.includes(status)) return res.status(400).send('No se puede implemetar ese status!');
     // se buscar el carrito asociado al id que viene por parametro
     const order = await Order.findOne({
       where: {
@@ -368,24 +359,17 @@ const modifyOrderFromCart = async (req, res) => {
       },
       include: Product,
     });
-    // return res.status(200).send(':v');
     // si no lo encuentra manda error
-    if (order === null) {
-      return res.status(404).send(`La orden id ${id} no posee un carrito`);
-    }
+    if (order === null) return res.status(404).send(`La orden id ${id} no posee un carrito`);
     // no se puede poner en el carro un estado que ya tebia
-    if (order.status === status) {
-      return res.status(404).send(`La orden ya tenia el estado ${status}`);
-    }
+    if (order.status === status) return res.status(404).send(`La orden ya tenia el estado ${status}`);
 
     if (status === 'paidPendingDispatch') {
-      // return res.status(200).send(':v');
       if (order.status === 'deliveryInProgress'
           || order.status === 'finished'
           || order.status === 'canceled') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
-      // return res.status(200).send(':v');
       // falta restar del stock y validaciones
       if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
       const totalOrder = order.products.reduce(
@@ -408,7 +392,6 @@ const modifyOrderFromCart = async (req, res) => {
       });
 
       // actualizo el carro
-      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
       order.status = status;
 
       order.total = totalOrder;
@@ -463,7 +446,6 @@ const modifyOrderFromCart = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, async (err, responseStatus) => {
         if (err) {
-          console.log('error', err);
           return res.status(500).send('Hubo un error');
         }
         const cartNew = await Order.create({
@@ -477,10 +459,10 @@ const modifyOrderFromCart = async (req, res) => {
       return res.status(404).send('Error');
     }
   } catch (error) {
-    console.log('tu err', error);
     return res.status(500).send('No se pudo completar el cambio de estado de order.');
   }
 };
+
 const editCartAmount = async (req, res) => {
   const {
     idUser,

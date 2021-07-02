@@ -16,13 +16,14 @@ import AdminUsers from './AdminUsers/AdminUsers';
 import Logo from '../StyledComponents/Logo';
 import './adminWindow.css';
 import AdminFlyers from './AdminFlyers/AdminFlyers';
+import { URL_USERS } from '../../constants';
 
 function AdminWindow() {
   const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState({ role: '' });
   useEffect(() => {
     if (user.id && userData.role === '') {
-      axios.get(`http://localhost:3001/api/user/${user.id}`)
+      axios.get(`${URL_USERS}${user.id}`)
         .then((res) => setUserData(res.data));
     }
   }, [user]);

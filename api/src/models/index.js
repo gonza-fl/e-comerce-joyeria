@@ -84,6 +84,9 @@ Review.belongsTo(Product);
 Review.belongsTo(User);
 User.hasMany(Review);
 
+Address.hasMany(Order);
+Order.belongsTo(Address);
+
 module.exports = {
   conn: sequelize,
   Category,
