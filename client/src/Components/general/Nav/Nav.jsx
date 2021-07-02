@@ -75,7 +75,7 @@ export default function Nav() {
                 ? (
                   <div className="userOptions">
                     <Link to="/account/profile"><p>Mi Cuenta</p></Link>
-                    <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesion</p> </Link>
+                    <Link to="#logout"> <p onClick={ handleSingOut}> Cerrar Sesión</p> </Link>
                   </div>
                 )
                 : (

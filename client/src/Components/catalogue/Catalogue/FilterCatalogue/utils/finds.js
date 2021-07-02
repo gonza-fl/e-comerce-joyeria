@@ -11,5 +11,5 @@ export const findByPrice = (arr, max, min) => {
 
 export const findByStars = (arr, stars) => {
 
-  return arr.filter(product => Number(product.review) === stars)
+  return arr.filter((product) => Math.floor(product.reviews.map((rev) => rev.calification).reduce((a, b) => a + b, 0) / product.reviews.length) === stars)
 }

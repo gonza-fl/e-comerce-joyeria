@@ -7,7 +7,7 @@ import './FilterCatalogue.css';
 import ReactStars from 'react-rating-stars-component';
 import StyledButton from '../../../StyledComponents/Button';
 import {
-  sortAscending, sortDescending, sortNameAsc, sortNameDesc,
+  sortAscending, sortDescending, sortNameAsc, sortNameDesc, sortStarAscending, sortStarDescending,
 } from './utils/sorts';
 import { findByPrice, findByStars } from './utils/finds';
 
@@ -54,13 +54,13 @@ export default function FilterCatalogue({
       </form>
 
       <h5>Estrellas</h5>
-      <div className="stars" onClick={() => { setProducts([...sortDescending(products, 'review')]); setUndo(true); }} role="none">
+      <div className="stars" onClick={() => { setProducts([...sortStarDescending(products)]); setUndo(true); }} role="none">
         Mas Estrellas
         <ReactStars count={5} size={20} edit={false} value={5} activeColor="#ffd700" />
 
       </div>
 
-      <div className="stars" onClick={() => { setProducts([...sortAscending(products, 'review')]); setUndo(true); }} role="none">
+      <div className="stars" onClick={() => { setProducts([...sortStarAscending(products)]); setUndo(true); }} role="none">
         Menos Estrellas
         <ReactStars count={5} size={20} edit={false} value={2} activeColor="#ffd700" />
 

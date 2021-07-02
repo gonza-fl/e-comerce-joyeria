@@ -71,7 +71,7 @@ export default function catalogue() {
             price={product.price}
             id={product.id}
             image={product.images}
-            review={product.review}
+            review={product.reviews}
             stockAmount={product.stockAmount}
             key={product.id}
             discount={product.discount}

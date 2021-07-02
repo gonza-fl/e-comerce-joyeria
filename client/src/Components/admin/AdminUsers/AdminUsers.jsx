@@ -17,7 +17,7 @@ function OrderList() {
   const handleStatusChange = (e, user) => {
     e.preventDefault();
     swal({
-      title: `¿esta seguro de que quiere que ${user.displayName} tenga rol de ${e.target.value}?`,
+      title: `¿Está seguro que quiere que ${user.displayName} tenga rol de ${e.target.value}?`,
       text: '',
       icon: 'warning',
       buttons: true,
@@ -34,16 +34,14 @@ function OrderList() {
         })
           .then((res) => {
             if (res.data.hasOwnProperty('err')) {
-              swal('Error', res.data.err, 'warning');
-            } else {
-              swal(`¡El status de ${user.displayName} ha cambiado con éxito!`, {
-                icon: 'success',
-              });
-              window.location.href = '/admin/users';
+              return swal('Error', res.data.err, 'warning');
             }
+            return swal('¡Muy bien!', `¡El status de ${user.displayName} ha cambiado con éxito!`, 'success');
+          }).then(() => {
+            window.location.href = '/admin/users';
           })
           .catch(() => {
-            swal('Error', 'Ocurrió un error. No se pudo cambiar el status. Intente nuevamente');
+            swal('Error', 'Ocurrió un error. No se pudo cambiar el status. Intente nuevamente', 'warning');
           });
       } else {
         swal('¡El status no ha cambiado!');
