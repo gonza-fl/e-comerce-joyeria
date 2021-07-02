@@ -5,6 +5,7 @@ const {
   transporter,
   templateComprobantedepago,
   templateOrdenDespachada,
+  templateOrdenCancelada,
 } = require('../helpers/nodeMailer');
 
 const {
@@ -276,7 +277,9 @@ const modifyOrder = async (req, res) => {
         },
       });
 
-      const result = templateOrdenDespachada();
+      const result = templateOrdenDespachada({
+        id: order.id,
+      });
       // se envia el mail
       transporter.sendMail({
         from: 'Kamora <kmoraemail@gmail.com>',
@@ -309,10 +312,32 @@ const modifyOrder = async (req, res) => {
           || order.status === 'finished') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
-      order.status = status;
-      // order.endTimestamp = new Date();
-      await order.save();
-      return res.send('La orden fue correctamente modificada!');
+      const result = templateOrdenCancelada({
+        id: order.id,
+      });
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+      transporter.sendMail({
+        from: 'Kamora <kmoraemail@gmail.com>',
+        to: user.email,
+        subject: 'Su orden fue cancelada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, async (err, responseStatus) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).send('Hubo un error');
+        }
+        order.status = status;
+        // order.endTimestamp = new Date();
+        await order.save();
+        return res.send('La orden fue correctamente modificada!');
+      });
+      //    return res.send('La orden fue correctamente modificada!');
     } else {
       return res.status(404).send('Error');
     }
