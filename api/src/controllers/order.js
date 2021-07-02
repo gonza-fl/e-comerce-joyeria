@@ -463,7 +463,6 @@ const modifyOrderFromCart = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, async (err, responseStatus) => {
         if (err) {
-          console.log('error', err);
           return res.status(500).send('Hubo un error');
         }
         const cartNew = await Order.create({
@@ -477,10 +476,10 @@ const modifyOrderFromCart = async (req, res) => {
       return res.status(404).send('Error');
     }
   } catch (error) {
-    console.log('tu err', error);
     return res.status(500).send('No se pudo completar el cambio de estado de order.');
   }
 };
+
 const editCartAmount = async (req, res) => {
   const {
     idUser,
