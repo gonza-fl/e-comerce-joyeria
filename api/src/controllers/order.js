@@ -26,6 +26,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
   let {
     products,
   } = req.body;
+  console.log('PRODUCTS', products);
   if (!id) return res.status(404).send('ID no existe!');
   if (!products) products = [];
   try {
@@ -58,7 +59,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
         await cartNew.addProduct(prod, {
           through: {
             amount: parseInt(total),
-            subtotal: Math.ceil(((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total))),
+            subtotal: ((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total)).toFixed(2),
           },
         });
       }
@@ -91,12 +92,18 @@ const createOrFindAndUpdateCart = async (req, res) => {
           },
         });
         // tomar la cantidad actualizada y actualizar el subtotal
+
         const updatedCart = await Order.findByPk(cart.id, {
-          include: Product,
+          include: [{
+            model: Product,
+            where: {
+              id: products[productIndex].id,
+            },
+          }],
         });
         await cart.addProduct(cart.products[i], {
           through: {
-            subtotal: Math.ceil((updatedCart.products[i].orderline.amount * (updatedCart.products[i].price - ((updatedCart.products[i].discount * updatedCart.products[i].price) / 100)))),
+            subtotal: (updatedCart.products[0].orderline.amount * (updatedCart.products[0].price - ((updatedCart.products[0].discount * updatedCart.products[0].price) / 100))).toFixed(2),
           },
         });
         products.splice(productIndex, 1);
@@ -112,10 +119,11 @@ const createOrFindAndUpdateCart = async (req, res) => {
       if (prod.stockAmount < parseInt(products[i].amount)) {
         total = prod.stockAmount;
       }
+      console.log('otro', prod.price);
       await cart.addProduct(prod, {
         through: {
           amount: parseInt(total),
-          subtotal: Math.ceil((prod.price - ((prod.price * prod.discount) / 100) * parseInt(total))),
+          subtotal: (prod.price - ((prod.price * prod.discount) / 100) * parseInt(total)).toFixed(2),
         },
       });
     }
@@ -433,6 +441,7 @@ const modifyOrderFromCart = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
+          console.log('Esta cosita no funciona');
           return res.status(400).send('Hubo un error');
         }
         return res.send('La orden fue correctamente modificada!');
@@ -442,6 +451,7 @@ const modifyOrderFromCart = async (req, res) => {
       return res.status(404).send('Error');
     }
   } catch (error) {
+    console.log('tu err', error);
     return res.status(404).send('No se pudo completar el cambio de estado de order.');
   }
 };
@@ -485,7 +495,7 @@ const editCartAmount = async (req, res) => {
     await cart.addProduct(productSearch, {
       through: {
         amount: updatedAmount,
-        subtotal: Math.ceil(updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100))),
+        subtotal: (updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100))).toFixed(2),
       },
     });
     const updatedCart = await Order.findOne({

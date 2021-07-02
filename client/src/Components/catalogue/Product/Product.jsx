@@ -76,11 +76,11 @@ const Product = () => {
           </div>
           <h4>
             $
-            {detail.discount > 0 ? (detail.price - (detail.price * detail.discount) / 100) : detail.price }
+            {detail.discount > 0 ? (detail.price - (detail.price * detail.discount) / 100).toFixed(2) : detail.price }
           </h4>
           <p className="product-info-description">{detail.description}</p>
           <div className="product-addCart">
-            {noStock && <h5 className="last-stock">Stock Agotado</h5>}
+            {noStock && <h5 className="last-stock">.toFixed(2)Stock Agotado</h5>}
             {lowStock && (
             <h5 className="last-stock">
               Ultimas

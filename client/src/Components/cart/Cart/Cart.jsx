@@ -105,7 +105,7 @@ const Cart = () => {
                 <div className="card-detail-data">
                   <h4><Link to={`/products/product/${product.id}`}>{product.name.toUpperCase()}</Link></h4>
                   <p>{product.description}</p>
-                  {product.discount > 0 ? <h4><span className="priceCrossed">${product.price}</span><span className="discountt"> Descuento del %{product.discount}!!</span> <br />${product.price - ((product.price * product.discount) / 100) } </h4> : <h4>${product.price}</h4>}
+                  {product.discount > 0 ? <h4><span className="priceCrossed">${product.price}</span><span className="discountt"> Descuento del %{product.discount}!!</span> <br />${(product.price - ((product.price * product.discount) / 100)).toFixed(2) } </h4> : <h4>${product.price}</h4>}
                 </div>
               </div>
               <div className="card-detail-map-right">
@@ -142,7 +142,7 @@ const Cart = () => {
         </div>
         <div className="cart-summary-data">
           <h2>TOTAL: </h2>
-          <h2>${total}</h2>
+          <h2>${total.toFixed(2)}</h2>
         </div>
         <div className="respCartBtnsTablet">
           <Link to="/cart/checkout">
