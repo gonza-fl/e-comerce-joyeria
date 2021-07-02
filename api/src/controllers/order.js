@@ -4,6 +4,7 @@
 const {
   transporter,
   templateComprobantedepago,
+  templateOrdenDespachada,
 } = require('../helpers/nodeMailer');
 
 const {
@@ -26,7 +27,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
   let {
     products,
   } = req.body;
-  console.log('PRODUCTS', products);
   if (!id) return res.status(404).send('ID no existe!');
   if (!products) products = [];
   try {
@@ -119,7 +119,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
       if (prod.stockAmount < parseInt(products[i].amount)) {
         total = prod.stockAmount;
       }
-      console.log('otro', prod.price);
       await cart.addProduct(prod, {
         through: {
           amount: parseInt(total),
@@ -246,7 +245,7 @@ const modifyOrder = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
@@ -257,6 +256,7 @@ const modifyOrder = async (req, res) => {
           console.log(err);
           return res.status(400).send('Hubo un error');
         }
+
         return res.send('La orden fue correctamente modificada!');
       });
       // return res.json(order);
@@ -279,7 +279,7 @@ const modifyOrder = async (req, res) => {
       const result = templateOrdenDespachada();
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: user.email,
         subject: 'Su orden fue despachada!',
         html: result,
@@ -287,6 +287,7 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
+          console.log(err);
           return res.status(400).send('Hubo un error');
         }
         return res.send('La orden fue correctamente modificada!');
@@ -311,7 +312,6 @@ const modifyOrder = async (req, res) => {
       order.status = status;
       // order.endTimestamp = new Date();
       await order.save();
-
       return res.send('La orden fue correctamente modificada!');
     } else {
       return res.status(404).send('Error');
@@ -376,9 +376,8 @@ const modifyOrderFromCart = async (req, res) => {
         arrProducts.push({
           nameProducto: prod.name,
           cantidad: prod.orderline.amount,
-          precioUnitario: prod.price,
+          precioUnitario: prod.discount > 0 ? prod.price - ((prod.price * prod.discount) / 100).toFixed(2) : prod.price,
         });
-
         arrADescontar.push({
           id: prod.id,
           cantidad: prod.orderline.amount,
@@ -433,17 +432,21 @@ const modifyOrderFromCart = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
       // eslint-disable-next-line consistent-return
       // eslint-disable-next-line no-unused-vars
-      }, (err, responseStatus) => {
+      }, async (err, responseStatus) => {
         if (err) {
-          console.log('Esta cosita no funciona');
-          return res.status(400).send('Hubo un error');
+          console.log('error', err);
+          return res.status(500).send('Hubo un error');
         }
+        const cartNew = await Order.create({
+          status: 'cart',
+        });
+        await user.addOrder(cartNew);
         return res.send('La orden fue correctamente modificada!');
       });
       // return res.json(order);
@@ -452,7 +455,7 @@ const modifyOrderFromCart = async (req, res) => {
     }
   } catch (error) {
     console.log('tu err', error);
-    return res.status(404).send('No se pudo completar el cambio de estado de order.');
+    return res.status(500).send('No se pudo completar el cambio de estado de order.');
   }
 };
 const editCartAmount = async (req, res) => {

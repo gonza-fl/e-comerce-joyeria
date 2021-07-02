@@ -1,3 +1,4 @@
+// Henry2021  kmoraemail@gmail.com
 const nodemailer = require('nodemailer');
 const Handlebars = require('handlebars');
 const {
@@ -13,17 +14,26 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true, // true for 465, false for other ports
   auth: {
-    user: 'ecommerceg6ft11@gmail.com', // generated ethereal user
-    pass: 'vvzflnzfwawofijz', // generated ethereal password
+    user: 'kmoraemail@gmail.com', // generated ethereal user
+    pass: 'Henry2021', // generated ethereal password
   },
   debug: false,
   tls: {
     rejectUnauthorized: false,
   }, */
+  /*
   service: 'hotmail',
+  port: 587,
   auth: {
     user: 'heladodechocolateconconitodechocolate@outlook.com',
     pass: 'Lalala123',
+  }, */
+  host: 'smtp.gmail.com',
+  port: 465,
+  service: 'gmail',
+  auth: {
+    user: 'kmoraemail@gmail.com',
+    pass: 'Henry2021', // naturally, replace both with your real credentials or an application-specific password
   },
 });
 
