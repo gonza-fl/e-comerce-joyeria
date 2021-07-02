@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
 import './UserOrders.css';
 import { URL_USERS } from '../../../constants';
@@ -12,13 +13,10 @@ const UserOrders = (props) => {
   useEffect(() => {
     axios.get(`${URL_USERS}${id}/orders`)
       .then((response) => {
-        // eslint-disable-next-line no-undef
         setUserOrders(response.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => swal('Error', err.response.data, 'warning'));
   }, []);
-
-  useEffect(() => { console.log(userOrders); }, [userOrders]);
 
   return (
     <div className="user-orders-container">

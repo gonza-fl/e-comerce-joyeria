@@ -14,6 +14,7 @@ function OrderList() {
   const [users, setUsers] = useState([]);
   const userState = useSelector((state) => state.user);
   const [adminData, setAdminData] = useState('');
+
   const handleStatusChange = (e, user) => {
     e.preventDefault();
     swal({
@@ -40,8 +41,8 @@ function OrderList() {
           }).then(() => {
             window.location.href = '/admin/users';
           })
-          .catch(() => {
-            swal('Error', 'Ocurrió un error. No se pudo cambiar el status. Intente nuevamente', 'warning');
+          .catch((err) => {
+            swal('Error', err.response.data, 'warning');
           });
       } else {
         swal('¡El status no ha cambiado!');
@@ -50,13 +51,13 @@ function OrderList() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/user/${userState.id}`)
+    axios.get(`${URL_USERS}${userState.id}`)
       .then((res) => setAdminData(res.data));
     axios.get(URL_USERS)
       .then((response) => {
         setUsers(response.data);
       })
-      .catch((err) => alert(err));
+      .catch((err) => { swal('Error', err.response.data, 'warning'); });
   }, []);
 
   return (
@@ -88,7 +89,7 @@ function OrderList() {
                 {user.role}
                 { user.role === 'superAdmin' ? null : (
                   <select onChange={(e) => { handleStatusChange(e, user); }}>
-                    <option>Cambiar estatus</option>
+                    <option>Cambiar status</option>
                     <option value="user">usuario</option>
                     {adminData.role === 'superAdmin' ? <option value="admin">admin</option> : null}
                     <option value="banned">baneado</option>
@@ -106,7 +107,7 @@ function OrderList() {
                 {user.role}
                 { user.role === 'superAdmin' ? null : (
                   <select onChange={(e) => { handleStatusChange(e, user); }}>
-                    <option>Cambiar estatus</option>
+                    <option>Cambiar status</option>
                     <option value="user">usuario</option>
                     {adminData.role === 'superAdmin' ? <option value="admin">admin</option> : null}
                     <option value="banned">baneado</option>

@@ -47,9 +47,9 @@ export default function FilterCatalogue({
       <p onClick={() => { setProducts([...sortAscending(products, 'price')]); setUndo(true); }}>Menor</p>
 
       <form onSubmit={handleChoise}>
-        <input name="min" placeholder="Minimo.." onChange={handleInputChange} />
+        <input name="min" placeholder="Mínimo..." onChange={handleInputChange} />
         <span>-</span>
-        <input name="max" placeholder="Maximo.." onChange={handleInputChange} />
+        <input name="max" placeholder="Máximo..." onChange={handleInputChange} />
         <input id="submit" type="submit" value=">" disabled />
       </form>
 
