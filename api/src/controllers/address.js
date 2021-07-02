@@ -2,6 +2,7 @@
 const {
   User,
   Address,
+  Order,
 } = require('../models/index');
 const {
   verifyNumber,
@@ -109,9 +110,38 @@ const deleteAddress = async (req, res) => {
     return res.status(500).send('Internal server error. Dirección no eliminada');
   }
 };
+
+const setAddressToOrderToBePaid = async (req, res) => {
+  const {
+    addressId,
+    userId,
+  } = req.body;
+  try {
+    if (!addressId) return res.status(404).send('No se ha enviado una dirección.');
+    if (!userId) return res.status(404).send('No se ha enviado una usuario.');
+
+    const address = await Address.findByPk(addressId);
+    if (!address) return res.status(404).send('Esa dirección no se encuentra registrada.');
+
+    const order = await Order.findOne({
+      where: {
+        userId,
+        status: 'cart',
+      },
+    });
+    if (!order) return res.status(404).send('Esa orden no existe');
+
+    await order.setAddress(address);
+    return res.send('Dirección asociada a esta orden');
+  } catch (err) {
+    return res.status(500).send('Internal server error. Dirección no asociada a la orden de compra');
+  }
+};
+
 module.exports = {
   addAddressFunction,
   updateAddress,
   getSingleAddress,
   deleteAddress,
+  setAddressToOrderToBePaid,
 };

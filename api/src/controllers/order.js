@@ -4,6 +4,8 @@
 const {
   transporter,
   templateComprobantedepago,
+  templateOrdenDespachada,
+  templateOrdenCancelada,
 } = require('../helpers/nodeMailer');
 
 const {
@@ -12,6 +14,7 @@ const {
   Product,
   Image,
   OrderLine,
+  Address,
 } = require('../models/index');
 const {
   verifyNumber,
@@ -58,7 +61,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
         await cartNew.addProduct(prod, {
           through: {
             amount: parseInt(total),
-            subtotal: Math.ceil(((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total))),
+            subtotal: ((prod.price - ((prod.price * prod.discount) / 100)) * parseInt(total)).toFixed(2),
           },
         });
       }
@@ -91,12 +94,18 @@ const createOrFindAndUpdateCart = async (req, res) => {
           },
         });
         // tomar la cantidad actualizada y actualizar el subtotal
+
         const updatedCart = await Order.findByPk(cart.id, {
-          include: Product,
+          include: [{
+            model: Product,
+            where: {
+              id: products[productIndex].id,
+            },
+          }],
         });
         await cart.addProduct(cart.products[i], {
           through: {
-            subtotal: Math.ceil((updatedCart.products[i].orderline.amount * (updatedCart.products[i].price - ((updatedCart.products[i].discount * updatedCart.products[i].price) / 100)))),
+            subtotal: (updatedCart.products[0].orderline.amount * (updatedCart.products[0].price - ((updatedCart.products[0].discount * updatedCart.products[0].price) / 100))).toFixed(2),
           },
         });
         products.splice(productIndex, 1);
@@ -115,7 +124,7 @@ const createOrFindAndUpdateCart = async (req, res) => {
       await cart.addProduct(prod, {
         through: {
           amount: parseInt(total),
-          subtotal: Math.ceil((prod.price - ((prod.price * prod.discount) / 100) * parseInt(total))),
+          subtotal: (prod.price - ((prod.price * prod.discount) / 100) * parseInt(total)).toFixed(2),
         },
       });
     }
@@ -128,8 +137,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
   }
 };
 
-// eslint-disable-next-line consistent-return
-
 const modifyOrder = async (req, res) => {
   const {
     id,
@@ -140,9 +147,8 @@ const modifyOrder = async (req, res) => {
   try { // el estado cart no se usa, el admin no deberia poder crear carritos.
     const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
     // si el status nuevo no se encuentra en el array no existe y devuelve error
-    if (!arr.includes(status)) {
-      return res.status(400).send('No se puede implemetar ese status!');
-    }
+    if (!arr.includes(status)) return res.status(400).send('No se puede implemetar ese status!');
+
     // se buscar el carrito asociado al id que viene por parametro
     const order = await Order.findOne({
       where: {
@@ -150,15 +156,12 @@ const modifyOrder = async (req, res) => {
       },
       include: Product,
     });
-    // return res.status(200).send(':v');
     // si no lo encuentra manda error
-    if (order === null) {
-      return res.status(404).send(`La orden id ${id} no posee un carrito`);
-    }
+    if (order === null) return res.status(404).send(`La orden id ${id} no posee un carrito`);
+
     // no se puede poner en el carro un estado que ya tebia
-    if (order.status === status) {
-      return res.status(404).send(`La orden ya tenia el estado ${status}`);
-    }
+    if (order.status === status) return res.status(404).send(`La orden ya tenia el estado ${status}`);
+
     // flujo carro: cart > PaidPendingDispatch > deliveryInProgress > finished > canceled
     if (status === 'paidPendingDispatch') {
       // return res.status(200).send(':v');
@@ -167,7 +170,6 @@ const modifyOrder = async (req, res) => {
           || order.status === 'canceled') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
-      // return res.status(200).send(':v');
       // falta restar del stock y validaciones
       if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
       const totalOrder = order.products.reduce(
@@ -181,7 +183,7 @@ const modifyOrder = async (req, res) => {
         arrProducts.push({
           nameProducto: prod.name,
           cantidad: prod.orderline.amount,
-          precioUnitario: prod.price,
+          precioUnitario: (prod.price).toFixed(2),
         });
 
         arrADescontar.push({
@@ -191,7 +193,205 @@ const modifyOrder = async (req, res) => {
       });
 
       // actualizo el carro
-      // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
+      order.status = status;
+
+      order.total = totalOrder.toFixed(2);
+      order.endTimestamp = new Date();
+      order.orderNumber = id;
+      await order.save();
+
+      // descuento del stock del producto la cantidad necesaria
+      for (let i = 0; i < arrADescontar.length; i += 1) {
+        const prod = await Product.findOne({
+          where: {
+            id: arrADescontar[i].id,
+          },
+        });
+        // si la cantidad supera el stock manda error
+        if (arrADescontar[i].cantidad > prod.stockAmount) {
+          return res.status(404).send(`La cantidad del producto ${prod.name} super el stock`);
+        }
+
+        prod.stockAmount -= arrADescontar[i].cantidad;
+        await prod.save();
+      }
+
+      // resto los productos del stockamount
+
+      // busco el user asociado al cart
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+
+      if (!user) return res.status(404).send('Usuario no encontraod');
+
+      // formateo la data para el template email
+      const data = {
+        name: user.name,
+        email: user.email,
+        orden: id,
+        productos: arrProducts,
+        total: totalOrder.toFixed(2),
+      };
+      // se reemplaza en el template compilado los datos de usuario
+      const result = templateComprobantedepago(data);
+      // se envia el mail
+      transporter.sendMail({
+        from: 'Kamora <kmoraemail@gmail.com>',
+        to: data.email,
+        subject: 'Compra realizada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, (err, responseStatus) => {
+        if (err) {
+          return res.status(500).send('Hubo un error en el servidor!');
+        }
+
+        return res.send('La orden fue correctamente modificada!');
+      });
+      // return res.json(order);
+    } else if (status === 'deliveryInProgress') {
+      if (order.status === 'cart'
+          || order.status === 'finished'
+          || order.status === 'canceled') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      order.status = status;
+      order.endTimestamp = new Date();
+      await order.save();
+
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+
+      const result = templateOrdenDespachada({
+        id: order.id,
+      });
+      // se envia el mail
+      transporter.sendMail({
+        from: 'Kamora <kmoraemail@gmail.com>',
+        to: user.email,
+        subject: 'Su orden fue despachada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, (err, responseStatus) => {
+        if (err) {
+          return res.status(500).send('Hubo un error en el servidor!');
+        }
+        return res.send('La orden fue correctamente modificada!');
+      });
+    } else if (status === 'finished') {
+      if (order.status === 'cart'
+          || order.status === 'canceled'
+          || order.status === 'paidPendingDispatch') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      order.status = status;
+      // order.endTimestamp = new Date();
+      await order.save();
+
+      return res.send('La orden fue correctamente modificada!');
+    } else if (status === 'canceled') {
+      if (order.status === 'cart'
+          || order.status === 'deliveryInProgress'
+          || order.status === 'finished') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      const result = templateOrdenCancelada({
+        id: order.id,
+      });
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+      transporter.sendMail({
+        from: 'Kamora <kmoraemail@gmail.com>',
+        to: user.email,
+        subject: 'Su orden fue cancelada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, async (err, responseStatus) => {
+        if (err) {
+          return res.status(400).send('Hubo un error en el servidor!');
+        }
+        order.status = status;
+        // order.endTimestamp = new Date();
+        await order.save();
+        return res.send('La orden fue correctamente modificada!');
+      });
+      //    return res.send('La orden fue correctamente modificada!');
+    } else {
+      return res.status(404).send('Error');
+    }
+  } catch (err) {
+    // return res.status(500).send('Internal server error. Orden no fue modificada');
+    return res.json({
+      err,
+    });
+  }
+  return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
+};
+// eslint-disable-next-line consistent-return
+const modifyOrderFromCart = async (req, res) => {
+  const {
+    id,
+  } = req.params;
+  const {
+    status,
+  } = req.body;
+
+  try { // el estado cart no se usa, el admin no deberia poder crear carritos.
+    const arr = ['paidPendingDispatch', 'deliveryInProgress', 'finished', 'canceled'];
+    // si el status nuevo no se encuentra en el array no existe y devuelve error
+    if (!arr.includes(status)) return res.status(400).send('No se puede implemetar ese status!');
+    // se buscar el carrito asociado al id que viene por parametro
+    const order = await Order.findOne({
+      where: {
+        id,
+      },
+      include: Product,
+    });
+    // si no lo encuentra manda error
+    if (order === null) return res.status(404).send(`La orden id ${id} no posee un carrito`);
+    // no se puede poner en el carro un estado que ya tebia
+    if (order.status === status) return res.status(404).send(`La orden ya tenia el estado ${status}`);
+
+    if (status === 'paidPendingDispatch') {
+      if (order.status === 'deliveryInProgress'
+          || order.status === 'finished'
+          || order.status === 'canceled') {
+        return res.status(404).send('Error. No puedes alterar el flujo del carro');
+      }
+      // falta restar del stock y validaciones
+      if (order.products.length === 0) return res.status(400).send('La orden no tiene productos.');
+      const totalOrder = order.products.reduce(
+        (total, current) => total + current.orderline.subtotal, 0,
+      );
+      // formateo los productos para enviar el comprobante de venta
+      const arrProducts = [];
+      const arrADescontar = [];
+
+      order.products.forEach((prod) => {
+        arrProducts.push({
+          nameProducto: prod.name,
+          cantidad: prod.orderline.amount,
+          precioUnitario: prod.discount > 0 ? prod.price - ((prod.price * prod.discount) / 100).toFixed(2) : prod.price,
+        });
+        arrADescontar.push({
+          id: prod.id,
+          cantidad: prod.orderline.amount,
+        });
+      });
+
+      // actualizo el carro
       order.status = status;
 
       order.total = totalOrder;
@@ -238,83 +438,29 @@ const modifyOrder = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
       // eslint-disable-next-line consistent-return
       // eslint-disable-next-line no-unused-vars
-      }, (err, responseStatus) => {
+      }, async (err, responseStatus) => {
         if (err) {
-          console.log(err);
-          return res.status(400).send('Hubo un error');
+          return res.status(500).send('Hubo un error');
         }
+        const cartNew = await Order.create({
+          status: 'cart',
+        });
+        await user.addOrder(cartNew);
         return res.send('La orden fue correctamente modificada!');
       });
       // return res.json(order);
-    } else if (status === 'deliveryInProgress') {
-      if (order.status === 'cart'
-          || order.status === 'finished'
-          || order.status === 'canceled') {
-        return res.status(404).send('Error. No puedes alterar el flujo del carro');
-      }
-      order.status = status;
-      order.endTimestamp = new Date();
-      await order.save();
-
-      const user = await User.findOne({
-        where: {
-          id: order.userId,
-        },
-      });
-
-      const result = templateOrdenDespachada();
-      // se envia el mail
-      transporter.sendMail({
-        from: 'Kamora <adaclothes@hotmail.com>',
-        to: user.email,
-        subject: 'Su orden fue despachada!',
-        html: result,
-      // eslint-disable-next-line consistent-return
-      // eslint-disable-next-line no-unused-vars
-      }, (err, responseStatus) => {
-        if (err) {
-          return res.status(400).send('Hubo un error');
-        }
-        return res.send('La orden fue correctamente modificada!');
-      });
-    } else if (status === 'finished') {
-      if (order.status === 'cart'
-          || order.status === 'canceled'
-          || order.status === 'paidPendingDispatch') {
-        return res.status(404).send('Error. No puedes alterar el flujo del carro');
-      }
-      order.status = status;
-      // order.endTimestamp = new Date();
-      await order.save();
-
-      return res.send('La orden fue correctamente modificada!');
-    } else if (status === 'canceled') {
-      if (order.status === 'cart'
-          || order.status === 'deliveryInProgress'
-          || order.status === 'finished') {
-        return res.status(404).send('Error. No puedes alterar el flujo del carro');
-      }
-      order.status = status;
-      // order.endTimestamp = new Date();
-      await order.save();
-
-      return res.send('La orden fue correctamente modificada!');
     } else {
       return res.status(404).send('Error');
     }
-  } catch (err) {
-    // return res.status(500).send('Internal server error. Orden no fue modificada');
-    return res.json({
-      err,
-    });
+  } catch (error) {
+    return res.status(500).send('No se pudo completar el cambio de estado de order.');
   }
-  return 'me pedia eslint que retorne algo, no sabia que poner, cambiar!';
 };
 
 const editCartAmount = async (req, res) => {
@@ -357,7 +503,7 @@ const editCartAmount = async (req, res) => {
     await cart.addProduct(productSearch, {
       through: {
         amount: updatedAmount,
-        subtotal: Math.ceil(updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100))),
+        subtotal: (updatedAmount * (productSearch.price - ((productSearch.discount * productSearch.price) / 100))).toFixed(2),
       },
     });
     const updatedCart = await Order.findOne({
@@ -455,7 +601,10 @@ const getOrderById = async (req, res) => {
   if (Number.isNaN(id)) return res.status(404).send('El id de la orden debe ser un numero');
   try {
     const singleOrder = await Order.findByPk(id, {
-      include: [User, Product],
+      include: [Product, {
+        model: User,
+        include: Address,
+      }],
     });
     if (!singleOrder) return res.status(404).send('La orden no existe');
     return res.json(singleOrder);
@@ -574,4 +723,5 @@ module.exports = {
   getOrderById,
   getAllOrdersByIdUser,
   testNodeMailer,
+  modifyOrderFromCart,
 };

@@ -3,6 +3,7 @@
 /* eslint-disable func-names */
 
 import axios from 'axios';
+import swal from 'sweetalert';
 
 import {
   URL_PRODUCTS,
@@ -37,7 +38,7 @@ export function getProducts() {
         payload: response.data,
       });
     })
-      .catch((err) => { console.log(err); });
+      .catch((err) => { swal('Error', err.response.data, 'warning'); });
   };
 }
 
@@ -66,7 +67,7 @@ export function getCategories() {
         payload: response.data,
       });
     })
-      .catch((err) => { console.log(err); });
+      .catch((err) => { swal('Error', err.response.data, 'warning'); });
   };
 }
 
@@ -97,7 +98,7 @@ export function getProductDetail(id) {
           payload: response.data,
         });
       })
-      .catch((err) => { console.log(err); });
+      .catch((err) => { swal('Error', err.response.data, 'warning'); });
   };
 }
 
@@ -111,16 +112,15 @@ export function setUser(user) {
 }
 
 export function getUserInfo(userId) {
-  console.log(userId);
   return function (dispatch) {
-    return userId ? axios.get(`${URL_USERS}${userId}`)
+    return userId && axios.get(`${URL_USERS}${userId}`)
       .then((res) => {
-        console.log(res);
         dispatch({
           type: GET_USER_INFO,
           payload: { ...res.data, name: res.data.displayName },
         });
-      }).catch((err) => console.log(err.response.data)) : { type: GET_USER_INFO, payload: {} };
+      })
+      .catch((err) => swal('Error', err.response.data, 'warning'));
   };
 }
 
@@ -137,7 +137,7 @@ export function getUserOrders(id) {
           payload: response.data,
         });
       })
-      .catch((err) => console.log(err))
+      .catch((err) => { swal('Error', err.response.data, 'warning'); })
     );
   };
 }
@@ -155,7 +155,7 @@ export function getReviewByUser(productId, userId) {
           payload: response.data,
         });
       })
-      .catch((err) => console.log(err))
+      .catch((err) => { swal('Error', err.response.data, 'warning'); })
     );
   };
 }

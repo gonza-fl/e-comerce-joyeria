@@ -89,11 +89,11 @@ const updateImages = async (searchProduct, image, idProduct) => {
       });
     });
   } catch (err) {
-    return console.log(err);
+    return false;
   }
 };
 /* eslint-disable*/
-const updateSubtotalProduct = async (idProduct, price = 0) => {
+const updateSubtotalProduct = async (idProduct) => {
   try {
     const orders= await Order.findAll({
       include: [{
@@ -107,14 +107,18 @@ const updateSubtotalProduct = async (idProduct, price = 0) => {
       }
     })
     for (let i = 0; i < orders.length; i++) {
-      console.log(orders[i].products);
-      
+      const orderProduct = orders[i].products[0];
+      await orders[i].addProduct(orderProduct, {
+        through: {
+          subtotal: orderProduct.discount > 0 ?
+          ((orderProduct.price - (orderProduct.price * orderProduct.discount ) /100)) * orderProduct.orderline.amount
+          : orderProduct.price * orderProduct.orderline.amount,
+        },
+      });
     }
-
     return;
   } catch (err) {
-    console.log(err)
-    return console.log('err')
+    return;
   }
 };
 module.exports = {

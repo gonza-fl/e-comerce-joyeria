@@ -71,7 +71,7 @@ const CreateUpdateReview = () => {
   if (detail.id) {
     return (
       <div className="reviews-big-container">
-        <p className="reviews-big-container-title">Dejanos tu opinión!</p>
+        <p className="reviews-big-container-title">Déjanos tu opinión!</p>
         <div className="review-container">
           <p className="review-container-title">{detail.name}</p>
           <div className="review-container-flex">
@@ -88,7 +88,7 @@ const CreateUpdateReview = () => {
                 />
               </div>
               <div className="review-description-container">
-                <p className="review-form-title">Contanos cuál es tu opinión del producto</p>
+                <p className="review-form-title">Cuéntanos cuál es tu opinión del producto</p>
                 <textarea
                   className="review-description"
                   rows="5"

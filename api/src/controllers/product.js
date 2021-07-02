@@ -43,7 +43,7 @@ const createProduct = async (req, res) => {
     const productCreated = await Product.create({
       name: name.trim(),
       description: description.trim(),
-      price: Math.ceil(parseFloat(price)),
+      price: parseFloat(price),
       stockAmount: parseInt(stockAmount),
       discount: parseInt(discount),
     });
@@ -68,7 +68,6 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).send('El producto fue creado con éxito!');
   } catch (err) {
-    console.log(err);
     return res.status(500).send('Internal server Error. Producto no fue creado');
   }
 };
@@ -159,7 +158,7 @@ const updateProduct = async (req, res) => {
     const discountt = (verifyNumber(discount).veracity ? parseInt(discount) : undefined);
     const stock = (verifyNumber(stockAmount).veracity ? parseInt(stockAmount) : undefined);
     const priceVar = (verifyNumber(price).veracity ? parseFloat(price) : undefined);
-    await updateSubtotalProduct(idProduct);
+
     await Product.update({
       name,
       description,
@@ -174,6 +173,7 @@ const updateProduct = async (req, res) => {
     const haveError = await updateCategories(searchProduct, categories);
     if (!haveError) return res.status(400).send('Hay campos erroneos');
     await updateImages(searchProduct, images, idProduct);
+    await updateSubtotalProduct(idProduct);
     // return res.status(200).json(await searchProductF(idProduct));
     return res.send('Producto actualizado correctamente!');
   } catch (err) {

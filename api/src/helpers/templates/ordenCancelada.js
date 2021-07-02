@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-str */
-const ordendespachada = '<!DOCTYPE HTML>\
+const ordencancelada = '<!DOCTYPE HTML>\
         <html>\
         <head>\
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\
@@ -27,7 +27,7 @@ const ordendespachada = '<!DOCTYPE HTML>\
             <img id="imagen" src="https://res.cloudinary.com/grupo6/image/upload/v1624588050/henry/logo_vfwfhm.png" style="width: 300px;"/>\
         </div>\
         <div class="d-flex justify-content-center">\
-        <p style="margin: 30px 0px" align="center">Su orden de compra # {{id}} esta en camino! Gracias por elegir elegirnos!</p>\
+        <p style="margin: 30px 0px" align="center">Su orden de compra #{{id}} ha sido cancelada.</p>\
         </div>\
         </body>\
         <footer>\
@@ -37,5 +37,5 @@ const ordendespachada = '<!DOCTYPE HTML>\
     </html>';
 
 module.exports = {
-  ordendespachada,
+  ordencancelada,
 };

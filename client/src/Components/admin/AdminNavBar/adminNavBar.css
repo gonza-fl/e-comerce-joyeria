@@ -3,6 +3,8 @@
     flex-grow: 1;
     font-weight: bold;
     background-color: #f0ddd8;
+    justify-content: space-between;
+    flex-direction: column;
 }
  @media(max-width: 452px){
     .container{

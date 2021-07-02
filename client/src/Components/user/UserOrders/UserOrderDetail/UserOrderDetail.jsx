@@ -43,12 +43,13 @@ const UserOrderDetail = () => {
             <th>Cantidad</th>
             <th>Total</th>
             <th>Detalle</th>
-            <th>Reviews</th>
+            {userOrderDetail.status === 'finished'
+              && <th>Reviews</th>}
           </tr>
           {userOrderDetail.products.map((product) => (
             <tr className="user-order-detail-products-rows">
               <td>{product.name}</td>
-              <td>${product.price}</td>
+              <td>${product.orderline.subtotal / product.orderline.amount}</td>
               <td>{product.orderline.amount}</td>
               <td>${product.orderline.subtotal}</td>
               <td>
@@ -57,12 +58,15 @@ const UserOrderDetail = () => {
                 >Ver Producto
                 </Link>
               </td>
+              {userOrderDetail.status === 'finished'
+              && (
               <td>
                 <Link className="user-order-detail-products-link"
                   to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
-                >Opiná!
+                >Opina!
                 </Link>
               </td>
+              )}
             </tr>
           ))}
         </table>
@@ -70,7 +74,7 @@ const UserOrderDetail = () => {
           {userOrderDetail.products.map((product) => (
             <div className="user-order-detail-product-responsive-data">
               <p>Nombre: {product.name}</p>
-              <p>Precio Unitario: ${product.price}</p>
+              <p>Precio Unitario: ${product.orderline.subtotal / product.orderline.amount}</p>
               <p>Cantidad: {product.orderline.amount}</p>
               <p>Total: ${product.orderline.subtotal}</p>
               <div className="user-order-detail-product-responsive-links">
@@ -80,7 +84,7 @@ const UserOrderDetail = () => {
                 </Link>
                 <Link className="user-order-detail-products-link"
                     to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
-                >Opiná!
+                >Opina!
                 </Link>
               </div>
             </div>
