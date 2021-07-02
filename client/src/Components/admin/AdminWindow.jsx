@@ -17,20 +17,16 @@ import Logo from '../StyledComponents/Logo';
 import './adminWindow.css';
 import AdminFlyers from './AdminFlyers/AdminFlyers';
 
-const ADMIN_IDS = process.env.REACT_APP_ADMIN_IDS;
-
 function AdminWindow() {
-  ADMIN_IDS.split(',');
   const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState({ role: '' });
-  // maxi modifico esto, si hizo una cagada no es culpa de el...
   useEffect(() => {
     if (user.id && userData.role === '') {
       axios.get(`http://localhost:3001/api/user/${user.id}`)
         .then((res) => setUserData(res.data));
     }
   }, [user]);
-  if (ADMIN_IDS.includes(user.id) || userData.role === 'admin' || userData.role === 'superAdmin') {
+  if (userData.role === 'admin' || userData.role === 'superAdmin') {
     return (
       <div className="mainDiv">
         <h1 className="titulo">ADMINISTRADOR</h1>

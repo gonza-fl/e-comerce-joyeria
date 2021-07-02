@@ -38,6 +38,9 @@ export default function Nav() {
     dispatch(getCategories());
   }, []);
 
+  useEffect(() => {
+  }, [user]);
+
   const handleSingOut = () => {
     firebase.auth().signOut()
       .then(() => swal('Adios', 'Cerro Sesión correctamente', 'success'))
