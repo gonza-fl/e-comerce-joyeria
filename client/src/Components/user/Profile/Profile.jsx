@@ -34,7 +34,6 @@ export default function Profile() {
         <div className="profileRespDiv">
           <ItemMenu onClick={() => setMenu(1)} style={{ backgroundColor: `${menu === 1 ? '#CF988C' : 'white'}` }}>DETALLES</ItemMenu>
           <ItemMenu onClick={() => setMenu(2)} style={{ backgroundColor: `${menu === 2 ? '#CF988C' : 'white'}` }}>ÓRDENES DE COMPRA</ItemMenu>
-          {/* <ItemMenu onClick={() => setMenu(3)} style={{ backgroundColor: `${menu === 3 ? '#CF988C' : 'white'}` }}>MÉTODOS DE PAGO</ItemMenu> */}
           <ItemMenu onClick={() => setMenu(4)} style={{ backgroundColor: `${menu === 4 ? '#CF988C' : 'white'}` }}>CAMBIAR CONTRASEÑA</ItemMenu>
         </div>
       </Menu>
@@ -42,7 +41,6 @@ export default function Profile() {
       {menu === 1 ? !edit ? showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot)
         : <EditProfile user={user} setEdit={setEdit} />
         : menu === 2 ? <UserOrders id={user.id} />
-          // : menu === 3 ? <div><h1>MÉTODOS DE PAGO</h1></div>
           : <EditPassword />}
     </MainDiv>
   );
@@ -72,7 +70,7 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
       <UserIcon>
         <FcBusinessman style={{ fontSize: '150px' }} />
         <br />
-        <span className="spanUserIcon">{`${user.name}`}</span>
+        <span className="spanUserIcon">{`${user.name.split(' ').map((str) => str.substr(0, 15)).join(' ')}`}</span>
         <br />
         <br />
         <br />
@@ -91,7 +89,7 @@ function showProfile(user, setEdit, addAdress, setAddAdress, pivot, setPivot) {
         <br />
         <b>Fecha de nacimiento: </b>
         <br />
-        <span>{user.birthday || 'Sin fecha de nacimiento'}</span>
+        <span>{user.birthday.substr(0, 10) || 'Sin fecha de nacimiento'}</span>
       </UserInfo>
       <UserInfo>
         <div className="userInfoDiv">

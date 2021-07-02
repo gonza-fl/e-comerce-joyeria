@@ -13,8 +13,7 @@ import firebase from 'firebase/app';
 import axios from 'axios';
 import SearchBar from './SearchBar/SearchBar';
 import Logo from '../../StyledComponents/Logo';
-import { getCategories, showFloatingCart } from '../../../redux/actions/actions';
-// eslint-disable-next-line import/no-cycle
+import { getCategories, showFloatingCart, getUserInfo } from '../../../redux/actions/actions';
 import UserLogin from '../../user/UserLogin/UserLogin';
 import './Nav.css';
 import FloatingCart from '../../cart/Cart/FloatingCart';
@@ -24,8 +23,15 @@ import { URL_USERS } from '../../../constants';
 
 export default function Nav() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const logged = useSelector((state) => state.user);
   const [userData, setUserData] = useState({ role: '' });
+  const user = useSelector((state) => state.userInfo);
+
+  useEffect(() => {
+    if (logged.id) {
+      dispatch(getUserInfo(logged.id));
+    }
+  }, [logged]);
 
   useEffect(() => {
     if (user.id) {
@@ -37,9 +43,6 @@ export default function Nav() {
   useEffect(() => {
     dispatch(getCategories());
   }, []);
-
-  useEffect(() => {
-  }, [user]);
 
   const handleSingOut = () => {
     firebase.auth().signOut()
@@ -70,7 +73,7 @@ export default function Nav() {
           <div className="userIcon">
             <div className="navIconUser"><FaUserAlt />
               &nbsp; &nbsp;
-              {user.email ? <b className="nameTablet">{user.name.split(' ')[0]}</b> : null}
+              {user.email ? <b className="nameTablet">{user.name.split(' ')[0].substr(0, 8)}</b> : null}
               {user.id
                 ? (
                   <div className="userOptions">

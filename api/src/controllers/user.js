@@ -80,7 +80,7 @@ const updateUser = async (req, res) => {
     await user.save();
     return res.status(200).send('Datos de usuario actualizados!');
   } catch (err) {
-    return res.status(404).send('Internal server error');
+    return res.status(500).send('Internal server error');
   }
 };
 
@@ -97,9 +97,10 @@ const getUserById = async (req, res) => {
         },
       ],
     });
+    if (!user) res.status(404).send('No existe ese usuario');
     return res.status(200).json(user);
   } catch (err) {
-    return res.status(404).send('Internal server error');
+    return res.status(500).send('Internal server error');
   }
 };
 
