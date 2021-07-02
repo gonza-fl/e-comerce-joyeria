@@ -108,6 +108,7 @@ function AdminProducts() {
             <th>ID</th>
             <th>NOMBRE</th>
             <th>PRECIO</th>
+            <th>DESCUENTO</th>
             <th>CANTIDAD</th>
             <th>CATEGORIAS</th>
             <th>IMAGEN</th>
@@ -118,6 +119,7 @@ function AdminProducts() {
               <td>{p.id}</td>
               <td>{p.name}</td>
               <td>{p.price}</td>
+              <td>{p.discount > 0 ? `${p.discount}%` : '-'}</td>
               <td>{p.stockAmount}</td>
               <td>{p.categories.map((c) => <li key={c.name}>{c.name}</li>)}</td>
               <td>
