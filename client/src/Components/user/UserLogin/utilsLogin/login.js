@@ -28,7 +28,7 @@ export const loginWhitEmmail = (email, password) => {
       }
 
       return axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) })
-        .then(() => swal('Hola', 'Inicio de sesión exitoso', 'success'))
+        .then(() => swal('¡Hola!', 'Inicio de sesión exitoso', 'success'))
         .then(() => document.getElementById('login').style.display = 'none')
         .then(() => localStorage.setItem('cart', JSON.stringify([])))
         .catch((error) => {
@@ -65,7 +65,7 @@ const login = (provider) => {
       return axios.post(URL_ORDERS_BY_ID, { id: idUserLoged, products: JSON.parse(localStorage.getItem('cart')) })
         .then(() => { document.getElementById('login').style.display = 'none'; })
         .then(() => localStorage.setItem('cart', JSON.stringify([])))
-        .catch((err) => console.log(err));
+        .catch((err) => swal('Error', err.response.data, 'warning'));
     });
 };
 

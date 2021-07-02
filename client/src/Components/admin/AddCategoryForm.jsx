@@ -36,7 +36,7 @@ function AddCategoryForm() {
       document.getElementById('categoria').value = '';
       document.getElementById('descripcion').value = '';
       setLoading(false);
-      swal('Success', 'La categoría se creó correctamente', 'success')
+      swal('¡Muy bien!', 'La categoría se creó correctamente', 'success')
         .then(() => {
           window.location.href = '/admin/controlcategories';
         });

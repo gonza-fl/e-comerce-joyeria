@@ -43,7 +43,8 @@ const UserOrderDetail = () => {
             <th>Cantidad</th>
             <th>Total</th>
             <th>Detalle</th>
-            <th>Reviews</th>
+            {userOrderDetail.status === 'finished'
+              && <th>Reviews</th>}
           </tr>
           {userOrderDetail.products.map((product) => (
             <tr className="user-order-detail-products-rows">
@@ -57,12 +58,15 @@ const UserOrderDetail = () => {
                 >Ver Producto
                 </Link>
               </td>
+              {userOrderDetail.status === 'finished'
+              && (
               <td>
                 <Link className="user-order-detail-products-link"
                   to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
-                >Opiná!
+                >Opina!
                 </Link>
               </td>
+              )}
             </tr>
           ))}
         </table>
@@ -80,7 +84,7 @@ const UserOrderDetail = () => {
                 </Link>
                 <Link className="user-order-detail-products-link"
                     to={`/user/review/product/${product.orderline.productId}/${userOrderDetail.userId}`}
-                >Opiná!
+                >Opina!
                 </Link>
               </div>
             </div>

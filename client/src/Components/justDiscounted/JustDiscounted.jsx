@@ -4,22 +4,23 @@
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import './Catalogue.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
-import ProductCard from '../ProductCard/ProductCard';
-import FilterCatalogue from './FilterCatalogue/FilterCatalogue';
-import { getProducts, getProductsByName } from '../../../redux/actions/actions';
-import Spiner from '../../Spiner/Spiner';
-import { cataloguePag, getPageFromURL } from '../utils/paged';
-import Paged from './Paged';
+import ProductCard from '../catalogue/ProductCard/ProductCard';
+import FilterCatalogue from '../catalogue/Catalogue/FilterCatalogue/FilterCatalogue';
+import { getProducts, getProductsByName } from '../../redux/actions/actions';
+import Spiner from '../Spiner/Spiner';
+import { cataloguePag, getPageFromURL } from '../catalogue/utils/paged';
+import Paged from '../catalogue/Catalogue/Paged';
+import './justDiscounted.css';
 
 export default function catalogue() {
   const dispatch = useDispatch();
   const isQuery = useLocation().search.includes('search');
   const [query, setQuery] = useState(useLocation().search.split('=')[1]);
   const [page, setPage] = useState('');
-  const products = useSelector((state) => (isQuery ? state.productsByQuery : state.products));
+  // eslint-disable-next-line max-len
+  const products = useSelector((state) => (isQuery ? state.productsByQuery : state.products)).filter((p) => p.discount > 0);
   const [productsDisplay, setProductsDisplay] = useState([...products]);
   const [pivote, setPivote] = useState(true);
 
@@ -63,15 +64,15 @@ export default function catalogue() {
         />
       </div>
       <div className="catalogueMap">
-        {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no se encontraron coincidencias" /> : null}
-        {productsDisplay.map((product) => (
+        {!productsDisplay.length ? <Spiner msg="Lo lamentamos, no tenemos productos en oferta" /> : null}
+        {productsDisplay.filter((p) => p.discount > 0).map((product) => (
           <ProductCard
             product={product}
             name={product.name}
             price={product.price}
             id={product.id}
             image={product.images}
-            review={product.reviews}
+            review={product.review}
             stockAmount={product.stockAmount}
             key={product.id}
             discount={product.discount}

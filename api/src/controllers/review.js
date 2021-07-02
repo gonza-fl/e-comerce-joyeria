@@ -43,7 +43,7 @@ const postReview = async (req, res) => {
   } = req.body;
   try {
     const verificationProduct = await verifyUserProduct(userId, idProduct);
-    if (!verificationProduct) return res.status(400).send('No ha comprado este producto');
+    if (!verificationProduct) return res.status(400).send('Solo puedes dejar una review cuando tu compra haya sido entregada');
     const product = await Product.findByPk(idProduct);
     if (!product) return res.status(400).send('No existe ese producto');
     if (typeof userId !== 'string') return res.status(400).send('El ID de usuario es inválido');

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
 import axios from 'axios';
+import swal from 'sweetalert';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +34,7 @@ function FloatingCart() {
     if (user.id) {
       axios.delete(`${URL_CART}empty`, { data: { id: user.id, product: { id } } })
         .then(() => { setPivot(!pivot); })
-        .catch((err) => console.log(err));
+        .catch((err) => swal('Error', err.response.data, 'warning'));
     } else {
       const updatedCart = cartProducts.filter((p) => p.id !== id);
       localStorage.setItem('cart', JSON.stringify(updatedCart));

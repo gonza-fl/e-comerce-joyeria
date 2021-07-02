@@ -29,6 +29,9 @@
     .spinerCtn {
         left: 38%;
     }
+    .spinerMSG {
+        margin-top: 50px;
+    }
     @media (max-width:452px) {
         .spinerCtn {
             left: 30%;
