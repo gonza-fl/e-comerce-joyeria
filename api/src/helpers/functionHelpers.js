@@ -40,8 +40,6 @@ const verifyString = (param) => {
 
 const verifyDate = (param) => {
   const paramSplit = param.split('-');
-  console.log(param);
-  console.log(paramSplit);
   const response = {
     veracity: false,
   };

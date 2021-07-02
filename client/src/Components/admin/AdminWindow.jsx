@@ -20,7 +20,6 @@ import AdminFlyers from './AdminFlyers/AdminFlyers';
 function AdminWindow() {
   const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState({ role: '' });
-  // maxi modifico esto, si hizo una cagada no es culpa de el...
   useEffect(() => {
     if (user.id && userData.role === '') {
       axios.get(`http://localhost:3001/api/user/${user.id}`)

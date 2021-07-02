@@ -68,7 +68,6 @@ const createProduct = async (req, res) => {
     });
     return res.status(201).send('El producto fue creado con éxito!');
   } catch (err) {
-    console.log(err);
     return res.status(500).send('Internal server Error. Producto no fue creado');
   }
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable radix */
@@ -12,21 +13,19 @@ const {
   Product,
   Image,
   OrderLine,
+  Address,
 } = require('../models/index');
 const {
   verifyNumber,
 } = require('../helpers/functionHelpers');
 
 const createOrFindAndUpdateCart = async (req, res) => {
-  // REVISAR SI EL FRONT MANDA AMOUNTS HECHAS INTEGER Y NO STRING
-  // SI ESO SUCEDE QUITAR LOS PARSEINT
   const {
     id,
   } = req.body;
   let {
     products,
   } = req.body;
-  console.log('PRODUCTS', products);
   if (!id) return res.status(404).send('ID no existe!');
   if (!products) products = [];
   try {
@@ -119,7 +118,6 @@ const createOrFindAndUpdateCart = async (req, res) => {
       if (prod.stockAmount < parseInt(products[i].amount)) {
         total = prod.stockAmount;
       }
-      console.log('otro', prod.price);
       await cart.addProduct(prod, {
         through: {
           amount: parseInt(total),
@@ -254,7 +252,6 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
-          console.log(err);
           return res.status(400).send('Hubo un error');
         }
         return res.send('La orden fue correctamente modificada!');
@@ -437,24 +434,20 @@ const modifyOrderFromCart = async (req, res) => {
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
-      // eslint-disable-next-line consistent-return
-      // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
-          console.log('Esta cosita no funciona');
           return res.status(400).send('Hubo un error');
         }
         return res.send('La orden fue correctamente modificada!');
       });
-      // return res.json(order);
     } else {
       return res.status(404).send('Error');
     }
   } catch (error) {
-    console.log('tu err', error);
     return res.status(404).send('No se pudo completar el cambio de estado de order.');
   }
 };
+
 const editCartAmount = async (req, res) => {
   const {
     idUser,
@@ -593,7 +586,10 @@ const getOrderById = async (req, res) => {
   if (Number.isNaN(id)) return res.status(404).send('El id de la orden debe ser un numero');
   try {
     const singleOrder = await Order.findByPk(id, {
-      include: [User, Product],
+      include: [Product, {
+        model: User,
+        include: Address,
+      }],
     });
     if (!singleOrder) return res.status(404).send('La orden no existe');
     return res.json(singleOrder);

@@ -24,10 +24,6 @@
   padding: 2%;
 }
 
-.user-data-info-detail{
-  width: 30%;
-}
-
 .products-data-info{
   display: flex;
   justify-content: space-evenly;
