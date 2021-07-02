@@ -1,9 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable object-curly-newline */
-/* eslint-disable object-property-newline */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';

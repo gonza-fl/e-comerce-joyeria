@@ -10,6 +10,7 @@ import { URL_USERS } from '../../../constants';
 const UserOrders = (props) => {
   const { id } = props;
   const [userOrders, setUserOrders] = useState([]);
+
   useEffect(() => {
     axios.get(`${URL_USERS}${id}/orders`)
       .then((response) => {
@@ -18,9 +19,20 @@ const UserOrders = (props) => {
       .catch((err) => swal('Error', err.response.data, 'warning'));
   }, []);
 
+  function handleOrderStatus(oS) {
+    switch (oS) {
+      case 'cart': return 'carrito';
+      case 'paidPendingDispatch': return 'Pagado, esperando envio';
+      case 'deliveryInProgress': return 'En proceso de envio';
+      case 'finished': return 'Finalizada';
+      case 'canceled': return 'Cancelada';
+      default: return 'cart';
+    }
+  }
+
   return (
     <div className="user-orders-container">
-      {userOrders.length ? <h2>No tienes órdenes de compra</h2>
+      {userOrders.length <= 1 ? <h2>No tienes órdenes de compra</h2>
         : (
           <table className="user-orders-table">
             <tr>
@@ -32,9 +44,9 @@ const UserOrders = (props) => {
             </tr>
             {userOrders.filter((order) => order.status !== 'cart').map((order) => (
               <tr className="user-orders-tablerows">
-                <td>{order.endTimestamp}</td>
+                <td>{order.endTimestamp.substr(0, 10)}</td>
                 <td>{order.orderNumber}</td>
-                <td>{order.status}</td>
+                <td>{handleOrderStatus(order.status)}</td>
                 <td>{order.total}</td>
                 <td>
                   <Link className="user-order-link" to={`/user/order/${order.id}`}>Ver Detalle</Link>

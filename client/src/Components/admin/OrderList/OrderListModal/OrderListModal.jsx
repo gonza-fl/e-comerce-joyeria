@@ -11,12 +11,11 @@ import { getUserOrders } from '../../../../redux/actions/actions';
 import './OrderListModal.css';
 
 const OrderListModal = ({ id }) => {
-  // eslint-disable-next-line func-names
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.userOrders);
   const [filter, setFilter] = useState([]);
   const user = useSelector((state) => state.user);
-  // eslint-disable-next-line consistent-return
+
   function handleOrderStatus(oS) {
     switch (oS) {
       case 'cart': return 'carrito';
