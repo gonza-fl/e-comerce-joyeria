@@ -73,7 +73,7 @@ const updateUser = async (req, res) => {
     if (!user) return res.status(404).send('No hay ningún cliente con esa ID.');
     if (displayName) user.displayName = displayName;
     if (email) user.email = email;
-    if (birthday) user.birthday = new Date(birthday[2], birthday[1] - 1, birthday[0]);
+    if (birthday) user.birthday = birthday;
     if (phone) user.phone = phone;
     if (role) user.role = role;
     // Updeteo el user

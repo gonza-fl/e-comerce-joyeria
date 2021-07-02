@@ -72,6 +72,7 @@ function AdminStatistics() {
           setStatsInfo(ordersWithSlicedDates);
         })
         .catch((err) => {setStatsInfo([]); 
+          console.log(err)
           return swal('Error', err.response.data, 'warning')});
       }
 

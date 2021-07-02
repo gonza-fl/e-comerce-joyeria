@@ -5,6 +5,8 @@
 const {
   transporter,
   templateComprobantedepago,
+  templateOrdenDespachada,
+  templateOrdenCancelada,
 } = require('../helpers/nodeMailer');
 
 const {
@@ -244,7 +246,7 @@ const modifyOrder = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
@@ -254,6 +256,7 @@ const modifyOrder = async (req, res) => {
         if (err) {
           return res.status(400).send('Hubo un error');
         }
+
         return res.send('La orden fue correctamente modificada!');
       });
       // return res.json(order);
@@ -273,10 +276,12 @@ const modifyOrder = async (req, res) => {
         },
       });
 
-      const result = templateOrdenDespachada();
+      const result = templateOrdenDespachada({
+        id: order.id,
+      });
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: user.email,
         subject: 'Su orden fue despachada!',
         html: result,
@@ -284,6 +289,7 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
+          console.log(err);
           return res.status(400).send('Hubo un error');
         }
         return res.send('La orden fue correctamente modificada!');
@@ -305,11 +311,32 @@ const modifyOrder = async (req, res) => {
           || order.status === 'finished') {
         return res.status(404).send('Error. No puedes alterar el flujo del carro');
       }
-      order.status = status;
-      // order.endTimestamp = new Date();
-      await order.save();
-
-      return res.send('La orden fue correctamente modificada!');
+      const result = templateOrdenCancelada({
+        id: order.id,
+      });
+      const user = await User.findOne({
+        where: {
+          id: order.userId,
+        },
+      });
+      transporter.sendMail({
+        from: 'Kamora <kmoraemail@gmail.com>',
+        to: user.email,
+        subject: 'Su orden fue cancelada!',
+        html: result,
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, async (err, responseStatus) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).send('Hubo un error');
+        }
+        order.status = status;
+        // order.endTimestamp = new Date();
+        await order.save();
+        return res.send('La orden fue correctamente modificada!');
+      });
+      //    return res.send('La orden fue correctamente modificada!');
     } else {
       return res.status(404).send('Error');
     }
@@ -373,9 +400,8 @@ const modifyOrderFromCart = async (req, res) => {
         arrProducts.push({
           nameProducto: prod.name,
           cantidad: prod.orderline.amount,
-          precioUnitario: prod.price,
+          precioUnitario: prod.discount > 0 ? prod.price - ((prod.price * prod.discount) / 100).toFixed(2) : prod.price,
         });
-
         arrADescontar.push({
           id: prod.id,
           cantidad: prod.orderline.amount,
@@ -430,21 +456,28 @@ const modifyOrderFromCart = async (req, res) => {
       const result = templateComprobantedepago(data);
       // se envia el mail
       transporter.sendMail({
-        from: 'Kamora <heladodechocolateconconitodechocolate@hotmail.com>',
+        from: 'Kamora <kmoraemail@gmail.com>',
         to: data.email,
         subject: 'Compra realizada!',
         html: result,
-      }, (err, responseStatus) => {
+      // eslint-disable-next-line consistent-return
+      // eslint-disable-next-line no-unused-vars
+      }, async (err, responseStatus) => {
         if (err) {
-          return res.status(400).send('Hubo un error');
+          console.log('error', err);
+          return res.status(500).send('Hubo un error');
         }
+        const cartNew = await Order.create({
+          status: 'cart',
+        });
+        await user.addOrder(cartNew);
         return res.send('La orden fue correctamente modificada!');
       });
     } else {
       return res.status(404).send('Error');
     }
   } catch (error) {
-    return res.status(404).send('No se pudo completar el cambio de estado de order.');
+    return res.status(500).send('No se pudo completar el cambio de estado de order.');
   }
 };
 
