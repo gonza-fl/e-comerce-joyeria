@@ -16,6 +16,7 @@ import { URL_CART, URL_GET_CART } from '../../../constants';
 import Spiner from '../../Spiner/Spiner';
 import Button from '../../StyledComponents/Button';
 import './Cart.css';
+import logo from '../../../img/spiner.png';
 
 const Cart = () => {
   const user = useSelector((state) => state.user);
@@ -137,12 +138,12 @@ const Cart = () => {
       <div className="cart-summary-container">
         <h2>Resumen</h2>
         <div className="cart-summary-border">
-          <div className="cart-summary-data" />
-          <div className="cart-summary-data" />
-        </div>
-        <div className="cart-summary-data">
-          <h2>TOTAL: </h2>
-          <h2>${total}</h2>
+          <div className="cart-summary-data">
+            <h2>TOTAL: </h2>
+            <h2>${total}</h2>
+          </div>
+          <img src={logo} alt="" />
+
         </div>
         <div className="respCartBtnsTablet">
           <Link to="/cart/checkout">
