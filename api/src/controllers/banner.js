@@ -44,7 +44,6 @@ const createAndUpdateImagesBanner = async (req, res) => {
         newImages.push(images[i]);
       }
     }
-    console.log(banners);
     for (let i = 0; i < banners.length; i++) {
       await banners[i].destroy();
     }
@@ -61,7 +60,6 @@ const createAndUpdateImagesBanner = async (req, res) => {
     }
     return res.send('Banner actualizado correctamente!');
   } catch (err) {
-    console.log(err);
     return res.status(500).send('Internal server error.');
   }
 };

@@ -89,7 +89,7 @@ const updateImages = async (searchProduct, image, idProduct) => {
       });
     });
   } catch (err) {
-    return console.log(err);
+    return false;
   }
 };
 /* eslint-disable*/

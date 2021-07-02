@@ -20,28 +20,31 @@ const UserOrders = (props) => {
 
   return (
     <div className="user-orders-container">
-      <table className="user-orders-table">
-        <tr>
-          <th>Fecha</th>
-          <th>N° de Orden</th>
-          <th>Estado</th>
-          <th>Total</th>
-          <th>Detalle</th>
-        </tr>
-        {userOrders ? userOrders.map((order) => (
-          <tr className="user-orders-tablerows">
-            <td>{order.endTimestamp}</td>
-            <td>{order.orderNumber}</td>
-            <td>{order.status}</td>
-            <td>{order.total}</td>
-            <td>
-              <Link className="user-order-link" to={`/user/order/${order.id}`}>Ver Detalle</Link>
-            </td>
-          </tr>
-        )) : <p>wait</p>}
-      </table>
+      {userOrders.length ? <h2>No tienes órdenes de compra</h2>
+        : (
+          <table className="user-orders-table">
+            <tr>
+              <th>Fecha</th>
+              <th>N° de Orden</th>
+              <th>Estado</th>
+              <th>Total</th>
+              <th>Detalle</th>
+            </tr>
+            {userOrders.filter((order) => order.status !== 'cart').map((order) => (
+              <tr className="user-orders-tablerows">
+                <td>{order.endTimestamp}</td>
+                <td>{order.orderNumber}</td>
+                <td>{order.status}</td>
+                <td>{order.total}</td>
+                <td>
+                  <Link className="user-order-link" to={`/user/order/${order.id}`}>Ver Detalle</Link>
+                </td>
+              </tr>
+            ))}
+          </table>
+        )}
       <div className="responsive-container">
-        {userOrders ? userOrders.map((order) => (
+        {userOrders ? userOrders.filter((order) => order.status !== 'cart').map((order) => (
           <div className="respCtn">
             <div className="respCtnDiv">
               <p><b>Fecha: </b></p>

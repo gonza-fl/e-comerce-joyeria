@@ -59,29 +59,10 @@ const OrderListModal = ({ id }) => {
         .catch(() => swal('Alerta!', 'No se pudo actualizar el estado', 'warning'));
     }
   }
-  if (!orders[0]) {
+  if (orders.length < 2) {
     return (
       <div className="modal-container">
-        <div className="modal-filter-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span className="modal-filter-title">Filtrar por estado de orden</span>
-          <select onChange={handleFilter}>
-            <option value="Todas">Todas las ordenes</option>
-            <option value="cart">Carrito</option>
-            <option value="deliveryPending">Esperando entrega</option>
-            <option value="delivered">Finalizada</option>
-          </select>
-
-          <table className="modal-table">
-            <tr>
-              <th>N° ORDEN</th>
-              <th>FECHA</th>
-              <th>TOTAL</th>
-              <th>ESTADO</th>
-              <th>DETALLE</th>
-            </tr>
-          </table>
-          <h1>El usuario no tiene historial de órdenes de compra</h1>
-        </div>
+        <h1>El usuario no tiene historial de órdenes de compra</h1>
       </div>
     );
   }
@@ -107,7 +88,7 @@ const OrderListModal = ({ id }) => {
             <th>ESTADO</th>
             <th>DETALLE</th>
           </tr>
-          {filter.map((userOrder) => (
+          {filter.map((userOrder) => userOrder.status !== 'cart' && (
             <tr className="table-data" key={userOrder.orderNumber}>
               <td>{userOrder.orderNumber}</td>
               <td>{userOrder.endTimestamp}</td>
