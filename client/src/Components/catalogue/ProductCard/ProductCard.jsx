@@ -24,6 +24,11 @@ export default function ProductCard({
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
+  let roundAverage = 0;
+  if (review && review.length !== 0) {
+    roundAverage = Math.floor(review.map((rev) => rev.calification).reduce((a, b) => a + b, 0) / review.length);
+  }
+
   return (
     <DivCard className="contenedor" style={{ display: 'flex' }}>
       <div className="productCardImg">
@@ -48,13 +53,15 @@ export default function ProductCard({
         {product.discount ? numberWithCommas(price - ((price * product.discount) / 100)) : numberWithCommas(price) }
       </span>
       <br />
+
       <ReactStars
         count={5}
         size={24}
         edit={false}
-        value={review}
+        value={roundAverage}
         activeColor="#ffd700"
       />
+
       {stockAmount === 0 ? <h3> AGOTADO </h3>
         : (
           <Button

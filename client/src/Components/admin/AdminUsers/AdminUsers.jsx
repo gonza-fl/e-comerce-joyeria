@@ -14,10 +14,11 @@ function OrderList() {
   const [users, setUsers] = useState([]);
   const userState = useSelector((state) => state.user);
   const [adminData, setAdminData] = useState('');
+
   const handleStatusChange = (e, user) => {
     e.preventDefault();
     swal({
-      title: `¿esta seguro de que quiere que ${user.displayName} tenga rol de ${e.target.value}?`,
+      title: `¿Está seguro que quiere que ${user.displayName} tenga rol de ${e.target.value}?`,
       text: '',
       icon: 'warning',
       buttons: true,
@@ -34,16 +35,14 @@ function OrderList() {
         })
           .then((res) => {
             if (res.data.hasOwnProperty('err')) {
-              swal('Error', res.data.err, 'warning');
-            } else {
-              swal(`¡El status de ${user.displayName} ha cambiado con éxito!`, {
-                icon: 'success',
-              });
-              window.location.href = '/admin/users';
+              return swal('Error', res.data.err, 'warning');
             }
+            return swal('¡Muy bien!', `¡El status de ${user.displayName} ha cambiado con éxito!`, 'success');
+          }).then(() => {
+            window.location.href = '/admin/users';
           })
-          .catch(() => {
-            swal('Error', 'Ocurrió un error. No se pudo cambiar el status. Intente nuevamente');
+          .catch((err) => {
+            swal('Error', err.response.data, 'warning');
           });
       } else {
         swal('¡El status no ha cambiado!');
@@ -52,13 +51,13 @@ function OrderList() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/user/${userState.id}`)
+    axios.get(`${URL_USERS}${userState.id}`)
       .then((res) => setAdminData(res.data));
     axios.get(URL_USERS)
       .then((response) => {
         setUsers(response.data);
       })
-      .catch((err) => alert(err));
+      .catch((err) => { swal('Error', err.response.data, 'warning'); });
   }, []);
 
   return (
@@ -90,7 +89,7 @@ function OrderList() {
                 {user.role}
                 { user.role === 'superAdmin' ? null : (
                   <select onChange={(e) => { handleStatusChange(e, user); }}>
-                    <option>Cambiar estatus</option>
+                    <option>Cambiar status</option>
                     <option value="user">usuario</option>
                     {adminData.role === 'superAdmin' ? <option value="admin">admin</option> : null}
                     <option value="banned">baneado</option>
@@ -108,7 +107,7 @@ function OrderList() {
                 {user.role}
                 { user.role === 'superAdmin' ? null : (
                   <select onChange={(e) => { handleStatusChange(e, user); }}>
-                    <option>Cambiar estatus</option>
+                    <option>Cambiar status</option>
                     <option value="user">usuario</option>
                     {adminData.role === 'superAdmin' ? <option value="admin">admin</option> : null}
                     <option value="banned">baneado</option>

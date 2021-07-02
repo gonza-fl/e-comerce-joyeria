@@ -78,7 +78,7 @@ const Cart = () => {
     if (user.id) {
       axios.delete(`${URL_CART}empty`, { data: { id: user.id, product: { id } } })
         .then(() => { setPivot(!pivot); })
-        .catch((err) => console.log(err));
+        .catch((err) => swal('Error', err.response.data, 'warning'));
     } else {
       const index = cartProducts.findIndex((product) => product.id === id);
       const pricePerAmount = cartProducts[index].price * cartProducts[index].amount;

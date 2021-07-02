@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 /* eslint-disable radix */
 const {
   Order,
