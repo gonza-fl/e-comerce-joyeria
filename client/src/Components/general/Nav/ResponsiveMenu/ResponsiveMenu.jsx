@@ -16,7 +16,6 @@ export default function ResponsiveMenu() {
 
   const click = () => {
     document.getElementById('respMenu').style = 'display:none';
-    setTimeout(() => document.getElementById('respMenu').style = 'display:flex', 1000);
   };
 
   const clickLogin = () => {

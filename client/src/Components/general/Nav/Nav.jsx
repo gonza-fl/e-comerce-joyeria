@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -51,10 +52,10 @@ export default function Nav() {
       <div className="nav bg-color-three">
         <div className="leftMenuNav"><LeftMenu userData={userData} /></div>
 
-        <div className="homeResponsive">
+        <div className="homeResponsive" onClick={() => document.getElementById('respMenu').style = 'display:flex'}>
           <FaBars />
-          <div className="respMenu">  <ResponsiveMenu /></div>
         </div>
+        <div><ResponsiveMenu /></div>
         {userData && ((userData.role === 'admin' || userData.role === 'superAdmin')) && <Link to="/admin"> <div className="adminNavResponsive">ADMINISTRADOR</div></Link>}
         <div className="logoNav">
           <Logo width="200px" height="150px" style={{ flexGrow: 1 }} />
