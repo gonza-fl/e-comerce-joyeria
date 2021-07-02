@@ -189,7 +189,7 @@ const modifyOrder = async (req, res) => {
         arrProducts.push({
           nameProducto: prod.name,
           cantidad: prod.orderline.amount,
-          precioUnitario: prod.price,
+          precioUnitario: (prod.price).toFixed(2),
         });
 
         arrADescontar.push({
@@ -202,7 +202,7 @@ const modifyOrder = async (req, res) => {
       // COMENTAR STATUS PARA TESTEAR ASI NO LO CAMBIA EN LA BASE DE DATOS
       order.status = status;
 
-      order.total = totalOrder;
+      order.total = totalOrder.toFixed(2);
       order.endTimestamp = new Date();
       order.orderNumber = id;
       await order.save();
@@ -240,7 +240,7 @@ const modifyOrder = async (req, res) => {
         email: user.email,
         orden: id,
         productos: arrProducts,
-        total: totalOrder,
+        total: totalOrder.toFixed(2),
       };
       // se reemplaza en el template compilado los datos de usuario
       const result = templateComprobantedepago(data);
@@ -254,8 +254,7 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
-          console.log(err);
-          return res.status(400).send('Hubo un error');
+          return res.status(500).send('Hubo un error en el servidor!');
         }
 
         return res.send('La orden fue correctamente modificada!');
@@ -290,8 +289,7 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, (err, responseStatus) => {
         if (err) {
-          console.log(err);
-          return res.status(400).send('Hubo un error');
+          return res.status(500).send('Hubo un error en el servidor!');
         }
         return res.send('La orden fue correctamente modificada!');
       });
@@ -329,8 +327,7 @@ const modifyOrder = async (req, res) => {
       // eslint-disable-next-line no-unused-vars
       }, async (err, responseStatus) => {
         if (err) {
-          console.log(err);
-          return res.status(400).send('Hubo un error');
+          return res.status(400).send('Hubo un error en el servidor!');
         }
         order.status = status;
         // order.endTimestamp = new Date();
