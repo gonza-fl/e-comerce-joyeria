@@ -6,11 +6,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 /* import/no-unresolved": "off". */
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import swal from 'sweetalert';
 import CryptoJS from 'crypto-js';
-import { URL_GET_CART } from '../../../constants';
+import { URL_GET_CART, URL_USERS } from '../../../constants';
 import { getUserInfo } from '../../../redux/actions/actions';
 import Button from '../../StyledComponents/Button';
 import AddAdressModal from '../../user/Profile/AddAdressModal';
@@ -73,20 +74,23 @@ export default function CartCheckout() {
     setTotal(cartProducts.length > 0 ? cartProducts.map((p) => parseFloat(p.orderline.subtotal)).reduce((res, amount) => res + amount) + delivery : '');
   }, [cartProducts, address]);
 
+  useEffect(() => {
+    if (address.id) {
+      axios.put(`${URL_USERS}${userStatus.id}/address/checkout`, { addressId: address.id, userId: userStatus.id })
+        .then((res) => { swal('Muy bien!', res.data, 'success'); })
+        .catch((err) => { swal('Error', err.response.data, 'warning'); });
+    }
+  }, [address]);
+
   function selectAddress(e) {
     const addressSelected = userDetail.addresses.filter((a) => parseFloat(a.id) === parseFloat(e.target.value))[0];
-    setAddress(
-      {
-        id: addressSelected.id, address: addressSelected.address, state: addressSelected.state, city: addressSelected.state,
-      },
-    );
-    if (addressSelected.state !== 'Antioquia') {
-      setDelivery(11000);
-    } else if (addressSelected.state !== 'Medellín') {
-      setDelivery(6000);
-    } else {
-      setDelivery(5000);
-    }
+    setAddress({
+      id: addressSelected.id, address: addressSelected.address, state: addressSelected.state, city: addressSelected.state,
+    });
+    if (addressSelected.state !== 'Antioquia') setDelivery(11000);
+    else if (addressSelected.state !== 'Medellín') setDelivery(6000);
+    else setDelivery(5000);
+
     setPayButton('');
   }
 
