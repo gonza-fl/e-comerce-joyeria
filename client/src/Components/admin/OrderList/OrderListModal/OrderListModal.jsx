@@ -91,7 +91,7 @@ const OrderListModal = ({ id }) => {
           {filter.map((userOrder) => userOrder.status !== 'cart' && (
             <tr className="table-data" key={userOrder.orderNumber}>
               <td>{userOrder.orderNumber}</td>
-              <td>{userOrder.endTimestamp}</td>
+              <td>{userOrder.endTimestamp.substr(0, 10)}</td>
               <td>{userOrder.total}</td>
               <td>
                 <span>{handleOrderStatus(userOrder.status)}</span>

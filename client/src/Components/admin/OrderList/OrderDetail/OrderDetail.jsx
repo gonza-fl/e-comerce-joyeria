@@ -35,10 +35,10 @@ const OrderDetail = () => {
   return (
     <div className="detail-container">
       <div className="order-data">
-        <p>N° de Orden: {orderDetail.orderNumber}</p>
-        <p>Fecha: {orderDetail.endTimestamp.substr(0, 10)}</p>
-        <p>Total: ${totalDetail}</p>
-        <p>Estado: {' '}
+        <p><b>N° de Orden:</b> {orderDetail.orderNumber}</p>
+        <p><b>Fecha:</b> {orderDetail.endTimestamp.substr(0, 10)}</p>
+        <p><b>Total:</b> ${totalDetail}</p>
+        <p><b>Estado:</b> {' '}
           {orderDetail.status === 'paidPendingDispatch'
             ? 'Pagado, entrega pendiente'
             : orderDetail.status === 'deliveryInProgress' ? 'Entrega en camino'
@@ -47,11 +47,11 @@ const OrderDetail = () => {
       </div>
       <div className="user-data-info">
         <div className="user-data-info-detail">
-          <p>Dirección: {orderDetail.user.addresses[0].address}</p>
-          <p>Ciudad: {orderDetail.user.addresses[0].city}</p>
-          <p>Región: {orderDetail.user.addresses[0].state}</p>
-          <p>Description: {orderDetail.user.addresses[0].description}</p>
-          <p>E-mail del comprador: {orderDetail.user.email}</p>
+          <p><b>Dirección:</b> {orderDetail.user.addresses[0].address}</p>
+          <p><b>Ciudad:</b> {orderDetail.user.addresses[0].city}</p>
+          <p><b>Región:</b> {orderDetail.user.addresses[0].state}</p>
+          <p><b>Descripción:</b> {orderDetail.user.addresses[0].description}</p>
+          <p><b>E-mail del comprador:</b> {orderDetail.user.email}</p>
         </div>
       </div>
       <div className="products-data-info">
