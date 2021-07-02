@@ -23,6 +23,7 @@ import UserOrderDetail from './Components/user/UserOrders/UserOrderDetail/UserOr
 import PaymentResponse from './Components/cart/CartCheckout/PaymentResponse';
 import CreateUpdateReview from './Components/user/UserOrders/UserOrderDetail/CreateUpdateReview/CreateUpdateReview';
 import { setUser } from './redux/actions/actions';
+import JustDiscounted from './Components/justDiscounted/JustDiscounted';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ function App() {
               <Route path="/products/product/:productId" component={Product} />
               <Route path="/products/:categoryId" component={CategoryCatalogue} />
               <Route path="/products" component={Catalogue} />
+              <Route path="/justDiscounted" component={JustDiscounted} />
               <Route exact path="/cart" component={Cart} />
               <Route exact path="/cart/payment/response" component={PaymentResponse} />
               <Route path="/account/register" component={UserCreate} />
