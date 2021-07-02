@@ -51,7 +51,8 @@ export default function Footer() {
       </div>
 
       <div className="ResFooter" style={{ flexGrow: '1' }}>
-        <h3>Acerca de nosotros</h3>
+        <h3><a href="https://github.com/gonza-fl/e-comerce-joyeria">&copy; Desarrollado por Henry Group 6</a></h3>
+        {/* <h3>Acerca de nosotros</h3>
 
         <span>Términos y condiciones</span>
         <br />
@@ -60,7 +61,7 @@ export default function Footer() {
         <span>Políticas de datos</span>
         <br />
         <span>Plazos y costos de envío</span>
-        <br />
+        <br /> */}
 
       </div>
 
