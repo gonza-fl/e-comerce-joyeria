@@ -13,6 +13,7 @@ const {
   Product,
   Image,
   OrderLine,
+  Address,
 } = require('../models/index');
 const {
   verifyNumber,
@@ -585,7 +586,10 @@ const getOrderById = async (req, res) => {
   if (Number.isNaN(id)) return res.status(404).send('El id de la orden debe ser un numero');
   try {
     const singleOrder = await Order.findByPk(id, {
-      include: [User, Product],
+      include: [Product, {
+        model: User,
+        include: Address,
+      }],
     });
     if (!singleOrder) return res.status(404).send('La orden no existe');
     return res.json(singleOrder);

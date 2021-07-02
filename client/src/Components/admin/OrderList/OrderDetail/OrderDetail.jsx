@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable object-curly-newline */
@@ -22,10 +23,6 @@ const OrderDetail = () => {
       .catch((err) => swal('Error', err.response.data, 'warning'));
   }, []);
 
-  useEffect(() => {
-    console.log(orderDetail);
-  }, [orderDetail]);
-
   if (!orderDetail.products || orderDetail.products.length === 0) {
     return (
       <div>
@@ -39,17 +36,22 @@ const OrderDetail = () => {
     <div className="detail-container">
       <div className="order-data">
         <p>N° de Orden: {orderDetail.orderNumber}</p>
-        <p>Fecha: {orderDetail.endTimestamp}</p>
+        <p>Fecha: {orderDetail.endTimestamp.substr(0, 10)}</p>
         <p>Total: ${totalDetail}</p>
-        <p>Estado: {orderDetail.status}</p>
+        <p>Estado: {' '}
+          {orderDetail.status === 'paidPendingDispatch'
+            ? 'Pagado, entrega pendiente'
+            : orderDetail.status === 'deliveryInProgress' ? 'Entrega en camino'
+              : orderDetail.status === 'finished' ? 'finalizada' : 'cancelada'}
+        </p>
       </div>
       <div className="user-data-info">
         <div className="user-data-info-detail">
-          <p>Nombre: {orderDetail.user.displayName}</p>
-          <p>E-mail: {orderDetail.user.email}</p>
-          <p>Género: {orderDetail.user.genre}</p>
-          <p>Cumpleaños: {orderDetail.user.birthday}</p>
-          <p>Teléfono: {orderDetail.user.phone}</p>
+          <p>Dirección: {orderDetail.user.addresses[0].address}</p>
+          <p>Ciudad: {orderDetail.user.addresses[0].city}</p>
+          <p>Región: {orderDetail.user.addresses[0].state}</p>
+          <p>Description: {orderDetail.user.addresses[0].description}</p>
+          <p>E-mail del comprador: {orderDetail.user.email}</p>
         </div>
       </div>
       <div className="products-data-info">
