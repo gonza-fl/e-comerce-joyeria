@@ -31,7 +31,6 @@ export default function EditProfile({
 
   function onSubmitChanges() {
     if (!input.name) { return swal('Lo sentimos', 'No puedes dejar el espacio Nombre vacío', 'warning'); }
-
     axios.put(`${URL_USERS}${user.id}`, {
       displayName: input.name,
       birthday: input.birthday,
@@ -74,7 +73,7 @@ export default function EditProfile({
         <br />
         <b>Fecha de nacimiento: </b>
         <br />
-        <input className="editProfileInput" name="birthday" type="date" value={input.birthday} />
+        <input className="editProfileInput" name="birthday" type="date" value={input.birthday} onChange={onChangeInput} />
       </UserInfo>
       <UserInfo style={{
         flexGrow: '6', display: 'flex', flexDirection: 'column', overflowY: 'scroll',
