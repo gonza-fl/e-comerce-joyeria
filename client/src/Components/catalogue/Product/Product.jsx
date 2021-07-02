@@ -64,9 +64,9 @@ const Product = () => {
         <div className="product-info">
           <h1>{detail.name}</h1>
           <div className="divDescuento">
-            <h5 className="priceCrossed">
+            <span className="priceCrossed">
               {detail.discount > 0 ? ` $ ${detail.price}` : null }
-            </h5>
+            </span>
             {detail.discount > 0 ? (
               <h2 className="disc">
                 {`DESCUENTO DEL %${detail.discount} `}
